@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="processSTC.performProvisioningOfAllChildElements_Delete">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>27.0</x>
+    <y>24.0</y>
+    <childList>
+      <child name="initializeSequence" type="scriptActivity">
+        <label>Initialize Sequence</label>
+        <x>134.0</x>
+        <y>20.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var order = this.process.processOrder;
+              var processDocument = this.process.processDocument;
+
+              // processSTC.getMaxSequenceInOrchTabByOrder_ElemType_Parent(cwOrderId, elementType, CwParentId);
+              processDocument.sequence = processSTC.getMaxSequenceInOrchTabByOrder_ElemType_Parent(order.id, processDocument.elementTypeInOrderTree, this.process.processOrderItem.id);
+
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - MaxSequenceFound = " + processDocument.sequence);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="start" type="seqActivity">
+        <label>Start</label>
+        <x>139.0</x>
+        <y>165.0</y>
+        <childList>
+          <child name="loadAllElementsWithCurrentSequence" type="scriptActivity">
+            <label>Load All Elements With Current Sequence</label>
+            <x>270.0</x>
+            <y>129.0</y>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var order = this.process.processOrder;
+                  var processDocument = this.process.processDocument;
+                  // processSTC.findRecordsInOrchTabByOrder_Type_Parent_Seq(cwOrderId, ElementType [<B, C, S, T>], CwParentId, Sequence);
+                  var orchestrationRecords = processSTC.findRecordsInOrchTabByOrder_Type_Parent_Seq(order.id, processDocument.elementTypeInOrderTree, this.process.processOrderItem.id, processDocument.sequence);
+
+                  processDocument.elementIdsToBeProcessed = null;
+                  if(orchestrationRecords != null) {
+                      for(var i=0; i<orchestrationRecords.length; i++) {
+                          if(processDocument.elementIdsToBeProcessed == null) {
+                              processDocument.elementIdsToBeProcessed = orchestrationRecords[i].cwDocId;
+                          }
+                          else {
+                              processDocument.elementIdsToBeProcessed = (processDocument.elementIdsToBeProcessed + ";" + orchestrationRecords[i].cwDocId);
+                          }
+                      }
+                  }
+
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - elementIdsToBeProcessed = " +  processDocument.elementIdsToBeProcessed);
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="resetCounter" type="scriptActivity">
+            <label>Reset Counter</label>
+            <x>401.0</x>
+            <y>151.0</y>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script>this.process.processDocument.counter = 0;</script>
+              </method>
+            </methodList>
+          </child>
+          <child name="existAnotherElementWithSameSequence" type="switchActivity">
+            <label>Exist Another Element With Same Sequence?</label>
+            <x>512.0</x>
+            <y>136.0</y>
+            <childList>
+              <child name="yes" type="caseActivity">
+                <label>Yes</label>
+                <x>809.0</x>
+                <y>70.0</y>
+                <childList>
+                  <child name="start" type="seqActivity">
+                    <label>Start</label>
+                    <x>631.0</x>
+                    <y>161.0</y>
+                    <childList>
+                      <child name="startElementOrchestrationProcessForChildElement" type="scriptActivity">
+                        <label>Start &quot;STC Element Orchestration Process&quot; For Child Element</label>
+                        <x>760.0</x>
+                        <y>129.0</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var elementIdsToBeProcessed = this.process.processDocument.elementIdsToBeProcessed;
+
+                              var elementIdsArray = elementIdsToBeProcessed.split(";");
+                              var childElementId = elementIdsArray[this.process.processDocument.counter];
+
+                              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - starting ProcessForChildElement; elementId = " +  childElementId);
+
+                              var processId = Process.startProcess("processSTC:elementSTCOrchestrationProcess", this.process.processOrder.id, childElementId);
+
+                              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - started ProcessForChildElement; elementId = " +  childElementId + "; processId = " + processId);
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="increaseCounter" type="scriptActivity">
+                        <label>Increase Counter</label>
+                        <x>773.0</x>
+                        <y>17.0</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script>this.process.processDocument.counter++;</script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="repeat" type="repeatActivity">
+                        <element>proc_processSTC.performProvisioningOfAllChildElements_Delete/seqActivity_start/seqActivity_start/switchActivity_existAnotherElementWithSameSequence</element>
+                        <label>Repeat for Other Child Elements</label>
+                        <x>512.0</x>
+                        <y>7.0</y>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActCond" type="action">
+                    <category>cond</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var elementIdsToBeProcessed = this.process.processDocument.elementIdsToBeProcessed;
+
+                      var existElement = false;
+                      if(elementIdsToBeProcessed != null) {
+                          var elementIdArray = elementIdsToBeProcessed.split(";");
+                          existElement = (elementIdArray.length > this.process.processDocument.counter);
+                      }
+
+                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - anotherElementToBeProcessed = " +  existElement);
+
+                      return existElement;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="no" type="caseActivity">
+                <label>No</label>
+                <x>703.0</x>
+                <y>323.0</y>
+                <childList>
+                  <child name="startWaitingForCompletion" type="seqActivity">
+                    <label>Start Waiting For Completion</label>
+                    <x>510.0</x>
+                    <y>437.0</y>
+                    <childList>
+                      <child name="counterGtZero" type="switchActivity">
+                        <label>Counter &gt; 0?</label>
+                        <x>656.0</x>
+                        <y>430.0</y>
+                        <childList>
+                          <child name="yes" type="caseActivity">
+                            <label>Yes</label>
+                            <x>391.0</x>
+                            <y>479.0</y>
+                            <childList>
+                              <child name="start" type="seqActivity">
+                                <label>Start</label>
+                                <x>810.0</x>
+                                <y>441.0</y>
+                                <childList>
+                                  <child name="waitForChildElementOrchestrationProcessCompletion" type="syncActivity">
+                                    <element>signal_processSTC.wakeUpParentInOrchestration</element>
+                                    <label>Wait For &quot;STC Element Orchestration Process&quot; for Child Element Completion</label>
+                                    <x>987.0</x>
+                                    <y>409.0</y>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - childProcessCompleted");
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="decreaseCounter" type="scriptActivity">
+                                    <label>Decrease Counter</label>
+                                    <x>998.0</x>
+                                    <y>278.0</y>
+                                    <methodList>
+                                      <method name="cwOnProcActBefore" type="action">
+                                        <category>before</category>
+                                        <system>true</system>
+                                        <script>this.process.processDocument.counter--;</script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="repeatForWaitingChildProcessCompletion" type="repeatActivity">
+                                    <element>proc_processSTC.performProvisioningOfAllChildElements_Delete/seqActivity_start/seqActivity_start/switchActivity_existAnotherElementWithSameSequence/caseActivity_no/seqActivity_startWaitingForCompletion/switchActivity_counterGtZero</element>
+                                    <label>Repeat Waiting For Child Process Completion</label>
+                                    <x>652.0</x>
+                                    <y>269.0</y>
+                                  </child>
+                                </childList>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Waiting for signal 'wakeUpParentInOrchestration'");
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                            <methodList>
+                              <method name="cwOnProcActCond" type="action">
+                                <category>cond</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  var additionalProcessesToWait = (this.process.processDocument.counter > 0);
+
+                                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - additionalProcessesToWait = " +  additionalProcessesToWait);
+
+                                  return additionalProcessesToWait;
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="no" type="caseActivity">
+                            <label>No</label>
+                            <x>391.0</x>
+                            <y>545.0</y>
+                            <childList>
+                              <child name="start" type="seqActivity">
+                                <label>Start</label>
+                                <x>660.0</x>
+                                <y>583.0</y>
+                                <childList>
+                                  <child name="existProcessKOInOrchestration" type="switchActivity">
+                                    <label>Is There Process KO In Orchestration?</label>
+                                    <x>643.0</x>
+                                    <y>684.0</y>
+                                    <childList>
+                                      <child name="yes" type="caseActivity">
+                                        <label>Yes</label>
+                                        <x>660.0</x>
+                                        <y>752.0</y>
+                                        <childList>
+                                          <child name="completeDueToProcessKO" type="scriptActivity">
+                                            <label>Complete Due To Process KO</label>
+                                            <x>800.0</x>
+                                            <y>684.0</y>
+                                          </child>
+                                        </childList>
+                                        <methodList>
+                                          <method name="cwOnProcActCond" type="action">
+                                            <category>cond</category>
+                                            <system>true</system>
+                                            <script><![CDATA[
+                                              return processSTC.checkIfExistProcessKOInOrchestrationTable(this.process.processOrder.id);
+                                            ]]></script>
+                                          </method>
+                                        </methodList>
+                                      </child>
+                                      <child name="no" type="caseActivity">
+                                        <label>No</label>
+                                        <x>660.0</x>
+                                        <y>752.0</y>
+                                        <childList>
+                                          <child name="start" type="seqActivity">
+                                            <label>Start</label>
+                                            <x>537.0</x>
+                                            <y>709.0</y>
+                                            <childList>
+                                              <child name="decreaseSequence" type="scriptActivity">
+                                                <label>Decrease Sequence</label>
+                                                <x>421.0</x>
+                                                <y>700.0</y>
+                                                <methodList>
+                                                  <method name="cwOnProcActBefore" type="action">
+                                                    <category>before</category>
+                                                    <system>true</system>
+                                                    <script>this.process.processDocument.sequence--;</script>
+                                                  </method>
+                                                </methodList>
+                                              </child>
+                                              <child name="isSequenceGt0" type="switchActivity">
+                                                <label>Is Sequence &gt; 0?</label>
+                                                <x>287.0</x>
+                                                <y>695.0</y>
+                                                <childList>
+                                                  <child name="yes" type="caseActivity">
+                                                    <label>Yes</label>
+                                                    <x>396.0</x>
+                                                    <y>740.0</y>
+                                                    <childList>
+                                                      <child name="start" type="seqActivity">
+                                                        <label>Start Processing Elements With New Sequence</label>
+                                                        <x>130.0</x>
+                                                        <y>708.0</y>
+                                                        <childList>
+                                                          <child name="repeatOnProcessingChildElements" type="repeatActivity">
+                                                            <element>proc_processSTC.performProvisioningOfAllChildElements_Delete/seqActivity_start/seqActivity_start</element>
+                                                            <label>Repeat On Processing Child Elements</label>
+                                                            <x>132.0</x>
+                                                            <y>476.0</y>
+                                                          </child>
+                                                        </childList>
+                                                      </child>
+                                                    </childList>
+                                                    <methodList>
+                                                      <method name="cwOnProcActCond" type="action">
+                                                        <category>cond</category>
+                                                        <system>true</system>
+                                                        <script><![CDATA[
+                                                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Sequence = " +this.process.processDocument.sequence);
+
+                                                          return (this.process.processDocument.sequence > 0);
+                                                        ]]></script>
+                                                      </method>
+                                                    </methodList>
+                                                  </child>
+                                                  <child name="no" type="caseActivity">
+                                                    <label>No</label>
+                                                    <x>396.0</x>
+                                                    <y>740.0</y>
+                                                    <childList>
+                                                      <child name="done" type="scriptActivity">
+                                                        <label>Done</label>
+                                                        <x>298.0</x>
+                                                        <y>554.0</y>
+                                                      </child>
+                                                    </childList>
+                                                  </child>
+                                                </childList>
+                                              </child>
+                                            </childList>
+                                          </child>
+                                        </childList>
+                                      </child>
+                                    </childList>
+                                  </child>
+                                </childList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Starting Workflow for DELETE/DISCONNECT");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Perform Provisioning Orchestration Of All Child Elements - Delete</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

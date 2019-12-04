@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.removeICMSSONumberFromInProcessList">
+  <label>Remove ICMSSONumbe From InProcess List</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="icmsSONumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderNumberInProcess" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var searchDoc = new Document("ds_ws.icmsSONumberInProcessDoc");
+    searchDoc.icmsSalesOrderNumber = icmsSONumber;
+    searchDoc.orderNumber = orderNumberInProcess;
+
+    var resultList = Finder.runFinder("ds_ws.findICMSSONumberInProcess", "select", searchDoc);
+
+    if(resultList != null && resultList.length > 0) {
+        try {
+            resultList[0].deleteItem();
+        }
+        catch(exc) {
+            debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] - Unexpected error while removing the ICMSSONumber '" + icmsSONumber + "' from 'IN-PROCESS' table; exc: " + exc.message);
+        }
+    }
+  ]]></script>
+</script>

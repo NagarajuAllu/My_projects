@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getLineItemInOrderWithIdentifier">
+  <label>Get LineItem In Order With Identifier</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="childLineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var resultLineItem = null;
+
+    var inputDoc = new Document("stcw.STCW_ORDER_ORCHESTRATION");
+    inputDoc.cwOrderId = orderId;
+    inputDoc.cwDocId = null;
+    inputDoc.lineItemIdentifier = childLineItemIdentifier;
+
+    var orchestrationRecordList = Finder.runFinder("stcw.findSTCW_ORDER_ORCHESTRATION", "select", inputDoc);
+
+    if(orchestrationRecordList != null && orchestrationRecordList.length > 0) {
+        resultLineItem = Document.readDoc("stcw.lineItemDocument", orchestrationRecordList[0].cwDocId);
+
+    }
+    return resultLineItem;
+  ]]></script>
+</script>

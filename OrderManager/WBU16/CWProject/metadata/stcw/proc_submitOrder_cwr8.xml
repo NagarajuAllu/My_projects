@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.submitOrder_cwr8">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>39.344727</x>
+    <y>41.0</y>
+    <childList>
+      <child name="receiveSubmitOrder" type="subflowActivity">
+        <element>proc_stcw.receiveSubmitOrder</element>
+        <label>Receive Submit Order</label>
+        <x>168.66797</x>
+        <y>18.0</y>
+      </child>
+      <child name="enterOrderInGranite" type="subflowActivity">
+        <element>proc_stcw.enterOrderInGranite</element>
+        <label>Enter Order In Granite</label>
+        <x>316.0</x>
+        <y>32.402344</y>
+      </child>
+      <child name="forwardOrderAckToCrm" type="subflowActivity">
+        <element>proc_stcw.forwardOrderAckToCrm</element>
+        <label>Forward Order Ack To CRM</label>
+        <x>476.33887</x>
+        <y>24.804688</y>
+      </child>
+      <child name="hasAckSuccess" type="switchActivity">
+        <label>Has Ack Success?</label>
+        <x>616.3447</x>
+        <y>33.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>301.34473</x>
+            <y>291.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>620.3447</x>
+                <y>203.0</y>
+                <childList>
+                  <child name="handleGraniteStatusUpdates" type="subflowActivity">
+                    <element>proc_stcw.handleGraniteOrderStatusUpdates</element>
+                    <label>Handle Granite Status Updates</label>
+                    <x>619.9971</x>
+                    <y>316.9082</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.ackResult == "SUCCESS");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>783.3447</x>
+            <y>42.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>777.3447</x>
+                <y>42.0</y>
+                <childList>
+                  <child name="archiveOrder" type="scriptActivity">
+                    <label>Archive Order</label>
+                    <x>779.3447</x>
+                    <y>178.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - SubmitOrder - Start Order Archiving...");
+
+                          rpts.updateHistoryEvent (this);
+
+                          stcw.createRejectedOrder(this.process.processOrder.header.orderNumber,
+                                                               "Granite",
+                                                               this.process.processDocument.errorText);
+
+                          stcw.archiveOrder(this.process.processOrder, true);
+
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - SubmitOrder - Order Archived...");
+                        ]]></script>
+                      </method>
+                      <method name="cwOnProcActCond" type="action">
+                        <category>cond</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          rpts.createHistoryEvent (this);
+                          return (true);
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="closeOrder" type="scriptActivity">
+        <label>Close Order</label>
+        <x>783.3447</x>
+        <y>325.7129</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - SubmitOrder - Setting Complete Date");
+
+              rpts.updateHistoryEvent (this);
+
+              var order = this.process.processOrder;
+              order.header.completedDate = new Date();
+              order.save();
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>908.3447</x>
+        <y>327.11523</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.updateHistoryEvent (this);
+
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - SubmitOrder - COMPLETED!!!");
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - SubmitOrder - Start...");]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_stcw.orderProcess</document>
+  <label>Submit Order</label>
+  <metaVersion>23</metaVersion>
+  <priority>8</priority>
+  <revision>8</revision>
+  <subflowReferenceList>
+    <subflowReference type="sref">
+      <revision>3</revision>
+      <subflow>proc_stcw.enterOrderInGranite</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_stcw.receiveSubmitOrder</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_stcw.handleGraniteOrderStatusUpdates</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>3</revision>
+      <subflow>proc_stcw.forwardOrderAckToCrm</subflow>
+    </subflowReference>
+  </subflowReferenceList>
+  <type>User</type>
+</process>

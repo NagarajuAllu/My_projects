@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcr.getSIUWithoutAck">
+  <label>Get SIU Info Without Ack</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="siteId" type="rifp">
+      <type>dtype_stcw.siteId</type>
+    </parameter>
+    <parameter name="plateId" type="rifp">
+      <type>dtype_stcr.plateId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var searchDoc = new Document("stcr.siuInfoWithoutAck");
+    searchDoc.siteId = siteId;
+    searchDoc.plateId = plateId;
+    searchDoc.businessUnit = 'WBU';
+
+    var resultList = Finder.runFinder("stcr.findSIUInfoWithoutAck", "select", searchDoc);
+
+    var recordFound = null;
+    if(resultList != null && resultList.length > 0) {
+        recordFound = resultList[0];
+    }
+
+    return recordFound;
+  ]]></script>
+</script>

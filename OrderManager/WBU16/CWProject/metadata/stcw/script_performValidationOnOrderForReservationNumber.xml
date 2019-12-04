@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.performValidationOnOrderForReservationNumber">
+  <label>Perform Validation On Order For ReservationNumber</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+    var stopProcessing = true;
+    var reservationOrder = null;
+
+    if(isSubmit) {
+        if(bundleOrder.orderHeader.orderType == "I" || bundleOrder.orderHeader.orderType == "C") {
+            var foundReservationNumber = existsReservationNumberInOrder_();
+
+            var reservationOrderId = null;
+
+            if(foundReservationNumber != null) {
+                // exists ReservationNumber in at least one lineItem in the order; getting the "active" version of the PLI
+                var activeParentLineItems = stcw.getAllLineItemsByIdentifierAndProvisioningFlag(bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier, "B", "ACTIVE");
+                if(activeParentLineItems == null || activeParentLineItems.length == 0) {
+                    // checking if there is a "PROVISIONING" version of the PLI
+                    var provisioningParentLineItems = stcw.getAllLineItemsByIdentifierAndProvisioningFlag(bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier, "B", "PROVISIONING");
+                    if(provisioningParentLineItems == null || provisioningParentLineItems.length == 0) {
+                        validationErrors = stcw.appendToValidationErrors("AE0150",
+                                                                         Global.translateText("AE0150", null, bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier),
+                                                                         validationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + ")");
+                        stopProcessing = true;
+                    }
+                    else {
+                        var isProvisioningValid = stcw.checkIfItIsLegacy_F_WithVASNotFeasible(provisioningParentLineItems[0].orderId);
+                        if(isProvisioningValid) {
+                            stopProcessing = false;
+
+                            reservationOrderId = provisioningParentLineItems[0].orderId;
+                        }
+                        else {
+                            validationErrors = stcw.appendToValidationErrors("AE0150",
+                                                                             Global.translateText("AE0150", null, bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier),
+                                                                             validationErrors,
+                                                                             "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + ")");
+                            stopProcessing = true;
+                        }
+                    }
+                }
+                else {
+                    stopProcessing = false;
+
+                    reservationOrderId = activeParentLineItems[0].orderId;
+                }
+
+                if(!stopProcessing) {
+                    // due to the previous approach, it's possible to have multiple orders in PROVISIONING in case they are linked to an "ACTIVE" F order
+                    var provisioningParentLineItems = stcw.getAllLineItemsByIdentifierAndProvisioningFlag(bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier, "B", "PROVISIONING");
+                    if(provisioningParentLineItems == null || provisioningParentLineItems.length == 0) {
+                        // do nothing
+                    }
+                    else {
+                        for (var i=0; i<provisioningParentLineItems.length; i++) {
+                            if(provisioningParentLineItems[i].orderId == bundleOrder.id) {
+                                // the found lineItem belongs to the order under management; do nothing
+                            }
+                            else {
+                                var isProvisioningValid = stcw.checkIfItIsLegacy_F_WithVASNotFeasible(provisioningParentLineItems[i].orderId);
+                                if(isProvisioningValid) {
+                                    // the PLI refers to a Legacy "F" order with VAS Not Feasible; so not an issue
+                                }
+                                else {
+                                    // it means that there is another record with the same PLI Identifier in "PROVISIONING"
+                                    var msgDetail2 = provisioningParentLineItems[i].orderId;
+                                    var foundOrder = Order.getOrderById(provisioningParentLineItems[i].orderId);
+                                    if(foundOrder != null) {
+                                        msgDetail2 = (provisioningParentLineItems[i].orderId + "," + foundOrder.orderHeader.orderNumber);
+                                    }
+
+                                    validationErrors = stcw.appendToValidationErrors("AE0180",
+                                                                                     Global.translateText("AE0180", null, [bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier, msgDetail2]),
+                                                                                     validationErrors,
+                                                                                     "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + ")");
+                                    stopProcessing = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                stopProcessing = true;
+            }
+
+            if(!stopProcessing) {
+                reservationOrder = Order.getOrderById(reservationOrderId);
+
+                if(reservationOrder == null) {
+                    validationErrors = stcw.appendToValidationErrors("AE0052",
+                                                                     Global.translateText("AE0052", null, activeParentLineItems[0].orderId),
+                                                                     validationErrors,
+                                                                     "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + ")");
+                    stopProcessing = true;
+                }
+                else {
+                    if(reservationOrder.orderHeader.orderType != "F") {
+                        validationErrors = stcw.appendToValidationErrors("AE0151",
+                                                                         Global.translateText("AE0151", null, [bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier, reservationOrder.orderHeader.orderType]),
+                                                                         validationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + ")");
+                        stopProcessing = true;
+                    }
+                    else {
+                        // reservationOrder is a "Feasibility" Order
+                        stopProcessing = false;
+                    }
+                }
+            }
+            else {
+                stopProcessing = true;
+            }
+        }
+
+        if(!stopProcessing) {
+            // found ReservationOrder
+            var parentLineItemContainer = bundleOrder.parentLineItems[0];
+            // checking if reservationNumber is set
+            if(stcc.stringHasValue(parentLineItemContainer.parentLineItem.reservationNumber)) {
+                // reservationNumber set
+                if(! stcw.isLegacyService(parentLineItemContainer, true)) {
+                    // it means that the parentLineItem has a reservationNumber even if it's a bundle
+                    if(parentLineItemContainer.parentLineItem.productCode == "C041") {
+                        // STCSUP-905. Ignoring that there is the ReservationNumber for PLI. It's due because EAI copies values from NNI serviceLineItem to generate the PLI
+                        // but doesn't clean the reservationNumber.
+                    }
+                    else {
+                        // raise the error. Normally, bundle PLI cannot have the reservationNumber set.
+                        validationErrors = stcw.appendToValidationErrors("AE0146",
+                                                                         Global.translateText("AE0146"),
+                                                                         validationErrors, "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + parentLineItemContainer.parentLineItem.lineItemIdentifier + ")");
+                    }
+                }
+                else {
+                    // it's a legacy and has a reservationNumber
+                    var lineItemValidationErrors = checkReservationData_(parentLineItemContainer.parentLineItem, reservationOrder, null);
+                    if(lineItemValidationErrors != null) {
+                        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(lineItemValidationErrors, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+                    }
+
+                    if(parentLineItemContainer.services != null) {
+                        for(var j=0; j<parentLineItemContainer.services.length; j++) {
+                            var serviceLineItemContainer = parentLineItemContainer.services[j];
+
+                            if(stcc.stringHasValue(serviceLineItemContainer.serviceLineItem.reservationNumber)) {
+                                // reservationNumber exists
+                                var serviceLineItemValidationErrors = checkReservationData_(serviceLineItemContainer.serviceLineItem, reservationOrder, null);
+                                if(serviceLineItemValidationErrors != null) {
+                                    failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(serviceLineItemValidationErrors, serviceLineItemContainer.serviceLineItem.lineItemIdentifier, failureArray, isSubmit);
+                                }
+                            }
+                            else {
+                                // no value in reservation
+                                if(serviceLineItemContainer.serviceLineItem.action == "N" || serviceLineItemContainer.serviceLineItem.action == "D") {
+                                    // do nothing
+                                }
+                                else {
+                                    validationErrors = stcw.appendToValidationErrors("AE0145",
+                                                                                     Global.translateText("AE0145", null, ["serviceLineItem", "lineItem"]),
+                                                                                     validationErrors,
+                                                                                     "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + serviceLineItemContainer.serviceLineItem.lineItemIdentifier + ")");
+                                }
+                            }
+                        }
+                    }
+
+                    var servicesInReservationOrders = countNotCancelledServicesInReservationOrder_(reservationOrder.parentLineItems[0].services, true);
+                    var servicesInCurrentOrders = (parentLineItemContainer.services != null ? parentLineItemContainer.services.length : 0);
+
+                    // checking that the number of services in the current order is the same of the services in reservation order
+                    if(servicesInCurrentOrders > servicesInReservationOrders) {
+                        validationErrors = stcw.appendToValidationErrors("AE0155",
+                                                                         Global.translateText("AE0155", null, [servicesInCurrentOrders, servicesInReservationOrders]),
+                                                                         validationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + ")");
+                    }
+                    else if (servicesInCurrentOrders < servicesInReservationOrders) {
+                        validationErrors = stcw.appendToValidationErrors("AE0154",
+                                                                         Global.translateText("AE0154", null, [servicesInReservationOrders, servicesInCurrentOrders]),
+                                                                         validationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + ")");
+                    }
+                }
+            }
+            else {
+                // reservationNumber not set in parentLineItem
+                if(stcw.isLegacyService(parentLineItemContainer, true)) {
+                    // internal error: it's a legacy without reservationNumber but the function "existsReservationNumberInOrder_" returned that there is a reservationNumber
+                    validationErrors = stcw.appendToValidationErrors("AE0152",
+                                                                     Global.translateText("AE0152"),
+                                                                     validationErrors,
+                                                                     "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + parentLineItemContainer.parentLineItem.lineItemIdentifier + ")");
+                }
+                else {
+                    if(reservationOrder.parentLineItems[0].services == null) {
+                        validationErrors = stcw.appendToValidationErrors("AE0153",
+                                                                         Global.translateText("AE0153", null, [parentLineItemContainer.services.length, reservationOrder.orderHeader.orderNumber]),
+                                                                         validationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + parentLineItemContainer.parentLineItem.lineItemIdentifier + ")");
+                    }
+                    else {
+                        // checking the services of the order; parentLineItemContainer.services != null for sure
+                        for(var j=0; j<parentLineItemContainer.services.length; j++) {
+                            var serviceLineItemContainer = parentLineItemContainer.services[j];
+                            // checking if reservationNumber is set
+                            if(stcc.stringHasValue(serviceLineItemContainer.serviceLineItem.reservationNumber)) {
+                                // reservationNumber exists
+                                var lineItemValidationErrors = checkReservationData_(serviceLineItemContainer.serviceLineItem, reservationOrder, parentLineItemContainer.parentLineItem);
+                                if(lineItemValidationErrors != null) {
+                                    failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(lineItemValidationErrors, serviceLineItemContainer.serviceLineItem.lineItemIdentifier, failureArray, isSubmit);
+                                }
+                            }
+                            else {
+                                // no value in reservation
+                                if(serviceLineItemContainer.serviceLineItem.action == "N" || serviceLineItemContainer.serviceLineItem.action == "D") {
+                                    // do nothing
+                                }
+                                else {
+                                    validationErrors = stcw.appendToValidationErrors("AE0145",
+                                                                                     Global.translateText("AE0145", null, ["serviceLineItem", "lineItem"]),
+                                                                                     validationErrors,
+                                                                                     "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + serviceLineItemContainer.serviceLineItem.lineItemIdentifier + ")");
+                                }
+                            }
+                        }
+
+                        var servicesInReservationOrders = countNotCancelledServicesInReservationOrder_(reservationOrder.parentLineItems[0].services, false);
+
+                        // checking that the number of services in the current order is the same of the services in reservation order
+                        if(parentLineItemContainer.services.length > servicesInReservationOrders) {
+                            validationErrors = stcw.appendToValidationErrors("AE0155",
+                                                                             Global.translateText("AE0155", null, [parentLineItemContainer.services.length, servicesInReservationOrders]),
+                                                                             validationErrors,
+                                                                             "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + ")");
+                        }
+                        else if (parentLineItemContainer.services.length < servicesInReservationOrders) {
+                            validationErrors = stcw.appendToValidationErrors("AE0154",
+                                                                             Global.translateText("AE0154", null, [servicesInReservationOrders, parentLineItemContainer.services.length]),
+                                                                             validationErrors,
+                                                                             "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + ")");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if(validationErrors != null) {
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, isSubmit);
+    }
+    return failureArray;
+
+
+
+    function checkReservationData_(lineItem, reservationOrder, parentLineItem) {
+        var lineItemValidationErrors = null;
+        var lineItemWithReservation = null;
+
+        if(lineItem.provisioningBU == "H") {
+            // due to is "H", all lineItems have the same reservation number. So use the lineItemIdentifier to find them
+            lineItemWithReservation = stcw.getLineItemInOrderWithIdentifier(reservationOrder.id, lineItem.lineItemIdentifier);
+        }
+        else {
+            // found lineItem in order with the same reservationNumber
+            lineItemWithReservation = stcw.getLineItemInOrderWithReservationNumber(reservationOrder, lineItem.reservationNumber);
+        }
+
+        if(lineItemWithReservation == null) {
+            lineItemValidationErrors = stcw.appendToValidationErrors("AE0156",
+                                                                     Global.translateText("AE0156", null, [lineItem.lineItemIdentifier, lineItem.reservationNumber, reservationOrder.orderHeader.orderNumber]),
+                                                                     lineItemValidationErrors,
+                                                                     "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+        }
+        else {
+            // checking compatibility for lineItem data
+            if(lineItem.reservationNumber != lineItemWithReservation.reservationNumber) {
+                lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                         Global.translateText("AE0148", null, ["reservationNumber", lineItem.reservationNumber, lineItemWithReservation.reservationNumber]),
+                                                                         lineItemValidationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+            }
+            if(lineItem.lineItemIdentifier != lineItemWithReservation.lineItemIdentifier) {
+                lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                         Global.translateText("AE0148", null, ["lineItemIdentifier", lineItem.lineItemIdentifier, lineItemWithReservation.lineItemIdentifier]),
+                                                                         lineItemValidationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+            }
+            if(lineItem.serviceType != lineItemWithReservation.serviceType) {
+                lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                         Global.translateText("AE0148", null, ["serviceType", lineItem.serviceType, lineItemWithReservation.serviceType]),
+                                                                         lineItemValidationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+            }
+            if(lineItem.locationACCLICode != lineItemWithReservation.locationACCLICode) {
+                lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                         Global.translateText("AE0148", null, ["locationACCLICode", lineItem.locationACCLICode, lineItemWithReservation.locationACCLICode]),
+                                                                         lineItemValidationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+            }
+            if(lineItem.locationBCCLICode != lineItemWithReservation.locationBCCLICode) {
+                lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                         Global.translateText("AE0148", null, ["locationBCCLICode", lineItem.locationBCCLICode, lineItemWithReservation.locationBCCLICode]),
+                                                                         lineItemValidationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+            }
+            if(lineItem.elementTypeInOrderTree != lineItemWithReservation.elementTypeInOrderTree) {
+                lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                         Global.translateText("AE0148", null, ["position in Order Tree", lineItem.elementTypeInOrderTree, lineItemWithReservation.elementTypeInOrderTree]),
+                                                                         lineItemValidationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+            }
+            if(lineItem.isVAS != lineItemWithReservation.isVAS) {
+                lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                         Global.translateText("AE0148", null, ["isVAS", lineItem.isVAS, lineItemWithReservation.isVAS]),
+                                                                         lineItemValidationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+            }
+            if(lineItem.isVAS) {
+                if(lineItem.serviceNumber !=  lineItemWithReservation.serviceNumber) {
+                    lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                             Global.translateText("AE0148", null, ["serviceNumber", lineItem.serviceNumber, lineItemWithReservation.serviceNumber]),
+                                                                             lineItemValidationErrors,
+                                                                             "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+                }
+
+                if(stcw.checkIfLineItemIsNotFeasibleForQuote(lineItemWithReservation.lineItemStatus.toUpperCase(), reservationOrder.orderHeader.orderType)) {
+                    // the lineItem in reservation is not feasible so it's no possible to
+                    lineItemValidationErrors = stcw.appendToValidationErrors("AE0179",
+                                                                             Global.translateText("AE0179", null, [lineItem.reservationNumber, reservationOrder.orderHeader.orderNumber, lineItemWithReservation.lineItemStatus]),
+                                                                             lineItemValidationErrors,
+                                                                             "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+                }
+            }
+
+            // checking compatibility for parentLineItem data
+            if(parentLineItem != null) {
+                var parentLineItemWithReservation = reservationOrder.parentLineItems[0].parentLineItem;
+                if(parentLineItem.serviceType != parentLineItemWithReservation.serviceType) {
+                    lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                             Global.translateText("AE0148", null, ["parentLineItem.serviceType", parentLineItem.serviceType, parentLineItem.serviceType]),
+                                                                             lineItemValidationErrors,
+                                                                             "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+                }
+                if(parentLineItem.productCode != parentLineItemWithReservation.productCode) {
+                    lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                             Global.translateText("AE0148", null, ["parentLineItem.productCode", parentLineItem.productCode, parentLineItemWithReservation.productCode]),
+                                                                             lineItemValidationErrors,
+                                                                             "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+                }
+                if(parentLineItem.lineItemIdentifier != parentLineItemWithReservation.lineItemIdentifier) {
+                    lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                             Global.translateText("AE0148", null, ["parentLineItem.lineItemIdentifier", parentLineItem.lineItemIdentifier, parentLineItemWithReservation.lineItemIdentifier]),
+                                                                             lineItemValidationErrors,
+                                                                             "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+                }
+            }
+
+            // checking compatibility for orderHeader data
+            var orderHeaderWithReservation = reservationOrder.orderHeader;
+            if(bundleOrder.orderHeader.customerIdNumber != orderHeaderWithReservation.customerIdNumber) {
+                lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                         Global.translateText("AE0148", null, ["orderHeader.customerIdNumber", bundleOrder.orderHeader.customerIdNumber, orderHeaderWithReservation.customerIdNumber]),
+                                                                         lineItemValidationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+            }
+            if(bundleOrder.orderHeader.accountNumber != orderHeaderWithReservation.accountNumber) {
+                lineItemValidationErrors = stcw.appendToValidationErrors("AE0148",
+                                                                         Global.translateText("AE0148", null, ["orderHeader.accountNumber", bundleOrder.orderHeader.accountNumber, orderHeaderWithReservation.accountNumber]),
+                                                                         lineItemValidationErrors,
+                                                                         "performValidationOnOrderForReservationNumber(" + bundleOrder.orderHeader.orderNumber + "," + lineItem.lineItemIdentifier + ")");
+            }
+        }
+
+        return lineItemValidationErrors;
+    }
+
+
+
+
+    function existsReservationNumberInOrder_() {
+        var foundReservationNumber = null;
+
+        for(var i=0; i<bundleOrder.parentLineItems.length; i++) {
+            if(foundReservationNumber == null) {
+                var parentLineItemContainer = bundleOrder.parentLineItems[i];
+                // checking if reservationNumber is set
+                if(stcc.stringHasValue(parentLineItemContainer.parentLineItem.reservationNumber)) {
+                    foundReservationNumber = parentLineItemContainer.parentLineItem.reservationNumber;
+                }
+                else {
+                    if(parentLineItemContainer.services != null) {
+                        for(var j=0; j<parentLineItemContainer.services.length; j++) {
+                            var serviceLineItemContainer = parentLineItemContainer.services[j];
+                            // checking if reservationNumber is set
+                            if(stcc.stringHasValue(serviceLineItemContainer.serviceLineItem.reservationNumber)) {
+                                foundReservationNumber = serviceLineItemContainer.serviceLineItem.reservationNumber;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return foundReservationNumber;
+    }
+
+
+    function countNotCancelledServicesInReservationOrder_(servicesInReservation, excludeNotFeasibleInCount) {
+        var count = 0;
+
+        if(servicesInReservation != null) {
+            for(var i=0; i<servicesInReservation.length; i++) {
+                if(servicesInReservation[i].serviceLineItem.lineItemStatus != "CANCELLED") {
+                    if(excludeNotFeasibleInCount) {
+                        // not include in the count the "Not Feasible"
+                        if(stcw.checkIfLineItemIsNotFeasibleForQuote(servicesInReservation[i].serviceLineItem.lineItemStatus.toUpperCase(), "F")) {
+                            // not include
+                        }
+                        else {
+                            count++;
+                        }
+                    }
+                    else {
+                        count++;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+  ]]></script>
+</script>

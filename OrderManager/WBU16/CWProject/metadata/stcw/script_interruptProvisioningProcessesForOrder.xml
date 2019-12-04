@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.interruptProvisioningProcessesForOrder">
+  <label>Interrupt Provisioning Processes For Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrderInProvisioning" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debugHeader = "interruptProvisioningProcessesForOrder(" + bundleOrderInProvisioning.orderHeader.orderNumber + ") - ";
+
+    debugPrintln(stcc.getSysdateForLog() + " " + debugHeader + "Searching all processes for order with internalId: " + bundleOrderInProvisioning.id);
+
+    var orchestrationRecordList = stcw.findRecordsInOrchTabByOrderId_ParentId(bundleOrderInProvisioning.id, null);
+    for(var i=0; i<orchestrationRecordList.length; i++) {
+        // for each element in orchestration table, it terminates first the orchestration process ...
+        var processId = orchestrationRecordList[i].orchestrationProcessId;
+        if(processId != null) {
+
+    debugPrintln(stcc.getSysdateForLog() + " " + debugHeader + "Checking orchestration process: " + processId);
+
+            var searchDoc = new Document("cwf_pm:ProcessSearch");
+            searchDoc.PROCESS_ID = processId;
+            var resultProcessFinder = Finder.runFinder("cwf_pm:ProcessFinder", "select", searchDoc);
+
+            if(resultProcessFinder != null && resultProcessFinder.length > 0) {
+                var processStatus = resultProcessFinder[0].STATUS;
+                if(processStatus == 3 || processStatus == 6) {
+                    // 3 = COMPLETED
+                    // 6 = TERMINATED
+    debugPrintln(stcc.getSysdateForLog() + " " + debugHeader + "Orchestration process: " + processId + " already ended");
+                }
+                else {
+    debugPrintln(stcc.getSysdateForLog() + " " + debugHeader + "Terminating Orchestration process: " + processId);
+
+                    Process.stopProcess(processId);
+                    Process.terminateProcess(processId);
+                }
+            }
+            else {
+    debugPrintln(stcc.getSysdateForLog() + " " + debugHeader + "Unable to find Orchestration process: " + processId);
+            }
+        }
+
+        // ... then the provisioning process
+        processId = orchestrationRecordList[i].provisioningProcessId;
+        if(processId != null) {
+
+    debugPrintln(stcc.getSysdateForLog() + " " + debugHeader + "Checking provisioning process: " + processId);
+
+            var searchDoc = new Document("cwf_pm:ProcessSearch");
+            searchDoc.PROCESS_ID = processId;
+            var resultProcessFinder = Finder.runFinder("cwf_pm:ProcessFinder", "select", searchDoc);
+
+            if(resultProcessFinder != null && resultProcessFinder.length > 0) {
+                var processStatus = resultProcessFinder[0].STATUS;
+                if(processStatus == 3 || processStatus == 6) {
+                    // 3 = COMPLETED
+                    // 6 = TERMINATED
+    debugPrintln(stcc.getSysdateForLog() + " " + debugHeader + "Provisioning process: " + processId + " already ended");
+                }
+                else {
+    debugPrintln(stcc.getSysdateForLog() + " " + debugHeader + "Terminating Provisioning process: " + processId);
+
+                    Process.stopProcess(processId);
+                    Process.terminateProcess(processId);
+                }
+            }
+            else {
+    debugPrintln(stcc.getSysdateForLog() + " " + debugHeader + "Unable to find Provisioning process: " + processId);
+            }
+        }
+    }
+  ]]></script>
+</script>

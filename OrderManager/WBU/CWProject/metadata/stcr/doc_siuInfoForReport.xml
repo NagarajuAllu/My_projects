@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="2adaa1ced0a06926e3cf71f68173c3c8" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="stcr.siuInfoForReport">
+  <dbSchema>REPORT_XNG</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{df602ebb-3a41-4a9c-a366-0b84c31c29e6}</guid>
+  <label>SiteInformationUpdate Info For Report</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>SITE_INFO_UPD_EVENT</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="eventId" type="leaf">
+      <column>EVENTID</column>
+      <table>SITE_INFO_UPD_EVENT</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="eventSentDateTime" type="leaf">
+      <column>EVENTSENTDATETIME</column>
+      <table>SITE_INFO_UPD_EVENT</table>
+      <valueType>dtype_com.conceptwave.system.DateTime</valueType>
+    </variable>
+    <variable name="plateId" type="leaf">
+      <column>PLATEID</column>
+      <table>SITE_INFO_UPD_EVENT</table>
+      <valueType>dtype_stcr.plateId</valueType>
+    </variable>
+    <variable name="siteId" type="leaf">
+      <column>SITEID</column>
+      <table>SITE_INFO_UPD_EVENT</table>
+      <valueType>dtype_stcw.siteId</valueType>
+    </variable>
+    <variable name="sendingResult" type="leaf">
+      <column>SENDINGRESULT</column>
+      <table>SITE_INFO_UPD_EVENT</table>
+      <valueType>dtype_stcr.result</valueType>
+    </variable>
+    <variable name="errorType" type="leaf">
+      <column>ERRORTYPE</column>
+      <table>SITE_INFO_UPD_EVENT</table>
+      <valueType>dtype_stcr.errorType</valueType>
+    </variable>
+    <variable name="errorDescription" type="leaf">
+      <column>ERRORDESCRIPTION</column>
+      <table>SITE_INFO_UPD_EVENT</table>
+      <valueType>dtype_stcr.errorDescription</valueType>
+    </variable>
+    <variable name="businessUnit" type="leaf">
+      <column>BU</column>
+      <table>SITE_INFO_UPD_EVENT</table>
+      <valueType>dtype_stcr.businessUnit</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcr.siuInfoForReport</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

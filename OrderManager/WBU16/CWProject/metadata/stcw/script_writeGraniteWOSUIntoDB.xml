@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.writeGraniteWOSUIntoDB">
+  <label>Write Granite WOSU Into DB</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_cwf.processId</type>
+    </parameter>
+    <parameter name="graniteWOSUDS" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("stcw.STCW_GRANITE_EVENT_STORAGE");
+    inputDoc.processId = processId;
+    inputDoc.msgType = "WOSU";
+    inputDoc.graniteMsg = graniteWOSUDS.toXML();
+    inputDoc.whenInserted = new Date();
+    inputDoc.save();
+
+    return inputDoc.id;
+  ]]></script>
+</script>

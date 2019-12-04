@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.map_updateOrderResp_orderAck">
+  <label>(map) map_updateOrderResp_orderAck</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="output" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="input" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    if (output == null || output.metadataType != "siordAck:processRequest_el") {
+          Global.logDebug ("map_updateOrderResp_orderAck - nonexistant/wrong output: " + output);
+          return (false);
+    }
+
+    if (input == null || input.metadataType != "grws:updateOrderResponse") {
+          Global.logDebug ("map_updateOrderResp_orderAck - nonexistant/wrong input: " + input);
+          return (false);
+    }
+
+    var outputRequest = output.Request;
+    var inputResult = input.result;
+    var inputResultStatus = input.result.Status;
+
+    outputRequest.AssetNumber      = inputResult.AssetNumber;
+    outputRequest.AssetStatus      = inputResult.AssetStatus;
+    outputRequest.BusinessUnit     = inputResult.BusinessUnit;
+    outputRequest.OrderNumber      = inputResult.OrderNumber;
+    outputRequest.WorkOrderStatus  = inputResult.WorkOrderStatus;
+
+    outputRequest.ErrorCode        = inputResultStatus.ErrorCode;
+    outputRequest.ErrorDescription = stcc.limitStringLengthToCRMValue(inputResultStatus.ErrorDescription);
+    outputRequest.ErrorStatus      = inputResultStatus.Status;
+    outputRequest.ErrorType        = inputResultStatus.ErrorType;
+    outputRequest.SourceErrorCode  = inputResultStatus.SourceErrorCode;
+
+    return (true);
+  ]]></script>
+</script>

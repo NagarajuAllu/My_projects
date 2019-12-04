@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure name="cimeWS.orderAcknowledgementWithFailure">
+  <container>true</container>
+  <label>orderAcknowledgementWithFailure</label>
+  <metaVersion>25</metaVersion>
+  <childList>
+    <child name="workOrderNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>workOrderNumber</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="crmOrderNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>crmOrderNumber</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="lineItemIdentifier" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>lineItemIdentifier</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="status" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_cimeWS.orderStatus</element>
+      <label>status</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="xngOrderNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>xngOrderNumber</label>
+    </child>
+    <child name="failure" type="dstruct">
+      <array>true</array>
+      <element>dstruct_cimeWS.orderFailure</element>
+      <label>failure</label>
+      <maxInstance>-1</maxInstance>
+    </child>
+  </childList>
+</dataStructure>

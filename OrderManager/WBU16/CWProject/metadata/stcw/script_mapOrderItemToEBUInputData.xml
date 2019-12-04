@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.mapOrderItemToEBUInputData">
+  <label>Map OrderItem To EBU Input Data</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="elementTypeInOrderTree" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var cim = "E";
+    var quoteOrder = "O";
+
+    var orderItem = null;
+    var orderItemNVPairs = null;
+    var orderItemVASNVPairs = null;
+    var orderItemBlockNVPairs = null;
+    var parentLineItemNVPairs = null;
+    var countNVPairs = 0;
+
+    if(elementTypeInOrderTree == "B") {
+        orderItem = orderItemContainer.parentLineItem;
+        orderItemNVPairs = orderItemContainer.parentLineItemNameValueParameters;
+        orderItemVASNVPairs = orderItemContainer.parentLineItemVASNVParameters;
+        orderItemBlockNVPairs = orderItemContainer.parentLineItemBlockParameters;
+
+        parentLineItemNVPairs = null;
+    }
+    else if(elementTypeInOrderTree == "C") {
+        orderItem = orderItemContainer.serviceLineItem;
+        orderItemNVPairs = orderItemContainer.serviceLineItemNameValueParameters;
+        orderItemVASNVPairs = orderItemContainer.serviceLineItemVASNVParameters;
+        orderItemBlockNVPairs = orderItemContainer.serviceLineItemBlockParameters;
+
+        parentLineItemNVPairs = bundleOrder.parentLineItems[0].parentLineItemNameValueParameters;
+    }
+    else if(elementTypeInOrderTree == "S") {
+        orderItem = orderItemContainer.subServiceLineItem;
+        orderItemNVPairs = orderItemContainer.subServiceLineItemNameValueParameters;
+        orderItemVASNVPairs = orderItemContainer.subServiceLineItemVASNVParameters;
+        orderItemBlockNVPairs = orderItemContainer.subServiceLineItemBlockParameters;
+
+        parentLineItemNVPairs = bundleOrder.parentLineItems[0].parentLineItemNameValueParameters;
+    }
+    else  {
+        orderItem = orderItemContainer.subSubServiceLineItem;
+        orderItemNVPairs = orderItemContainer.subSubServiceLineItemNameValueParameters;
+        orderItemVASNVPairs = orderItemContainer.subSubServiceLineItemVASNVParameters;
+        orderItemBlockNVPairs = orderItemContainer.subSubServiceLineItemBlockParameters;
+
+        parentLineItemNVPairs = bundleOrder.parentLineItems[0].parentLineItemNameValueParameters;
+    }
+
+
+    var graniteInputData = (isSubmit ? new DataStructure("cimeWS.submitOrder_el") : new DataStructure("cimeWS.updateOrder_el"));
+
+    /****
+     *  ORDER HEADER
+     ****/
+    // extracting rules to map orderHeader attributes of the order into orderHeader of the DS
+    var mappingRulesFound = stcw.getMappingFromCOMToGraniteData(cim, quoteOrder, "OH", "OH");
+    if(mappingRulesFound != null) {
+        for (var i=0; i<mappingRulesFound.length; i++) {
+    debugPrintln(stcc.getSysdateForLog() + " mapOrderItemToEBUInputData - using mapping for OH-OH: " + mappingRulesFound[i].toXML());
+            graniteInputData.arg0[mappingRulesFound[i].giName] = bundleOrder.orderHeader[mappingRulesFound[i].comName];
+        }
+    }
+
+    // extracting rules to map orderHeader attributes of the order into orderHeader of the DS
+    mappingRulesFound = stcw.getMappingFromCOMToGraniteData(cim, quoteOrder, "LI", "OH");
+    if(mappingRulesFound != null) {
+        for (var i=0; i<mappingRulesFound.length; i++) {
+    debugPrintln(stcc.getSysdateForLog() + " mapOrderItemToEBUInputData - using mapping for LI-OH:" + mappingRulesFound[i].toXML());
+            graniteInputData.arg0[mappingRulesFound[i].giName] = orderItem[mappingRulesFound[i].comName];
+        }
+    }
+
+    // overwriting orderStatus
+    graniteInputData.arg0.orderStatus = (orderItem.isSubmit ? "New" : (orderItem.isCancel ? "Cancel" : "Revise"));
+    // overwriting BusinessUnit
+    graniteInputData.arg0.businessUnit = "Enterprise";
+    // setting reasonCode because it's an array
+    graniteInputData.arg0.reasonCode[0] = orderItem.reasonCode;
+
+
+    // STCSUP-285: setting the icmsSalesOrderNumber
+    if(graniteInputData.arg0.icmsSalesOrderNumber == null || graniteInputData.arg0.icmsSalesOrderNumber == "") {
+        graniteInputData.arg0.icmsSalesOrderNumber = "000000000";
+    }
+
+    /****
+     *  ORDER HEADER - NV Pairs
+     ****/
+    // mapping OrderHeader NV pairs
+    if(bundleOrder.orderHeaderParameters != null) {
+        countNVPairs = 0;
+        for (var i=0; i<bundleOrder.orderHeaderParameters.length; i++) {
+            mapNameValuePair_(graniteInputData.arg0.orderNameValueParameters[countNVPairs], bundleOrder.orderHeaderParameters[i].orderHeaderParameter);
+            countNVPairs++;
+        }
+    }
+
+
+
+    /****
+     *  LINE ITEM
+     ****/
+    // extracting rules to map lineItem attributes of the order into lineItem of the DS
+    mappingRulesFound = stcw.getMappingFromCOMToGraniteData(cim, quoteOrder, "LI", "LI");
+    if(mappingRulesFound != null) {
+        for (var i=0; i<mappingRulesFound.length; i++) {
+    debugPrintln(stcc.getSysdateForLog() + " mapOrderItemToEBUInputData - using mapping for LI-LI:" + mappingRulesFound[i].toXML());
+            graniteInputData.arg0.lineItem[mappingRulesFound[i].giName] = orderItem[mappingRulesFound[i].comName];
+        }
+    }
+    // adding additional parameters related to the parentLineItem
+    graniteInputData.arg0.lineItem.bundleProductType = bundleOrder.parentLineItems[0].parentLineItem.productCode;
+    graniteInputData.arg0.lineItem.bundleServiceType = bundleOrder.parentLineItems[0].parentLineItem.serviceType;
+
+    // setting reasonCode because it's an array
+    graniteInputData.arg0.lineItem.reasonCode[0] = orderItem.reasonCode;
+
+
+    if(elementTypeInOrderTree != "B") {
+        // adding serviceNumber of the lineItem parent of the current one
+        graniteInputData.arg0.lineItem.parentItemServiceNumber = getParentServiceNumber_(orderItem.id);
+    }
+
+    // STCSUP-285: setting the icmsSalesOrderNumber
+    if(graniteInputData.arg0.lineItem.icmsSONumber == null || graniteInputData.arg0.lineItem.icmsSONumber == "") {
+        graniteInputData.arg0.lineItem.icmsSONumber = "000000000";
+    }
+
+
+    /****
+     *  LINE ITEM - NV Pairs
+     ****/
+    // mapping LineItem NV pairs
+    if(orderItemNVPairs != null) {
+        countNVPairs = 0;
+        var nvPairInOrder = null;
+        for (var i=0; i<orderItemNVPairs.length; i++) {
+            if(elementTypeInOrderTree == "B") {
+                nvPairInOrder = orderItemNVPairs[i].parentLineItemNameValueParameter;
+            }
+            else if(elementTypeInOrderTree == "C") {
+                nvPairInOrder = orderItemNVPairs[i].serviceLineItemNameValueParameter;
+            }
+            else if(elementTypeInOrderTree == "S") {
+                nvPairInOrder = orderItemNVPairs[i].subServiceLineItemNameValueParameter;
+            }
+            else {
+                nvPairInOrder = orderItemNVPairs[i].subSubServiceLineItemNameValueParameter;
+            }
+
+            mapNameValuePair_(graniteInputData.arg0.lineItem.nameValueParameters[countNVPairs], nvPairInOrder);
+            countNVPairs++;
+        }
+    }
+    // adding ParentProductCode NV Pair
+    mapNameValueIntoPair_(graniteInputData.arg0.lineItem.nameValueParameters[countNVPairs], "bundleProductCode", bundleOrder.parentLineItems[0].parentLineItem.productCode);
+    countNVPairs++;
+    // adding ParentProductID NV Pair
+    mapNameValueIntoPair_(graniteInputData.arg0.lineItem.nameValueParameters[countNVPairs], "ParentProductId", bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier);
+    countNVPairs++;
+    // adding ParentOrderNumber NV Pair
+    mapNameValueIntoPair_(graniteInputData.arg0.lineItem.nameValueParameters[countNVPairs], "ParentOrderNumber", bundleOrder.orderHeader.orderNumber);
+    countNVPairs++;
+    // adding SOM_DOMAIN NV Pair
+    mapNameValueIntoPair_(graniteInputData.arg0.lineItem.nameValueParameters[countNVPairs], "SOM_DOMAIN", "WHOLESALE");
+    countNVPairs++;
+    // adding SegmentFlag NV Pair
+    mapNameValueIntoPair_(graniteInputData.arg0.lineItem.nameValueParameters[countNVPairs], "SegmentFlag", orderItem.segmentFlag);
+    countNVPairs++;
+
+
+    // adding AccessType NV Pair
+    var accessTypeValue = (orderItem.locationAAccessType != null ? orderItem.locationAAccessType : orderItem.locationBAccessType);
+    if(accessTypeValue != null) {
+        var existingNVPairPosition = findNVPairPosition_(graniteInputData.arg0.lineItem.nameValueParameters, "AccessType");
+        if(existingNVPairPosition < 0) {
+            mapNameValueIntoPair_(graniteInputData.arg0.lineItem.nameValueParameters[countNVPairs], "AccessType", accessTypeValue);
+            countNVPairs++;
+        }
+        else {
+            graniteInputData.arg0.lineItem.nameValueParameters[existingNVPairPosition].Value = stcw.convertCOMValueToGraniteOne("AccessType", accessTypeValue);
+        }
+    }
+
+    // adding NV Pair for AUTO_COMPLETE
+    if(bundleOrder.orderHeader.orderType == "C" && orderItem.serviceType == "GEF" && orderItem.action == "M" && (!stcw.isLegacyService(bundleOrder.parentLineItems[0], true))) {
+        mapNameValueIntoPair_(graniteInputData.arg0.lineItem.nameValueParameters[countNVPairs], "AUTO_COMPLETE", "Yes");
+        countNVPairs++;
+    }
+
+    /****
+     *  LINE ITEM - NV Pairs Of ParentLineItem
+     ****/
+    if(parentLineItemNVPairs != null) {
+        // it means that it's a bundle ...
+        for (var i=0; i<parentLineItemNVPairs.length; i++) {
+            mapNameValuePair_(graniteInputData.arg0.lineItem.nameValueParameters[countNVPairs], parentLineItemNVPairs[i].parentLineItemNameValueParameter);
+            countNVPairs++;
+        }
+    }
+
+
+    /****
+     *  LINE ITEM - VAS NV Pairs
+     ****/
+    // mapping LineItem VAS NV pairs
+    if(orderItemVASNVPairs != null) {
+        var vasNVPairInOrder = null;
+        for (var i=0; i<orderItemVASNVPairs.length; i++) {
+            if(elementTypeInOrderTree == "B") {
+                vasNVPairInOrder = orderItemVASNVPairs[i].parentLineItemVASNVParameter;
+            }
+            else if(elementTypeInOrderTree == "C") {
+                vasNVPairInOrder = orderItemVASNVPairs[i].serviceLineItemVASNVParameter;
+            }
+            else if(elementTypeInOrderTree == "S") {
+                vasNVPairInOrder = orderItemVASNVPairs[i].subServiceLineItemVASNVParameter;
+            }
+            else {
+                vasNVPairInOrder = orderItemVASNVPairs[i].subSubServiceLineItemVASNVParameter;
+            }
+            mapNameValuePair_(graniteInputData.arg0.lineItem.nameValueParameters[countNVPairs], vasNVPairInOrder);
+            countNVPairs++;
+        }
+    }
+
+
+    /****
+     *  LINE ITEM - BLOCK NV Pairs
+     ****/
+    // mapping LineItem Block NV pairs
+    var processedBlockNVPairNames = null;
+    var countBlockNVPairs = 0;
+
+    if(orderItemBlockNVPairs != null) {
+        var blockNVPairInOrder = null;
+
+        for (var i=0; i<orderItemBlockNVPairs.length; i++) {
+            if(elementTypeInOrderTree == "B") {
+                blockNVPairInOrder = orderItemBlockNVPairs[i].parentLineItemBlockParameter;
+            }
+            else if(elementTypeInOrderTree == "C") {
+                blockNVPairInOrder = orderItemBlockNVPairs[i].serviceLineItemBlockParameter;
+            }
+            else if(elementTypeInOrderTree == "S") {
+                blockNVPairInOrder = orderItemBlockNVPairs[i].subServiceLineItemBlockParameter;
+            }
+            else {
+                blockNVPairInOrder = orderItemBlockNVPairs[i].subSubServiceLineItemBlockParameter;
+            }
+            mapBlockNameValuePair_(graniteInputData.arg0.lineItem.blockParameters[countBlockNVPairs], blockNVPairInOrder);
+            countBlockNVPairs++;
+
+            if(processedBlockNVPairNames == null) {
+                processedBlockNVPairNames = new Array();
+            }
+            processedBlockNVPairNames.push(blockNVPairInOrder.name);
+        }
+    }
+
+    var configuredBlockNVPairs = getBlockParameterConfig_(bundleOrder.orderHeader.orderType, orderItem.receivedServiceType);
+
+    if(configuredBlockNVPairs != null) {
+        for(var i=0; i<configuredBlockNVPairs.length; i++){
+            var found = false;
+
+            if(processedBlockNVPairNames != null) {
+                for(var j=0; j<processedBlockNVPairNames.length; j++) {
+                    if(configuredBlockNVPairs[i].blockParameterName == processedBlockNVPairNames[j]) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if(!found) {
+                // the block parameter is missing; adding it
+                var newBlockNVPair = graniteInputData.arg0.lineItem.blockParameters[countBlockNVPairs];
+                newBlockNVPair.name = configuredBlockNVPairs[i].blockParameterName;
+                newBlockNVPair.action = "Add";
+                newBlockNVPair.value[0] = "-";
+
+               countBlockNVPairs++;
+            }
+        }
+    }
+
+    return graniteInputData;
+
+
+
+
+    //
+    //  findNVPairPosition_
+    //
+    function findNVPairPosition_(nvPairs, requiredNVPairName) {
+        var foundNVPairPosition = -1;
+
+        if(nvPairs != null) {
+            for(var i=0; i<nvPairs.length; i++) {
+                if(nvPairs[i].name == requiredNVPairName) {
+                    foundNVPairPosition = i;
+                }
+            }
+        }
+
+        return foundNVPairPosition;
+    }
+
+
+
+    //
+    //  mapNameValuePair_
+    //
+    function mapNameValuePair_ (output, input) {
+        output.name  = stcw.convertCOMNameToGraniteOne(input.name);
+        output.value = stcw.convertCOMValueToGraniteOne(input.name, input.value);
+    }
+
+    //
+    //  mapNameValueIntoPair_
+    //
+    function mapNameValueIntoPair_ (output, inputName, inputValue) {
+        output.name  = stcw.convertCOMNameToGraniteOne(inputName);
+        output.value = stcw.convertCOMValueToGraniteOne(inputName, inputValue);
+    }
+
+
+    //
+    //  getParentServiceNumber_
+    //
+    function getParentServiceNumber_(itemCWDocId) {
+        var parentServiceNumber = null;
+
+        var recordInOrchestration = stcw.getRecordInOrchestrationTableByLineItemId(itemCWDocId);
+        if(recordInOrchestration != null) {
+            var parentId = recordInOrchestration.cwParentObjectId;
+            if(parentId != null) {
+                var lineItem = Document.readDoc("stcw.lineItemDocument", parentId);
+                if(lineItem != null) {
+                    parentServiceNumber = lineItem.serviceNumber;
+                }
+            }
+        }
+
+        return parentServiceNumber;
+    }
+
+    //
+    //  mapBlockNameValuePair_
+    //
+    function mapBlockNameValuePair_ (output, input) {
+        output.name   = input.name;
+        output.action = "Add";
+        var values = stcw.getBlockValuesAsArray(input.id);
+        if(values != null) {
+            for(var v=0; v<values.length; v++) {
+                output.value[v] = values[v].blockValue;
+            }
+        }
+    }
+
+    //
+    //  getBlockParameterConfig_
+    //
+    function getBlockParameterConfig_(orderType, serviceType){
+        var searchDoc = new Document("stcconf.search_blockParams_Configuration");
+        searchDoc.orderType = orderType;
+        searchDoc.serviceType = serviceType;
+        var resultList = Finder.runFinder("stcconf:findBlockParameterConfiguration", "select", searchDoc);
+
+        return resultList;
+    }
+  ]]></script>
+</script>

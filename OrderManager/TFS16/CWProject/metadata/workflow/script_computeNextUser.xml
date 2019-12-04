@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.computeNextUser">
+  <label>Compute Next User</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="workListItem" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="processName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="activityPerformed" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    Global.logInfo("Computing next user for: "+processName+", Activity: "+activityPerformed);
+    workflow.overload_computeNextUser(workListItem.processOrder.id,
+                                      workListItem.workItemDocument.orderItemId,
+                                      workListItem.workItemDocument.SenderId,
+                                      processName,
+                                      activityPerformed);
+    Global.logInfo("DONE: Computing next user for: "+processName+", Activity: "+activityPerformed);
+  ]]></script>
+</script>

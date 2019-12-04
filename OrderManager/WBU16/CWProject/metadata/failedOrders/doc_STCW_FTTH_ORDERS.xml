@@ -1,0 +1,1367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="failedOrders.STCW_FTTH_ORDERS">
+  <dbSchema>CWW_XNG</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{002a648e-822d-448a-9930-91c444b22475}</guid>
+  <label>Wholesale FTTH Orders</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="WO_INST_ID" type="leaf">
+      <column>WO_INST_ID</column>
+      <key>1</key>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.INST_ID_10</valueType>
+    </variable>
+    <variable name="WO_NAME" type="leaf">
+      <column>WO_NAME</column>
+      <propertyElement type="elfld">
+        <label>WorkOrder Name</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.WO_NAME</valueType>
+    </variable>
+    <variable name="WO_STATUS_CODE" type="leaf">
+      <column>WO_STATUS_CODE</column>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.WO_STATUS</valueType>
+    </variable>
+    <variable name="WO_STATUS" type="leaf">
+      <column>WO_STATUS</column>
+      <propertyElement type="elfld">
+        <label>WO Status</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_stcw.string20</valueType>
+    </variable>
+    <variable name="WO_ORDER_TYPE" type="leaf">
+      <column>WO_ORDER_TYPE</column>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.ATTR_VALUE</valueType>
+    </variable>
+    <variable name="START_AFTER" type="leaf">
+      <column>START_AFTER</column>
+      <propertyElement type="eldatetime">
+        <label>WO Start After</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_com.conceptwave.system.Timestamp</valueType>
+    </variable>
+    <variable name="COMPLETE_BY" type="leaf">
+      <column>COMPLETE_BY</column>
+      <propertyElement type="eldatetime">
+        <label>WO Completed By</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_com.conceptwave.system.Timestamp</valueType>
+    </variable>
+    <variable name="ACTUAL_START" type="leaf">
+      <column>ACTUAL_START</column>
+      <propertyElement type="eldatetime">
+        <label>WO Actual Start</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_com.conceptwave.system.Timestamp</valueType>
+    </variable>
+    <variable name="ACTUAL_COMPL" type="leaf">
+      <column>ACTUAL_COMPL</column>
+      <propertyElement type="eldatetime">
+        <label>WO Actual Compl</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_com.conceptwave.system.Timestamp</valueType>
+    </variable>
+    <variable name="CIRC_PATH_INST_ID" type="leaf">
+      <column>CIRC_PATH_INST_ID</column>
+      <key>2</key>
+      <label>CIRC_PATH_INST_ID</label>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.INST_ID_10</valueType>
+    </variable>
+    <variable name="CIRC_PATH_HUM_ID" type="leaf">
+      <column>CIRC_PATH_HUM_ID</column>
+      <label>CIRC_PATH_HUM_ID</label>
+      <propertyElement type="elfld">
+        <label>Path Name</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.CIRC_PATH_HUM_ID</valueType>
+    </variable>
+    <variable name="STATUS" type="leaf">
+      <column>STATUS</column>
+      <label>STATUS</label>
+      <propertyElement type="elfld">
+        <label>Path Status</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.PATH_STATUS</valueType>
+    </variable>
+    <variable name="SITE_HUM_ID" type="leaf">
+      <column>SITE_HUM_ID</column>
+      <label>SITE_HUM_ID</label>
+      <propertyElement type="elfld">
+        <label>Plate ID</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.SITE_HUM_ID</valueType>
+    </variable>
+    <variable name="STATE_PROV" type="leaf">
+      <column>STATE_PROV</column>
+      <label>STATE_PROV</label>
+      <propertyElement type="elfld">
+        <label>PlateID Region</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.STATE_PROV</valueType>
+    </variable>
+    <variable name="COUNTY" type="leaf">
+      <column>COUNTY</column>
+      <label>COUNTY</label>
+      <propertyElement type="elfld">
+        <label>Plate ID District</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.COUNTY</valueType>
+    </variable>
+    <variable name="COUNTRY" type="leaf">
+      <column>COUNTRY</column>
+      <label>COUNTRY</label>
+      <propertyElement type="elfld">
+        <label>Plate ID Country</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.COUNTRY</valueType>
+    </variable>
+    <variable name="TARGET_SUBTYPE" type="leaf">
+      <column>TARGET_SUBTYPE</column>
+      <propertyElement type="elfld">
+        <label>Parent Service Type</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="RESOURCE_INST_ID" type="leaf">
+      <column>RESOURCE_INST_ID</column>
+      <key>3</key>
+      <label>RESOURCE_INST_ID</label>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.INST_ID_16</valueType>
+    </variable>
+    <variable name="NAME" type="leaf">
+      <column>NAME</column>
+      <label>NAME</label>
+      <propertyElement type="elfld">
+        <label>Parent Service Name</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.NAME</valueType>
+    </variable>
+    <variable name="RI_STATUS" type="leaf">
+      <column>RI_STATUS</column>
+      <label>STATUS</label>
+      <propertyElement type="elfld">
+        <label>Parent Service Status</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.RESOURCE_INST_STATUS</valueType>
+    </variable>
+    <variable name="CATEGORY" type="leaf">
+      <column>CATEGORY</column>
+      <label>CATEGORY</label>
+      <propertyElement type="elfld">
+        <label>Parent Service Category</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.CATEGORY</valueType>
+    </variable>
+    <variable name="CHANGE_REQUEST_TYPE" type="leaf">
+      <column>CHANGEREQUESTTYPE</column>
+      <propertyElement type="elfld">
+        <label>Change Request Type</label>
+      </propertyElement>
+      <table>STCW_FTTH_ORDERS</table>
+      <valueType>dtype_granite.ATTR_VALUE</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_failedOrders.STCW_FTTH_ORDERS</valueType>
+      </variable>
+      <variable name="taskList" type="leaf">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_granite.taskDetailsForFO</valueType>
+      </variable>
+      <variable name="resourcesList" type="leaf">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_granite.resourceDetailsForFO</valueType>
+      </variable>
+      <variable name="woWebXngHyperLink" type="leaf">
+        <valueType>dtype_cwt_common.URL</valueType>
+      </variable>
+      <variable name="pathWebXngHyperLink" type="leaf">
+        <valueType>dtype_cwt_common.URL</valueType>
+      </variable>
+      <variable name="ontEquipmentDetailsUI" type="leaf">
+        <valueType>doc_granite.ontEquipmentDetails/ui_UserInterface</valueType>
+      </variable>
+      <variable name="oltEquipmentDetailsUI" type="leaf">
+        <valueType>doc_granite.oltEquipmentDetails/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STCW_FTTH_ORDERSHeader" type="elhdr">
+                    <label>Wholesale FTTH Orders</label>
+                  </element>
+                  <element name="STCW_FTTH_ORDERSGrid" type="elgrd">
+                    <colWidths>90px,160px,90px,160px,90px,160px,90px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>8</numOfCols>
+                    <style>fittedSimpleBorder</style>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>1200px</width>
+                    <elementList>
+                      <element name="woInfo" type="elgroup">
+                        <headerHeight>20px</headerHeight>
+                        <label>Work Order Info</label>
+                        <width>1200px</width>
+                        <elementList>
+                          <element name="WO_NAME" type="elfld">
+                            <label>WorkOrder Name</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_WO_NAME</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="WO_STATUS" type="elfld">
+                            <label>WO Status</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_WO_STATUS</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="CellSpacer" type="elcsp">
+                            <columnSpan>4</columnSpan>
+                          </element>
+                          <element name="START_AFTER" type="eldatetime">
+                            <label>WO Start After</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_START_AFTER</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="COMPLETE_BY" type="eldatetime">
+                            <label>WO Completed By</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_COMPLETE_BY</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="ACTUAL_START" type="eldatetime">
+                            <label>WO Actual Start</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_ACTUAL_START</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="ACTUAL_COMPL" type="eldatetime">
+                            <label>WO Actual Compl</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_ACTUAL_COMPL</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>10px</height>
+                        <rowSpan>10px</rowSpan>
+                      </element>
+                      <element name="pathInfo" type="elgroup">
+                        <headerHeight>20px</headerHeight>
+                        <label>Path Info</label>
+                        <width>1200px</width>
+                        <elementList>
+                          <element name="CIRC_PATH_HUM_ID" type="elfld">
+                            <label>Path Name</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_CIRC_PATH_HUM_ID</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="STATUS" type="elfld">
+                            <label>Path Status</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_STATUS</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="RowSpacer1" type="elrsp">
+                        <height>10px</height>
+                        <rowSpan>10px</rowSpan>
+                      </element>
+                      <element name="siteInfo" type="elgroup">
+                        <headerHeight>20px</headerHeight>
+                        <label>Plate ID Info</label>
+                        <width>1200px</width>
+                        <elementList>
+                          <element name="SITE_HUM_ID" type="elfld">
+                            <label>Plate ID</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_SITE_HUM_ID</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="STATE_PROV" type="elfld">
+                            <label>PlateID Region</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_STATE_PROV</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="COUNTY" type="elfld">
+                            <label>Plate ID District</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_COUNTY</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="COUNTRY" type="elfld">
+                            <label>Plate ID Country</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_COUNTRY</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="RowSpacer2" type="elrsp">
+                        <height>10px</height>
+                        <rowSpan>10px</rowSpan>
+                      </element>
+                      <element name="resourceInfo" type="elgroup">
+                        <headerHeight>20px</headerHeight>
+                        <label>Parent Service Info</label>
+                        <width>1200px</width>
+                        <elementList>
+                          <element name="TARGET_SUBTYPE" type="elfld">
+                            <label>Parent Service Type</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_TARGET_SUBTYPE</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="NAME" type="elfld">
+                            <label>Parent Service Name</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_NAME</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="RI_STATUS" type="elfld">
+                            <label>Parent Service Status</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_RI_STATUS</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="CATEGORY" type="elfld">
+                            <label>Parent Service Category</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_CATEGORY</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                        </elementList>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Detailed" type="vform">
+            <label>Detailed</label>
+            <root name="defGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="STCW_FTTH_ORDERSHeader" type="elhdr">
+                  <label>Wholesale FTTH Orders</label>
+                </element>
+                <element name="woInfoGrid" type="elgrd">
+                  <colWidths>90px,160px,90px,160px,90px,160px,90px,160px</colWidths>
+                  <fixedColWidths>true</fixedColWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>8</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>1200px</width>
+                  <elementList>
+                    <element name="woHeader" type="elhdr">
+                      <label>WO Details</label>
+                    </element>
+                    <element name="RowSpacer" type="elrsp">
+                      <height>5px</height>
+                      <rowSpan>5px</rowSpan>
+                    </element>
+                    <element name="WO_NAME" type="elfld">
+                      <label>WorkOrder Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_WO_NAME</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="WO_ORDER_TYPE" type="elfld">
+                      <label>OrderType</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_WO_ORDER_TYPE</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="WO_STATUS" type="elfld">
+                      <label>WO Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_WO_STATUS</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="CellSpacer" type="elcsp">
+                      <columnSpan>1</columnSpan>
+                    </element>
+                    <element name="woWebXngHyperLink" type="ellnk">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Open WO In WebXng</label>
+                      <tooltip>Please, remember to use Granite Credentials to access to WebXng</tooltip>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_woWebXngHyperLink</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer6" type="elrsp">
+                      <height>10px</height>
+                      <rowSpan>10px</rowSpan>
+                    </element>
+                    <element name="START_AFTER" type="eldatetime">
+                      <label>WO Start After</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_START_AFTER</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="COMPLETE_BY" type="eldatetime">
+                      <label>WO Completed By</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_COMPLETE_BY</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="ACTUAL_START" type="eldatetime">
+                      <label>WO Actual Start</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_ACTUAL_START</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="ACTUAL_COMPL" type="eldatetime">
+                      <label>WO Actual Compl</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_ACTUAL_COMPL</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer1" type="elrsp">
+                      <height>5px</height>
+                      <rowSpan>5px</rowSpan>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="LayoutSpacer" type="ellsp">
+                  <height>10px</height>
+                </element>
+                <element name="pathInfoGrid" type="elgrd">
+                  <colWidths>90px,160px,90px,160px,90px,160px,90px,160px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>8</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>1200px</width>
+                  <elementList>
+                    <element name="pathHeader" type="elhdr">
+                      <label>Path Details</label>
+                    </element>
+                    <element name="RowSpacer3" type="elrsp">
+                      <height>5px</height>
+                      <rowSpan>5px</rowSpan>
+                    </element>
+                    <element name="CIRC_PATH_HUM_ID" type="elfld">
+                      <label>Path Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_CIRC_PATH_HUM_ID</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="STATUS" type="elfld">
+                      <label>Path Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_STATUS</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="CellSpacer2" type="elcsp">
+                      <columnSpan>3</columnSpan>
+                    </element>
+                    <element name="pathWebXngHyperLink1" type="ellnk">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Open Path In WebXng</label>
+                      <tooltip>Please, remember to use Granite Credentials to access to WebXng</tooltip>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_pathWebXngHyperLink</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer4" type="elrsp">
+                      <height>10px</height>
+                      <rowSpan>10px</rowSpan>
+                    </element>
+                    <element name="SITE_HUM_ID" type="elfld">
+                      <label>Plate ID</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_SITE_HUM_ID</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="STATE_PROV" type="elfld">
+                      <label>PlateID Region</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_STATE_PROV</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="COUNTY" type="elfld">
+                      <label>Plate ID District</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_COUNTY</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="COUNTRY" type="elfld">
+                      <label>Plate ID Country</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_COUNTRY</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer5" type="elrsp">
+                      <height>5px</height>
+                      <rowSpan>5px</rowSpan>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="LayoutSpacer1" type="ellsp">
+                  <height>10px</height>
+                </element>
+                <element name="Tabset" type="eltset">
+                  <height>500px</height>
+                  <width>1200px</width>
+                  <elementList>
+                    <element name="TaskDetailsFrame" type="eltab">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/frmui_Forms/vform_taskListForms</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <label>Task Details</label>
+                    </element>
+                    <element name="OLTDetailsFrame" type="eltab">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_oltEquipmentDetailsUI</variablePath>
+                          <variablePath>doc_granite.oltEquipmentDetails/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <label>OLT Details</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_oltEquipmentDetailsUI</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="ONTDetailsFrame" type="eltab">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_ontEquipmentDetailsUI</variablePath>
+                          <variablePath>doc_granite.ontEquipmentDetails/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <label>ONT Details</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_ontEquipmentDetailsUI</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="ServiceDetailsFrame" type="eltab">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/frmui_Forms/vform_resourceListForms</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <label>Service Details</label>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="taskListForms" type="vform">
+            <label>taskListForms</label>
+            <root name="topStack" type="elsectnstck">
+              <height>100%</height>
+              <visibilityMode>multiple</visibilityMode>
+              <visible type="varPath">
+                <variablePathList>
+                  <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                  <variablePath>doc_com.conceptwave.system.Document/permMethod_visiblePerm</variablePath>
+                </variablePathList>
+              </visible>
+              <width>100%</width>
+              <elementList>
+                <element name="topSection" type="elsect">
+                  <fillSpace>false</fillSpace>
+                  <removeLabelLine>true</removeLabelLine>
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="taskListHeader" type="elhdr">
+                      <height>30px</height>
+                      <label>Tasks</label>
+                    </element>
+                    <element name="Table" type="eltabl">
+                      <canReOrder type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                        </variablePathList>
+                      </canReOrder>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <height>90%</height>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <width>1170px</width>
+                      <elementList>
+                        <element name="TASK_NUMBER" type="elfld">
+                          <label>Task #</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_TASK_NUMBER</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>60px</width>
+                        </element>
+                        <element name="TASK_NAME" type="elfld">
+                          <label>Task Name</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_TASK_NAME</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                        <element name="TASK_OPERATION" type="elfld">
+                          <label>Task Operation</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_TASK_OPERATION</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                        <element name="TASK_STATUS" type="elfld">
+                          <label>Task Status</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_TASK_STATUS</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>120px</width>
+                        </element>
+                        <element name="BLOCKING_TASK_NUMBER" type="elfld">
+                          <label>Blocking Task #</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_BLOCKING_TASK_NUMBER</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>100px</width>
+                        </element>
+                        <element name="BLOCKING_TASK_NAME" type="elfld">
+                          <label>Blocking Task Name</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_BLOCKING_TASK_NAME</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                        <element name="REASON_CODE" type="elfld">
+                          <label>Reason Code</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_REASON_CODE</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>100px</width>
+                        </element>
+                        <element name="REASON_DESCR" type="elfld">
+                          <label>Reason Description</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_REASON_DESCR</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>200px</width>
+                        </element>
+                        <element name="START_AFTER" type="eldatetime">
+                          <label>Task Start After</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_START_AFTER</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                        <element name="COMPLETE_BY" type="eldatetime">
+                          <label>Task Complete By</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_COMPLETE_BY</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                        <element name="ACTUAL_START" type="eldatetime">
+                          <label>Task Actual Start</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_ACTUAL_START</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                        <element name="ACTUAL_COMPL" type="eldatetime">
+                          <label>Task Actual Compl</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_taskList</variablePath>
+                              <variablePath>doc_granite.taskDetailsForFO/leaf_ACTUAL_COMPL</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                      </elementList>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="resourceListForms" type="vform">
+            <label>resourceListForms</label>
+            <root name="topStack" type="elsectnstck">
+              <height>100%</height>
+              <visibilityMode>multiple</visibilityMode>
+              <visible type="varPath">
+                <variablePathList>
+                  <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uivar_model</variablePath>
+                  <variablePath>doc_com.conceptwave.system.Document/permMethod_visiblePerm</variablePath>
+                </variablePathList>
+              </visible>
+              <width>100%</width>
+              <elementList>
+                <element name="topSection" type="elsect">
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="resourceListHeader" type="elhdr">
+                      <height>30px</height>
+                      <label>Parent Services</label>
+                    </element>
+                    <element name="Table" type="eltabl">
+                      <canReOrder type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                        </variablePathList>
+                      </canReOrder>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <height>85%</height>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <width>1170px</width>
+                      <elementList>
+                        <element name="RESOURCE_DEFINITION_NAME" type="elfld">
+                          <label>Type</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_RESOURCE_DEFINITION_NAME</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>130px</width>
+                        </element>
+                        <element name="NAME" type="elfld">
+                          <label>Name</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_NAME</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>200px</width>
+                        </element>
+                        <element name="STATUS" type="elfld">
+                          <label>Status</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_STATUS</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                        <element name="CATEGORY" type="elfld">
+                          <label>Category</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_CATEGORY</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>80px</width>
+                        </element>
+                        <element name="CHANGE_REQUEST_TYPE" type="elfld">
+                          <label>Change Request Type</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_CHANGE_REQUEST_TYPE</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                        <element name="REVISION" type="elfld">
+                          <label>Revision</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_REVISION</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>60px</width>
+                        </element>
+                        <element name="DOWNSTREAM_BW" type="elfld">
+                          <label>Downstream BW</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_DOWNSTREAM_BW</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                        <element name="UPSTREAM_BW" type="elfld">
+                          <label>Upstream BW</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_UPSTREAM_BW</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                        <element name="ORDERED" type="eldatetime">
+                          <label>Ordered</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_ORDERED</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                        <element name="DUE" type="eldatetime">
+                          <label>Due</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_DUE</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                        <element name="IN_SERVICE" type="eldatetime">
+                          <label>In Service</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_IN_SERVICE</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                        <element name="DECOMMISSION" type="eldatetime">
+                          <label>Decommission</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/leaf_resourcesList</variablePath>
+                              <variablePath>doc_granite.resourceDetailsForFO/leaf_DECOMMISSION</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>150px</width>
+                        </element>
+                      </elementList>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="hl1" type="elext">
+                <elementList>
+                  <element name="showMessagesMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/usrActionMethod_showMessage</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show Messages for Selected Task</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="resendMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/usrActionMethod_performResendAction</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/consume.gif</icon>
+                    <label>Resend</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/permMethod_buttonVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="resendWithAdditionalInfoMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/usrActionMethod_performResendActionWithAdditionalInfo</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/data.gif</icon>
+                    <label>Resend With AdditionalInfo</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/permMethod_buttonVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="completeMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/usrActionMethod_performCompleteAction</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/complete.gif</icon>
+                    <label>Complete</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/permMethod_buttonVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="refresh" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/usrActionMethod_refreshUI</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/repeat.gif</icon>
+                    <label>Refresh UI</label>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="onInit" type="action">
+        <valueType>nmeta_com.conceptwave.system.Object</valueType>
+        <script><![CDATA[
+          // search tasks of the WO
+          this.taskList = granite.getAllTasksByWOInstIdForFOPages(this.model.WO_INST_ID);
+
+          // search ont details
+          var ontEquipmentDetails = granite.getONTEquipmentDetailsByPathInstId(this.model.CIRC_PATH_INST_ID);
+          if(ontEquipmentDetails != null) {
+              this.ontEquipmentDetailsUI = new granite.ontEquipmentDetails.UserInterface(ontEquipmentDetails);
+          }
+          else {
+              this.ontEquipmentDetailsUI = null;
+          }
+
+          // search olt details
+          var oltEquipmentDetails = granite.getOLTEquipmentDetailsByPathInstId(this.model.CIRC_PATH_INST_ID);
+          if(oltEquipmentDetails != null) {
+              this.oltEquipmentDetailsUI = new granite.oltEquipmentDetails.UserInterface(oltEquipmentDetails);
+          }
+          else {
+              this.oltEquipmentDetailsUI = null;
+          }
+
+          // search parent services of the path
+          this.resourcesList = granite.getAllResourcesLinkedToPathForFOPages(this.model.CIRC_PATH_INST_ID, 10);
+
+          this.woWebXngHyperLink = granite.getWebXngURLFor("WO", this.model.WO_INST_ID);
+          this.pathWebXngHyperLink = granite.getWebXngURLFor("PATH", this.model.CIRC_PATH_INST_ID);
+        ]]></script>
+      </method>
+      <method name="showMessage" type="usrActionMethod">
+        <dialogHeight>400</dialogHeight>
+        <dialogWidth>800</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var selectedRows = this.taskList.selected;
+
+          if(selectedRows == null) {
+              Global.throwException("UU0115");
+          }
+          else if(selectedRows.length > 1) {
+              Global.throwException("UU0116");
+          }
+          else {
+              var system = failedOrders.getSystemForMsgForTaskOperation(selectedRows[0].TASK_OPERATION);
+              if(system != null) {
+                  if(system == "RLL") {
+                      var finder = new Finder("failedOrders.findRequestsInRLL");
+                      finder.searchDocument.TASK_NUM = selectedRows[0].TASK_NUMBER;
+                      finder.searchDocument.WO_NAME = this.model.WO_NAME;
+
+                      finder.search();
+                      return finder;
+                  }
+                  else {
+                      Global.throwException("System not found for the selected operation: " + selectedRows[0].TASK_OPERATION);
+                  }
+              }
+              else {
+                  Global.throwException("Messages not allowed for the selected operation: " + selectedRows[0].TASK_OPERATION);
+              }
+
+          }
+        ]]></script>
+      </method>
+      <method name="performResendAction" type="usrActionMethod">
+        <confirmation>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uimthd_performResendAction_confirm</confirmation>
+        <script><![CDATA[
+          var selectedRows = this.taskList.selected;
+
+          if(selectedRows == null) {
+              Global.throwException("UU0115");
+          }
+
+          if(selectedRows.length > 1) {
+              Global.throwException("UU0116");
+          }
+
+          // checking permission to perform the action
+          if(! failedOrders.checkIfActionIsPermittedOnTask(selectedRows[0], this.model.STATE_PROV, this.model.WO_ORDER_TYPE)) {
+              Global.throwException("AE0215");
+          }
+
+          // perform action
+          var ontEquipmentDetails = (this.ontEquipmentDetailsUI != null ? this.ontEquipmentDetailsUI.model : null);
+          failedOrders.performReSendActionOnSelectedTask(selectedRows[0], this.model.WO_NAME, this.taskList, this.model.CIRC_PATH_INST_ID, ontEquipmentDetails, false);
+
+          // log user action
+          failedOrders.insertNewUserActionForFO(Global.getUserId(), "Resend");
+
+          this.refreshUI();
+        ]]></script>
+      </method>
+      <method name="performResendAction_confirm" type="uimthd">
+        <script><![CDATA[return "AW0021";]]></script>
+      </method>
+      <method name="performCompleteAction" type="usrActionMethod">
+        <confirmation>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uimthd_performCompleteAction_confirm</confirmation>
+        <dialogHeight>720</dialogHeight>
+        <dialogWidth>850</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var selectedRows = this.taskList.selected;
+
+          if(selectedRows == null) {
+              Global.throwException("UU0115");
+          }
+
+          if(selectedRows.length > 1) {
+              Global.throwException("UU0116");
+          }
+
+          // checking permission to perform the action
+          if(! failedOrders.checkIfActionIsPermittedOnTask(selectedRows[0], this.model.STATE_PROV, this.model.WO_ORDER_TYPE)) {
+              Global.throwException("AE0215");
+          }
+
+
+          // perform action
+          var ontEquipmentDetails = (this.ontEquipmentDetailsUI != null ? this.ontEquipmentDetailsUI.model : null);
+          var returnedObject = failedOrders.performCompleteActionOnSelectedTask(selectedRows[0], this.model.WO_NAME, this.taskList, this.model.CIRC_PATH_INST_ID, ontEquipmentDetails);
+
+          if(returnedObject != null) {
+              return returnedObject;
+          }
+
+          // log user action
+          failedOrders.insertNewUserActionForFO(Global.getUserId(), "Complete");
+
+          this.refreshUI();
+        ]]></script>
+      </method>
+      <method name="performCompleteAction_confirm" type="uimthd">
+        <script><![CDATA[return "AW0022";]]></script>
+      </method>
+      <method name="performResendActionWithAdditionalInfo" type="usrActionMethod">
+        <confirmation>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/uimthd_performResendAction_confirm</confirmation>
+        <dialogHeight>720</dialogHeight>
+        <dialogWidth>850</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var selectedRows = this.taskList.selected;
+
+          if(selectedRows == null) {
+              Global.throwException("UU0115");
+          }
+
+          if(selectedRows.length > 1) {
+              Global.throwException("UU0116");
+          }
+
+          // checking permission to perform the action
+          if(! failedOrders.checkIfActionIsPermittedOnTask(selectedRows[0], this.model.STATE_PROV, this.model.WO_ORDER_TYPE)) {
+              Global.throwException("AE0215");
+          }
+
+
+          // perform action
+          var ontEquipmentDetails = (this.ontEquipmentDetailsUI != null ? this.ontEquipmentDetailsUI.model : null);
+          var returnedObject = failedOrders.performReSendActionOnSelectedTask(selectedRows[0], this.model.WO_NAME, this.taskList, this.model.CIRC_PATH_INST_ID, ontEquipmentDetails, true);
+
+          if(returnedObject != null) {
+              return returnedObject;
+          }
+
+          // log user action
+          failedOrders.insertNewUserActionForFO(Global.getUserId(), "Resend With Additional Information");
+
+          this.refreshUI();
+        ]]></script>
+      </method>
+      <method name="performResendActionWithAddtionalInfo_confirm" type="uimthd">
+        <script><![CDATA[return "AW0023";]]></script>
+      </method>
+      <method name="buttonVisible" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>foActive</privilege>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+        <script>return $psCondition</script>
+      </method>
+      <method name="refreshUI" type="usrActionMethod">
+        <script><![CDATA[
+          this.model.read([this.model.WO_INST_ID, this.model.CIRC_PATH_INST_ID, this.model.RESOURCE_INST_ID]);
+          this.onInit();
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

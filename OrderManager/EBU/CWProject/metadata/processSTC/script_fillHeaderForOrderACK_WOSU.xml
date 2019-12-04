@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="94d247dac7d1075e7014f07c59071b69" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.fillHeaderForOrderACK_WOSU">
+  <label>Fill Header For OrderACK &amp; WOSU</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="header" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="operationNameInEAI" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    header.systemId = "Granite";
+    header.serverInfo = Global.getConfigVariable("WD_HOSTNAME", "WD");
+    header.messageId = common.common_currentDateAsString("yyyyMMddHHmmssSSS");
+    header.conversationId = header.messageId;
+    header.timestamp = common.common_currentDateAsString("yyyy-MM-dd'T'HH:mm:ss.SSS");
+    header.domainId = "Data";
+    header.serviceId = operationNameInEAI;
+    header.operationType = "Update";
+    header.userId = "URY_GRANITE";
+  ]]></script>
+</script>

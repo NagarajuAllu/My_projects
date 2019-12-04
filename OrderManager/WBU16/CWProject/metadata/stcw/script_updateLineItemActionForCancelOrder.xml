@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.updateLineItemActionForCancelOrder">
+  <label>Update LineItemAction For Cancel Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="lineItem" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="existingLineItem" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="existingOrderWasKO" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="parentLineItemProductCode" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="validationErrors" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    /*******
+       NOTE:  Please refer to the following table :
+    -------------+--------------------------+----------------------------|
+                 | Already received Cancel  |      Cancel                |
+                 |--------------------------+----------------------------+
+                 | Sent to   | Not sent     | Sent to       | Not sent   |
+                 | Granite   | to Granite   | Granite       | to Granite |
+    -------------+--------------------------+---------------+------------|
+     Hold        |        REJECT            |  Status: Hold | CANCELLED  |
+                 |                          |  Action: C    | NO PROV    |
+                 |                          |  PROVISIONING |            |
+    -------------+--------------------------+----------------------------|
+     COMPLETED   |                       REJECT                          |
+                 |                                                       |
+                 |                                                       |
+    -------------+--------------------------+----------------------------|
+     CANCELLED   |                       REJECT                          |
+                 |                                                       |
+                 |                                                       |
+    -------------+--------------------------+----------------------------|
+     FAILED      |                   Status: CANCELLED                   |
+                 |                   Action: C                           |
+                 |                   NO PROVISIONING                     |
+    -------------+--------------------------+----------------------------|
+     Submitted   |        REJECT            |   Status: Hold             |
+                 |                          |   Action: C                |
+                 |                          |   PROVISIONING             |
+    -------------+--------------------------+----------------------------|
+    **********/
+
+    var existingLineItemStatus = existingLineItem.lineItemStatus;
+    var existingLineItemAction = existingLineItem.action;
+    // 2015-12-01: added sentAnytimeToGranite management
+    var existingLineItemInGranite = (existingLineItem.alreadySentToGranite || lineItem.sentAnytimeToGranite);
+
+    var receivedAction = lineItem.action;
+
+    if(existingLineItemStatus == "Hold" || existingLineItemStatus == "Waiting for Granite Resp") {
+        // just received; nothing happened in provisioning
+        if(lineItem.alreadyReceivedCancel) {
+            validationErrors = stcw.appendToValidationErrors("AE0070", Global.translateText("AE0070", null, ["CancelOrder"]), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+        }
+        else {
+            if(existingLineItemInGranite) {
+                // 2015-12-01: it means that a previous instance of the lineItem has been sent to Granite. So the cancel has to be forwarded to Granite
+                lineItem.action = receivedAction;
+                lineItem.lineItemStatus = "Hold";
+                lineItem.isSubmit = false;
+                lineItem.isCancel = true;
+                lineItem.alreadySentToGranite = false;
+            }
+            else {
+                // requested to cancel the provisioning for this element that has not yet started. Mark as cancelled
+                lineItem.action = receivedAction;
+                lineItem.lineItemStatus = "CANCELLED";
+            }
+        }
+    }
+    else if(existingLineItemStatus.toUpperCase() == "COMPLETED") {
+        // element completed
+        if(existingLineItemAction == "N") {
+            if(existingLineItem.provisioningBU == "H" && existingLineItem.receivedAction == "N") {
+                lineItem.action = existingLineItemAction;
+                lineItem.lineItemStatus = "CANCELLED";
+                lineItem.isSubmit = false;
+                lineItem.isCancel = true;
+                lineItem.alreadySentToGranite = false;
+            }
+            else {
+                if(existingLineItem.isVAS) {
+                    lineItem.action = existingLineItemAction;
+                    lineItem.lineItemStatus = "CANCELLED";
+                    lineItem.isSubmit = false;
+                    lineItem.isCancel = true;
+                    lineItem.alreadySentToGranite = false;
+                }
+                else {
+                    lineItem.action = existingLineItemAction;
+                    lineItem.lineItemStatus = existingLineItemStatus;
+                    lineItem.isSubmit = existingLineItem.isSubmit;
+                    lineItem.isCancel = existingLineItem.isCancel;
+                    lineItem.alreadySentToGranite = true;
+                }
+            }
+        }
+        else {
+            // adding "Disconnect for Cancel" management
+            if(stcw.getSendDisconnectForCancelByProductCode(parentLineItemProductCode)) {
+                // raise the error in case the action in existing lineItem is different from A and original requested action was different from A
+                if(lineItem.action == "A" || lineItem.requestedActionIsA) {
+                    lineItem.action = "D";
+                    lineItem.lineItemStatus = "Hold";
+                    lineItem.workOrderNumber = null; // it reset the workOrderNumber so EOC has to generate a new one while sending it to Granite
+                    lineItem.isSubmit = true;
+                    lineItem.isCancel = true;  // maintains that we received a Cancel for this lineItem
+                    lineItem.alreadySentToGranite = false;
+                    lineItem.completionDate = null;
+                }
+                else {
+                    validationErrors = stcw.appendToValidationErrors("AE0071", Global.translateText("AE0071", null, ["CancelOrder", "COMPLETED"]), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+                }
+            }
+            else {
+                // disconnect For Cancel not supported for the parentLineItem ProductCode
+                validationErrors = stcw.appendToValidationErrors("AE0071", Global.translateText("AE0071", null, ["CancelOrder", "COMPLETED"]), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+            }
+        }
+    }
+    else if(existingLineItemStatus.toUpperCase() == "CANCELLED") {
+        // element cancelled
+        if(existingLineItemAction == "N") {
+            lineItem.action = existingLineItemAction;
+            lineItem.lineItemStatus = existingLineItemStatus;
+            lineItem.isSubmit = existingLineItem.isSubmit;
+            lineItem.isCancel = existingLineItem.isCancel;
+            lineItem.alreadySentToGranite = true;
+        }
+        else {
+            validationErrors = stcw.appendToValidationErrors("AE0071", Global.translateText("AE0071", null, ["CancelOrder", "CANCELLED"]), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+        }
+    }
+    else if(existingLineItemStatus.toUpperCase() == "FAILED" && !existingLineItemInGranite) {
+        // element failed to be pushed in Granite
+        lineItem.action = receivedAction;
+        lineItem.lineItemStatus = "CANCELLED";
+        lineItem.isSubmit = false;
+        lineItem.isCancel = true;
+        lineItem.alreadySentToGranite = false;
+    }
+    else {
+        // element already pushed into Granite
+        if(lineItem.alreadyReceivedCancel) {
+            if(!existingOrderWasKO) {
+                validationErrors = stcw.appendToValidationErrors("AE0070", Global.translateText("AE0070", null, ["CancelOrder"]), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+            }
+            else {
+                lineItem.action = "C";
+                lineItem.lineItemStatus = "Hold";
+                // resend as UpdateOrder(Cancel) to Granite because failed
+                lineItem.isSubmit = false;
+                lineItem.isCancel = true;
+                lineItem.alreadySentToGranite = false;
+            }
+        }
+        else {
+            lineItem.action = "C";
+            lineItem.lineItemStatus = "Hold"
+            // send as UpdateOrder(Cancel) to Granite
+            lineItem.isSubmit = false;
+            lineItem.isCancel = true;
+            lineItem.alreadySentToGranite = false;
+        }
+    }
+
+    lineItem.alreadyReceivedCancel = (existingLineItem.alreadyReceivedCancel || receivedAction == "C");
+
+
+    return validationErrors;
+  ]]></script>
+</script>

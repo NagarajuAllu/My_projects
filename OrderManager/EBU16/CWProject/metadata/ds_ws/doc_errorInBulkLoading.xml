@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.errorInBulkLoading">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{021efbf1-6214-484e-bd31-c382073a78fa}</guid>
+  <label>Errors In Bulk Loading</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_INSERTORDER_ERRORBULK</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="jobId" type="leaf">
+      <column>JOBID</column>
+      <propertyElement type="elfld">
+        <label>Job Id</label>
+      </propertyElement>
+      <table>STC_INSERTORDER_ERRORBULK</table>
+      <valueType>dtype_ds_ws.integer10</valueType>
+    </variable>
+    <variable name="rowNumber" type="leaf">
+      <column>ROWNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Row #</label>
+      </propertyElement>
+      <table>STC_INSERTORDER_ERRORBULK</table>
+      <valueType>dtype_ds_ws.integer3</valueType>
+    </variable>
+    <variable name="errorDescription" type="leaf">
+      <column>ERRORDESCRIPTION</column>
+      <propertyElement type="elfld">
+        <label>Error Description</label>
+      </propertyElement>
+      <table>STC_INSERTORDER_ERRORBULK</table>
+      <valueType>dtype_ds_ws.string4000</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <script>return false;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <script>return false;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script>return false;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.errorInBulkLoading</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="errorFoundInBulkLoadingGrid" type="elgrd">
+                    <colWidths>90px,130px,90px,130px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>480px</width>
+                    <elementList>
+                      <element name="errorFoundInBulkLoadingHeader" type="elhdr">
+                        <label>Errors Found In Bulk Loading</label>
+                      </element>
+                      <element name="jobId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.errorInBulkLoading/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.errorInBulkLoading/leaf_jobId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="rowNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.errorInBulkLoading/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.errorInBulkLoading/leaf_rowNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="errorDescription" type="eltxtArea">
+                        <columnSpan>4</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.errorInBulkLoading/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.errorInBulkLoading/leaf_errorDescription</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

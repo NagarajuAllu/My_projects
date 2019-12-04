@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="crmToSOMMigration.getActionByOrderType">
+  <label>Get Action By OrderType</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="versionName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var action = null;
+
+    if(orderType == "I") {
+        action = "A";
+
+        if(versionName == "REVISE") {
+            action = "M";
+        }
+        else if(versionName == "CANCEL") {
+            action = "C";
+        }
+    }
+    else if(orderType == "C") {
+        action = "M";
+
+        if(versionName == "REVISE") {
+            action = "M";
+        }
+        else if(versionName == "CANCEL") {
+            action = "C";
+        }
+    }
+    else {
+        action = "D";
+    }
+
+    return action;
+  ]]></script>
+</script>

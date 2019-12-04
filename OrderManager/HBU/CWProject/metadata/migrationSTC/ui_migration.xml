@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<userInterface filenameHash="b42097833e01f6ad6c1e5599494725ee" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="migrationSTC.migration">
+  <blockUIOnAction>true</blockUIOnAction>
+  <extends>ui_com.conceptwave.system.Application</extends>
+  <label>Migration Functionalities</label>
+  <metaVersion>3</metaVersion>
+  <vformList>
+    <vform name="Forms" type="frmui">
+      <extends>ui_com.conceptwave.system.Application/frmui_Forms</extends>
+      <overlayList>
+        <overlay name="Menu" type="exov">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</extends>
+          <label>Menu</label>
+          <overrideList>
+            <override name="HorizontalLayoutForMenuItems" type="elext">
+              <visible type="varPath">
+                <variablePathList>
+                  <variablePath>ui_migrationSTC.migration/permMethod_migrationView</variablePath>
+                </variablePathList>
+              </visible>
+              <elementList>
+                <element name="options" type="elmnu">
+                  <label>Options</label>
+                  <menuType>2</menuType>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <elementList>
+                    <element name="synchronizeAllOrdersWithGranite" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_migrationSTC.migration/usrActionMethod_synchronizeAllOrdersWithGranite_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Process to sync [order status &amp; missing order creation] batch of orders between Expediter and Granite</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_migrationSTC.migration/permMethod_synchronizeAllOrdersWithGraniteView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="searchOrdersInGranite" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_migrationSTC.migration/usrActionMethod_searchOrdersInGranite_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Search to sync [order status &amp; missing order creation] orders between Expediter and Granite  </label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                    <element name="insertJMSOrderResponse" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_migrationSTC.migration/usrActionMethod_insertJMSOrderResponse_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Insert JMS Order Response</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_migrationSTC.migration/permMethod_insertJMSOrderResponseView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="separator1" type="elsep"/>
+                    <element name="SelectApplication" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_migrationSTC.migration/usrActionMethod_SelectApplication_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/choice.gif</icon>
+                      <label>Select Application</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                    <element name="Logout" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_migrationSTC.migration/usrActionMethod_Logout_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/MenuIconLogout.gif</icon>
+                      <label>Logout</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="hidden" type="elmnu">
+                  <label>Hidden</label>
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="migrate_sendWOSU" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_migrationSTC.migration/usrActionMethod_migrate_sendWOSU_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>[STC] Migrate: Send &quot;Work Order Status Update&quot; to EAI [synchronize purpose]</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                    <element name="migrate_File_sendWOSU" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_migrationSTC.migration/usrActionMethod_migrate_File_sendWOSU_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>[STC] Migrate [FILE]: Send &quot;Work Order Status Update&quot; to EAI [synchronize purpose]</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </override>
+          </overrideList>
+        </overlay>
+        <overlay name="Page" type="expg">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</extends>
+          <label>Page</label>
+          <stylesheet>/cwf/css/cwf.css</stylesheet>
+          <title>Migration Functionalities</title>
+          <visible type="varPath">
+            <variablePathList>
+              <variablePath>ui_migrationSTC.migration/permMethod_migrationView</variablePath>
+            </variablePathList>
+          </visible>
+        </overlay>
+      </overlayList>
+    </vform>
+  </vformList>
+  <methodList>
+    <method name="migrationView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Migration</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="synchronizeAllOrdersWithGranite" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <userInterface>doc_migrationSTC.processDocumentForOrderSynchronization</userInterface>
+      <validate>true</validate>
+    </method>
+    <method name="synchronizeAllOrdersWithGranite_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.synchronizeAllOrdersWithGranite();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="synchronizeAllOrdersWithGraniteView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Migration</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report_Dft</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report_HBU</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="searchOrdersInGranite" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findDoc_migrationSTC.findOrdersInGranite/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findDoc_migrationSTC.findOrdersInGranite</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_migrationSTC.findOrdersInGranite</valueType>
+    </method>
+    <method name="searchOrdersInGranite_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.searchOrdersInGranite();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="insertJMSOrderResponse" type="usrActionMethod">
+      <autosave>true</autosave>
+      <form>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>doc_migrationSTC.insertJMSOutputResponse</userInterface>
+      <validate>true</validate>
+    </method>
+    <method name="insertJMSOrderResponse_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.insertJMSOrderResponse();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="insertJMSOrderResponseView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="migrate_sendWOSU" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script><![CDATA[
+        var debug = "[STC - MIGRATE: SEND 'WORK ORDER STATUS UPDATE' TO EAI]";
+
+        var success = 0;
+        var failed = 0;
+        var sent = 0;
+        var stuck = 0;
+
+        // Procedure to send Work Order Status Update requests to EAI:
+        // - synchronization purpose;
+        // - retrieve all the records greater then the 'date'
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " START...");
+              var date = Calendar.parseDate("16.10.2008", "dd.MM.yyyy");
+              var records = migrationSTC.searchOrderEntryLiveOrdersByServiceDate(date);
+              if (records != null && records.length > 0) {
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " FOUND # " +  records.length + " RECORDS TO BE SYNCHRONIZED...");
+                    for (var j = 0; j < records.length; j++) {
+
+                          var record = records[j];
+                          var input = new DataStructure("ifEAI_WOSU_17122008:WorkOrderStatusUpdate_el");
+
+                          // [a]. create message for EAI...
+                          input.WorkOrderStatusUpdate.CircuitStatus = record.CIRCUIT_STATUS;
+                          input.WorkOrderStatusUpdate.OrderNumber = record.ORDER_NUMBER;
+                          input.WorkOrderStatusUpdate.WorkOrder = record.ORDER_NUMBER;
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " ORDER # '" + input.WorkOrderStatusUpdate.WorkOrder + "'...");
+                          input.WorkOrderStatusUpdate.WorkOrderCircuitPathCompletionStatus = record.CIRCUIT_STATUS;
+                          input.WorkOrderStatusUpdate.WorkOrderDescription = "";
+                          input.WorkOrderStatusUpdate.WorkOrderLastModifiedBy = record.CREATED_BY;
+                          input.WorkOrderStatusUpdate.WorkOrderLastModifiedTimestamp = record.SERVICE_DATE;
+                          input.WorkOrderStatusUpdate.WorkOrderName = record.ORDER_NUMBER;
+                          input.WorkOrderStatusUpdate.WorkOrderRemarks = "";
+                          input.WorkOrderStatusUpdate.WorkOrderStatus = record.ORDER_STATUS;
+                          input.WorkOrderStatusUpdate.WorkOrderTotalTimeMinutes = "";
+
+                          // [b]. send message to EAI...
+                          var result = ifEAI_WOSU_17122008.invokeEAIIF_WorkOrderStatusUpdate(input, null, true, null, null);
+
+                          if (result != null && result.length > 0) {
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " MESSAGE SENT TO EAI AND ELABORATED...");
+                                sent++;
+                                var response = result[0].Status;
+                                if (response == "SUCCESS") {
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " MESSAGE RESPONSE 'SUCCESS'...");
+                                      success++;
+                                }
+                                else{
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " MESSAGE RESPONSE 'FAILED'...");
+                                      failed++;
+                                }
+                          }
+                          else{
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " MESSAGE NOT SENT TO EAI...");
+                                stuck++;
+                          }
+                    }
+                    Global.showUserMessage(debug + " [INFORMATION] \n - GRANITE ORDERS FOUND # '" + records.length + "' WITH SERVICE DATE >= '16.10.2008';" +
+                                                                                        "\n - 'WORK ORDER STATUS UPDATE' SENT # '" + sent + "' (SUCCESS # '" + success + "', FAILED # '" + failed + "');" +
+                                                                                        "\n - 'WORK ORDER STATUS UPDATE' ERROR # '" + stuck + "';");
+              }
+              else{
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " NO RECORDS FOUND TO BE SYNCHRONIZED...");
+                    Global.showUserMessage(debug + " NO GRANITE ORDERS RETRIEVED!");
+              }
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " END...");
+      ]]></script>
+    </method>
+    <method name="migrate_sendWOSU_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.migrate_sendWOSU();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="migrate_File_sendWOSU" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <parameterList>
+        <parameter name="resultObject" type="rifp">
+          <mandatory>true</mandatory>
+          <type>nmeta_com.conceptwave.system.Object</type>
+        </parameter>
+      </parameterList>
+      <showInPopup>true</showInPopup>
+      <userInterface>ui_com.conceptwave.system.UploadPopup</userInterface>
+      <validate>true</validate>
+      <script><![CDATA[resultObject.uploadCallbackMethodName = "migrate_File_sendWOSU_handleUpload";]]></script>
+    </method>
+    <method name="migrate_File_sendWOSU_handleUpload" type="action">
+      <parameterList>
+        <parameter name="uploadFile" type="rifp">
+          <mandatory>true</mandatory>
+          <type>nmeta_com.conceptwave.system.Object</type>
+        </parameter>
+      </parameterList>
+      <script><![CDATA[
+        var debug = "[STC - MIGRATE FILE: SEND 'WORK ORDER STATUS UPDATE' TO EAI]";
+
+        var success = 0;
+        var failed = 0;
+        var sent = 0;
+        var stuck = 0;
+        var counter = 0;
+
+        // Procedure to send Work Order Status Update requests to EAI:
+        // - synchronization purpose;
+        // - retrieve all the records from a file
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " START...");
+
+              if (uploadFile != null) {
+
+                    while (!uploadFile.isEOF()) {
+
+                          var record = uploadFile != null ? uploadFile.readDoc("migrationSTC:ROW", false) : null;
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " RECORDS EXTRACTED FROM FILE:" + record + "...");
+
+                          if (record == null) continue;
+
+                          counter++;
+
+                          var input = new DataStructure("ifEAI_WOSU_17122008:WorkOrderStatusUpdate_el");
+
+                          // [a]. create message for EAI...
+                          input.WorkOrderStatusUpdate.CircuitStatus = record.CIRCUIT_STATUS;
+                          input.WorkOrderStatusUpdate.OrderNumber = record.ORDER_NUMBER;
+                          input.WorkOrderStatusUpdate.WorkOrder = record.ORDER_NUMBER;
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " ORDER # '" + input.WorkOrderStatusUpdate.WorkOrder + "'...");
+                          input.WorkOrderStatusUpdate.WorkOrderCircuitPathCompletionStatus = record.CIRCUIT_STATUS;
+                          input.WorkOrderStatusUpdate.WorkOrderDescription = "";
+                          input.WorkOrderStatusUpdate.WorkOrderLastModifiedBy = record.CREATED_BY;
+                          input.WorkOrderStatusUpdate.WorkOrderLastModifiedTimestamp = record.SERVICE_DATE;
+                          input.WorkOrderStatusUpdate.WorkOrderName = record.ORDER_NUMBER;
+                          input.WorkOrderStatusUpdate.WorkOrderRemarks = "";
+                          input.WorkOrderStatusUpdate.WorkOrderStatus = record.ORDER_STATUS;
+                          input.WorkOrderStatusUpdate.WorkOrderTotalTimeMinutes = "";
+
+                          // [b]. send message to EAI...
+                          var result = ifEAI_WOSU_17122008.invokeEAIIF_WorkOrderStatusUpdate(input, null, true, null, null);
+
+                          if (result != null && result.length > 0) {
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " MESSAGE SENT TO EAI AND ELABORATED...");
+                                sent++;
+                                var response = result[0].Status;
+                                if (response == "SUCCESS") {
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " MESSAGE RESPONSE 'SUCCESS'...");
+                                      success++;
+                                }
+                                else{
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " MESSAGE RESPONSE 'FAILED'...");
+                                      failed++;
+                                }
+                          }
+                          else{
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " MESSAGE NOT SENT TO EAI...");
+                                stuck++;
+                          }
+                    }
+                    Global.showUserMessage(debug + " [INFORMATION] \n - GRANITE ORDERS FOUND # '" + counter + "';" +
+                                                                                        "\n - 'WORK ORDER STATUS UPDATE' SENT # '" + sent + "' (SUCCESS # '" + success + "', FAILED # '" + failed + "');" +
+                                                                                        "\n - 'WORK ORDER STATUS UPDATE' ERROR # '" + stuck + "';");
+              }
+              else{
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " NO RECORDS FOUND TO BE SYNCHRONIZED...");
+                    Global.showUserMessage(debug + " FILE NOT FOUND!");
+              }
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " END...");
+      ]]></script>
+    </method>
+    <method name="migrate_File_sendWOSU_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.migrate_File_sendWOSU();
+        Global.runContentDisplayScript(this, "displayScript");
+      ]]></script>
+    </method>
+    <method name="SelectApplication" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script><![CDATA[return new Document("cwf_oe:SelectApp");]]></script>
+    </method>
+    <method name="SelectApplication_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.SelectApplication();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="Logout" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script>UserProfile._logout();</script>
+    </method>
+    <method name="Logout_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.Logout();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+  </methodList>
+</userInterface>

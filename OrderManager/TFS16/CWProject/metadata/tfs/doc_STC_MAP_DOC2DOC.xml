@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfs.STC_MAP_DOC2DOC">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{ebba728f-4936-4971-a729-9b1335f4d0bc}</guid>
+  <label>STC_MAP_DOC2DOC</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="destinationObject" type="leaf">
+      <column>DEST_OBJECT</column>
+      <key>2</key>
+      <table>STC_MAP_DOC2DOC</table>
+      <valueType>dtype_common.string20</valueType>
+    </variable>
+    <variable name="destinationField" type="leaf">
+      <column>DEST_FIELD</column>
+      <key>1</key>
+      <table>STC_MAP_DOC2DOC</table>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="sourceObject" type="leaf">
+      <column>SOURCE_OBJECT</column>
+      <key>4</key>
+      <table>STC_MAP_DOC2DOC</table>
+      <valueType>dtype_common.string20</valueType>
+    </variable>
+    <variable name="sourceField" type="leaf">
+      <column>SOURCE_FIELD</column>
+      <key>3</key>
+      <table>STC_MAP_DOC2DOC</table>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfs.STC_MAP_DOC2DOC</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

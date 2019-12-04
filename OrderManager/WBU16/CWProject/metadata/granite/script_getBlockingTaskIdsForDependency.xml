@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="granite.getBlockingTaskIdsForDependency">
+  <label>Get Blocking Task Ids For Dependency</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="woInstId" type="rifp">
+      <type>dtype_granite.INST_ID_10</type>
+    </parameter>
+    <parameter name="sourceTaskInstId" type="rifp">
+      <type>dtype_granite.INST_ID_10</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var searchDoc = new Document("granite.TASK_DEPENDENCY");
+    searchDoc.TASK_INST_ID = sourceTaskInstId;
+    searchDoc.WO_INST_ID = woInstId;
+    searchDoc.DEPENDENCY_TYPE = "T";
+
+    var resultList = Finder.runFinder("granite.findTaskDependency", "select", searchDoc);
+
+    var blockingTasks = null;
+    if(resultList != null && resultList.size >0) {
+        blockingTasks = new Array();
+
+        for(var i=0; i<resultList.size; i++) {
+            blockingTasks.push(resultList[i].DEPENDENCY_TVALUE);
+        }
+    }
+
+    return blockingTasks;
+  ]]></script>
+</script>

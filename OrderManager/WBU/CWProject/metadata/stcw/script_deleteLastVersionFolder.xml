@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="e5475e36e184fe5a8a5988202b75cd5" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.deleteLastVersionFolder">
+  <guid>{06d8edaa-b52e-1c31-df7e-61ec9a87449c}</guid>
+  <label>Delete Last Version Folder</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="order" type="rifp">
+      <type>order_com.conceptwave.system.Order</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if (order == undefined || order == null)
+          return;
+
+    var versionNumber = order.versions.count - 1;
+    if (versionNumber < 0)
+          return;
+
+    order.versions[versionNumber].deleteItem();
+    return;
+  ]]></script>
+</script>

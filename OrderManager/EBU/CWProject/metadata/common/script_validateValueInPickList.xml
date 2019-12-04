@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="ef2e82692dcbb221ab4f03e6b4c392" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="common.validateValueInPickList">
+  <label>Validate Value In PickList</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="dataTypeName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="value" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    var queryDoc = new Document("ds_ws:pickListForValidation");
+    queryDoc.dataTypeName = dataTypeName;
+    var resultList = Finder.runFinder("ds_ws:findValuesForPickListForValidation", "select", queryDoc);
+
+    var found = false;
+
+    if(resultList != null) {
+        for(var i=0; i<resultList.length && !found; i++) {
+            found = (resultList[i].value == value);
+        }
+    }
+    else {
+        found = true;
+    }
+
+    return (!found);
+  ]]></script>
+</script>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="granite.getWONameForResource">
+  <label>Get WO Name For Resource</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="resourceName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var woName = null;
+
+    if(resourceName != null) {
+        var woNameFinder = new Finder("granite.getWONameByResourceName");
+        woNameFinder.searchDocument.NAME = resourceName;
+
+        var woNameList = woNameFinder.search();
+        if(woNameList != null && woNameList.size > 0) {
+            woName = woNameList[0].WO_NAME;
+        }
+    }
+
+    if(woName == null) {
+        var mrLaptop = Global.getConfigVariable("MR_LAPTOP", "N");
+        if(mrLaptop != null && mrLaptop == "Y") {
+            woName = 'XYZ_WONAME_TEST';
+        }
+    }
+
+
+    return woName;
+  ]]></script>
+</script>

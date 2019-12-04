@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="crmToSOMMigration.sendOSUForSync">
+  <highlight>14</highlight>
+  <label>Send OSU For Sync</label>
+  <metaVersion>25</metaVersion>
+  <script><![CDATA[
+    var debugMsg = " SendOSUForSync - ";
+
+    var searchDoc = new Document("stcc.genericSearchDocWithInteger1");
+    searchDoc.integer1 = 0;
+    var synchDataFound = Finder.runFinder("crmToSOMMigration.findSTCW_DATA_FOR_OSU_SYNC", "select", searchDoc);
+
+    var found = 0;
+    var processedSuccessfully = 0;
+
+    if(synchDataFound != null) {
+        found = synchDataFound.length;
+        for(var i=0; i<synchDataFound.length; i++) {
+            debugPrintln(stcc.getSysdateForLog() + debugMsg + "Sending OSU for WO " + synchDataFound[i].WO_NAME);
+
+            var osuMsg = prepareOSUEvent_(synchDataFound[i]);
+
+            var workOrderNumber = osuMsg.orderNumber;
+            var parentOrderNumber = synchDataFound[i].PARENT_ORDER_NUMBER;
+
+            if(parentOrderNumber != null && workOrderNumber != null) {
+                var wosuUnifiedModel = stcw.convertWBUOSUToUnifiedModel(osuMsg, parentOrderNumber);
+
+                var lineItem = stcw.getLineItemByCOMOrderNumberAndWONumber(parentOrderNumber, workOrderNumber);
+
+                if(lineItem != null) {
+                    var orchestrationRecord = stcw.getRecordInOrchestrationTableByLineItemId(lineItem.id);
+                    if(orchestrationRecord != null) {
+                        var provisioningProcessId = orchestrationRecord.provisioningProcessId;
+                        if(provisioningProcessId != null) {
+
+                            var processInstance = Process.getProcessInfo(provisioningProcessId);
+                            if(processInstance != null) {
+                                if(processInstance.processStatus == 8) {
+                                    // the process is in status 8, so STALE; resume it
+                                    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Resuming Stale process " + provisioningProcessId);
+                                    Process.resumeAllStaleProcesses(provisioningProcessId);
+                                }
+                            }
+
+                            var wosuId = stcw.writeGraniteWOSUIntoDB(provisioningProcessId, wosuUnifiedModel);
+
+                            var wosuNotificationDS = new DataStructure("stcw.wosuNotificationDS");
+                            wosuNotificationDS.wosuId = wosuId;
+
+                            debugPrintln(stcc.getSysdateForLog() + debugMsg + "Sending WOSU Notification for <" + parentOrderNumber + "," + workOrderNumber + "> to process " + provisioningProcessId + "; wosuId = " + wosuId);
+                            Process.sendMessageToProcess(provisioningProcessId, null, "stcw.xngServicesNotificationToProcesses/workOrderStatusUpdateNotification", wosuNotificationDS);
+
+                            processedSuccessfully++;
+                            synchDataFound[i].PROCESSED = 1;
+                        }
+                        else {
+                            debugPrintln(stcc.getSysdateForLog() + debugMsg + "WARNING - Unable to find Provisioning Process for received granite WOSU for <" + parentOrderNumber + "," + workOrderNumber + ">");
+                            synchDataFound[i].PROCESSED = 2;
+                        }
+                    }
+                    else {
+                        debugPrintln(stcc.getSysdateForLog() + debugMsg + "WARNING - Unable to find any Process for <" + parentOrderNumber + "," + workOrderNumber + ">");
+                        synchDataFound[i].PROCESSED = 3;
+                    }
+                }
+                else {
+                    debugPrintln(stcc.getSysdateForLog() + debugMsg + "WARNING - Unable to find lineItem in Order for <" + parentOrderNumber + "," + workOrderNumber + ">");
+                    synchDataFound[i].PROCESSED = 4;
+                }
+            }
+            else {
+                debugPrintln(stcc.getSysdateForLog() + debugMsg + "WARNING - Received granite WOSU with parentOrderNumber NULL or workOrderNumber NULL!!!");
+                synchDataFound[i].PROCESSED = 5;
+            }
+
+            synchDataFound[i].save();
+        }
+    }
+
+    var statistics = new Array(2);
+    statistics[0] = found;
+    statistics[1] = processedSuccessfully;
+
+    return statistics;
+
+
+
+
+    function prepareOSUEvent_(dataFound) {
+        var osuEvent = new DataStructure("wgws.updateOrderStatus");
+        osuEvent.businessUnit         = "Wholesale";
+        osuEvent.assetNumber          = dataFound.ASSET_NAME;
+        osuEvent.assetStatus          = dataFound.ASSET_STATUS;
+        osuEvent.comments             = dataFound.WO_COMMENTS;
+        osuEvent.orderNumber          = dataFound.WO_NAME;
+        osuEvent.systemDesignation    = "";
+        osuEvent.workOrderStatus      = dataFound.WO_STATUS;
+        osuEvent.NINumber             = dataFound.NI_NUMBER;
+
+        var countAdded = 0;
+        if(dataFound.SITE_A != null) {
+            var nvPair = new DataStructure("wgws.nameValuePair");
+            nvPair.name = "LOCATIONA";
+            nvPair.value = dataFound.SITE_A;
+            osuEvent.nameValue[countAdded] = nvPair;
+            countAdded++;
+        }
+
+        if(dataFound.SITE_Z != null) {
+            nvPair = new DataStructure("wgws.nameValuePair");
+            nvPair.name = "LOCATIONZ";
+            nvPair.value = dataFound.SITE_Z;
+            osuEvent.nameValue[countAdded] = nvPair;
+            countAdded++;
+        }
+
+        if(dataFound.PATH_NAME != null) {
+            nvPair = new DataStructure("wgws.nameValuePair");
+            nvPair.name = "Circuit ID";
+            nvPair.value = dataFound.PATH_NAME;
+            osuEvent.nameValue[countAdded] = nvPair;
+            countAdded++;
+        }
+
+        return osuEvent;
+    }
+  ]]></script>
+</script>

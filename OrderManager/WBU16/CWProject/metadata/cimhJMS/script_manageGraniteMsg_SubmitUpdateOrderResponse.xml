@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="cimhJMS.manageGraniteMsg_SubmitUpdateOrderResponse">
+  <label>Manage Granite Message: Submit/Update Order Response [JMS]</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // remember:
+    //    orderNumber (or xngOrderNumber) is the WO Number
+    //    parentOrderNumber is the COM Order Number
+
+    var debug = "[CIMH JMS MESSAGE: SUBMIT/UPDATE ORDER RESPONSE] ";
+
+    debugPrintln(stcc.getSysdateForLog() + debug + "Received: " + (input != null ? input.toXML() : "'NULL'") + "...");
+
+    var logDoc = UserProfile.getMsgLogDoc();
+
+    if (input != null && input.orderAcknowledgement != null) {
+        var parentOrderNumber = input.orderAcknowledgement.parentOrderNumber;
+        var orderNumber = input.orderAcknowledgement.orderNumber;
+
+        if(orderNumber != null && parentOrderNumber != null) {
+
+            var lineItem = stcw.getLineItemWithProvProcessByCOMOrderNumAndWONumber(parentOrderNumber, orderNumber);
+            if(lineItem != null) {
+                var orchestrationRecord = stcw.getRecordInOrchestrationTableByLineItemId(lineItem.id);
+                if(orchestrationRecord != null) {
+                    var provisioningProcessId = orchestrationRecord.provisioningProcessId;
+
+                    var processDocument = Process.getProcessDocument(provisioningProcessId);
+                    if(processDocument != null) {
+                        debugPrintln(stcc.getSysdateForLog() + debug + "Writing Event " + ((processDocument.isSubmit == "Y") ? "SubmitOrderResponse" : "UpdateOrderResponse") +
+                                     " for <" + parentOrderNumber + "," + orderNumber + "> to process " + provisioningProcessId);
+                    }
+                    else {
+                        debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Unable to get processDocument of process <" + provisioningProcessId + "> for <" + parentOrderNumber + "," + orderNumber + ">");
+                    }
+                    stcw.writeGraniteResponseIntoDB(provisioningProcessId, input);
+                }
+                else {
+                    debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Unable to find process for <" + parentOrderNumber + "," + orderNumber + ">");
+                }
+            }
+            else {
+                debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Unable to find LineItem for received granite OrderResponse for <" + parentOrderNumber + "," + orderNumber + ">");
+            }
+        }
+        else {
+            debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Received granite OrderResponse with parentOrderNumber NULL or workOrderNumber NULL!!!");
+        }
+
+        if(logDoc != null) {
+            logDoc.userData1 = parentOrderNumber;
+            logDoc.userData2 = orderNumber;
+            logDoc.save();
+        }
+    }
+    else{
+        debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Interface invoked with input NULL...");
+    }
+  ]]></script>
+</script>

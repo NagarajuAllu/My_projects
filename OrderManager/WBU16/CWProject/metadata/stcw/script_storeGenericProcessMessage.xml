@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="3c99866ed4066bb670b6a01f13afc252" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.storeGenericProcessMessage">
+  <guid>{0e686d6c-8ece-b412-9ea1-ee17b983fb85}</guid>
+  <label>Store GenericProcess Message</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="messageType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="receivedMessage" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var doc = new Document("stcw:genericProcessReceivedMessages");
+    doc.processId    = processId;
+    doc.activityName = messageType;
+    doc.receivedMsg  = receivedMessage.toXML();
+    doc.save();
+
+    return doc;
+  ]]></script>
+</script>

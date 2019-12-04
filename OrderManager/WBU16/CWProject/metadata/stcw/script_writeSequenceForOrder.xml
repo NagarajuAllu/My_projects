@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.writeSequenceForOrder">
+  <label>Write Sequence For Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    stcw.writeRecordForOrderHeaderInOrchestrationTable(bundleOrder.orderHeader, false);
+    var errorFound = stcw.writeSequenceForParentLineItemsInOrder(bundleOrder);
+
+    return errorFound;
+  ]]></script>
+</script>

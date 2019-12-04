@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="69296bf7c81804a784490ced5588572d" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="migrationSTC.fillOrderWithMissingOrderFound">
+  <guid>{0f728208-e59a-8aa3-4bd1-461f4976db81}</guid>
+  <label>Fill Order With Missing Order Found</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="orderMissing" type="rifp">
+      <type>doc_com.conceptwave.system.Document</type>
+    </parameter>
+    <parameter name="expediterOrder" type="rifp">
+      <type>order_com.conceptwave.system.Order</type>
+    </parameter>
+    <parameter name="isChild" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="isNew" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(isNew) {
+          expediterOrder.orderMessage.accountNumber       = orderMissing.ACCOUNT_NUMBER;
+          expediterOrder.orderMessage.cctType             = orderMissing.CCT_TYPE;
+          expediterOrder.orderMessage.circuitNumber       = orderMissing.CIRCUIT_NUMBER;
+          expediterOrder.orderMessage.createdBy           = orderMissing.CREATED_BY;
+          expediterOrder.orderMessage.creationDate        = new Date();
+          expediterOrder.orderMessage.customerIDNumber    = orderMissing.CUSTOMER;
+          expediterOrder.orderMessage.customerName        = orderMissing.CUSTOMER_NAME;
+          expediterOrder.orderMessage.customerNumber      = orderMissing.CUSTOMER_NUMBER;
+          expediterOrder.orderMessage.icmsSONumber        = orderMissing.ICMS_SO_NUMBER;
+          expediterOrder.orderMessage.orderNumber         = isChild ? orderMissing.ORDER_NUMBER : orderMissing.PARENT_ORDER_NUMBER;
+          expediterOrder.orderMessage.orderStatus         = orderMissing.ORDER_STATUS;
+          expediterOrder.orderMessage.orderType           = orderMissing.ORDER_TYPE;
+          expediterOrder.orderMessage.projectId           = orderMissing.PROJECT_ID;
+          expediterOrder.orderMessage.internalOrderStatus = "Granite Call SUCCESSFUL";
+          expediterOrder.orderMessage.circuitStatus       = orderMissing.CIRCUIT_STATUS;
+          expediterOrder.orderMessage.businessUnit        = "Home";
+          expediterOrder.orderMessage.orderDomain         = orderMissing.ORDER_DOMAIN;
+          expediterOrder.orderMessage.serviceDate         = (orderMissing.SERVICE_DATE != null ?
+                                                                                     (orderMissing.SERVICE_DATE.indexOf(":") != -1 ?
+                                                                                      Calendar.parseDate(orderMissing.SERVICE_DATE, "MM/dd/yyyy hh:mm:ss") :
+                                                                                      Calendar.parseDate(orderMissing.SERVICE_DATE + " 00:00:00", "MM/dd/yyyy hh:mm:ss")) :
+                                                                                      null);
+          expediterOrder.orderMessage.commonPlateId       = orderMissing.PLATE_ID;
+          expediterOrder.orderMessage.commonServiceNumber = orderMissing.SERVICE_NUMBER;
+    }
+    else {
+          if(isChild) {
+                expediterOrder.orderMessage.commonPlateId       = orderMissing.PLATE_ID;
+                expediterOrder.orderMessage.commonServiceNumber = orderMissing.SERVICE_NUMBER;
+
+          }
+    }
+
+    if(isChild) {
+          expediterOrder.orderMessage.parentOrderNumber   = orderMissing.PARENT_ORDER_NUMBER;
+    }
+
+    var serviceCount = 0;
+    if(!isNew) {
+          serviceCount = expediterOrder.serviceParametersList.count;
+    }
+
+    var foundService = false;
+    for(var i=0; i<serviceCount && !foundService; i++) {
+          if(expediterOrder.serviceParametersList[i].serviceParameters.serviceType   == orderMissing.SERVICE_TYPE &&
+             expediterOrder.serviceParametersList[i].serviceParameters.plateId       == orderMissing.PLATE_ID &&
+             expediterOrder.serviceParametersList[i].serviceParameters.serviceNumber == orderMissing.SERVICE_NUMBER) {
+                foundService = (orderMissing.ORDER_ROW_ITEM_ID == '-1' ||
+                                         expediterOrder.serviceParametersList[i].serviceParameters.orderRowItemID == orderMissing.ORDER_ROW_ITEM_ID);
+          }
+    }
+
+    if(!foundService) {
+    debugPrintln("Adding service " + serviceCount + " to order " + (isChild ? orderMissing.ORDER_NUMBER : orderMissing.PARENT_ORDER_NUMBER));
+                expediterOrder.createOrderItemByPath("serviceParametersList." + (serviceCount + 1) + ".serviceParameters");
+                expediterOrder.serviceParametersList[serviceCount].serviceParameters.creationDate    = new Date();
+                expediterOrder.serviceParametersList[serviceCount].serviceParameters.serviceType     = orderMissing.SERVICE_TYPE;
+                expediterOrder.serviceParametersList[serviceCount].serviceParameters.plateId         = orderMissing.PLATE_ID;
+                expediterOrder.serviceParametersList[serviceCount].serviceParameters.serviceNumber   = orderMissing.SERVICE_NUMBER;
+    //            expediterOrder.serviceParametersList[serviceCount].serviceParameters.oldPlateId      = orderMissing.OLD_PLATE_ID;
+                expediterOrder.serviceParametersList[serviceCount].serviceParameters.orderRowItemID  = orderMissing.ORDER_ROW_ITEM_ID;
+          }
+          else {
+    debugPrintln("Service <" + orderMissing.SERVICE_TYPE + ", " + orderMissing.PLATE_ID + "," + orderMissing.ORDER_ROW_ITEM_ID + "> is already in order " + (isChild ? orderMissing.ORDER_NUMBER : orderMissing.PARENT_ORDER_NUMBER) + ", so skipping it");
+          }
+
+          return expediterOrder;
+  ]]></script>
+</script>

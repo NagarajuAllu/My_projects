@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="granite.findUDAValueInGraniteByPathName_UDAName">
+  <dbSchema>GRANITE</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_granite.udaSearchDoc</input>
+  <label>Find UDAValue In Granite By PathName &amp; UDAName</label>
+  <metaVersion>25</metaVersion>
+  <output>doc_granite.CIRC_PATH_ATTR_SETTINGS</output>
+  <type>SQL</type>
+  <volatility>1</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select {+*+}
+          from circ_path_attr_settings cpas
+         where 1=1
+           and cpas.circ_path_inst_id = (select circ_path_inst_id
+                                           from circ_path_inst
+                                          where 1=1
+                                       {[3] and circ_path_hum_id = ?})
+           and cpas.val_attr_inst_id = (select van.val_attr_inst_id
+                                          from val_attr_name van
+                                         where 1=1
+                                       {[1] and van.attr_name = ?}
+                                       {[2] and van.group_name = ?})
+      ]]></script>
+    </method>
+  </methodList>
+</findSql>

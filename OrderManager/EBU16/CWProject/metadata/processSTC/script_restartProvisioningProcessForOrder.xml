@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="processSTC.restartProvisioningProcessForOrder">
+  <label>Restart Provisioning Process For Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderHeader" type="rifp">
+      <type>doc_ds_ws.bundleOrderHeaderDocument</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(orderHeader != null) {
+        // checking if the status is already completed or cancelled
+        var isOrderCompleted = processSTC.isOrderCompleted(orderHeader.orderStatus);
+        if(isOrderCompleted) {
+            Global.throwException("AE0136", orderHeader.orderStatus);
+        }
+
+        var orderUnderMgmt = Order.getOrderById(orderHeader.orderId);
+        // checking if provisioningFlag is different from PROVISIONING
+        if(orderUnderMgmt.bundles[0].bundle.provisioningFlag != "PROVISIONING") {
+            Global.throwException("AE0137", orderUnderMgmt.bundles[0].bundle.provisioningFlag);
+        }
+
+        var existProcessKO = processSTC.checkIfExistProcessKOInOrchestrationTable(orderHeader.orderId);
+        if(!existProcessKO) {
+            // there are no processes in KO status in Orchestration table, so rejecting the order
+            Global.throwException("AE0138");
+        }
+
+        var areProcessesCompleted = processSTC.checkAllProcessesInOrchestrationTableAreCompleted(orderUnderMgmt.id);
+        if(! areProcessesCompleted) {
+            Global.throwException("AE0088");
+        }
+
+        processSTC.deleteOrchestrationTableForOrder(orderUnderMgmt.id);
+        var orchestrationErrors = processSTC.writeSequenceForOrder(orderUnderMgmt);
+
+        if(orchestrationErrors != null && orchestrationErrors.length > 0) {
+            for(var m=0; m<orchestrationErrors.length; m++) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] restartProvisioningProcess - Error in creating orchestration record: <" + orchestrationErrors[m].ErrorCode + "," + orchestrationErrors[m].ErrorDescription + ">");
+            }
+            Global.throwException("Error in creating orchestration record: <" + orchestrationErrors[0].ErrorCode + "," + orchestrationErrors[0].ErrorDescription + ">");
+        }
+
+
+        var processId = Process.startProcess ("processSTC.mainSTCOrchestrationProcess", orderUnderMgmt.id, orderUnderMgmt.id);
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] " + " Provisioning process for order number: " + orderHeader.orderNumber + " has been started with id:" + processId);
+    }
+
+    return;
+  ]]></script>
+</script>

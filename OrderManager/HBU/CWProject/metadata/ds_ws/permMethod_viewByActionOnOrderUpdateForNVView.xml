@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<permMethod filenameHash="416fd89de888b97d18a7c44ca374d712" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.viewByActionOnOrderUpdateForNVView">
+  <metaVersion>3</metaVersion>
+  <privilegesType>NEVER</privilegesType>
+  <script><![CDATA[
+    var result = false;
+
+    if (this.model instanceof Document &&
+          this.model.metadataType == "ds_ws:details_nameValue") {
+          result = (this.model.order != null ? this.model.order.orderMessage.actionOnOrder == "Update" : false);
+    }
+
+    return result;
+  ]]></script>
+</permMethod>

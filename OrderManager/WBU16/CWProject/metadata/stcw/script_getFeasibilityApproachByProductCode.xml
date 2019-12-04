@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getFeasibilityApproachByProductCode">
+  <label>Get Feasibility Approach by Product Code</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="productCode" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var feasibilityApproach = "DEFAULT";
+
+    var searchDoc = new Document("stcconf.search_ProductCodeDoc");
+    searchDoc.productCode = productCode;
+
+    var resultList = Finder.runFinder("stcconf.findAllProductCodes", "select", searchDoc);
+
+    if(resultList != null && resultList.length > 0) {
+        feasibilityApproach = resultList[0].feasibilityApproach;
+    }
+
+    return feasibilityApproach;
+  ]]></script>
+</script>

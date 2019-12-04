@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getLineItemInOrderWithReservationNumber">
+  <label>Get LineItem In Order With ReservationNumber</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="reservationNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var foundLineItem = null;
+
+    for (var i=0; i<bundleOrder.parentLineItems.length && foundLineItem == null; i++) {
+        var parentLineItemContainer = bundleOrder.parentLineItems[i];
+        if(parentLineItemContainer.parentLineItem.reservationNumber == reservationNumber) {
+            foundLineItem = parentLineItemContainer.parentLineItem;
+        }
+        else {
+            if(parentLineItemContainer.services != null) {
+                for(var j=0; j<parentLineItemContainer.services.length && foundLineItem == null; j++) {
+                    var serviceLineItemContainer = parentLineItemContainer.services[j];
+                    if(serviceLineItemContainer.serviceLineItem.reservationNumber == reservationNumber) {
+                        foundLineItem = serviceLineItemContainer.serviceLineItem;
+                    }
+                    else {
+                        if(serviceLineItemContainer.subServices != null) {
+                            for(var j=0; j<serviceLineItemContainer.subServices.length && foundLineItem == null; j++) {
+                                var subServiceLineItemContainer = serviceLineItemContainer.subServices[j];
+                                if(subServiceLineItemContainer.subServiceLineItem.reservationNumber == reservationNumber) {
+                                    foundLineItem = subServiceLineItemContainer.subServiceLineItem;
+                                }
+                                else {
+                                    if(subServiceLineItemContainer.subSubServices != null) {
+                                        for(var j=0; j<subServiceLineItemContainer.subSubServices.length && foundLineItem == null; j++) {
+                                            var subSubServiceLineItemContainer = subServiceLineItemContainer.subSubServices[j];
+                                            if(subSubServiceLineItemContainer.subSubServiceLineItem.reservationNumber == reservationNumber) {
+                                                foundLineItem = subSubServiceLineItemContainer.subSubServiceLineItem;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return foundLineItem;
+  ]]></script>
+</script>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="granite.WORKORDER_ATTR_SETTINGS">
+  <dbSchema>XNG PRODUCTION [USER:STC_TARGET2]</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{b224782b-ae92-44a4-8a44-85dd8d32f94b}</guid>
+  <label>Details: WorkOrder UDA [XNG]</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="WORKORDER_INST_ID" type="leaf">
+      <column>WORKORDER_INST_ID</column>
+      <key>2</key>
+      <table>WORKORDER_ATTR_SETTINGS</table>
+      <valueType>dtype_granite.INST_ID</valueType>
+    </variable>
+    <variable name="VAL_ATTR_INST_ID" type="leaf">
+      <column>VAL_ATTR_INST_ID</column>
+      <key>1</key>
+      <table>WORKORDER_ATTR_SETTINGS</table>
+      <valueType>dtype_granite.INST_ID</valueType>
+    </variable>
+    <variable name="ATTR_VALUE" type="leaf">
+      <column>ATTR_VALUE</column>
+      <table>WORKORDER_ATTR_SETTINGS</table>
+      <valueType>dtype_granite.ATTR_VALUE</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_granite.WORKORDER_ATTR_SETTINGS</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure filenameHash="1e493f949cd42a508a02eee5c392acde" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_jms.orderAcknowledgementWithFailure">
+  <container>true</container>
+  <guid>{86a07b8a-ef07-46f0-94bd-678393cb2bff}</guid>
+  <label>orderAcknowledgementWithFailure</label>
+  <metaVersion>4</metaVersion>
+  <childList>
+    <child name="workOrderNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <guid>{77141d28-6a3a-47b9-9e62-428206e0dccc}</guid>
+      <label>workOrderNumber</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="crmOrderNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <guid>{32f4cd88-c2fa-459a-8b97-d59becdf58ff}</guid>
+      <label>crmOrderNumber</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="lineItemIdentifier" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <guid>{8d701a17-f1c9-409a-ac61-ea369a9f429a}</guid>
+      <label>lineItemIdentifier</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="status" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_ds_jms.orderStatus</element>
+      <guid>{ca812d18-3d5f-4e6c-a892-0daf4e5fe3b3}</guid>
+      <label>status</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="xngOrderNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <guid>{375bc267-9e6a-47bb-bb95-a597e5facc4c}</guid>
+      <label>xngOrderNumber</label>
+    </child>
+    <child name="failure" type="dstruct">
+      <array>true</array>
+      <element>dstruct_ds_jms.orderFailure</element>
+      <guid>{7dbc97ec-5cd2-4fd6-926d-d3351767ef2e}</guid>
+      <label>failure</label>
+      <maxInstance>-1</maxInstance>
+    </child>
+  </childList>
+  <UserInterface name="UserInterface" type="tree">
+    <defaultFolderImage>undefined</defaultFolderImage>
+    <defaultLeafImage>undefined</defaultLeafImage>
+    <element>dstruct_ds_jms.orderAcknowledgementWithFailure</element>
+    <extends>tree_com.conceptwave.system.DataStructureUserInterface</extends>
+    <tableDoc>doc_com.conceptwave.system.TreeDocument</tableDoc>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>dstruct_ds_jms.orderAcknowledgementWithFailure</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>tree_com.conceptwave.system.DataStructureUserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</dataStructure>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcw.orderUnderManagementDoc">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{dcac58d1-b0ba-4c95-8d44-33b56b845dfd}</guid>
+  <label>Order Under Management</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="orderNumber" type="leaf">
+      <column>ORDERNUMBER</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>Order #</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_ORDER_UNDER_MGMT</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+  </variableList>
+</document>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="stcw.findCheckPrimaryPathInGraniteByProcessId">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_stcc.genericSearchDocWithId</input>
+  <label>Find CheckPrimaryPathInGranite By ProcessId</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_stcw.STCW_CHECK_PATH_IN_GRANITE</output>
+  <type>document</type>
+  <volatility>0</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_stcc.genericSearchDocWithId</document>
+      <mappedDocument>doc_stcw.STCW_CHECK_PATH_IN_GRANITE</mappedDocument>
+      <mappedPath>doc_stcw.STCW_CHECK_PATH_IN_GRANITE/leaf_processId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcc.genericSearchDocWithId/leaf_docId</path>
+    </search>
+  </searchList>
+</findDoc>

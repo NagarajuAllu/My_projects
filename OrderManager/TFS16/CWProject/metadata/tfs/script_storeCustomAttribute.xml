@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="tfs.storeCustomAttribute">
+  <label>Store Custom Attribute</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="objectId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="customAttributeId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="attributeValue" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="objectType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var searchDoc = new Document("tfs.createdCustomAttributeSearchDoc");
+    searchDoc.objectId = objectId;
+    searchDoc.customAttributeId = customAttributeId;
+
+    var finderName = null;
+    var documentName = null;
+    var idAttributeName = null;
+
+    if(objectType == "PRNR") {
+        finderName = "tfs.findPRNRCustomAttribute";
+        documentName = "tfs.customPRNRAttribute";
+        idAttributeName = "prnrId";
+    }
+    else if(objectType == "PRN") {
+        finderName = "tfs.findPRNCustomAttribute";
+        documentName = "tfs.customPRNAttribute";
+        idAttributeName = "prnId";
+    }
+    else if(objectType == "TFR") {
+        finderName = "tfs.findTFRCustomAttribute";
+        documentName = "tfs.customTFRAttribute";
+        idAttributeName = "tfrId";
+    }
+    else if(objectType == "BI") {
+        finderName = "tfs.findBICustomAttribute";
+        documentName = "tfs.customBIAttribute";
+        idAttributeName = "biId";
+    }
+
+    if(finderName != null) {
+        var resultList = Finder.runFinder(finderName, "select", searchDoc);
+        if(resultList != null && resultList.length > 0) {
+            resultList[0].attributeValue = attributeValue;
+            resultList[0].save();
+        }
+        else {
+            var newCustomAttribute = new Document(documentName);
+            newCustomAttribute[idAttributeName] = objectId;
+            newCustomAttribute.customAttributeId = customAttributeId;
+            newCustomAttribute.attributeValue = attributeValue;
+            newCustomAttribute.save();
+        }
+    }
+  ]]></script>
+</script>

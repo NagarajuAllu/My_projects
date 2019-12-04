@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<definitions name="grws" targetNamespace="http://com/granite/custom/stc/system/webservice" xmlns:tns="http://com/granite/custom/stc/system/webservice" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:grws="http://com/granite/custom/stc/system/webservice">
+
+	<types>
+		<schema elementFormDefault="qualified" targetNamespace="http://com/granite/custom/stc/system/webservice"
+				xmlns="http://www.w3.org/2001/XMLSchema"
+			xmlns:grws="http://com/granite/custom/stc/system/webservice"
+			xmlns:grjc="java:com.granite.custom.stc.transport">
+
+
+
+			<annotation>
+				<documentation>Granite Web Services</documentation>
+				<appinfo>
+					<metadata>STC Order Management</metadata>
+					<created>Wed Jun 10 08:27:53 EDT 2009</created>
+					<updated>Thu May 23 17:12:44 EDT 2013</updated>
+				</appinfo>
+			</annotation>
+
+			<!-- Data types and elements -->
+
+			<!-- Structures -->
+
+			<element name="customerInformationUpdate">
+				<complexType >
+				<annotation>
+					<documentation>customerInformationUpdate</documentation>
+				</annotation>
+					<sequence>
+						<element minOccurs="1" maxOccurs="1" ref="grjc:Customer"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<element name="customerInformationUpdateResponse">
+				<complexType >
+				<annotation>
+					<documentation>customerInformationUpdateResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="result" minOccurs="1" maxOccurs="1" type="grjc:CustomerAcknowledgement"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<element name="submitOrder">
+				<complexType >
+				<annotation>
+					<documentation>submitOrder</documentation>
+				</annotation>
+					<sequence>
+						<element minOccurs="1" maxOccurs="1" ref="grjc:order"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<element name="submitOrderResponse">
+				<complexType >
+				<annotation>
+					<documentation>submitOrderResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="result" minOccurs="1" maxOccurs="1" type="grjc:OrderAcknowledgement"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<element name="updateOrder">
+				<complexType >
+				<annotation>
+					<documentation>updateOrder</documentation>
+				</annotation>
+					<sequence>
+						<element minOccurs="1" maxOccurs="1" ref="grjc:order"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<element name="updateOrderResponse">
+				<complexType >
+				<annotation>
+					<documentation>updateOrderResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="result" minOccurs="1" maxOccurs="1" type="grjc:OrderAcknowledgement"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<element name="validateQuote">
+				<complexType >
+				<annotation>
+					<documentation>validateQuote</documentation>
+				</annotation>
+					<sequence>
+						<element minOccurs="1" maxOccurs="1" ref="grjc:quotation"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<element name="validateQuoteResponse">
+				<complexType >
+				<annotation>
+					<documentation>validateQuoteResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="result" minOccurs="1" maxOccurs="1" type="grjc:QuoteAcknowledgement"/>
+					</sequence>
+				</complexType>
+			</element>
+
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="java:com.granite.custom.stc.transport"
+				xmlns="http://www.w3.org/2001/XMLSchema"
+			xmlns:grjc="java:com.granite.custom.stc.transport"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+
+			<annotation>
+				<documentation>Granite Custom Java</documentation>
+				<appinfo>
+					<metadata>STC Order Management</metadata>
+					<created>Wed Jun 10 08:27:53 EDT 2009</created>
+					<updated>Thu May 23 17:12:44 EDT 2013</updated>
+				</appinfo>
+			</annotation>
+
+			<!-- Data types and elements -->
+
+			<!-- Structures -->
+
+			<element name="Customer">
+				<complexType >
+				<annotation>
+					<documentation>Customer</documentation>
+				</annotation>
+					<sequence>
+						<element name="AccountType" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="BusinessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="AccountNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="AccountRegion" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="StreetAddress" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Name" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="AccountSubType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="AccountTypeCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="AccountStatus" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<complexType name="CustomerAcknowledgement">
+				<annotation>
+					<documentation>CustomerAcknowledgement</documentation>
+				</annotation>
+					<sequence>
+						<element name="AccountNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Status" minOccurs="1" maxOccurs="1" type="grjc:Status"/>
+						<element name="BusinessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="NameValue">
+				<annotation>
+					<documentation>NameValue</documentation>
+				</annotation>
+					<sequence>
+						<element name="Name" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Value" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<element name="order">
+				<complexType >
+				<annotation>
+					<documentation>order</documentation>
+				</annotation>
+					<sequence>
+						<element name="BusinessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Comments" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CreatedBy" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Description" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ExpectedDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="CreationDate" minOccurs="1" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="ChangeRequestType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderStatus" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderType" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="SegmentFlag" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="QuoteNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="AccountNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Restoration" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ReservationNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="NameValuePair" minOccurs="0" maxOccurs="unbounded" type="grjc:NameValue"/>
+						<element name="Service" minOccurs="1" maxOccurs="1" type="grjc:Service"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<complexType name="OrderAcknowledgement">
+				<annotation>
+					<documentation>OrderAcknowledgement</documentation>
+				</annotation>
+					<sequence>
+						<element name="OrderNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="AssetNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="WorkOrderStatus" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="AssetStatus" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="BusinessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Status" minOccurs="1" maxOccurs="1" type="grjc:Status"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="QuotableService">
+				<annotation>
+					<documentation>QuotableService</documentation>
+				</annotation>
+					<complexContent>
+						<extension base="grjc:Service">
+							<sequence>
+								<element name="OrderRowItemId" minOccurs="1" maxOccurs="1" type="xsd:int"/>
+								<element name="ServiceStatus" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+								<element name="Restoration" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+								<element name="FeasibilityStatus" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+								<element name="ReservationExpiry" minOccurs="0" maxOccurs="1" type="xsd:int"/>
+								<element name="Quantity" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+								<element name="Action" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+							</sequence>
+						</extension>
+					</complexContent>
+				</complexType>
+
+			<element name="quotation">
+				<complexType >
+				<annotation>
+					<documentation>quotation</documentation>
+				</annotation>
+					<sequence>
+						<element name="AccountNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="BusinessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Comments" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CreationDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="LineItems" minOccurs="0" maxOccurs="unbounded" type="grjc:QuotableService"/>
+						<element name="QuoteNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="QuoteStatus" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="QuoteType" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="SalesRepresentative" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ParentQuoteNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<complexType name="QuoteAcknowledgement">
+				<annotation>
+					<documentation>QuoteAcknowledgement</documentation>
+				</annotation>
+					<sequence>
+						<element name="QuoteNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Status" minOccurs="1" maxOccurs="1" type="grjc:Status"/>
+						<element name="BusinessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="WorkOrderStatus" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="Service">
+				<annotation>
+					<documentation>Service</documentation>
+				</annotation>
+					<sequence>
+						<element name="AssetNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Bandwidth" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CreationDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="NameValue" minOccurs="0" maxOccurs="unbounded" type="grjc:NameValue"/>
+						<element name="PrimaryAssetNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ProductCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ReservationNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SegmentFlag" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="Subservices" minOccurs="0" maxOccurs="unbounded" type="grjc:Service"/>
+						<element name="NumberOfChannels" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="Status">
+				<annotation>
+					<documentation>Status</documentation>
+				</annotation>
+					<sequence>
+						<element name="Status" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorDescription" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SourceErrorCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorTime" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SystemName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+		</schema>
+	</types>
+
+	<message name="customerInformationUpdate">
+		<part name="customerInformationUpdate" element="grws:customerInformationUpdate"/>
+	</message>
+
+	<message name="customerInformationUpdateResponse">
+		<part name="customerInformationUpdateResponse" element="grws:customerInformationUpdateResponse"/>
+	</message>
+
+	<portType name="XngCustomerService">
+		<operation name="customerInformationUpdate">
+			<input message="tns:customerInformationUpdate"/>
+			<output message="tns:customerInformationUpdateResponse"/>
+		</operation>
+	</portType>
+
+	<binding name="XngCustomerServiceSoapBinding" type="tns:XngCustomerService">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+		<operation name="customerInformationUpdate">
+			<soap:operation soapAction="customerInformationUpdate" timeout="600"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+
+	<service name="grws">
+		<port name="XngCustomerServiceSoapPort" binding="tns:XngCustomerServiceSoapBinding">
+			<soap:address location="http://rmsmt.stc.com.sa:2160/tgs-STCRMSW-1.0-cim/XngCustomerService"/>
+		</port>
+	</service>
+
+</definitions>

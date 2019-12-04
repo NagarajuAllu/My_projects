@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getOperationForMobile">
+  <label>Get Operation For Mobile</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="stepInWorkflow" type="rifp">
+      <type>dtype_stcw.integer1</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="changeRequestType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("stcconf.search_operation_LTE");
+    inputDoc.step       = stepInWorkflow;
+    inputDoc.orderType = orderType;
+    inputDoc.isSubmit = isSubmit;
+    inputDoc.changeRequestType = (orderType == "C" ?       changeRequestType : null);
+
+    var resultList = Finder.runFinder("stcconf.findOperationForLTEConfiguration", "select", inputDoc);
+
+    var operation = null;
+
+    if(resultList != null && resultList.length > 0) {
+        operation = resultList[0];
+    }
+    return operation;
+  ]]></script>
+</script>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ifGranite_jms.manageGraniteMsg_SubmitOrderAcknowledgement">
+  <highlight>22</highlight>
+  <label>[17.12.2008] Manage Granite Message: Submit Order Acknowledgement [JMS]</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = "[MANAGE GRANITE MESSAGE VIA 'JMS': SUBMIT ORDER ACKNOWLEDGEMENT] ";
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "START...");
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "INPUT: " + (input != null ? input.toXML() : "") + "...");
+          var logMsgId = UserProfile.getMsgLogId();
+
+          if (input != null) {
+
+                ds_ws.storeReceivedGraniteEvent(input, "OCUA");
+
+                var userData1 = input.orderNumber;
+                var userData2 = null;
+                if (input.businessUnit == "Home") {
+                      if(input.parentOrderNumber == null){
+                            var orderMessage = ds_ws.searchOrderMessageHomeByOrderNumber(input.orderNumber);
+                            if (orderMessage != null && orderMessage.parentOrderNumber != null) {
+                                  // - replacing the Order Number
+                                  userData1 = orderMessage.parentOrderNumber;
+                                  userData2 = input.orderNumber;
+                            }
+                      }
+                      else {
+                            userData1 = input.parentOrderNumber;
+                            userData2 = input.orderNumber;
+                      }
+                }
+
+                // Added on 20.03.2010:
+                // - add the 'Order #' to the CWMESSAGELOG table in the USER_DATA1;
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "Adding UserData_1 = " + userData1 + " to id = " + logMsgId);
+                UserProfile.setMsgLogData(userData1, userData2, null, logMsgId);
+
+          }
+          else{
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- WARNING - INTERFACE NOT INVOKED: INPUT IS NULL...");
+          }
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "END...");
+  ]]></script>
+</script>

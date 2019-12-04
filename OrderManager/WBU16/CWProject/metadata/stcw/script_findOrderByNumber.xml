@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="a4543042c08239e0d0709a1372c4fad" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.findOrderByNumber">
+  <guid>{02603e60-071a-0090-647a-df5e33f8f136}</guid>
+  <label>Find Order By Number</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="orderNumber" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <valueType>order_com.conceptwave.system.Order</valueType>
+  <script><![CDATA[
+    var orderFinder = new Finder ("stcw:orderByOrderNumberFinder");
+    orderFinder.searchDocument.orderNumber = orderNumber;
+    orderFinder.search ();
+
+    var orderList = orderFinder.list;
+    if (orderList == null || orderList.size <= 0)
+          return (null);
+
+    return (Order.getOrderById (orderList.start.cwOrderId, false));
+  ]]></script>
+</script>

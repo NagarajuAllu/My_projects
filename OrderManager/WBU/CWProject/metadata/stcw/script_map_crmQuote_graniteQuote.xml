@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="ab2c04f75c9bc3098db923fe2d7bdebf" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.map_crmQuote_graniteQuote">
+  <guid>{0045629f-4d58-1376-f60d-3df1b843e83e}</guid>
+  <label>(map) map_crmQuote_graniteQuote</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="output" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="input" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderRowItemId" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_stcw.orderRowItemId</type>
+    </parameter>
+    <parameter name="childQuoteNumber" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="reservationNumber" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    var defaultReservationExpiry = "30";
+
+    if (output == undefined || output == null || output.metadataType != "grws:validateQuote") {
+          Global.logDebug ("map_crmQuote_graniteQuote - nonexistant/wrong output: " + output);
+          return (false);
+    }
+
+    if (input == undefined || input == null || input.metadataType != "wsws:quoteValidation") {
+          Global.logDebug ("map_crmQuote_graniteQuote - nonexistant/wrong input: " + input);
+          return (false);
+    }
+
+    if (orderRowItemId == undefined || orderRowItemId == null) {
+          Global.logDebug ("map_crmQuote_graniteQuote - nonexistant/wrong orderRowItemId: " + orderRowItemId);
+          return (false);
+    }
+
+
+    output.quotation.AccountNumber       = input.accountNumber;
+    output.quotation.BusinessUnit        = input.businessUnit;
+    output.quotation.Comments            = input.comments;
+    output.quotation.CreationDate        = input.creationDate;
+    output.quotation.QuoteNumber         = childQuoteNumber; // it uses the child quote number
+    output.quotation.ParentQuoteNumber   = input.quoteNumber;
+    output.quotation.QuoteStatus         = input.quoteStatus;
+    output.quotation.QuoteType           = input.quoteType;
+    output.quotation.SalesRepresentative = input.salesRepresentative;
+
+    if (input.lineItems != null) {
+          var found = false;
+          for (var index = 0; index < input.lineItems.length && !found; index++) {
+                if(input.lineItems[index].orderRowItemId == orderRowItemId) {
+                      found = true;
+                      mapLineItem_ (output.quotation.LineItems[0], input.lineItems[index], input.creationDate, input.quoteNumber);
+                }
+          }
+    }
+    return (true);
+
+    //
+    //  mapLineItem_
+    //
+    function mapLineItem_ (output, input, creationDate, quoteNumber) {
+
+          output.AssetNumber        = input.assetNumber;
+          output.Bandwidth          = input.bandwidth
+          output.CreationDate       = input.creationDate;
+          if(input.creationDate == null) {
+                output.CreationDate   = creationDate;
+          }
+          output.PrimaryAssetNumber = input.primaryAssetNumber;
+          output.ProductCode        = input.productCode;
+          output.ReservationNumber  = reservationNumber; // it uses the generated one ...
+          if(reservationNumber == null) {
+                // fix required by Rajakumar - see mail 11/05/2010 15:21
+                output.ReservationNumber  = stcw.createReservationNumber(quoteNumber, orderRowItemId);
+          }
+          output.SegmentFlag        = input.segmentFlag;
+          output.ServiceDate        = input.serviceDate;
+          output.Action             = input.action;
+          output.FeasibilityStatus  = input.feasibilityStatus;
+          output.OrderRowItemId     = input.orderRowItemId;
+          output.Quantity           = input.quantity;
+
+          // Commented and replace with fixed value to bypass EAI issues
+          if(stcc.stringHasValue(input.reservationDays)) {
+                output.ReservationExpiry  = input.reservationDays;
+          }
+          else {
+                output.ReservationExpiry  = defaultReservationExpiry;
+          }
+
+          output.Restoration        = input.restoration;
+          output.ServiceStatus      = input.serviceStatus;
+
+          if(input.subservices != null) {
+                for (var index = 0; index < input.subservices.length; index++) {
+                      mapSubService_ (output.Subservices [index], input.subservices [index], creationDate);
+                }
+          }
+
+          if(input.nameValue != null) {
+                for (var index = 0; index < input.nameValue.length; index++) {
+                      mapNameValue_ (output.NameValue [index], input.nameValue [index]);
+                }
+          }
+
+    }            // m a p L i n e I t e m _
+
+    //
+    //  mapSubService_
+    //
+    function mapSubService_ (outputx, inputx, creationDate) {
+
+          outputx.AssetNumber = inputx.assetNumber;
+          outputx.Bandwidth = inputx.bandwidth
+          outputx.CreationDate = inputx.creationDate;
+          if(inputx.creationDate == null) {
+                outputx.CreationDate   = creationDate;
+          }
+
+          outputx.PrimaryAssetNumber = inputx.primaryAssetNumber;
+          outputx.ProductCode = inputx.productCode;
+          outputx.ReservationNumber = inputx.reservationNumber;
+          outputx.SegmentFlag = inputx.segmentFlag;
+          outputx.ServiceDate = inputx.serviceDate;
+
+          if(inputx.nameValue != null) {
+                for (var index = 0; index < inputx.nameValue.length; index++) {
+                      mapNameValue_ (outputx.NameValue [index], inputx.nameValue [index]);
+                }
+          }
+    }            // m a p S u b S e r v i c e _
+
+    //
+    //  mapNameValue_
+    //
+    function mapNameValue_ (output, input) {
+          // output.Name  = input.name;
+          // output.Value = input.value;
+          output.Name  = stcw.convertCRMNameToGraniteOne(input.name);
+          output.Value = stcw.convertCRMValueToGraniteOne(input.name, input.value);
+    }            // m a p N a m e V a l u e _
+  ]]></script>
+</script>

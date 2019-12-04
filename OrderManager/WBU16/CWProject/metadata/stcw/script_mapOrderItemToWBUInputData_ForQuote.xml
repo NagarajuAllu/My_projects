@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.mapOrderItemToWBUInputData_ForQuote">
+  <label>Map OrderItem To WBU Input Data For Quote</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="elementTypeInOrderTree" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="parentServiceDocId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var cim = "W";
+    var quoteOrder = "Q";
+
+    var orderItem = null;
+    var orderItemNVPairs = null;
+    var orderItemVASNVPairs = null;
+    var parentLineItemNVPairs = null;
+    var countNVPairs = 0;
+
+    if(elementTypeInOrderTree == "B") {
+        orderItem = orderItemContainer.parentLineItem;
+        orderItemNVPairs = orderItemContainer.parentLineItemNameValueParameters;
+        orderItemVASNVPairs = orderItemContainer.parentLineItemVASNVParameters;
+
+        parentLineItemNVPairs = null;
+    }
+    else if(elementTypeInOrderTree == "C") {
+        orderItem = orderItemContainer.serviceLineItem;
+        orderItemNVPairs = orderItemContainer.serviceLineItemNameValueParameters;
+        orderItemVASNVPairs = orderItemContainer.serviceLineItemVASNVParameters;
+
+        parentLineItemNVPairs = bundleOrder.parentLineItems[0].parentLineItemNameValueParameters;
+    }
+    else if(elementTypeInOrderTree == "S") {
+        orderItem = orderItemContainer.subServiceLineItem;
+        orderItemNVPairs = orderItemContainer.subServiceLineItemNameValueParameters;
+        orderItemVASNVPairs = orderItemContainer.subServiceLineItemVASNVParameters;
+
+        parentLineItemNVPairs = bundleOrder.parentLineItems[0].parentLineItemNameValueParameters;
+    }
+    else  {
+        orderItem = orderItemContainer.subSubServiceLineItem;
+        orderItemNVPairs = orderItemContainer.subSubServiceLineItemNameValueParameters;
+        orderItemVASNVPairs = orderItemContainer.subSubServiceLineItemVASNVParameters;
+
+        parentLineItemNVPairs = bundleOrder.parentLineItems[0].parentLineItemNameValueParameters;
+    }
+
+    var graniteInputData = new DataStructure("grws.validateQuote");
+
+    /****
+     *  ORDER HEADER
+     ****/
+    // extracting rules to map orderHeader attributes of the order into orderHeader of the DS
+    var mappingRulesFound = stcw.getMappingFromCOMToGraniteData(cim, quoteOrder, "OH", "OH");
+    if(mappingRulesFound != null) {
+        for (var i=0; i<mappingRulesFound.length; i++) {
+    debugPrintln(stcc.getSysdateForLog() + " mapOrderItemToWBUInputData_ForQuote - using mapping for OH-OH: " + mappingRulesFound[i].toXML());
+            graniteInputData.quotation[mappingRulesFound[i].giName] = bundleOrder.orderHeader[mappingRulesFound[i].comName];
+        }
+    }
+
+    // extracting rules to map lineItem attributes of the order into orderHeader of the DS
+    mappingRulesFound = stcw.getMappingFromCOMToGraniteData(cim, quoteOrder, "LI", "OH");
+    if(mappingRulesFound != null) {
+        for (var i=0; i<mappingRulesFound.length; i++) {
+    debugPrintln(stcc.getSysdateForLog() + " mapOrderItemToWBUInputData_ForQuote - using mapping for LI-OH:" + mappingRulesFound[i].toXML());
+            graniteInputData.quotation[mappingRulesFound[i].giName] = orderItem[mappingRulesFound[i].comName];
+        }
+    }
+
+    graniteInputData.quotation.QuoteStatus = (bundleOrder.orderHeader.reservation == "Y" ? "Reservation" : "Feasibility");
+    graniteInputData.quotation.QuoteType = (bundleOrder.orderHeader.feasibilityFor == "INSTALL" ? "I" : "C");
+
+
+    /****
+     *  LINE ITEM
+     ****/
+    // extracting rules to map lineItem attributes of the order into lineItem of the DS
+    mappingRulesFound = stcw.getMappingFromCOMToGraniteData(cim, quoteOrder, "LI", "LI");
+    if(mappingRulesFound != null) {
+        var quotableService = new DataStructure("grjc.QuotableService");
+        for (var i=0; i<mappingRulesFound.length; i++) {
+    debugPrintln(stcc.getSysdateForLog() + " mapOrderItemToWBUInputData_ForQuote - using mapping for LI-LI:" + mappingRulesFound[i].toXML());
+            quotableService[mappingRulesFound[i].giName] = orderItem[mappingRulesFound[i].comName];
+        }
+
+        graniteInputData.quotation.LineItems[0] = quotableService;
+    }
+
+    // setting ServiceStatus and FeasibilityStatus
+    if(orderItem.action == "A") {
+        graniteInputData.quotation.LineItems[0].ServiceStatus = "Add";
+        graniteInputData.quotation.LineItems[0].FeasibilityStatus = null;
+    }
+    else if(orderItem.action == "M") {
+        if(bundleOrder.orderHeader.feasibilityFor.toUpperCase() == "CHANGE" && bundleOrder.orderHeader.orderStatus.toUpperCase() == "NEW") {
+            graniteInputData.quotation.LineItems[0].ServiceStatus = "Add";
+        }
+        else {
+            graniteInputData.quotation.LineItems[0].ServiceStatus = "Revise";
+        }
+        graniteInputData.quotation.LineItems[0].FeasibilityStatus = "Feasible";
+    }
+    else if(orderItem.action == "N") {
+        graniteInputData.quotation.LineItems[0].ServiceStatus = "Unchanged";
+        graniteInputData.quotation.LineItems[0].FeasibilityStatus = "Feasible";
+    }
+    else if(orderItem.action == "C") {
+        graniteInputData.quotation.LineItems[0].ServiceStatus = "Cancel";
+        graniteInputData.quotation.LineItems[0].FeasibilityStatus = "Feasible";
+    }
+
+
+    /****
+     *  LINE ITEM - NV Pairs
+     ****/
+    // mapping LineItem NV pairs
+    if(orderItemNVPairs != null) {
+        countNVPairs = 0;
+        var nvPairInOrder = null;
+        for (var i=0; i<orderItemNVPairs.length; i++) {
+            if(elementTypeInOrderTree == "B") {
+                nvPairInOrder = orderItemNVPairs[i].parentLineItemNameValueParameter;
+            }
+            else if(elementTypeInOrderTree == "C") {
+                nvPairInOrder = orderItemNVPairs[i].serviceLineItemNameValueParameter;
+            }
+            else if(elementTypeInOrderTree == "S") {
+                nvPairInOrder = orderItemNVPairs[i].subServiceLineItemNameValueParameter;
+            }
+            else {
+                nvPairInOrder = orderItemNVPairs[i].subSubServiceLineItemNameValueParameter;
+            }
+
+            mapNameValuePair_(graniteInputData.quotation.LineItems[0].NameValue[countNVPairs], nvPairInOrder);
+            countNVPairs++;
+        }
+    }
+    // adding ParentProductCode NV Pair
+    mapNameValueIntoPair_(graniteInputData.quotation.LineItems[0].NameValue[countNVPairs], "bundleProductCode", bundleOrder.parentLineItems[0].parentLineItem.productCode);
+    countNVPairs++;
+    mapNameValueIntoPair_(graniteInputData.quotation.LineItems[0].NameValue[countNVPairs], "ParentProductId", bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier);
+    countNVPairs++;
+
+    // adding AccessType NV Pair
+    var accessTypeValue = (orderItem.locationAAccessType != null ? orderItem.locationAAccessType : orderItem.locationBAccessType);
+    if(accessTypeValue != null) {
+        var existingNVPairPosition = findNVPairPosition_(graniteInputData.quotation.LineItems[0].NameValue, "AccessType");
+        if(existingNVPairPosition < 0) {
+            mapNameValueIntoPair_(graniteInputData.quotation.LineItems[0].NameValue[countNVPairs], "AccessType", accessTypeValue);
+            countNVPairs++;
+        }
+        else {
+            graniteInputData.quotation.LineItems[0].NameValue[existingNVPairPosition].Value = stcw.convertCOMValueToGraniteOne("AccessType", accessTypeValue);
+        }
+    }
+
+    // adding 'ParentService WO Name' NV Pair
+    if(parentServiceDocId != null || orderItem.isVAS) {
+        if(orderItem.isVAS) {
+            var orchestrationRecord = stcw.getRecordInOrchestrationTableByLineItemId(orderItem.id);
+            if(orchestrationRecord != null) {
+                parentServiceDocId = orchestrationRecord.cwParentObjectId;
+            }
+        }
+
+        var parentServiceDoc = null;
+        if(parentServiceDocId != null) {
+            parentServiceDoc = bundleOrder.getItemById(parentServiceDocId);
+            if(parentServiceDoc == null) {
+                parentServiceDoc = Document.readDoc("stcw.lineItemDocument", parentServiceDocId);
+            }
+        }
+
+        if(parentServiceDoc != null) {
+            var parentWONumber = parentServiceDoc.workOrderNumber;
+            if(parentWONumber == null) {
+    debugPrintln(stcc.getSysdateForLog() + " mapOrderItemToWBUInputData_ForQuote - WO# for ParentService [" + parentServiceDocId + "] is null; searching in Granite");
+                // it means that the parentService was not provisioned; looking for the active version of the bundle and getting
+                parentWONumber = granite.getWONameForResource(parentServiceDoc.serviceNumber);
+            }
+
+            if(parentWONumber != null) {
+                mapNameValueIntoPair_(graniteInputData.quotation.LineItems[0].NameValue[countNVPairs], "ParentService WO Name", parentWONumber);
+                countNVPairs++;
+            }
+            else {
+    debugPrintln(stcc.getSysdateForLog() + " mapOrderItemToWBUInputData_ForQuote - Unable to find WO# for ParentService [" + parentServiceDocId + "]!!!!");
+            }
+        }
+    }
+
+
+
+
+    /****
+     *  ORDER HEADER - NV Pairs
+     ****/
+    // mapping OrderHeader NV pairs
+    if(bundleOrder.orderHeaderParameters != null) {
+        countNVPairs = 0;
+        for (var i=0; i<bundleOrder.orderHeaderParameters.length; i++) {
+            mapNameValuePair_(graniteInputData.quotation.LineItems[0].NameValue[countNVPairs], bundleOrder.orderHeaderParameters[i].orderHeaderParameter);
+            countNVPairs++;
+        }
+    }
+
+    /****
+     *  LINE ITEM - NV Pairs Of ParentLineItem
+     ****/
+    if(parentLineItemNVPairs != null) {
+        // it means that it's a bundle ...
+        for (var i=0; i<parentLineItemNVPairs.length; i++) {
+            mapNameValuePair_(graniteInputData.quotation.LineItems[0].NameValue[countNVPairs], parentLineItemNVPairs[i].parentLineItemNameValueParameter);
+            countNVPairs++;
+        }
+    }
+
+
+    /****
+     *  LINE ITEM - VAS NV Pairs
+     ****/
+    // mapping LineItem VAS NV pairs
+    if(orderItemVASNVPairs != null) {
+        var vasNVPairInOrder = null;
+        for (var i=0; i<orderItemVASNVPairs.length; i++) {
+            if(elementTypeInOrderTree == "B") {
+                vasNVPairInOrder = orderItemVASNVPairs[i].parentLineItemVASNVParameter;
+            }
+            else if(elementTypeInOrderTree == "C") {
+                vasNVPairInOrder = orderItemVASNVPairs[i].serviceLineItemVASNVParameter;
+            }
+            else if(elementTypeInOrderTree == "S") {
+                vasNVPairInOrder = orderItemVASNVPairs[i].subServiceLineItemVASNVParameter;
+            }
+            else {
+                vasNVPairInOrder = orderItemVASNVPairs[i].subSubServiceLineItemVASNVParameter;
+            }
+            mapNameValuePair_(graniteInputData.quotation.LineItems[0].NameValue[countNVPairs], vasNVPairInOrder);
+            countNVPairs++;
+        }
+    }
+
+
+
+
+    return graniteInputData;
+
+
+
+    function findNVPairPosition_(nvPairs, requiredNVPairName) {
+        var foundNVPairPosition = -1;
+
+        if(nvPairs != null) {
+            for(var i=0; i<nvPairs.length; i++) {
+                if(nvPairs[i].Name == requiredNVPairName) {
+                    foundNVPairPosition = i;
+                }
+            }
+        }
+
+        return foundNVPairPosition;
+    }
+
+
+    //
+    //  mapNameValuePair_
+    //
+    function mapNameValuePair_ (output, input) {
+        output.Name  = stcw.convertCOMNameToGraniteOne(input.name);
+        output.Value = stcw.convertCOMValueToGraniteOne(input.name, input.value);
+    }
+
+    //
+    //  mapNameValueIntoPair_
+    //
+    function mapNameValueIntoPair_ (output, inputName, inputValue) {
+        output.Name  = stcw.convertCOMNameToGraniteOne(inputName);
+        output.Value = stcw.convertCOMValueToGraniteOne(inputName, inputValue);
+    }
+  ]]></script>
+</script>

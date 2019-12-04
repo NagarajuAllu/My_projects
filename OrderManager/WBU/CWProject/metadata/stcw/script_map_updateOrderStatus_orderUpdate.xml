@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="38b906172dbbca09f644a360c0775cbf" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.map_updateOrderStatus_orderUpdate">
+  <guid>{0b4286f1-1328-af1c-5700-2395ab54ee32}</guid>
+  <label>(map) map_updateOrderStatus_orderUpdate</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="output" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="input" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    if (output == undefined || output == null || output.metadataType != "siosu:processRequest_el") {
+          Global.logDebug ("map_updateorderStatus_orderUpdate - nonexistant/wrong output: " + output);
+          return (false);
+    }
+
+    if (input == undefined || input == null || input.metadataType != "wgws:updateOrderStatus") {
+          Global.logDebug ("map_updateorderStatus_orderUpdate - nonexistant/wrong input: " + input);
+          return (false);
+    }
+
+    var outputRequest = output.Request;
+
+    outputRequest.AssetNumber       = input.assetNumber;
+    outputRequest.AssetStatus       = input.assetStatus;
+    outputRequest.BusinessUnit      = input.businessUnit;
+    outputRequest.Comments          = input.comments;
+    outputRequest.NINumber          = input.NINumber;
+    outputRequest.OrderNumber       = input.orderNumber;
+    outputRequest.SystemDesignation = input.systemDesignation;
+    outputRequest.workOrderStatus   = input.workOrderStatus;
+
+    if (input.nameValue != null) {
+          for (var index = 0; index < input.nameValue.length; index++) {
+                outputRequest.Attributes.AttributeList.ArrayOfAttributeListItem[index] = new DataStructure("siosu:AttributeList");
+                mapNameValue_ (outputRequest.Attributes.AttributeList.ArrayOfAttributeListItem[index], input.nameValue[index]);
+          }
+    }
+
+    return (true);
+
+    //
+    //  mapNameValue_
+    //
+    function mapNameValue_ (output, input) {
+          // output.Name  = input.name;
+          // output.Value = input.value;
+          output.Name  = stcw.convertCRMNameToGraniteOne(input.name);
+          output.Value = stcw.convertCRMValueToGraniteOne(input.name, input.value);
+    }            // m a p N a m e V a l u e _
+  ]]></script>
+</script>

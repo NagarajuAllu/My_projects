@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process filenameHash="7eefd871e9d6f1d71d83728dea6f8975" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.globalSyncAllOrdersBetweenExpediterAndGranite">
+  <activity name="start" type="seqActivity">
+    <guid>{087c9788-3bdf-c75e-e284-82d8f4d8e18f}</guid>
+    <label>Start</label>
+    <schedule type="sched">
+      <instance>Daily</instance>
+      <time>00:01:00</time>
+    </schedule>
+    <x>95.0</x>
+    <y>100.0</y>
+    <childList>
+      <child name="syncOrderBetweenExpdAndGraniteGlobalProcess" type="spawnActivity">
+        <element>proc_stcw.syncAllOrderBetweenExpdAndGraniteProcess</element>
+        <guid>{0be83d0b-e57e-b722-5193-e9b8f74ba866}</guid>
+        <label>Sync Orders Between Expediter And Granite</label>
+        <x>244.0</x>
+        <y>69.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0c43213d-03dd-4c77-3e65-6f43c61c4ec9}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Starting USER process 'SyncAllOrdersBetweenExpediterAndGranite'");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="waitForEndSyncOrderProcess" type="joinActivity">
+        <element>proc_stcw.syncAllOrderBetweenExpdAndGraniteProcess</element>
+        <guid>{0467de7a-e476-b53d-dcc9-0951cdfabd3c}</guid>
+        <label>Wait For End SyncOrderProcess</label>
+        <x>413.0</x>
+        <y>83.0</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <guid>{06a750a3-b8bd-7e94-9844-08af212bbe40}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Completed USER process 'SyncAllOrdersBetweenExpediterAndGranite'");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="syncAllQuoteBetweenExpdAndGraniteProcess" type="spawnActivity">
+        <element>proc_stcw.syncAllQuoteBetweenExpdAndGraniteProcess</element>
+        <guid>{05db6360-c0ab-8b0b-7ad3-9c5e105dfbde}</guid>
+        <label>Sync All Quotes Between Expediter And Granite</label>
+        <x>630.0</x>
+        <y>70.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0254a7c9-982b-7c97-c313-a1c9da466739}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Starting USER process 'SyncAllQuotesBetweenExpdAndGraniteProcess'");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="waitForEndSyncQuoteProcess" type="joinActivity">
+        <element>proc_stcw.syncAllQuoteBetweenExpdAndGraniteProcess</element>
+        <guid>{04b58269-71b8-f11f-55eb-d3b39451ce1a}</guid>
+        <label>Wait For End SyncQuoteProcess</label>
+        <x>832.0</x>
+        <y>83.0</y>
+      </child>
+      <child name="repeat" type="repeatActivity">
+        <element>proc_stcw.globalSyncAllOrdersBetweenExpediterAndGranite/seqActivity_start</element>
+        <guid>{064ea435-7634-d27f-0009-bf205ca834ab}</guid>
+        <label>Repeat</label>
+        <x>492.0</x>
+        <y>283.0</y>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{02459132-6095-16c1-c349-c446a5a4435f}</guid>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Starting global process 'Global - SyncAllOrdersBetweenExpediterAndGranite'");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <guid>{080569d4-36cc-77c3-c606-5afac87405d2}</guid>
+  <highlight>10</highlight>
+  <label>Global - Sync All Orders Between Expediter And Granite</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <revision>3</revision>
+  <type>Global</type>
+</process>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="8be34ce83cd2c4f38338d31a4dd5d66d" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.performFullValidationForSubmitOrder">
+  <label>Perform Full Validation For SubmitOrder</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var failureArray = null;
+
+    // check number of bundles
+    if(bundleOrder.bundles.length > 1) {
+        var validationError = ["AE0028", Global.translateText("AE0028")];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, true);
+    }
+
+    // perform full validation on the received order
+    failureArray = ds_ws.performFullValidationOnOrder(bundleOrder, true, failureArray);
+
+    // perform validation with Granite
+    failureArray = ds_ws.performOrderValidationInGranite(bundleOrder, true, failureArray);
+
+
+    // perform validations required by orderType <> 'I':
+    // 1. all the lineItems in the active order with action <> 'D' have to be in the received orders
+    // 2. in case of orderType 'E', the active orderType has to be 'D'
+    // 3. in case of orderType 'T', only the accountNumber attribute in orderHeader and lineItem can be change
+    // 4. in case the active orderType is 'O', no other orders can be received
+    // 5. in case the active orderType is 'D', only orders with orderType 'E' can be received
+    if(bundleOrder.orderHeader.orderType != null && bundleOrder.orderHeader.orderType != "I" && bundleOrder.orderHeader.orderType != "F") {
+        var validationErrors = null;
+        for(var i=0; i<bundleOrder.bundles.length; i++) {
+            var bundleIdentifier = bundleOrder.bundles[i].bundle.lineItemIdentifier;
+            var activeBundle = ds_ws.getAllLineItemsByIdentifierAndProvisioningFlag(bundleIdentifier, "B", "ACTIVE");
+            if(activeBundle != null && activeBundle.length > 0) {
+                // 1. check that all the lineItems in the active order with action <> 'D' have to be in the received orders
+                // use ds_ws.checkIfItemsInActiveOrderWereReceived(cwOrderId,orderNumber,parentElementDocIdInActiveOrder,containerInCurrentOrder,elementTypeInOrderTree,failureArray)
+                failureArray = ds_ws.checkIfItemsInActiveOrderWereReceived(activeBundle[0].cwOrderId, bundleOrder.orderHeader.orderNumber, activeBundle[0].id, bundleOrder.bundles[0], "C", failureArray);
+
+                var activeBundleOrder = Order.getOrderById(activeBundle[0].cwOrderId);
+                if(activeBundleOrder != null) {
+                    if(bundleOrder.orderHeader.orderType == "E" || bundleOrder.orderHeader.orderType == "T" ) {
+                        // 2. perform validation on Resume: in case of orderType 'E', the active orderType has to be 'D'
+                        if(bundleOrder.orderHeader.orderType == "E") {
+                            if(activeBundleOrder.orderHeader.orderType != "D") {
+                                // the "ACTIVE" bundle is in an order whose type is not "Tempo Disconnect"
+                                validationErrors = ["AE0051", Global.translateText("AE0051", null, activeBundleOrder.orderHeader.orderType)];
+                                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, true);
+                            }
+                        }
+
+
+                        // 3. perform validation on Transfer: in case of orderType 'T', only the accountNumber attribute in orderHeader and lineItem can be change
+                        if(bundleOrder.orderHeader.orderType == "T") {
+                            // ds_ws.checkReceivedOHCompliantWithActive_Transfer(receivedOrder, activeOrder, failureArray, bundleIdentifier, isOrderMigrated)
+                            failureArray = ds_ws.checkReceivedOHCompliantWithActive_Transfer(bundleOrder, activeBundleOrder, failureArray, null, activeBundleOrder.orderHeader.isMigrated);
+
+                            // ds_ws.checkReceivedItemCompliantWithActive_Transer(receivedLineItemContainer, activeLineItemContainer, elementTypeInOrderTree, parentAccountNumber, parentOldAccountNumber, parentFictBillingNumber, failureArray, bundleIdentifier, isOrderMigrated);
+                            failureArray = ds_ws.checkReceivedItemCompliantWithActive_Transer(bundleOrder.bundles[i], activeBundleOrder.bundles[i], "B", null, null, null, failureArray, null, activeBundleOrder.orderHeader.isMigrated);
+                        }
+                    }
+
+                    // 4. in case the active orderType is 'O', no other orders can be received
+                    if(activeBundleOrder.orderHeader.orderType == "O") {
+                        // the "ACTIVE" bundle is in an order whose type is "Permanent Disconnect"
+                        validationErrors = ["AE0068", Global.translateText("AE0068", null, bundleOrder.orderHeader.orderType)];
+                        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, true);
+                    }
+
+                    // 5. in case the active orderType is 'D', only orders with orderType 'E' can be received
+                    if(activeBundleOrder.orderHeader.orderType == "D") {
+                        if(bundleOrder.orderHeader.orderType != "E" && bundleOrder.orderHeader.orderType != "O") {
+                            // the "ACTIVE" bundle is in an order whose type is "Tempo Disconnect"; the next one can be only "Resume"
+                            // SMR 7910: now the next one can be also a "Permanent Disconnect"
+                            validationErrors = ["AE0069", Global.translateText("AE0069", null, bundleOrder.orderHeader.orderType)];
+                            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, true);
+                        }
+                    }
+
+                    // 6. in case of receivedOrderType = 'O', the existing order has not to be already a disconnect or have the primaryOrderNumber set
+                    if(bundleOrder.orderHeader.orderType == "O") {
+                        if(activeBundleOrder.orderHeader.orderType == "O") {
+                            var validationError = ["AE0107", Global.translateText("AE0107", null, activeBundleOrder.orderHeader.primaryOrderNumber)];
+                            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, true);
+                        }
+                    }
+
+                    // 7. the existing order has not to have the primaryOrderNumber set
+                    if(activeBundleOrder.orderHeader.primaryOrderNumber != null) {
+                        var validationError = ["AE0104", Global.translateText("AE0104", null, activeBundleOrder.orderHeader.primaryOrderNumber)];
+                        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, true);
+                    }
+                }
+                else {
+                    validationErrors = ["AE0052", Global.translateText("AE0052", null, activeBundle[0].cwOrderId)];
+                    failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, true);
+                }
+
+                // 6. setting the status of the elements with action = 'N' with the status of the corresponding element in active bundle
+                ds_ws.setStatusOfLineItemsWithActionNFromActiveOrder(bundleOrder.bundles[i], activeBundle[0].cwOrderId);
+            }
+            else {
+                validationErrors = ["AE0046", Global.translateText("AE0046", null, bundleIdentifier)];
+                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, true);
+            }
+        }
+    }
+
+    failureArray = ds_ws.performFullValidationOnSIP(bundleOrder, true, false, failureArray);
+
+    failureArray = ds_ws.performFullValidationOnMATM(bundleOrder, true, failureArray);
+
+    failureArray = ds_ws.performFullValidationOnSIPMW(bundleOrder, true, false, failureArray);
+
+
+    return failureArray;
+  ]]></script>
+</script>

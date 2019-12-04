@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.forceCompleteTrackRecords">
+  <label>Force Complete Track Records</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderId" type="rifp"/>
+  </parameterList>
+  <script><![CDATA[
+    var fndr = new Finder('workflow.trackingFinder');
+    fndr.searchDocument.orderId = orderId;
+
+    var resList = fndr.search();
+
+    if(resList.length > 0){
+        for (var i=0; i < resList.length; i++){
+            if(!resList[i].completionDateTime){
+                debugPrintln("Completing activity for terminated process: "+ resList[i].operationName);
+                resList[i].completionDateTime = resList[i].assignToUserDateTime;
+                resList[i].save();
+            }
+        }
+    }
+  ]]></script>
+</script>

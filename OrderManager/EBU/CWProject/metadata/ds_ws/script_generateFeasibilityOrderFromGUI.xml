@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="74a05b8a197b3ff58c8dbd6514341a0f" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.generateFeasibilityOrderFromGUI">
+  <label>Generate Feasibility Order From GUI</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="inputDocument" type="rifp">
+      <type>doc_com.conceptwave.system.Document</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var order = new Order("ds_ws:bundleOrderSTC");
+
+    var selectedCustomer = granite.getCustomerDataInGranite(inputDocument.customerReferenceInGranite);
+    var creationDate = new Date();
+    var icmsSONumber = "MF-" + common.getLeftPadValueFromSequence("STC_ICMSSONUMBER4GUI_SEQ", "0", 4);
+    var siteA = granite.getSiteDataInGranite(inputDocument.siteAReferenceInGranite, null);
+    var siteZ = granite.getSiteDataInGranite(inputDocument.siteZReferenceInGranite, null);
+
+    // mapping orderHeader
+    order.orderHeader.customerIdNumber = (selectedCustomer != null ? selectedCustomer.CUSTOMER_ID : null);
+    order.orderHeader.accountNumber = (selectedCustomer != null ? selectedCustomer.CUSTOMER_ID : null);
+    order.orderHeader.customerName = (selectedCustomer != null ? selectedCustomer.CUSTOMER_NAME : null);
+    order.orderHeader.orderNumber = "FOM" + common.getLeftPadValueFromSequence("SEQ_ORDERNUMBER4GUI_SEQ", "0", 5);
+    order.orderHeader.orderType = "F";
+    order.orderHeader.orderStatus = "New";
+    order.orderHeader.creationDate = creationDate;
+    order.orderHeader.createdBy = Global.getUserId();
+    order.orderHeader.serviceDate = inputDocument.serviceDate;
+    order.orderHeader.feasibilityFor = "INSTALL";
+    order.orderHeader.reservation = "N";
+    order.orderHeader.icmsSalesOrderNumber = icmsSONumber;
+    order.orderHeader.businessUnit = "Enterprise";
+    order.orderHeader.receivedDate = creationDate;
+    order.orderHeader.isMigrated = false;
+    order.orderHeader.internalOrder = "Y";
+
+
+
+    var bundleDoc = order.createOrderItemByPath("bundles.1.bundle");
+    bundleDoc.scanMode = "default";
+    bundleDoc.lineItemType = "Root";
+    bundleDoc.priority = "1";
+    bundleDoc.action = "A";
+    bundleDoc.serviceType = inputDocument.circuitTypeReferenceInGranite;
+    bundleDoc.productType = inputDocument.circuitTypeReferenceInGranite;
+    bundleDoc.icmsSONumber = icmsSONumber;
+    bundleDoc.fictBillingNumber = icmsSONumber;
+    bundleDoc.projectId = inputDocument.projectId;
+    bundleDoc.bandwidth = inputDocument.circuitBWReferenceInGranite;
+    bundleDoc.accountNumber = (selectedCustomer != null ? selectedCustomer.CUSTOMER_ID : null);
+    bundleDoc.locationACCLICode = siteA.SITE_HUM_ID;
+    bundleDoc.locationAContactAddress = "NA";
+    bundleDoc.locationAContactName = "NA";
+    bundleDoc.locationAContactTel = "NA";
+    bundleDoc.locationBCCLICode = siteZ.SITE_HUM_ID;
+    bundleDoc.locationBContactAddress = "NA";
+    bundleDoc.locationBContactName = "NA";
+    bundleDoc.locationBContactTel = "NA";
+    bundleDoc.serviceDate = inputDocument.serviceDate;
+    bundleDoc.creationDate = creationDate;
+    bundleDoc.serviceNumber = granite.computeNextPathName(bundleDoc.locationACCLICode,
+                                                          bundleDoc.locationBCCLICode,
+                                                          inputDocument.circuitTypeReferenceInGranite + "F");
+    bundleDoc.lineItemIdentifier = bundleDoc.serviceNumber;
+    bundleDoc.dependencies = null;
+    bundleDoc.elementTypeInOrderTree = "B";
+    bundleDoc.isSubmit = true;
+    bundleDoc.isCancel = false;
+    bundleDoc.requestedActionIsA = true;
+    bundleDoc.provisioningFlag = "PROVISIONING";
+
+    // add reason code
+    var reasonCodeDoc = new Document("ds_ws:reasonCode");
+    reasonCodeDoc.parentDocId = bundleDoc.id;
+    reasonCodeDoc.cwOrderId = order.id;
+    reasonCodeDoc.reasonCode = getReasonCodeValue_(inputDocument.reasonCodeForInsertOrder);
+    reasonCodeDoc.save();
+
+    var nvPairs = ds_ws.getAllNVPairsForInsertOrder(inputDocument.id);
+    if(nvPairs != null) {
+        for(var j=0; j<nvPairs.length; j++) {
+            if(nvPairs[j].value != null) {
+                var nvDoc = order.createOrderItemByPath("bundles.1.bundleParameters." + (j+1) + ".bundleParameter");
+                nvDoc.name = nvPairs[j].name;
+                nvDoc.value = nvPairs[j].value;
+                nvDoc.action = "Add";
+                nvDoc.parentElementId = bundleDoc.id;
+            }
+        }
+    }
+
+    debugPrintln("Order created with id = " + order.orderHeader.orderNumber);
+
+    return order;
+
+
+    function getReasonCodeValue_(docId) {
+        var reasonCode = null;
+        if (docId != null) {
+            var input = new Document("cwt_common:docID");
+            input.cwDocID = docId;
+
+            var output = Finder.runFinder("ds_ws.findReasonCodeForInsertOrder", "select", input);
+
+            if (output != null && output.size > 0) {
+                reasonCode = output[0].reasonCode;
+            }
+        }
+
+        return reasonCode;
+    }
+  ]]></script>
+</script>

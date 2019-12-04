@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="cca6697d2fa8138ac1e40cfe4e516e2f" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.performFullValidationOnSIPMW">
+  <label>Perform Full Validation On SIPMW</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="isCancel" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+    var noIssueInCheck = true;
+
+    /*****
+     * Loading Definition from DB
+     ***/
+    var bundleSIPMWProductTypes  = ds_ws.getAllCRMProductTypesForOMInternalProductType("Bundle SIPMW");
+    if(bundleSIPMWProductTypes == null || bundleSIPMWProductTypes.length == 0) {
+        validationErrors = ["AE0083", Global.translateText("AE0083", null, "Bundle SIPMW")];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, isSubmit);
+        noIssueInCheck = false;
+    }
+
+    var bundleSIPProductTypes  = ds_ws.getAllCRMProductTypesForOMInternalProductType("Bundle SIP");
+    if(bundleSIPProductTypes == null || bundleSIPProductTypes.length == 0) {
+        validationErrors = ["AE0083", Global.translateText("AE0083", null, "Bundle SIP")];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, isSubmit);
+        noIssueInCheck = false;
+    }
+
+    var primarySIPMWServiceTypeName = ds_ws.getCRMServiceTypeForOMInternalServiceType("SIPMW/Primary SIPMW");
+    if(primarySIPMWServiceTypeName == null) {
+        validationErrors = ["AE0084", Global.translateText("AE0084", null, "SIPMW/Primary SIPMW")];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, isSubmit);
+        noIssueInCheck = false;
+    }
+    var backupSIPMWServiceTypeName  = ds_ws.getCRMServiceTypeForOMInternalServiceType("SIPMW/Backup SIPMW");
+    if(backupSIPMWServiceTypeName == null) {
+        validationErrors = ["AE0084", Global.translateText("AE0084", null, "SIPMW/Backup SIPMW")];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, isSubmit);
+        noIssueInCheck = false;
+    }
+
+    if(noIssueInCheck) {
+
+        var nvPairNameForPrimaryCircuitRef = "Primary Circuit";
+
+        // performing validations according to the productType of the bundle
+        for(var i=0; i<bundleOrder.bundles.length; i++) {
+            var bundleContainer = bundleOrder.bundles[i];
+            var bundleProductType = bundleContainer.bundle.productType;
+            if(isSIPMWProductType_(bundleProductType)) {
+                // implement checks for SIPMW Bundle:
+                // 1. - it should be composed by (R.161) :
+                //          no more than 1 SIPMW lineItem;
+                //          no more than 1 BSIPMW lineItem;
+                //          no other circuits
+                // 2. - checks that BSIPMW contains an NV pair with the serviceNumber of the Primary SIPMW lineItem; in case the bundle contains both the circuits, OM has to set such attribute while pushing BSIPMW to Granite (R.172)
+                // 3. - reject if action on Primary SIPMW == "Add" in change order
+                // 4. - reject if action on Primary SIPMW == "Delete" in change order
+                // 5. - reject if value for 'Sub Order Type' is not valid or (''Sub Order Type' and 'Existing Circuit' NV pairs are not properly set)
+
+                // 1st check: circuits of the bundle
+                var foundPrimaryLineItemIdentifier = null;
+                var foundSecondaryLineItemIdentifier = null;
+                var foundPrimaryServiceNumber = null;
+                for(var j=0; j<bundleContainer.circuits.length; j++) {
+                    var serviceType = bundleContainer.circuits[j].circuit.serviceType;
+                    var circuitIdentifier = bundleContainer.circuits[j].circuit.lineItemIdentifier;
+                    if(serviceType == primarySIPMWServiceTypeName) {
+                        if(foundPrimaryLineItemIdentifier != null) {
+                            // found too many Primary SIPMW circuit
+                            validationErrors = ["AE0060", Global.translateText("AE0060", null, [serviceType, circuitIdentifier, foundPrimaryLineItemIdentifier, bundleProductType])];
+                            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.bundles[i].bundle.lineItemIdentifier, failureArray, isSubmit);
+                            noIssueInCheck = false;
+                        }
+                        else {
+                            foundPrimaryLineItemIdentifier = bundleContainer.circuits[j].circuit.lineItemIdentifier;
+                            foundPrimaryServiceNumber = bundleContainer.circuits[j].circuit.serviceNumber;
+                        }
+                    }
+                    else if(serviceType == backupSIPMWServiceTypeName) {
+                        if(foundSecondaryLineItemIdentifier != null) {
+                            // found too many Backup SIPMW circuit
+                            validationErrors = ["AE0060", Global.translateText("AE0060", null, [serviceType, circuitIdentifier, foundSecondaryLineItemIdentifier, bundleProductType])];
+                            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.bundles[i].bundle.lineItemIdentifier, failureArray, isSubmit);
+                            noIssueInCheck = false;
+                        }
+                        else {
+                            foundSecondaryLineItemIdentifier = bundleContainer.circuits[j].circuit.lineItemIdentifier;
+                        }
+                    }
+                    else {
+                        validationErrors = ["AE0061", Global.translateText("AE0061", null, [serviceType, circuitIdentifier, bundleProductType])];
+                        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.bundles[i].bundle.lineItemIdentifier, failureArray, isSubmit);
+                        noIssueInCheck = false;
+                    }
+                }
+
+                if(foundPrimaryLineItemIdentifier == null && foundSecondaryLineItemIdentifier == null) {
+                    validationErrors = ["AE0062", Global.translateText("AE0062", null, ["SIPMW", bundleProductType])];
+                    failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.bundles[i].bundle.lineItemIdentifier, failureArray, isSubmit);
+                    noIssueInCheck = false;
+                }
+
+
+                // 2nd check: check settings of NV Pair in BSIPMW
+                if(noIssueInCheck) {
+                    if(foundPrimaryLineItemIdentifier == null) {
+                        // looks for the NV Pair in BSIP to contain the serviceNumber of the Primary SIP
+
+                        var foundNVPair = foundNVPair_(nvPairNameForPrimaryCircuitRef, bundleContainer.circuits[0].circuitParameters);
+                        var foundWithValidValue = false;
+
+                        if(foundNVPair != null) {
+                            foundWithValidValue = ((foundNVPair.value !== null) && (foundNVPair.value.trim().length > 0));
+                        }
+
+                        if((foundNVPair == null) || !foundWithValidValue) {
+                            validationErrors = ["AE0063", Global.translateText("AE0063", null, [foundSecondaryLineItemIdentifier, nvPairNameForPrimaryCircuitRef, "BSIPMW", bundleProductType])];
+                            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.bundles[i].bundle.lineItemIdentifier, failureArray, isSubmit);
+                        }
+                    }
+                    else {
+                        // exist primary
+                        if(foundSecondaryLineItemIdentifier != null) {
+                            // exist backup; it has to contain the reference to the primary, otherwise add it
+                            for(var j=0; j<bundleContainer.circuits.length; j++) {
+                                if(bundleContainer.circuits[j].circuit.serviceType == backupSIPMWServiceTypeName) {
+                                    var foundNVPair = foundNVPair_(nvPairNameForPrimaryCircuitRef, bundleContainer.circuits[j].circuitParameters);
+                                    if(foundNVPair == null) {
+                                        debugPrintln("Adding NVPair \"" + nvPairNameForPrimaryCircuitRef + "\" to Sip Backup");
+                                        if(bundleContainer.circuits[j].circuitParameters == null || bundleContainer.circuits[j].circuitParameters.length == 0) {
+                                            var itemPath = "bundles." + (i+1) + ".circuits." + (j+1) + ".circuitParameters";
+                                            bundleOrder.createOrderItemByPath(itemPath);
+                                        }
+                                        var docNVPair = new Document("ds_ws:nameValueDocument");
+                                        docNVPair.name = nvPairNameForPrimaryCircuitRef;
+                                        docNVPair.value = foundPrimaryServiceNumber;
+                                        docNVPair.parentElementId = bundleContainer.circuits[j].circuit.id;
+                                        bundleContainer.circuits[j].circuitParameters.addDocumentInstance(docNVPair);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // 3rd check: reject if "Primary SIPMW".action = "Add" in Change order
+                // 4th check: reject if "Primary SIPMW".action = "Delete" in Change order
+                if(bundleOrder.orderHeader.orderType == 'C') {
+                    for(var j=0; j<bundleContainer.circuits.length; j++) {
+                        if(bundleContainer.circuits[j].circuit.serviceType == primarySIPMWServiceTypeName) {
+                            if(bundleContainer.circuits[j].circuit.action == "A" || bundleContainer.circuits[j].circuit.action == "D") {
+                                validationErrors = ["AE0064", Global.translateText("AE0064", null, ["SIPMW", bundleContainer.circuits[j].circuit.lineItemIdentifier, bundleContainer.circuits[j].circuit.action, bundleProductType])];
+                                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleContainer.circuits[j].circuit.lineItemIdentifier, failureArray, isSubmit);
+                            }
+                        }
+                    }
+                }
+
+                // 5th check: validation on 'Sub Order Type' and 'Existing Circuit' NV pairs
+                for(var j=0; j<bundleContainer.circuits.length; j++) {
+                    if(bundleContainer.circuits[j].circuit.serviceType == primarySIPMWServiceTypeName) {
+                        var existingCircuitNVPair = foundNVPair_("Existing Circuit", bundleContainer.circuits[j].circuitParameters);
+                        var subOrderTypeNVPair = foundNVPair_("Sub Order Type", bundleContainer.circuits[j].circuitParameters);
+                        var supportDisconnect = ds_ws.checkIfServiceTypeRequireDisconn4NVPair_ExistCirc(primarySIPMWServiceTypeName);
+
+                        if(subOrderTypeNVPair != null) {
+                            // validate current values over the list gathered from DB - Requirement: Validation.R.5
+                            failureArray = ds_ws.validateNVPairValueForServiceTypeInPickList(primarySIPMWServiceTypeName, bundleContainer.circuits[j].circuit.lineItemIdentifier, "Sub Order Type", subOrderTypeNVPair.value, isSubmit, failureArray);
+                        }
+
+                        // checks on Install order
+                        if(bundleOrder.orderHeader.orderType == 'I') {
+                            var referredOrder = null;
+                            if(subOrderTypeNVPair != null && !common.isNullValue(subOrderTypeNVPair.value)) {
+                                if(subOrderTypeNVPair.value == "Migration" || subOrderTypeNVPair.value == "Transfer") {
+                                    // check if Sub Order Type is set and Existing Circuit is not set - Requirement: Validation.R.6
+                                    if(existingCircuitNVPair == null || common.isNullValue(existingCircuitNVPair.value)) {
+                                        validationErrors = ["AE0100", Global.translateText("AE0100", null, ["'Sub Order Type'", "'Existing Circuit'"])];
+                                        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors,bundleContainer.circuits[j].circuit.lineItemIdentifier, failureArray, isSubmit);
+                                    }
+                                    else {
+                                        // check if 'Existing Circuit' NV pair value refer to an existing bundle - Requirement: Validation.R.8
+                                        var existingCircuitActiveList = ds_ws.getAllLineItemsByIdentifierAndProvisioningFlag(existingCircuitNVPair.value, 'B', "ACTIVE");
+                                        if(existingCircuitActiveList == null || existingCircuitActiveList.length == 0) {
+                                            validationErrors = ["AE0101", Global.translateText("AE0101", null, [existingCircuitNVPair.value, "'Existing Circuit'"])];
+                                            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors,bundleContainer.circuits[j].circuit.lineItemIdentifier, failureArray, isSubmit);
+                                        }
+                                        else {
+                                            // ACTIVE record found! check if 'Existing Circuit' NV pair value refer to a PROVISIONING bundle - Requirement: Validation.R.10
+                                            var existingCircuitActiveProvisioning = ds_ws.getAllLineItemsByIdentifierAndProvisioningFlag(existingCircuitNVPair.value, 'B', "PROVISIONING");
+                                            if(existingCircuitActiveProvisioning != null && existingCircuitActiveProvisioning.length > 0) {
+                                                validationErrors = ["AE0102", Global.translateText("AE0102", null, [existingCircuitNVPair.value, "'Existing Circuit'"])];
+                                                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors,bundleContainer.circuits[j].circuit.lineItemIdentifier, failureArray, isSubmit);
+                                            }
+                                            else {
+                                                // NO PROV - check if 'Existing Circuit' NV pair value refer to an ACTIVE already disconnected bundle - Requirement: Validation.R.9
+                                                referredOrder = Order.getOrderById(existingCircuitActiveList[0].orderId);
+                                                if(referredOrder == null) {
+                                                    // unable to load the order due to some internal errors
+                                                    validationErrors = ["AE0052", Global.translateText("AE0102", null, [existingCircuitNVPair.value, "'Existing Circuit'"])];
+                                                    failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors,bundleContainer.circuits[j].circuit.lineItemIdentifier, failureArray, isSubmit);
+                                                }
+                                                else {
+                                                    // checking if the order is already disconnected
+                                                    if(referredOrder.orderHeader.orderType == 'O') {
+                                                        validationErrors = ["AE0106", Global.translateText("AE0106", null, [existingCircuitNVPair.value, "'Existing Circuit'", referredOrder.orderHeader.orderNumber])];
+                                                        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors,bundleContainer.circuits[j].circuit.lineItemIdentifier, failureArray, isSubmit);
+                                                    }
+                                                }
+                                            }
+
+                                            // check if the 'Existing Circuit' NV pair value refer to a bundle whose productType is different from SIP and SIPMW - Requirement: Validation.R.11
+                                            var existingCircuitProductType = existingCircuitActiveList[0].productType;
+                                            if(!isSIPMWProductType_(existingCircuitProductType) && !isSIPProductType_(existingCircuitProductType)) {
+                                                validationErrors = ["AE0103", Global.translateText("AE0103", null, [existingCircuitNVPair.value, "'Existing Circuit'"])];
+                                                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors,bundleContainer.circuits[j].circuit.lineItemIdentifier, failureArray, isSubmit);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            /***
+                            if(existingCircuitNVPair != null && !common.isNullValue(existingCircuitNVPair.value)) {
+                                // check if Sub Order Type is set and Existing Circuit is not set - Requirement: Validation.R.7
+                                if(subOrderTypeNVPair == null || common.isNullValue(subOrderTypeNVPair.value)) {
+                                    validationErrors = ["AE0100", Global.translateText("AE0100", null, ["'Existing Circuit'", "'Sub Order Type'"])];
+                                    failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors,bundleContainer.circuits[j].circuit.lineItemIdentifier, failureArray, isSubmit);
+                                }
+                            }
+                            ***/
+
+                            if(referredOrder != null && supportDisconnect && (failureArray == null || failureArray.length == 0)) {
+                                // link the received order to the referred order
+                                failureArray = ds_ws.linkReceivedSIP_SIPMWToExistingBundle(bundleOrder, isSubmit, isCancel, false, failureArray);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return failureArray;
+
+
+
+    function foundNVPair_(nvPairName, lineItemParameters) {
+        var foundNVPair = null;
+        if(lineItemParameters != null) {
+            for(var j=0; j<lineItemParameters.length && foundNVPair == null; j++) {
+                if(lineItemParameters[j].circuitParameter.name == nvPairName) {
+                    foundNVPair = lineItemParameters[j].circuitParameter;
+                }
+            }
+        }
+
+        return foundNVPair;
+    }
+
+    function isSIPMWProductType_(foundProductType) {
+        var found = false;
+        for(var i=0; i<bundleSIPMWProductTypes.length && !found; i++) {
+            found = (foundProductType == bundleSIPMWProductTypes[i]);
+        }
+
+        return found;
+    }
+
+    function isSIPProductType_(foundProductType) {
+        var found = false;
+        for(var i=0; i<bundleSIPProductTypes.length && !found; i++) {
+            found = (foundProductType == bundleSIPProductTypes[i]);
+        }
+
+        return found;
+    }
+  ]]></script>
+</script>

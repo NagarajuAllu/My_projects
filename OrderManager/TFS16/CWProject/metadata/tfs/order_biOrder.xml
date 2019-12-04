@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<order name="tfs.biOrder">
+  <extends>order_com.conceptwave.system.Order</extends>
+  <label>Blocking Issue Order</label>
+  <metaVersion>21</metaVersion>
+  <childList>
+    <child name="biDocument" type="order">
+      <label>Blocking Issue Document</label>
+      <mandatory>true</mandatory>
+      <orderItem>doc_tfs.STC_BI</orderItem>
+      <orderType>document</orderType>
+      <UserInterface name="UserInterface" type="tree">
+        <autoExpand>true</autoExpand>
+        <defaultFolderImage>undefined</defaultFolderImage>
+        <defaultLeafImage>undefined</defaultLeafImage>
+        <element>order_tfs.biOrder/order_biDocument</element>
+        <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+        <variableList>
+          <variable name="model" type="uivar">
+            <label>model</label>
+            <valueType>order_tfs.biOrder/order_biDocument</valueType>
+          </variable>
+        </variableList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </UserInterface>
+    </child>
+  </childList>
+  <UserInterface name="UserInterface" type="tree">
+    <autoExpand>true</autoExpand>
+    <defaultFolderImage>undefined</defaultFolderImage>
+    <defaultLeafImage>undefined</defaultLeafImage>
+    <element>order_tfs.biOrder</element>
+    <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+    <tableDoc>doc_com.conceptwave.system.TreeDocument</tableDoc>
+    <childList>
+      <child name="biDocument" type="tnOi">
+        <autoExpand>true</autoExpand>
+        <autoSave>true</autoSave>
+        <detailForm>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</detailForm>
+        <detailUI>doc_tfs.STC_BI/ui_UserInterface</detailUI>
+        <element>doc_tfs.STC_BI</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <label>Blocking Issue Document</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_tfs.biOrder/order_biDocument</orderItem>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </child>
+    </childList>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>order_tfs.biOrder</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Menu" type="exov">
+            <base>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="HorizontalLayout" type="elext">
+                <elementList>
+                  <element name="nextUserManagementMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>order_tfs.biOrder/tree_UserInterface/usrActionMethod_nextUserAssignment</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Set Next Users</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>order_tfs.biOrder/tree_UserInterface/permMethod_nextUserActionPermission</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                </elementList>
+              </override>
+              <override name="Order" type="elext"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="nextUserActionPermission" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>STC_ASPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_ASBuiltPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_BBTransPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_BIPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_FATxPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_FacilityDes</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_FNIPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_IOrdInitPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_IntegPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_NetwDesPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_QualityPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_SitePriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_SwchActvPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_TFAModSqPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_TFAPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_TransMapPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_VerificPriv</privilege>
+            <task>true</task>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>STC_XCPriv</privilege>
+            <task>true</task>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+      </method>
+      <method name="nextUserAssignment" type="usrActionMethod">
+        <dialogHeight>500</dialogHeight>
+        <dialogWidth>1024</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var users4OrderFinder = new Finder("workflow.usersForOrderFinder");
+          users4OrderFinder.searchDocument.orderId = this.model.id;
+          var recordsFound = users4OrderFinder.search();
+
+          if(recordsFound != null && recordsFound.length > 0) {
+              return recordsFound[0];
+          }
+
+          Global.throwException("AE0013", this.model.id);
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</order>

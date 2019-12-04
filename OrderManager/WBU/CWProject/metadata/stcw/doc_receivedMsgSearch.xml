@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="fe99ce7bdc13d03e015cea69923f4dcb" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.receivedMsgSearch">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0f75d33d-0843-f892-50cb-0933c4a6ca73}</guid>
+  <label>Received Messages Search</label>
+  <metaVersion>3</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="processId" type="leaf">
+      <guid>{076c4768-011b-3a45-a536-1b29697587f5}</guid>
+      <label>processId</label>
+      <propertyElement type="elfld">
+        <label>processId</label>
+      </propertyElement>
+      <valueType>dtype_cwf_pm.PROCESS_ID</valueType>
+    </variable>
+    <variable name="activityName" type="leaf">
+      <guid>{05bd5fd6-b41f-9d96-c7d6-98b1ab9e1174}</guid>
+      <label>Activity Name</label>
+      <propertyElement type="elfld">
+        <label>Activity Name</label>
+      </propertyElement>
+      <valueType>dtype_stcw.activityName</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.receivedMsgSearch</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="receivedMsgSearchGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="receivedMsgSearchGrid" type="elgrd">
+                    <colWidths>160</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>160px</width>
+                    <elementList>
+                      <element name="receivedMsgSearchHeader" type="elhdr">
+                        <label>Received Messages Search</label>
+                      </element>
+                      <element name="processId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.receivedMsgSearch/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.receivedMsgSearch/leaf_processId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="activityName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.receivedMsgSearch/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.receivedMsgSearch/leaf_activityName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

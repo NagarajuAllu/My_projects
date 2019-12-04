@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="workflow.blockingIssueProcess">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>22.0</x>
+    <y>28.0</y>
+    <childList>
+      <child name="assignBIToProperUser" type="opActivity">
+        <element>iface_workflow.bbTransportDesignTeamIF/oper_assignBIToProperGroup</element>
+        <label>Assign BI To Proper User</label>
+        <participant>part_workflow.bbTransportDesignTeamParticipant</participant>
+        <x>160.0</x>
+        <y>15.0</y>
+      </child>
+      <child name="switchProperUser" type="choiceActivity">
+        <label>Switch Proper User</label>
+        <x>299.0</x>
+        <y>16.0</y>
+        <childList>
+          <child name="assignToFATxTeam" type="opActivity">
+            <element>iface_workflow.bbTransportDesignTeamIF/oper_assignToFATxTeam</element>
+            <label>Assign To FA-Tx Team</label>
+            <participant>part_workflow.bbTransportDesignTeamParticipant</participant>
+            <x>440.0</x>
+            <y>16.0</y>
+            <childList>
+              <child name="startFATxManagement" type="seqActivity">
+                <label>Start FA-Tx Management</label>
+                <x>560.0</x>
+                <y>30.999989</y>
+                <childList>
+                  <child name="issueMoP" type="opActivity">
+                    <element>iface_workflow.faTxTeamIF/oper_issueMoP</element>
+                    <label>Issue MoP</label>
+                    <participant>part_workflow.faTxTeamParticipant</participant>
+                    <x>695.0</x>
+                    <y>31.0</y>
+                  </child>
+                  <child name="mopIssued" type="opActivity">
+                    <element>iface_workflow.faTxTeamIF/oper_mopIssued</element>
+                    <label>MoP Issued</label>
+                    <participant>part_workflow.faTxTeamParticipant</participant>
+                    <x>830.0</x>
+                    <y>24.0</y>
+                    <methodList>
+                      <method name="cwOnProcActAfter" type="action">
+                        <category>script</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + " BI[" + this.process.processOrder.biDocument.biId + "] Mop Issued");
+
+                          this.process.processOrder.biDocument.biStatus = configuration.getExternalNameForStatusByInternalName("MOP ISSUED", "BI");
+                          this.process.processOrder.save();
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActAfter" type="action">
+                <category>script</category>
+                <system>true</system>
+                <script><![CDATA[
+                  debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + " BI[" + this.process.processOrder.biDocument.biId + "] assigned to FA-Tx team");
+
+                  this.process.processOrder.biDocument.biStatus = configuration.getExternalNameForStatusByInternalName("ASSIGNED", "BI");
+                  this.process.processOrder.save();
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="assignToFNITeam" type="opActivity">
+            <element>iface_workflow.bbTransportDesignTeamIF/oper_assignToFNITeam</element>
+            <label>Assign To FNI Team</label>
+            <participant>part_workflow.bbTransportDesignTeamParticipant</participant>
+            <x>367.0</x>
+            <y>271.0</y>
+            <childList>
+              <child name="startFNIManagement" type="seqActivity">
+                <label>Start FNI Management</label>
+                <x>503.0</x>
+                <y>279.0</y>
+                <childList>
+                  <child name="issueMoP" type="opActivity">
+                    <element>iface_workflow.fniTeamIF/oper_issueMoP</element>
+                    <label>Issue MoP</label>
+                    <participant>part_workflow.fniTeamParticipant</participant>
+                    <x>608.0</x>
+                    <y>278.0</y>
+                  </child>
+                  <child name="mopIssued" type="opActivity">
+                    <element>iface_workflow.fniTeamIF/oper_mopIssued</element>
+                    <label>MoP Issued</label>
+                    <participant>part_workflow.fniTeamParticipant</participant>
+                    <x>764.0</x>
+                    <y>267.0</y>
+                    <methodList>
+                      <method name="cwOnProcActAfter" type="action">
+                        <category>script</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + " BI[" + this.process.processOrder.biDocument.biId + "] Mop Issued");
+
+                          this.process.processOrder.biDocument.biStatus = configuration.getExternalNameForStatusByInternalName("MOP ISSUED", "BI");
+                          this.process.processOrder.save();
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActAfter" type="action">
+                <category>script</category>
+                <system>true</system>
+                <script><![CDATA[
+                  debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + " BI[" + this.process.processOrder.biDocument.biId + "] assigned to FNI team");
+
+                  this.process.processOrder.biDocument.biStatus = configuration.getExternalNameForStatusByInternalName("ASSIGNED", "BI");
+                  this.process.processOrder.save();
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="assignToTFAModSquadTeam" type="opActivity">
+            <element>iface_workflow.bbTransportDesignTeamIF/oper_assignToTFAModSquad</element>
+            <label>Assign To TFA ModSquad Team</label>
+            <participant>part_workflow.bbTransportDesignTeamParticipant</participant>
+            <x>153.0</x>
+            <y>514.0</y>
+            <childList>
+              <child name="startTFAModSquadManagement" type="seqActivity">
+                <label>Start TFA ModSquad Management</label>
+                <x>297.0</x>
+                <y>534.0</y>
+                <childList>
+                  <child name="issueMoP" type="opActivity">
+                    <element>iface_workflow.tfaModSqTeamIF/oper_issueMoP</element>
+                    <label>Issue MoP</label>
+                    <participant>part_workflow.tfaModSquadTeamParticipant</participant>
+                    <x>422.0</x>
+                    <y>536.0</y>
+                  </child>
+                  <child name="mopIssued" type="opActivity">
+                    <element>iface_workflow.tfaModSqTeamIF/oper_mopIssued</element>
+                    <label>MoP Issued</label>
+                    <participant>part_workflow.tfaModSquadTeamParticipant</participant>
+                    <x>566.0</x>
+                    <y>527.0</y>
+                    <methodList>
+                      <method name="cwOnProcActAfter" type="action">
+                        <category>script</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + " BI[" + this.process.processOrder.biDocument.biId + "] Mop Issued");
+
+                          this.process.processOrder.biDocument.biStatus = configuration.getExternalNameForStatusByInternalName("MOP ISSUED", "BI");
+                          this.process.processOrder.save();
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActAfter" type="action">
+                <category>script</category>
+                <system>true</system>
+                <script><![CDATA[
+                  debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + " BI[" + this.process.processOrder.biDocument.biId + "] assigned to TFA ModSquad team");
+
+                  this.process.processOrder.biDocument.biStatus = configuration.getExternalNameForStatusByInternalName("ASSIGNED", "BI");
+                  this.process.processOrder.save();
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="prepareToCloseBI" type="opActivity">
+        <element>iface_workflow.biTeamIF/oper_prepareToCloseBITicket</element>
+        <label>Prepare To Close BI</label>
+        <participant>part_workflow.biTeamParticipant</participant>
+        <x>879.0</x>
+        <y>527.0</y>
+      </child>
+      <child name="closeBI" type="opActivity">
+        <element>iface_workflow.biTeamIF/oper_closeBITicket</element>
+        <label>Close BI</label>
+        <participant>part_workflow.biTeamParticipant</participant>
+        <x>1053.0</x>
+        <y>535.0</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + " BI[" + this.process.processOrder.biDocument.biId + "] BI Closed");
+
+              this.process.processOrder.biDocument.biStatus = configuration.getExternalNameForStatusByInternalName("COMPLETED", "BI");
+              this.process.processOrder.biDocument.completionDate = new Date();
+              this.process.processOrder.biDocument.currentUserId = null;
+              this.process.processOrder.save();
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="createBINotificationMsg" type="scriptActivity">
+        <label>Create BI Notification Msg</label>
+        <x>1170.0</x>
+        <y>518.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var biNotificationMsg = new Document("workflow.biNotificationMessage");
+              biNotificationMsg.biId = this.process.processOrder.biDocument.biId;
+              biNotificationMsg.whenAdded = new Date();
+              biNotificationMsg.save();
+
+              debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + " BI[" + this.process.processOrder.biDocument.biId + "] Created BI Notification Msg");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>1294.0</x>
+        <y>536.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + " Completed BI process for order " + this.process.processOrder.toXML());
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="bbTransportDesignTeamParticipant" type="participantActivity">
+        <label>Backbone Transport Design Team Participant</label>
+        <participant>part_workflow.bbTransportDesignTeamParticipant</participant>
+        <x>129.0</x>
+        <y>184.0</y>
+      </child>
+      <child name="faTxTeamParticipant" type="participantActivity">
+        <label>FA-Tx Team Participant</label>
+        <participant>part_workflow.faTxTeamParticipant</participant>
+        <x>720.0</x>
+        <y>121.0</y>
+      </child>
+      <child name="fniTeamParticipant" type="participantActivity">
+        <label>Fixed Network Implementation Team Participant</label>
+        <participant>part_workflow.fniTeamParticipant</participant>
+        <x>657.0</x>
+        <y>359.0</y>
+      </child>
+      <child name="tfaModSquadTeamParticipant" type="participantActivity">
+        <label>TFA ModSquad Team Participant</label>
+        <participant>part_workflow.tfaModSquadTeamParticipant</participant>
+        <x>461.0</x>
+        <y>381.0</y>
+      </child>
+      <child name="biTeamParticipant" type="participantActivity">
+        <label>BI Team Participant</label>
+        <participant>part_workflow.biTeamParticipant</participant>
+        <x>970.0</x>
+        <y>365.0</y>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + " Start BI process for order " + this.process.processOrder.toXML());
+
+          workflow.overload_computeNextUser(this.process.processOrderId, this.process.processOrderItemId, this.process.id, "blockingIssueProcess", "assignBIToProperGroup");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Blocking Issue Process</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>User</type>
+</process>

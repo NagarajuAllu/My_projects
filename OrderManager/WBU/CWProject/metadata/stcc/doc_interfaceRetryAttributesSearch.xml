@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="4fa8e69ec6a652b3065d53dc28fdd33c" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcc.interfaceRetryAttributesSearch">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{006d5bc3-6700-1360-e0c9-fbe3b768826f}</guid>
+  <label>Interface Retry Attributes Search</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="interfaceOperation" type="leaf">
+      <guid>{0349faa8-ebab-bd4e-22bd-5eb6102f6a55}</guid>
+      <label>Interface operation</label>
+      <propertyElement type="elfld">
+        <label>Interface operation</label>
+      </propertyElement>
+      <valueType>dtype_cwf.interOperFQ</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcc.interfaceRetryAttributesSearch</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="searchGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="interfaceRetryAttributesSearchHeader" type="elhdr">
+                    <label>Search</label>
+                    <showValidation>true</showValidation>
+                    <style>CwFOT</style>
+                  </element>
+                  <element name="searchGrid" type="elgrd">
+                    <colWidths>195,195</colWidths>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>390px</width>
+                    <elementList>
+                      <element name="interfaceOperation1" type="elslct">
+                        <columnSpan>1</columnSpan>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcc.interfaceRetryAttributesSearch/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcc.interfaceRetryAttributesSearch/leaf_interfaceOperation</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcconf.STCW_WORKORDERTYPE_MAP">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{e40db17d-b8aa-4b86-8662-ec0b3083201e}</guid>
+  <label>Map WorkOrderType</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="orderType" type="leaf">
+      <column>ORDERTYPE</column>
+      <key>1</key>
+      <table>STCW_WORKORDERTYPE_MAP</table>
+      <valueType>dtype_wsws.orderType</valueType>
+    </variable>
+    <variable name="lineItemAction" type="leaf">
+      <column>LINEITEMACTION</column>
+      <key>2</key>
+      <table>STCW_WORKORDERTYPE_MAP</table>
+      <valueType>dtype_stcw.lineItemAction</valueType>
+    </variable>
+    <variable name="workOrderType" type="leaf">
+      <column>WORKORDERTYPE</column>
+      <table>STCW_WORKORDERTYPE_MAP</table>
+      <valueType>dtype_wsws.orderType</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script>return false;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcconf.STCW_WORKORDERTYPE_MAP</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STCW_MAP_WORKORDERTYPEGrid" type="elgrd">
+                    <colWidths>115px,160px,115px,160px,115px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="STCW_MAP_WORKORDERTYPEHeader" type="elhdr">
+                        <label>Map OrderType and Action To Obtain OrderType for WO for Granite</label>
+                      </element>
+                      <element name="orderType" type="elslct">
+                        <label>Order Type</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_WORKORDERTYPE_MAP/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_WORKORDERTYPE_MAP/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="lineItemAction" type="elslct">
+                        <label>LineItem Action</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_WORKORDERTYPE_MAP/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_WORKORDERTYPE_MAP/leaf_lineItemAction</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="workOrderType" type="elslct">
+                        <label>Granite WO OrderType</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_WORKORDERTYPE_MAP/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_WORKORDERTYPE_MAP/leaf_workOrderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <confirmation>doc_stcconf.STCW_WORKORDERTYPE_MAP/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

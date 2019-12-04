@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.receiveRestoration">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>294.0</x>
+    <y>69.70117</y>
+    <childList>
+      <child name="receiveRestoration" type="opActivity">
+        <element>iface_wgws.ifExpediter_GRANITE/oper_operation_Restoration</element>
+        <label>Receive Restoration</label>
+        <participant>part_stcw.GraniteInputInterface</participant>
+        <x>285.65656</x>
+        <y>160.40234</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.updateHistoryEvent (this, "graniteReceiveRestoration");
+
+              stcw.storeGenericProcessMessage (this.process.id, "GRANITE_REQUEST", this.activityData);
+
+              stcw.storeRestorationData(this.process.id, this.activityData.orderNumber);
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="done" type="scriptActivity">
+        <label>Done</label>
+        <x>300.0</x>
+        <y>274.70117</y>
+      </child>
+      <child name="GraniteInputInterface" type="participantActivity">
+        <participant>part_stcw.GraniteInputInterface</participant>
+        <x>8.0</x>
+        <y>166.0</y>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Receive Restoration</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

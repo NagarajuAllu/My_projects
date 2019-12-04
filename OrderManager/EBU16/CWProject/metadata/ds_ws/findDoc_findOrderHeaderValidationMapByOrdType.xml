@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="ds_ws.findOrderHeaderValidationMapByOrdType">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_ds_ws.search_ValidationMap_OrderTypeDoc</input>
+  <label>Find BundleOrderHeader Validation Map By OrderType</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>21</metaVersion>
+  <output>doc_ds_ws.bundleOrderHeaderValidationMapDocument</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_orderType</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <vDetailForm>doc_ds_ws.bundleOrderHeaderValidationMapDocument/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_ds_ws.search_ValidationMap_OrderTypeDoc</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderValidationMapDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_orderType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_ValidationMap_OrderTypeDoc/leaf_orderType</path>
+    </search>
+  </searchList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.bundleOrderHeaderValidationMapDocument</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_ds_ws.search_ValidationMap_OrderTypeDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_ds_ws.bundleOrderHeaderValidationMapDocument/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findOrderHeaderValidationMapByOrdTypeResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="orderType" type="elslct">
+                        <label>Order Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerIdNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_customerIdNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="accountNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_accountNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerType" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_customerType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerIDType" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_customerIDType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerContact" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_customerContact</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerContactName" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_customerContactName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerName" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_customerName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_customerNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="createdByName" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_createdByName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="createdByContactName" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_createdByContactName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceDate" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_serviceDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="priority" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_priority</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="remarks" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_remarks</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="referenceTelNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_referenceTelNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="version" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_version</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerSegmentation" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_customerSegmentation</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="feasibilityFor" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_feasibilityFor</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="reservation" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_reservation</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="reservationNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_reservationNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="icmsSalesOrderNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderValidationMapDocument/leaf_icmsSalesOrderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findOrderHeaderValidationMapByOrdTypeView" type="findVView">
+      <inputOverlay>doc_ds_ws.search_ValidationMap_OrderTypeDoc/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find BundleOrderHeader ValidationMap By OrderType</label>
+      <outputOverlay>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findDoc>

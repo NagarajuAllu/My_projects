@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.performFullValidationOnLTEServices">
+  <label>Perform Full Validation On LTE Services</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="isCancel" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var objectId = bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier;
+
+    if(bundleOrder.orderHeader.orderType == "C") {
+        var changeRequestType = bundleOrder.parentLineItems[0].parentLineItem.changeRequestType;
+        if(changeRequestType != "CHANGE_SIM" &&
+           changeRequestType != "CHANGE_PRFL") {
+            var  validationErrors = ["AE0194", Global.translateText("AE0194", null, ["changeRequestType", "'CHANGE_SIM', 'CHANGE_PRFL'"])];
+            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, objectId, failureArray, isSubmit);
+        }
+        else {
+            var mandatoryNVPairNames = ["OldPhoneNumber", "OldSIMNumber"];
+            if(changeRequestType == "CHANGE_PRFL") {
+                mandatoryNVPairNames = ["Old Speed Profile"];
+            }
+
+            var nvPairs = bundleOrder.parentLineItems[0].parentLineItemNameValueParameters;
+
+            var found = false;
+            var foundWithValue = false;
+            var validationError = null;
+
+            for(var i=0; i<mandatoryNVPairNames.length; i++) {
+                found = false;
+                foundWithValue = false;
+                validationError = null;
+
+                for(var j=0; j<nvPairs.length && !found; j++) {
+                    if(nvPairs[j][0].name == mandatoryNVPairNames[i]) {
+                        found = true;
+                        foundWithValue = stcc.stringHasValue(nvPairs[j][0].value);
+                    }
+                }
+
+                if(!found) {
+                    // AE0037: Missing Mandatory NVPair: {0}
+                    validationErrors = ["AE0037", Global.translateText("AE0037", null, [mandatoryNVPairNames[i]])];
+                }
+                else {
+                    if(!foundWithValue) {
+                        // AE0038: Found Mandatory NVPair with no value: {0}
+                        validationErrors = ["AE0038", Global.translateText("AE0038", null, [mandatoryNVPairNames[i]])];
+                    }
+                }
+
+                if(validationErrors != null) {
+    debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnLTEServices (" + objectId + "): Found errors [" + validationErrors + "]");
+                    failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, objectId, failureArray, isSubmit);
+                }
+            }
+        }
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

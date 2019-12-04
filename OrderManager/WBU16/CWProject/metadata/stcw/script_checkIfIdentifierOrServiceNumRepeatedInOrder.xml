@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.checkIfIdentifierOrServiceNumRepeatedInOrder">
+  <label>Check If LineItemIdentifier Or ServiceNumber Are Repeated In Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+
+    for(var i=0; i<bundleOrder.parentLineItems.length; i++) {
+        checkIfLineItemDataDuplicated_(bundleOrder.parentLineItems[i].parentLineItem);
+
+        if(bundleOrder.parentLineItems[i].services != null) {
+            for(var j=0; j<bundleOrder.parentLineItems[i].services.length; j++) {
+                checkIfLineItemDataDuplicated_(bundleOrder.parentLineItems[i].services[j].serviceLineItem);
+
+                if(bundleOrder.parentLineItems[i].services[j].subServices != null) {
+                    for(var k=0; k<bundleOrder.parentLineItems[i].services[j].subServices.length; k++) {
+                        checkIfLineItemDataDuplicated_(bundleOrder.parentLineItems[i].services[j].subServices[k].subServiceLineItem);
+
+                        if(bundleOrder.parentLineItems[i].services[j].subServices[k].subSubServices != null) {
+                            for(var l=0; l<bundleOrder.parentLineItems[i].services[j].subServices[k].subSubServices.length; l++) {
+                                checkIfLineItemDataDuplicated_(bundleOrder.parentLineItems[i].services[j].subServices[k].subSubServices[l].subSubServiceLineItem);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if(validationErrors != null) {
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, isSubmit);
+    }
+
+    return failureArray;
+
+
+    function checkIfLineItemDataDuplicated_(lineItem) {
+
+        for(var i=0; i<bundleOrder.parentLineItems.length; i++) {
+            checkLineItem_(bundleOrder.parentLineItems[i].parentLineItem, lineItem.lineItemIdentifier, lineItem.serviceNumber, lineItem.cwDocId);
+
+            if(bundleOrder.parentLineItems[i].services != null) {
+                for(var j=0; j<bundleOrder.parentLineItems[i].services.length; j++) {
+                    checkLineItem_(bundleOrder.parentLineItems[i].services[j].serviceLineItem, lineItem.lineItemIdentifier, lineItem.serviceNumber, lineItem.cwDocId);
+
+                    if(bundleOrder.parentLineItems[i].services[j].subServices != null) {
+                        for(var k=0; k<bundleOrder.parentLineItems[i].services[j].subServices.length; k++) {
+                            checkLineItem_(bundleOrder.parentLineItems[i].services[j].subServices[k].subServiceLineItem, lineItem.lineItemIdentifier, lineItem.serviceNumber, lineItem.cwDocId);
+
+                            if(bundleOrder.parentLineItems[i].services[j].subServices[k].subSubServices != null) {
+                                for(var l=0; l<bundleOrder.parentLineItems[i].services[j].subServices[k].subSubServices.length; l++) {
+                                    checkLineItem_(bundleOrder.parentLineItems[i].services[j].subServices[k].subSubServices[l].subSubServiceLineItem, lineItem.lineItemIdentifier, lineItem.serviceNumber, lineItem.cwDocId);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function checkLineItem_(lineItem, lineItemIdentifierToValidate, serviceNumberToValidate, cwDocIdToSkip) {
+        if(lineItem.lineItemIdentifier == lineItemIdentifierToValidate && lineItem.cwDocId != cwDocIdToSkip) {
+            validationErrors = stcw.appendToValidationErrors("AE0080", Global.translateText("AE0080", null, ["LineItemIdentifier", lineItemIdentifierToValidate]), validationErrors,
+                                                              "checkIfIdentifierOrServiceNumRepeatedInOrder (" + lineItemIdentifierToValidate + "," + serviceNumberToValidate + "," + cwDocIdToSkip + ")");
+        }
+
+        if(serviceNumberToValidate != null) {
+            if(lineItem.serviceNumber == serviceNumberToValidate && lineItem.cwDocId != cwDocIdToSkip) {
+                validationErrors = stcw.appendToValidationErrors("AE0080", Global.translateText("AE0080", null, ["ServiceNumber", serviceNumberToValidate]), validationErrors,
+                                                                  "checkIfIdentifierOrServiceNumRepeatedInOrder (" + lineItemIdentifierToValidate + "," + serviceNumberToValidate + "," + cwDocIdToSkip + ")");
+            }
+        }
+    }
+  ]]></script>
+</script>

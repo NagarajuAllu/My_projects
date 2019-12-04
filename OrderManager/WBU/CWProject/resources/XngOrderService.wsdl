@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<s0:definitions name="XngOrderServiceDefinitions" targetNamespace="http://com/granite/custom/stc/system/webservice" xmlns="" xmlns:s0="http://schemas.xmlsoap.org/wsdl/" xmlns:s1="http://com/granite/custom/stc/system/webservice" xmlns:s2="http://schemas.xmlsoap.org/wsdl/soap/">
+  <s0:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="java:com.granite.custom.stc.transport" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="Status">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Status" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ErrorType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ErrorCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ErrorDescription" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="SourceErrorCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ErrorTime" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="SystemName" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="OrderAcknowledgement">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="OrderNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="AssetNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="WorkOrderStatus" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="AssetStatus" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BusinessUnit" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Status" nillable="true" type="java:Status" xmlns:java="java:com.granite.custom.stc.transport"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Service">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="AssetNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Bandwidth" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="CreationDate" nillable="true" type="xs:dateTime"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="NameValue" nillable="true" type="java:NameValue" xmlns:java="java:com.granite.custom.stc.transport"/>
+          <xs:element minOccurs="1" name="PrimaryAssetNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ProductCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ReservationNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="SegmentFlag" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ServiceDate" nillable="true" type="xs:dateTime"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="Subservices" nillable="true" type="java:Service" xmlns:java="java:com.granite.custom.stc.transport"/>
+          <xs:element minOccurs="1" name="NumberOfChannels" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="NameValue">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Name" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Value" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Order">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="BusinessUnit" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Comments" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="CreatedBy" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Description" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ExpectedDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="CreationDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="ChangeRequestType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="OrderNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="OrderStatus" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="OrderType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="SegmentFlag" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="QuoteNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="AccountNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Restoration" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ReservationNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="DisconnectionReason" nillable="true" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="NameValuePair" nillable="true" type="java:NameValue" xmlns:java="java:com.granite.custom.stc.transport"/>
+          <xs:element minOccurs="1" name="Service" nillable="true" type="java:Service" xmlns:java="java:com.granite.custom.stc.transport"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://com/granite/custom/stc/system/webservice" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="java:com.granite.custom.stc.transport"/>
+      <xs:element name="updateOrder">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="order" type="java:Order" xmlns:java="java:com.granite.custom.stc.transport"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="updateOrderResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="result" type="java:OrderAcknowledgement" xmlns:java="java:com.granite.custom.stc.transport"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="submitOrder">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="order" type="java:Order" xmlns:java="java:com.granite.custom.stc.transport"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="submitOrderResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="result" type="java:OrderAcknowledgement" xmlns:java="java:com.granite.custom.stc.transport"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </s0:types>
+  <s0:message name="updateOrder">
+    <s0:part element="s1:updateOrder" name="parameters"/>
+  </s0:message>
+  <s0:message name="updateOrderResponse">
+    <s0:part element="s1:updateOrderResponse" name="parameters"/>
+  </s0:message>
+  <s0:message name="submitOrder">
+    <s0:part element="s1:submitOrder" name="parameters"/>
+  </s0:message>
+  <s0:message name="submitOrderResponse">
+    <s0:part element="s1:submitOrderResponse" name="parameters"/>
+  </s0:message>
+  <s0:portType name="XngOrderService">
+    <s0:operation name="updateOrder" parameterOrder="parameters">
+      <s0:input message="s1:updateOrder"/>
+      <s0:output message="s1:updateOrderResponse"/>
+    </s0:operation>
+    <s0:operation name="submitOrder" parameterOrder="parameters">
+      <s0:input message="s1:submitOrder"/>
+      <s0:output message="s1:submitOrderResponse"/>
+    </s0:operation>
+  </s0:portType>
+  <s0:binding name="XngOrderServiceSoapBinding" type="s1:XngOrderService">
+    <s2:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <s0:operation name="updateOrder">
+      <s2:operation soapAction="updateOrder" style="document"/>
+      <s0:input>
+        <s2:body parts="parameters" use="literal"/>
+      </s0:input>
+      <s0:output>
+        <s2:body parts="parameters" use="literal"/>
+      </s0:output>
+    </s0:operation>
+    <s0:operation name="submitOrder">
+      <s2:operation soapAction="submitOrder" style="document"/>
+      <s0:input>
+        <s2:body parts="parameters" use="literal"/>
+      </s0:input>
+      <s0:output>
+        <s2:body parts="parameters" use="literal"/>
+      </s0:output>
+    </s0:operation>
+  </s0:binding>
+  <s0:service name="XngOrderService">
+    <s0:port binding="s1:XngOrderServiceSoapBinding" name="XngOrderServiceSoapPort">
+      <s2:address location="http://localhost:7001/tgs-STCRMSW-1.0-cim/XngOrderService"/>
+    </s0:port>
+  </s0:service>
+</s0:definitions>

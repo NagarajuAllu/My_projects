@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="granite.searchSiteDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{b49d6323-258e-47e9-aa69-a7d77072fb46}</guid>
+  <label>Search Site Document</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="SITE_INST_ID" type="leaf">
+      <valueType>dtype_granite.INST_ID</valueType>
+    </variable>
+    <variable name="SITE_HUM_ID" type="leaf">
+      <valueType>dtype_granite.SITE_HUM_ID</valueType>
+    </variable>
+    <variable name="NUM" type="leaf">
+      <valueType>dtype_granite.SITE_NUM</valueType>
+    </variable>
+    <variable name="SITE_STATUS" type="leaf">
+      <valueType>dtype_granite.SITE_STATUS</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_granite.searchSiteDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

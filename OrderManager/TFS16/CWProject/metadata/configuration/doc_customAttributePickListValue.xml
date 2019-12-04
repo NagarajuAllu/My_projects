@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="configuration.customAttributePickListValue">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{97b88c30-4515-4043-a376-428bf9ab7382}</guid>
+  <label>Custom Attribute PickList Value</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_CUSTOMATTR_LIST_OPTION</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="customAttr_id" type="leaf">
+      <column>CUSTOMATTR_ID</column>
+      <propertyElement type="elfld">
+        <label>Custom Attribute Id</label>
+      </propertyElement>
+      <table>STC_CUSTOMATTR_LIST_OPTION</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="attributeValue" type="leaf">
+      <column>ATTRIBUTE_VALUE</column>
+      <propertyElement type="elfld">
+        <label>Attribute Value</label>
+      </propertyElement>
+      <table>STC_CUSTOMATTR_LIST_OPTION</table>
+      <valueType>dtype_common.string1000</valueType>
+    </variable>
+    <variable name="sequenceNumber" type="leaf">
+      <column>SEQUENCE_NUMBER</column>
+      <propertyElement type="elfld">
+        <label>Sequence Number</label>
+      </propertyElement>
+      <table>STC_CUSTOMATTR_LIST_OPTION</table>
+      <valueType>dtype_common.integer3</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$attributeValue" type="laction">
+      <path>doc_configuration.customAttributePickListValue/leaf_attributeValue</path>
+      <type>initializer</type>
+      <script><![CDATA[return "New Value";]]></script>
+    </method>
+    <method name="cwOnDocVisualKey" type="action">
+      <system>true</system>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+      <script><![CDATA[
+        var visualKey = this.cw$super_cwOnDocVisualKey();
+        if(this.attributeValue != null) {
+            visualKey = this.attributeValue;
+        }
+
+        return visualKey
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_configuration.customAttributePickListValue</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="customAttributePickListValueGrid" type="elgrd">
+                    <colWidths>80px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>320px</width>
+                    <elementList>
+                      <element name="customAttributePickListValueHeader" type="elhdr">
+                        <label>Custom Attribute PickList Value</label>
+                      </element>
+                      <element name="attributeValue" type="elfld">
+                        <label>PickList Value</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_configuration.customAttributePickListValue/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_configuration.customAttributePickListValue/leaf_attributeValue</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="save" type="usrActionMethod">
+        <confirmation>doc_configuration.customAttributePickListValue/ui_UserInterface/uimthd_confirmSave</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          this.cw$super_save();
+          this.model.parent.search();
+          return Global.STOP_UI;
+        ]]></script>
+      </method>
+      <method name="confirmSave" type="uimthd">
+        <script><![CDATA[return "AW0004";]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

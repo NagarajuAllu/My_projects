@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.icmsSONumberInProcessDoc">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{5c6f4de3-5d2a-4a09-8e8f-8353e13bd66b}</guid>
+  <label>ICMSSONumber In Process</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="icmsSalesOrderNumber" type="leaf">
+      <column>ICMSSALESORDERNUMBER</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>ICMS SO #</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_ICMSSONUMB_IN_PROCESS</table>
+      <valueType>dtype_ds_ws.string19</valueType>
+    </variable>
+    <variable name="orderNumber" type="leaf">
+      <column>ORDERNUMBER</column>
+      <key>2</key>
+      <table>STC_ICMSSONUMB_IN_PROCESS</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.icmsSONumberInProcessDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

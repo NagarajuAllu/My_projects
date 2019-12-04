@@ -1,0 +1,964 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="5fd59f001bf27bb69cebae1d131c8393" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="processSTC.mainSTCProcess_cwr2">
+  <activity name="start" type="seqActivity">
+    <guid>{0d22cc43-af4f-3ee7-f8de-e83354176d5b}</guid>
+    <label>start</label>
+    <x>299.24182</x>
+    <y>30.0</y>
+    <childList>
+      <child name="startGranite" type="seqActivity">
+        <guid>{0ba0d1a1-641f-71f8-e08d-a571d059e3e0}</guid>
+        <label>Start Granite</label>
+        <x>573.3599</x>
+        <y>138.38043</y>
+        <childList>
+          <child name="orderType" type="switchActivity">
+            <guid>{0dabac20-567f-1501-aba5-dc3d2fba49b3}</guid>
+            <label>Order Type</label>
+            <x>566.2281</x>
+            <y>246.4621</y>
+            <childList>
+              <child name="submit" type="caseActivity">
+                <guid>{0ead3e6c-e982-c9ba-032c-5c0c70518920}</guid>
+                <label>Submit</label>
+                <x>0.0</x>
+                <y>0.0</y>
+                <childList>
+                  <child name="startSubmit" type="seqActivity">
+                    <guid>{035ccc83-d24a-e24b-9eaa-d7848265e02f}</guid>
+                    <label>Start Submit</label>
+                    <x>732.3554</x>
+                    <y>374.9162</y>
+                    <childList>
+                      <child name="sendSubmitOrderToGranite" type="scriptActivity">
+                        <guid>{012c1c55-f9d3-6a32-c272-b099718645a7}</guid>
+                        <label>Send Submit Order  To Granite</label>
+                        <x>730.7589</x>
+                        <y>483.96796</y>
+                        <childList>
+                          <child name="TimeDelay" type="compensateActivity">
+                            <compensatesList>
+                              <compensates>1</compensates>
+                            </compensatesList>
+                            <guid>{08767b57-bbdd-ef68-ed89-0f4471f1750c}</guid>
+                            <label>Time Delay</label>
+                            <x>237.49805</x>
+                            <y>543.77734</y>
+                            <childList>
+                              <child name="startSubComp" type="subflowActivity">
+                                <element>prrev_processSTC.startSubComp_cwr2</element>
+                                <guid>{0dd5a773-e220-6642-6ffd-d8d56e6e2544}</guid>
+                                <label>Start Submit Compensate</label>
+                                <x>778.0968</x>
+                                <y>632.1232</y>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <guid>{0a1aa660-0541-c836-fc85-e782945ba19d}</guid>
+                            <system>true</system>
+                            <script><![CDATA[
+                              // reset error flag
+                              this.process.processDocument.errorType = null;
+
+                              var ord = this.process.processOrder;
+                              var inputJMS = new DataStructure("ds_jms:orderMessage_el_HOME");
+                              if (ord.serviceParametersList != null) {
+                                    for (var j = 0; j < ord.serviceParametersList.length; j++) {
+                                          inputJMS.serviceParameters[j].creationDate = ord.serviceParametersList[j].serviceParameters.creationDate;
+                                          inputJMS.serviceParameters[j].oldServiceNumber = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.oldServiceNumber);
+                                          inputJMS.serviceParameters[j].serviceDate = ord.serviceParametersList[j].serviceParameters.serviceDate;
+                                          inputJMS.serviceParameters[j].serviceDescription = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.serviceDescription);
+                                          inputJMS.serviceParameters[j].serviceNumber = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.serviceNumber);
+                                          inputJMS.serviceParameters[j].serviceType = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.serviceType);
+                                          inputJMS.serviceParameters[j].plateID = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.plateId);
+                                          inputJMS.serviceParameters[j].oldPlateId = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.oldPlateId);
+                                          inputJMS.serviceParameters[j].unitNumber = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.unitNumber);
+                                          inputJMS.serviceParameters[j].oldUnitNumber = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.oldUnitNumber);
+                                          inputJMS.serviceParameters[j].orderRowItemID = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.orderRowItemID);
+
+                                          // - components "NameValue"
+                                          if (ord.serviceParametersList[j].nameValueList != null) {
+                                                for (var k = 0; k < ord.serviceParametersList[j].nameValueList.length; k++) {
+                                                      inputJMS.serviceParameters[j].nameValue[k].name = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].nameValueList[k].nameValue.name);
+                                                      inputJMS.serviceParameters[j].nameValue[k].value = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].nameValueList[k].nameValue.value);
+                                                }
+                                          }
+                                    }
+                              }
+                              // - main leaves of the order
+                              inputJMS.accountNumber               = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.accountNumber);
+                              inputJMS.alternativeSolution         = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.alternativeSolution);
+                              inputJMS.bandwidth                   = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.bandwidth);
+                              inputJMS.cctType                     = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.cctType);
+                              inputJMS.circuitNumber               = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.circuitNumber);
+                              inputJMS.createdBy                   = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.createdBy);
+                              inputJMS.creationDate                = ord.orderMessage.creationDate;
+                              inputJMS.customerIDNumber            = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerIDNumber);
+                              inputJMS.fictBillingNumber           = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.fictBillingNumber);
+                              inputJMS.icmsSONumber                = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.icmsSONumber);
+                              inputJMS.oldCircuitNumber            = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.oldCircuitNumber);
+                              inputJMS.orderNumber                 = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.orderNumber);
+                              inputJMS.orderStatus                 = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.orderStatus);
+                              inputJMS.orderType                   = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.orderType);
+                              inputJMS.priority                    = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.priority);
+                              inputJMS.projectId                   = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.projectId);
+                              inputJMS.referenceTelNumber          = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.referenceTelNumber);
+                              inputJMS.remarks                     = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.remarks);
+                              // fix for issue 68: avoid to forward ServiceDate to CIM/Granite
+                              // 17/07/2012 - Required to set ServiceDate equals to ServiceDate + 2 days
+                              inputJMS.serviceDate                 = ds_ws.common_addDaysToSysdate(2);
+                              inputJMS.serviceDescription          = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.serviceDescription);
+                              inputJMS.serviceType                 = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.serviceType);
+                              inputJMS.wires                       = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.wires);
+                              inputJMS.customerName                = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerName);
+                              inputJMS.customerType                = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerType);
+                              inputJMS.customerContact             = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerContact);
+                              inputJMS.tbPortNumber                = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.tbPortNumber);
+                              inputJMS.businessUnit                = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.businessUnit);
+                              inputJMS.customerIDType              = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerIDType);
+                              inputJMS.customerNumber              = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerNumber);
+                              inputJMS.reservationNumber           = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.reservationNumber);
+                              inputJMS.orderDomain                 = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.orderDomain);
+                              inputJMS.reservationExpiry           = ord.orderMessage.reservationExpiry;
+                              inputJMS.parentOrderNumber                   = ord.orderMessage.parentOrderNumber;
+
+                              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - inputJMS = " + inputJMS.toXML());
+
+                                    try {
+                                          // sendDataToInterface( inputData, interfaceName, operationName, existResult, processId, operationDescription )
+                                          processSTC.sendDataToInterface(inputJMS, "ifGranite_jms:XngServicesWR", "SubmitOrderHome", false, this.process.id, "SendSubmitOrderHomeToGranite");
+
+                              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - sentDataToGranite");
+                                    }
+                                    catch(exc) {
+                                          if(exc.message.indexOf("XE0023") >= 0 || exc.message.indexOf("XE0002")) {
+                              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - I/F ifGranite_jms:XngServicesWR/SubmitOrderHome error: " + exc.message);
+                                                this.process.processDocument.errorType = "Interface";
+                                          }
+                                          else {
+                                                this.process.processDocument.errorType = "Application";
+                                          }
+                                    }
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="anyError" type="switchActivity">
+                        <guid>{03c927aa-d906-154c-bf16-63931b560907}</guid>
+                        <label>Any Error?</label>
+                        <x>668.7296</x>
+                        <y>646.8244</y>
+                        <childList>
+                          <child name="interfaceError" type="caseActivity">
+                            <guid>{06bf2c42-b0ca-4123-ce47-bbc0e6f58f7b}</guid>
+                            <label>Interface Error</label>
+                            <x>114.01172</x>
+                            <y>643.77734</y>
+                            <childList>
+                              <child name="interfaceExcp" type="exceptActivity">
+                                <element>excp_cwf_pm.interfaceExcp</element>
+                                <guid>{09e4e3f0-d1be-be91-4943-9e8ebeec22f7}</guid>
+                                <label>External interface error</label>
+                                <x>778.6593</x>
+                                <y>765.57733</y>
+                              </child>
+                            </childList>
+                            <methodList>
+                              <method name="cwOnProcActCond" type="action">
+                                <category>cond</category>
+                                <guid>{0ad10324-3c8d-6e23-4a93-5372f6c8ecc0}</guid>
+                                <system>true</system>
+                                <script><![CDATA[return (this.process.processDocument.errorType == "Interface");]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="applicationError" type="caseActivity">
+                            <guid>{07d4a84b-49a8-05ae-d99c-9548bcbb5b2b}</guid>
+                            <label>Application Error</label>
+                            <x>114.01172</x>
+                            <y>643.77734</y>
+                            <childList>
+                              <child name="genericApplicationError" type="exceptActivity">
+                                <element>excp_processSTC.genericApplicationError</element>
+                                <guid>{09a9b9de-ce0e-702d-4fa5-7a12d9a307b6}</guid>
+                                <label>Generic Application Error</label>
+                                <x>668.05286</x>
+                                <y>765.57733</y>
+                              </child>
+                            </childList>
+                            <methodList>
+                              <method name="cwOnProcActCond" type="action">
+                                <category>cond</category>
+                                <guid>{04cd78e9-bf23-368d-6ec9-ad8aa2bc5ee3}</guid>
+                                <system>true</system>
+                                <script><![CDATA[return (this.process.processDocument.errorType == "Application");]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="noError" type="caseActivity">
+                            <guid>{0df5579d-195d-4c8b-22ec-a89b8d3be51d}</guid>
+                            <label>No Error</label>
+                            <x>570.59875</x>
+                            <y>780.2785</y>
+                          </child>
+                        </childList>
+                      </child>
+                      <child name="midSubmit" type="seqActivity">
+                        <guid>{060414f5-fdd0-7a5a-f502-3dde6d1d1035}</guid>
+                        <label>Mid Submit</label>
+                        <x>602.0448</x>
+                        <y>908.7326</y>
+                        <childList>
+                          <child name="timeDelay" type="compensateActivity">
+                            <compensatesList>
+                              <compensates>2</compensates>
+                            </compensatesList>
+                            <guid>{0b5ec177-5f38-803a-ad91-7451c701d39d}</guid>
+                            <label>Time Delay</label>
+                            <x>30.669922</x>
+                            <y>863.6289</y>
+                            <childList>
+                              <child name="startSubReadComp" type="subflowActivity">
+                                <element>prrev_processSTC.startSubReadComp_cwr2</element>
+                                <guid>{08ef566e-76e9-e973-8ada-8bd5f0cd6268}</guid>
+                                <label>Start Submit  Read Compensate</label>
+                                <x>614.6244</x>
+                                <y>1017.7844</y>
+                              </child>
+                            </childList>
+                          </child>
+                          <child name="SubmitOrder" type="opActivity">
+                            <duration type="dur">
+                              <methodList>
+                                <method name="cwOnDuration" type="action">
+                                  <guid>{031de4ac-934f-2faa-fed7-5666a3bc504f}</guid>
+                                  <system>true</system>
+                                  <script>return 40;</script>
+                                </method>
+                              </methodList>
+                            </duration>
+                            <element>iface_ifGranite_jms.XngServicesSubmitOrderR/oper_SubmitOrder</element>
+                            <guid>{07c53fea-e413-2b82-8d0f-983272f380fb}</guid>
+                            <label>Operation [4]: Submit Order</label>
+                            <participant>part_ifGranite_jms.graniteSubmitRead</participant>
+                            <x>505.2669</x>
+                            <y>1025.135</y>
+                            <methodList>
+                              <method name="cwOnProcActAfter" type="action">
+                                <category>script</category>
+                                <guid>{05c33224-a556-cd1e-6075-98a61a9c241a}</guid>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  var ord = this.process.processOrder;
+                                  var ordAck = ord.addItem("orderACK");
+
+
+                                  var outputJMS = this.activityData;
+
+                                              ordAck.OrderNumber = outputJMS.orderAcknowledgement.orderNumber;
+                                              ordAck.Remarks = outputJMS.orderAcknowledgement.remarks;
+                                              ordAck.BusinessUnit = outputJMS.orderAcknowledgement.businessUnit;
+                                              ordAck.XngOrderNumber = outputJMS.orderAcknowledgement.xngOrderNumber;
+
+                                        if (outputJMS.failure != null) {
+                                              ordAck.ErrorCode = outputJMS.failure.errorCode;
+                                              ordAck.ErrorDescription = outputJMS.failure.errorDescription;
+                                              ordAck.ErrorTime = outputJMS.failure.errorTime;
+                                              ordAck.ErrorType = outputJMS.failure.errorType;
+                                              ordAck.FunctionName = outputJMS.failure.functionName;
+                                              ordAck.ObjectId = outputJMS.failure.objectId;
+                                              ordAck.ProcessInstanceld = outputJMS.failure.processInstanceld;
+                                              ordAck.SourceErrorCode = outputJMS.failure.sourceErrorCode;
+                                              ordAck.Status = outputJMS.failure.status;
+                                              ordAck.SystemName = outputJMS.failure.systemName;
+                                              ordAck.TargetRecored = outputJMS.failure.targetRecored;
+                                              ordAck.UserId = outputJMS.failure.userId;
+
+                                              if (outputJMS.failure.status == "SUCCESS") {
+                                                    // Modified the 09.10.2008:
+                                                    // - according to mail of Mick Winters
+                                                    // ["RE: Additional functionality for Expediter passthrough", Thu 10/9/2008 12:52 PM]
+                                                    ord.orderMessage.internalOrderStatus = "Granite Call SUCCESSFUL";
+                                                    ord.orderMessage.circuitStatus = "ORDERED";
+                                                    ord.orderMessage.orderStatus = "READY";
+                                  debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + "<SUBMIT ORDER> WITH 'ORDER #': '" + ordAck.OrderNumber  + "' WORKED CORRECTLY!");
+                                                          Global.logDebug("<SUBMIT ORDER> WITH 'ORDER #': '" + ordAck.OrderNumber + "' WORKED CORRECTLY!");
+                                                    }
+                                                    else{
+                                                          // Modified the 09.10.2008:
+                                                          // - according to mail of Mick Winters
+                                                          // ["RE: Additional functionality for Expediter passthrough", Thu 10/9/2008 12:52 PM]
+                                                          ord.orderMessage.internalOrderStatus = "Order Rejected By Granite";
+                                  debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + "<SUBMIT ORDER> WITH 'ORDER #': '" + ordAck.OrderNumber + "' NOT STORED... Order Rejected By Granite [" + ordAck.ErrorDescription + "]...");
+                                                          Global.logDebug("<SUBMIT ORDER> WITH 'ORDER #': '" + ordAck.OrderNumber + "' NOT STORED... Order Rejected By Granite [" + ordAck.ErrorDescription + "]...");
+                                                    }
+                                              }
+                                        //}
+
+                                        ord.save();
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <guid>{07a903b8-d9dc-9603-f613-2f0e813f796b}</guid>
+                            <system>true</system>
+                            <script><![CDATA[
+                              this.process.processDocument.rollbackNumber = "2";
+                              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Restarting waiting ...");
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{03fe3790-fd52-c57a-32a6-1ffb254772e5}</guid>
+                        <system>true</system>
+                        <script><![CDATA[this.process.processDocument.rollbackNumber = "1";]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActCond" type="action">
+                    <category>cond</category>
+                    <guid>{057b4f44-0ff2-eabb-3220-028e3248dfd6}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var isNew = (this.process.processDocument.isSubmit == "Y");
+                      debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - isNew = " + isNew);
+
+                      return isNew;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="update" type="caseActivity">
+                <guid>{069c514d-e4de-0c4e-046e-c6b0dab8014a}</guid>
+                <label>Update</label>
+                <x>112.82031</x>
+                <y>309.9629</y>
+                <childList>
+                  <child name="startUpdate" type="seqActivity">
+                    <guid>{0ff3f3c7-cbf2-4c64-29e5-8bbc15591368}</guid>
+                    <label>Start Update</label>
+                    <x>562.17487</x>
+                    <y>374.9162</y>
+                    <childList>
+                      <child name="sendUpdateOrderToGranite" type="scriptActivity">
+                        <guid>{0dd81054-a26c-82c1-be24-1956a1d45ca5}</guid>
+                        <label>Send Update Order  To Granite</label>
+                        <x>393.63428</x>
+                        <y>483.96796</y>
+                        <childList>
+                          <child name="TimeDelay" type="compensateActivity">
+                            <compensatesList>
+                              <compensates>3</compensates>
+                            </compensatesList>
+                            <guid>{0071f207-a56e-b6ee-6f53-92ec0cda0b94}</guid>
+                            <label>Time Delay</label>
+                            <x>216.72803</x>
+                            <y>501.9629</y>
+                            <childList>
+                              <child name="startUpdComp" type="subflowActivity">
+                                <element>prrev_processSTC.startUpdComp_cwr2</element>
+                                <guid>{07305017-8e19-159f-c588-516d8f17e4f6}</guid>
+                                <label>Start Update Compensate</label>
+                                <x>474.48322</x>
+                                <y>632.1232</y>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <guid>{0679fcd5-fc9d-8c9b-9ca7-70021b6074ed}</guid>
+                            <system>true</system>
+                            <script><![CDATA[
+                              // reset error flag
+                              this.process.processDocument.errorType = null;
+
+                              var ord = this.process.processOrder;
+                              var inputJMS = new DataStructure("ds_jms:orderMessage_el_HOME");
+
+                              // 2012/11/09 - Change for Partial Cancellation
+                              // Due to Partial Cancellation, the real orderStatus (so the action) is surely stored into the services must be processed,
+                              // it is set also in order header only if all the "live" services of the orders must be updated.
+                              // For this reason, the serviceStatus is applied to the event sent to Granite
+                              var serviceStatus = null;
+                              if (ord.serviceParametersList != null) {
+                                    var serviceCounter = 0;
+                                    for (var j = 0; j < ord.serviceParametersList.length; j++) {
+                                          if(ord.serviceParametersList[j].serviceParameters.toBeProcessed) {
+                                                inputJMS.serviceParameters[serviceCounter].creationDate = ord.serviceParametersList[j].serviceParameters.creationDate;
+                                                inputJMS.serviceParameters[serviceCounter].oldServiceNumber = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.oldServiceNumber);
+                                                inputJMS.serviceParameters[serviceCounter].serviceDate = ord.serviceParametersList[j].serviceParameters.serviceDate;
+                                                inputJMS.serviceParameters[serviceCounter].serviceDescription = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.serviceDescription);
+                                                inputJMS.serviceParameters[serviceCounter].serviceNumber = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.serviceNumber);
+                                                inputJMS.serviceParameters[serviceCounter].serviceType = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.serviceType);
+                                                inputJMS.serviceParameters[serviceCounter].plateID = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.plateId);
+                                                inputJMS.serviceParameters[serviceCounter].oldPlateId = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.oldPlateId);
+                                                inputJMS.serviceParameters[serviceCounter].unitNumber = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.unitNumber);
+                                                inputJMS.serviceParameters[serviceCounter].oldUnitNumber = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.oldUnitNumber);
+                                                inputJMS.serviceParameters[serviceCounter].orderRowItemID = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].serviceParameters.orderRowItemID);
+
+                                                // - components "NameValue"
+                                                if (ord.serviceParametersList[j].nameValueList != null) {
+                                                      for (var k = 0; k < ord.serviceParametersList[j].nameValueList.length; k++) {
+                                                            inputJMS.serviceParameters[serviceCounter].nameValue[k].name = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].nameValueList[k].nameValue.name);
+                                                            inputJMS.serviceParameters[serviceCounter].nameValue[k].value = ds_ws.common_replaceSpecialCharacter(ord.serviceParametersList[j].nameValueList[k].nameValue.value);
+                                                      }
+                                                }
+
+                                                if(serviceStatus == null) {
+                                                      serviceStatus = ord.serviceParametersList[j].serviceParameters.serviceStatus;
+                                                }
+
+                                                serviceCounter++;
+                                          }
+                                    }
+                              }
+                              // - main leaves of the order
+                              inputJMS.accountNumber               = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.accountNumber);
+                              inputJMS.alternativeSolution         = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.alternativeSolution);
+                              inputJMS.bandwidth                   = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.bandwidth);
+                              inputJMS.cctType                     = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.cctType);
+                              inputJMS.circuitNumber               = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.circuitNumber);
+                              inputJMS.createdBy                   = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.createdBy);
+                              inputJMS.creationDate                = ord.orderMessage.creationDate;
+                              inputJMS.customerIDNumber            = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerIDNumber);
+                              inputJMS.fictBillingNumber           = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.fictBillingNumber);
+                              inputJMS.icmsSONumber                = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.icmsSONumber);
+                              inputJMS.oldCircuitNumber            = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.oldCircuitNumber);
+                              inputJMS.orderNumber                 = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.orderNumber);
+                              inputJMS.orderStatus                 = ds_ws.common_replaceSpecialCharacter(serviceStatus == null ? ord.orderMessage.orderStatus : serviceStatus);
+                              inputJMS.orderType                   = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.orderType);
+                              inputJMS.priority                    = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.priority);
+                              inputJMS.projectId                   = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.projectId);
+                              inputJMS.referenceTelNumber          = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.referenceTelNumber);
+                              inputJMS.remarks                     = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.remarks);
+                              // fix for issue 68: avoid to forward ServiceDate to CIM/Granite
+                              // 17/07/2012 - Required to set ServiceDate equals to ServiceDate + 2 days
+                              inputJMS.serviceDate                 = ds_ws.common_addDaysToSysdate(2);
+                              inputJMS.serviceDescription          = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.serviceDescription);
+                              inputJMS.serviceType                 = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.serviceType);
+                              inputJMS.wires                       = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.wires);
+                              inputJMS.customerName                = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerName);
+                              inputJMS.customerType                = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerType);
+                              inputJMS.customerContact             = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerContact);
+                              inputJMS.tbPortNumber                = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.tbPortNumber);
+                              inputJMS.businessUnit                = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.businessUnit);
+                              inputJMS.customerIDType              = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerIDType);
+                              inputJMS.customerNumber              = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.customerNumber);
+                              inputJMS.reservationNumber           = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.reservationNumber);
+                              inputJMS.orderDomain                 = ds_ws.common_replaceSpecialCharacter(ord.orderMessage.orderDomain);
+                              inputJMS.reservationExpiry           = ord.orderMessage.reservationExpiry;
+                              inputJMS.parentOrderNumber                   = ord.orderMessage.parentOrderNumber;
+
+                              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - inputJMS = " + inputJMS.toXML());
+
+                                    try {
+                                          // sendDataToInterface( inputData, interfaceName, operationName, existResult, processId, operationDescription )
+                                          processSTC.sendDataToInterface(inputJMS, "ifGranite_jms:XngServicesWR", "UpdateOrderHome", false, this.process.id, "SendUpdateOrderHomeToGranite");
+
+                              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - sentDataToGranite");
+                                    }
+                                    catch(exc) {
+                                          if(exc.message.indexOf("XE0023") >= 0 || exc.message.indexOf("XE0002")) {
+                              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - I/F ifGranite_jms:XngServicesWR/UpdateOrderHome error: " + exc.message);
+                                                this.process.processDocument.errorType = "Interface";
+                                          }
+                                          else {
+                                                this.process.processDocument.errorType = "Application";
+                                          }
+                                    }
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="anyError" type="switchActivity">
+                        <guid>{0e318cab-2f71-2c2e-b645-03b73e3fccd6}</guid>
+                        <label>Any Error?</label>
+                        <x>298.09396</x>
+                        <y>646.8244</y>
+                        <childList>
+                          <child name="interfaceError" type="caseActivity">
+                            <guid>{0afa21d1-0b9c-7447-2cf2-8fba994a1194}</guid>
+                            <label>Interface Error</label>
+                            <x>31.057426</x>
+                            <y>755.7588</y>
+                            <childList>
+                              <child name="interfaceExcp" type="exceptActivity">
+                                <element>excp_cwf_pm.interfaceExcp</element>
+                                <guid>{065c25ea-fda1-4399-15f0-dec3f6e5fbfc}</guid>
+                                <label>External interface error</label>
+                                <x>436.70587</x>
+                                <y>765.57733</y>
+                              </child>
+                            </childList>
+                            <methodList>
+                              <method name="cwOnProcActCond" type="action">
+                                <category>cond</category>
+                                <guid>{075a196a-7e1d-8a27-0321-24cecbbbe64b}</guid>
+                                <system>true</system>
+                                <script><![CDATA[return (this.process.processDocument.errorType == "Interface");]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="applicationError" type="caseActivity">
+                            <guid>{0bedcc6b-32eb-72d9-85a6-5a8da96554f2}</guid>
+                            <label>Application Error</label>
+                            <x>30.0</x>
+                            <y>915.5176</y>
+                            <childList>
+                              <child name="genericApplicationError" type="exceptActivity">
+                                <element>excp_processSTC.genericApplicationError</element>
+                                <guid>{0a70d85d-8d9e-99c0-c256-f4815473070a}</guid>
+                                <label>Generic Application Error</label>
+                                <x>297.4172</x>
+                                <y>765.57733</y>
+                              </child>
+                            </childList>
+                            <methodList>
+                              <method name="cwOnProcActCond" type="action">
+                                <category>cond</category>
+                                <guid>{024fd0ce-7101-af1b-dc9d-95e21fbe3360}</guid>
+                                <system>true</system>
+                                <script><![CDATA[return (this.process.processDocument.errorType == "Application");]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="noError" type="caseActivity">
+                            <guid>{00aa7b3f-3801-7ee3-16f6-0135d3700d04}</guid>
+                            <label>No Error</label>
+                            <x>173.37482</x>
+                            <y>780.2785</y>
+                          </child>
+                        </childList>
+                      </child>
+                      <child name="midUpdate" type="seqActivity">
+                        <guid>{03925de0-7fd7-2cc6-0d02-98af3dea6aed}</guid>
+                        <label>Mid Update</label>
+                        <x>174.04474</x>
+                        <y>908.7326</y>
+                        <childList>
+                          <child name="UpdateOrder" type="opActivity">
+                            <duration type="dur">
+                              <methodList>
+                                <method name="cwOnDuration" type="action">
+                                  <guid>{023aaf3e-dd0a-e2d5-8aa9-6176039c4da2}</guid>
+                                  <system>true</system>
+                                  <script>return 40;</script>
+                                </method>
+                              </methodList>
+                            </duration>
+                            <element>iface_ifGranite_jms.XngServicesUpdateOrderR/oper_UpdateOrder</element>
+                            <guid>{0784b42d-e4e1-eb16-3223-4b0e648edb3c}</guid>
+                            <label>Operation [5]: Update Order</label>
+                            <participant>part_ifGranite_jms.graniteUpdateRead</participant>
+                            <x>257.12823</x>
+                            <y>1025.135</y>
+                            <methodList>
+                              <method name="cwOnProcActAfter" type="action">
+                                <category>script</category>
+                                <guid>{0123324e-6e7e-4fc4-1369-c47c39853e23}</guid>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  var ord = this.process.processOrder;
+                                  var ordAck = ord.addItem("orderACK");
+
+
+                                  var outputJMS = this.activityData;
+
+                                              ordAck.OrderNumber = outputJMS.orderAcknowledgement.orderNumber;
+                                              ordAck.Remarks = outputJMS.orderAcknowledgement.remarks;
+                                              ordAck.BusinessUnit = outputJMS.orderAcknowledgement.businessUnit;
+                                              ordAck.XngOrderNumber = outputJMS.orderAcknowledgement.xngOrderNumber;
+
+                                        if (outputJMS.failure != null) {
+                                              ordAck.ErrorCode = outputJMS.failure.errorCode;
+                                              ordAck.ErrorDescription = outputJMS.failure.errorDescription;
+                                              ordAck.ErrorTime = outputJMS.failure.errorTime;
+                                              ordAck.ErrorType = outputJMS.failure.errorType;
+                                              ordAck.FunctionName = outputJMS.failure.functionName;
+                                              ordAck.ObjectId = outputJMS.failure.objectId;
+                                              ordAck.ProcessInstanceld = outputJMS.failure.processInstanceld;
+                                              ordAck.SourceErrorCode = outputJMS.failure.sourceErrorCode;
+                                              ordAck.Status = outputJMS.failure.status;
+                                              ordAck.SystemName = outputJMS.failure.systemName;
+                                              ordAck.TargetRecored = outputJMS.failure.targetRecored;
+                                              ordAck.UserId = outputJMS.failure.userId;
+
+                                              if (outputJMS.failure.status == "SUCCESS") {
+                                                    // Modified the 09.10.2008:
+                                                    // - according to mail of Mick Winters
+                                                    // ["RE: Additional functionality for Expediter passthrough", Thu 10/9/2008 12:52 PM]
+                                                    ord.orderMessage.internalOrderStatus = "Granite Call SUCCESSFUL";
+
+                                                    ord.save();
+
+                                  debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + "<UPDATE ORDER> WITH 'ORDER #': '" + ordAck.OrderNumber + "', 'ORDER STATUS': '" + ordAck.Status + "' WORKED CORRECTLY!");
+                                                          Global.logDebug("<UPDATE ORDER> WITH 'ORDER #': '" + ordAck.OrderNumber + "', 'ORDER STATUS': '" + ordAck.Status + "' WORKED CORRECTLY!");
+                                                    }
+                                                    else{
+                                                          // Modified the 09.10.2008:
+                                                          // - according to mail of Mick Winters
+                                                          // ["RE: Additional functionality for Expediter passthrough", Thu 10/9/2008 12:52 PM]
+                                                          ord.orderMessage.internalOrderStatus = "Order Rejected By Granite";
+
+                                  debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + "<UPDATE ORDER> WITH 'ORDER #': '" + ordAck.OrderNumber + "' NOT UPDATED... Order Rejected By Granite [" + ordAck.ErrorDescription + "]...");
+                                                          Global.logDebug("<UPDATE ORDER> WITH 'ORDER #': '" + ordAck.OrderNumber + "' NOT UPDATED... Order Rejected By Granite [" + ordAck.ErrorDescription + "]...");
+                                                    }
+                                              }
+                                        //}
+
+                                        ord.save();
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="timeDelay" type="compensateActivity">
+                            <compensatesList>
+                              <compensates>4</compensates>
+                            </compensatesList>
+                            <guid>{022f7c1d-106c-9966-22f3-ebac2eebf1ba}</guid>
+                            <label>Time Delay</label>
+                            <x>30.669922</x>
+                            <y>903.53613</y>
+                            <childList>
+                              <child name="startUpdReadComp" type="subflowActivity">
+                                <element>prrev_processSTC.startUpdReadComp_cwr2</element>
+                                <guid>{06cc66ed-d246-b2f6-feab-5ca7aad06145}</guid>
+                                <label>Start Update Read Compensate</label>
+                                <x>137.08917</x>
+                                <y>1017.7844</y>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <guid>{0ffc2791-23e9-a34f-2e4e-078c87fc20f5}</guid>
+                            <system>true</system>
+                            <script><![CDATA[this.process.processDocument.rollbackNumber = "4";]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{0c9abe5a-ec6f-16cc-d46b-18c8b0b58e08}</guid>
+                        <system>true</system>
+                        <script><![CDATA[this.process.processDocument.rollbackNumber = "3";]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="complete" type="completeActivity">
+        <guid>{0f779bd1-2be1-06bf-a3db-2269b06089e6}</guid>
+        <label>Complete</label>
+        <x>384.5345</x>
+        <y>1158.5891</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0a75849e-3e63-5529-294c-68bf5d3f8728}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Completed");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="interfaceExcp" type="onExceptionActivity">
+        <element>excp_cwf_pm.interfaceExcp</element>
+        <guid>{07193765-406f-645f-d60f-6592bd47bfd8}</guid>
+        <label>External interface error</label>
+        <x>431.18594</x>
+        <y>130.0</y>
+        <childList>
+          <child name="startIntrErr" type="seqActivity">
+            <guid>{0f724565-c781-9bca-d140-0775459b1a91}</guid>
+            <label>Start Interface Error</label>
+            <x>316.55548</x>
+            <y>137.0</y>
+            <childList>
+              <child name="rollbackGrSubmit" type="rollbackActivity">
+                <element>prrev_processSTC.mainSTCProcess_cwr2/seqActivity_start/seqActivity_startGranite</element>
+                <guid>{08d8b332-844f-28db-2373-dbbb1436e587}</guid>
+                <label>Rollback Granite Submit</label>
+                <x>319.69336</x>
+                <y>231.76093</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{006ff4fb-e497-cf69-50ec-c499d8239b4c}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeGraniteSubmit" type="resumeActivity">
+                <guid>{031ab517-5531-f295-9b83-35c764566a71}</guid>
+                <label>Resume Granite Submit</label>
+                <x>320.36133</x>
+                <y>357.86444</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <guid>{0854044e-6638-d70d-3520-d89b2226af7d}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - External Interface Error ...");
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="genericApplicationError" type="onExceptionActivity">
+        <element>excp_processSTC.genericApplicationError</element>
+        <guid>{0e809e11-3925-d572-ccdf-6438a5a73fb6}</guid>
+        <label>Generic Application Error</label>
+        <x>26.862106</x>
+        <y>152.89629</y>
+        <childList>
+          <child name="startSrvFaultErr" type="seqActivity">
+            <guid>{0abce50b-c723-fcf1-5036-ff5051f204d8}</guid>
+            <label>Start Service Fault Error</label>
+            <x>209.8711</x>
+            <y>137.0</y>
+            <childList>
+              <child name="rollbackGrSubmit" type="rollbackActivity">
+                <element>prrev_processSTC.mainSTCProcess_cwr2/seqActivity_start/seqActivity_startGranite</element>
+                <guid>{08b0e85d-ae18-508f-fa02-9bd457a0dfe8}</guid>
+                <label>Rollback Granite Submit</label>
+                <x>222.3418</x>
+                <y>231.76093</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{0e79353b-4aab-44cf-2e4a-9f9088076cfe}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeGraniteSubmit" type="resumeActivity">
+                <guid>{0286df6d-f76a-e019-2039-79138d2f046b}</guid>
+                <label>Resume Granite Submit</label>
+                <x>223.00977</x>
+                <y>357.86444</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <guid>{0167866a-cf1b-eb41-b34c-58823a71e688}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - External Service fault Error ...");
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="timeout" type="onExceptionActivity">
+        <element>excp_cwf_pm.timeout</element>
+        <guid>{0f5a79b6-3599-d1c5-1767-565cbcafb9b3}</guid>
+        <label>Timeout</label>
+        <x>302.96332</x>
+        <y>130.0</y>
+        <childList>
+          <child name="startTimeoutErr" type="seqActivity">
+            <guid>{026dc40b-e257-ea62-307c-f29f2e473962}</guid>
+            <label>Start Timeout Error</label>
+            <x>76.20039</x>
+            <y>137.0</y>
+            <childList>
+              <child name="orderType" type="switchActivity">
+                <guid>{0b965396-546d-a85b-31fd-4c631e84e727}</guid>
+                <label>Order Type</label>
+                <x>70.66699</x>
+                <y>246.4621</y>
+                <childList>
+                  <child name="update" type="caseActivity">
+                    <guid>{0354d98d-307c-dcd9-b94d-1bf92316e158}</guid>
+                    <label>Update</label>
+                    <x>30.0</x>
+                    <y>336.0</y>
+                    <childList>
+                      <child name="startUpdate" type="seqActivity">
+                        <guid>{0d62bd6b-3fa8-8644-168c-b40c6dd5a550}</guid>
+                        <label>Start Update</label>
+                        <x>124.08086</x>
+                        <y>374.9162</y>
+                        <childList>
+                          <child name="rollbackGraniteUpdateRead" type="rollbackActivity">
+                            <element>prrev_processSTC.mainSTCProcess_cwr2/seqActivity_start/seqActivity_startGranite/switchActivity_orderType/caseActivity_update/seqActivity_startUpdate/seqActivity_midUpdate</element>
+                            <guid>{0dde4d51-b2dd-4e1a-ecc2-20127b7e4094}</guid>
+                            <label>Rollback Granite Update Read</label>
+                            <x>124.01953</x>
+                            <y>483.96796</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <guid>{027acd91-4219-45e4-44ef-7a8f60a6362d}</guid>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  var rb = this.process.processDocument.rollbackNumber;
+                                  debugPrintln("Value read from the processDocument for compensate = " + rb);
+                                  return rb;
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="resumeGraniteUpdateRead" type="resumeActivity">
+                            <guid>{0ec0bf75-5cd7-a32e-f6bc-80f5f752e458}</guid>
+                            <label>Resume Granite Update Read</label>
+                            <x>124.6875</x>
+                            <y>624.77264</y>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="submit" type="caseActivity">
+                    <guid>{0c8e3c72-f422-4c47-157b-8a9c16a4a810}</guid>
+                    <label>Submit</label>
+                    <x>0.0</x>
+                    <y>0.0</y>
+                    <childList>
+                      <child name="startSubmit" type="seqActivity">
+                        <guid>{04763cfb-ec4f-b478-93f1-93106187df05}</guid>
+                        <label>Start Submit</label>
+                        <x>30.600391</x>
+                        <y>374.9162</y>
+                        <childList>
+                          <child name="rollbackGraniteSubmitRead" type="rollbackActivity">
+                            <element>prrev_processSTC.mainSTCProcess_cwr2/seqActivity_start/seqActivity_startGranite/switchActivity_orderType/caseActivity_submit/seqActivity_startSubmit/seqActivity_midSubmit</element>
+                            <guid>{016dd5e9-7ce7-c0dc-e6ff-25863294e2f9}</guid>
+                            <label>Rollback Granite Submit Read</label>
+                            <x>30.0</x>
+                            <y>483.96796</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <guid>{098ba31a-2f48-699e-83dd-61193d0b6863}</guid>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  var rb = this.process.processDocument.rollbackNumber;
+                                  debugPrintln("Value read from the processDocument for compensate = " + rb);
+                                  return rb;
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="resumeGraniteSubmitRead" type="resumeActivity">
+                            <guid>{0cbe8144-7435-8238-ff93-e485a273f12a}</guid>
+                            <label>Resume Granite Submit Read</label>
+                            <x>30.667969</x>
+                            <y>624.77264</y>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                    <methodList>
+                      <method name="cwOnProcActCond" type="action">
+                        <category>cond</category>
+                        <guid>{0739f683-a467-3e38-dc84-528d59d51941}</guid>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var isNew = (this.process.processDocument.isSubmit == "Y");
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - isNew = " + isNew);
+
+                          return isNew;
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <guid>{0bf4da9a-61b8-e09f-648a-78b96baa634e}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Tmeout Error ...");
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="graniteSubmitRead" type="participantActivity">
+        <guid>{04be8977-6746-acda-c55a-2101a133d563}</guid>
+        <label>Granite Submit Read</label>
+        <participant>part_ifGranite_jms.graniteSubmitRead</participant>
+        <x>436.04474</x>
+        <y>891.68085</y>
+      </child>
+      <child name="graniteUpdateRead" type="participantActivity">
+        <guid>{05abe992-f17a-35bd-c69b-d0e6f920e6a0}</guid>
+        <label>Granite Update Read</label>
+        <participant>part_ifGranite_jms.graniteUpdateRead</participant>
+        <x>270.04474</x>
+        <y>891.68085</y>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0f50fae1-ee05-40b1-a46d-4790c8f575ad}</guid>
+        <system>true</system>
+        <script><![CDATA[
+          this.process.processDocument.firstPassSub = "Y";
+          this.process.processDocument.firstPassSubRead = "Y";
+
+          // reset error flag
+          this.process.processDocument.errorType = null;
+
+          var ord = this.process.processOrder;
+          this.process.processDocument.isSubmit = ((ord.orderMessage.orderStatus.toUpperCase() == "NEW") ? "Y" : "N");
+
+          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Start");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <document>doc_processSTC.STC_PROCESS</document>
+  <label>Main STC Process</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_processSTC.mainSTCProcess</process>
+  <revision>2</revision>
+  <type>User</type>
+</process__revision>

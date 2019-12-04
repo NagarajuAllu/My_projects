@@ -1,0 +1,944 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="f46dc5ec911d905e7ae2fd9531557d8c" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.lineItemValidationMapDocument">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{f4e9621e-11f5-485d-bde0-b28afa36a3ca}</guid>
+  <label>LineItem Validation Map Document</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="serviceType" type="leaf">
+      <column>SERVICETYPE</column>
+      <key>2</key>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_ds_ws.serviceType</valueType>
+    </variable>
+    <variable name="orderType" type="leaf">
+      <column>ORDERTYPE</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_ds_ws.orderType</valueType>
+    </variable>
+    <variable name="lineItemType" type="leaf">
+      <column>LINEITEMTYPE</column>
+      <propertyElement type="elfld">
+        <label>LineItem Type</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="oldServiceNumber" type="leaf">
+      <column>OLDSERVICENUMBER</column>
+      <propertyElement type="elfld">
+        <label>Old Service #</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="productType" type="leaf">
+      <column>PRODUCTTYPE</column>
+      <propertyElement type="elfld">
+        <label>Product Type</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="remarks" type="leaf">
+      <column>REMARKS</column>
+      <propertyElement type="elfld">
+        <label>Remarks</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="referenceTelNumber" type="leaf">
+      <column>REFERENCETELNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Reference Tel. #</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="serviceDescription" type="leaf">
+      <column>SERVICEDESCRIPTION</column>
+      <propertyElement type="elfld">
+        <label>Service Description</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="bandwidth" type="leaf">
+      <column>BANDWIDTH</column>
+      <label>Bandwidth</label>
+      <propertyElement type="elfld">
+        <label>Bandwidth</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="accountNumber" type="leaf">
+      <column>ACCOUNTNUMBER</column>
+      <label>Account #</label>
+      <propertyElement type="elfld">
+        <label>Account #</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="oldAccountNumber" type="leaf">
+      <column>OLDACCOUNTNUMBER</column>
+      <label>Account #</label>
+      <propertyElement type="elfld">
+        <label>Old Account #</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="projectId" type="leaf">
+      <column>PROJECTID</column>
+      <propertyElement type="elfld">
+        <label>Project Id</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationACity" type="leaf">
+      <column>LOCATIONACITY</column>
+      <label>Location A: City</label>
+      <propertyElement type="elfld">
+        <label>Location A: City</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationACCLICode" type="leaf">
+      <column>LOCATIONACCLICODE</column>
+      <label>Location A: CCLI Code</label>
+      <propertyElement type="elfld">
+        <label>Location A: CCLI Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAAccessCircuit" type="leaf">
+      <column>LOCATIONAACCESSCIRCUIT</column>
+      <label>Location A: Access Circuit</label>
+      <propertyElement type="elfld">
+        <label>Location A: Access Circuit</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAJVCode" type="leaf">
+      <column>LOCATIONAJVCODE</column>
+      <label>Location A: JV Code</label>
+      <propertyElement type="elfld">
+        <label>Location A: JV Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAExchangeSwitchCode" type="leaf">
+      <column>LOCATIONAEXCHANGESWITCHCODE</column>
+      <label>Location A: Exchange Switch Code</label>
+      <propertyElement type="elfld">
+        <label>Location A: Exchange Switch Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAAccessType" type="leaf">
+      <column>LOCATIONAACCESSTYPE</column>
+      <label>Location A: Access Type</label>
+      <propertyElement type="elfld">
+        <label>Location A: Access Type</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAPlateID" type="leaf">
+      <column>LOCATIONAPLATEID</column>
+      <label>Location A: Plate Id.</label>
+      <propertyElement type="elfld">
+        <label>Location A: Plate Id.</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAOldPlateID" type="leaf">
+      <column>LOCATIONAOLDPLATEID</column>
+      <propertyElement type="elfld">
+        <label>Location A: Old Plate Id.</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAContactAddress" type="leaf">
+      <column>LOCATIONACONTACTADDRESS</column>
+      <label>Location A: Contact Address</label>
+      <propertyElement type="elfld">
+        <label>Location A: Contact Address</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAContactName" type="leaf">
+      <column>LOCATIONACONTACTNAME</column>
+      <label>Location A: Contact Name</label>
+      <propertyElement type="elfld">
+        <label>Location A: Contact Name</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAContactTel" type="leaf">
+      <column>LOCATIONACONTACTTEL</column>
+      <label>Location A: Contact Tel.</label>
+      <propertyElement type="elfld">
+        <label>Location A: Contact Tel.</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAContactEmail" type="leaf">
+      <column>LOCATIONACONTACTEMAIL</column>
+      <label>Location A: Contact Email</label>
+      <propertyElement type="elfld">
+        <label>Location A: Contact Email</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAUnitNumber" type="leaf">
+      <column>LOCATIONAUNITNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Location A: Unit #</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationAInterface" type="leaf">
+      <column>LOCATIONAINTERFACE</column>
+      <label>Location A: Interface</label>
+      <propertyElement type="elfld">
+        <label>Location A: Interface</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationARemarks" type="leaf">
+      <column>LOCATIONAREMARKS</column>
+      <label>Location A: Remarks</label>
+      <propertyElement type="elfld">
+        <label>Location A: Remarks</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBCity" type="leaf">
+      <column>LOCATIONBCITY</column>
+      <label>Location B: City</label>
+      <propertyElement type="elfld">
+        <label>Location B: City</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBCCLICode" type="leaf">
+      <column>LOCATIONBCCLICODE</column>
+      <label>Location B: CCLI Code</label>
+      <propertyElement type="elfld">
+        <label>Location B: CCLI Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBAccessCircuit" type="leaf">
+      <column>LOCATIONBACCESSCIRCUIT</column>
+      <label>Location B: Access Circuit</label>
+      <propertyElement type="elfld">
+        <label>Location B: Access Circuit</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBJVCode" type="leaf">
+      <column>LOCATIONBJVCODE</column>
+      <label>Location B: JV Code</label>
+      <propertyElement type="elfld">
+        <label>Location B: JV Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBExchangeSwitchCode" type="leaf">
+      <column>LOCATIONBEXCHANGESWITCHCODE</column>
+      <label>Location B: Exchange Switch Code</label>
+      <propertyElement type="elfld">
+        <label>Location B: Exchange Switch Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBAccessType" type="leaf">
+      <column>LOCATIONBACCESSTYPE</column>
+      <label>Location B: Access Type</label>
+      <propertyElement type="elfld">
+        <label>Location B: Access Type</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBPlateID" type="leaf">
+      <column>LOCATIONBPLATEID</column>
+      <label>Location B: Plate Id.</label>
+      <propertyElement type="elfld">
+        <label>Location B: Plate Id.</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBOldPlateID" type="leaf">
+      <column>LOCATIONBOLDPLATEID</column>
+      <propertyElement type="elfld">
+        <label>Location B: Old Plate Id.</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBContactAddress" type="leaf">
+      <column>LOCATIONBCONTACTADDRESS</column>
+      <label>Location B: Contact Address</label>
+      <propertyElement type="elfld">
+        <label>Location B: Contact Address</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBContactName" type="leaf">
+      <column>LOCATIONBCONTACTNAME</column>
+      <label>Location B: Contact Name</label>
+      <propertyElement type="elfld">
+        <label>Location B: Contact Name</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBContactTel" type="leaf">
+      <column>LOCATIONBCONTACTTEL</column>
+      <label>Location B: Contact Tel.</label>
+      <propertyElement type="elfld">
+        <label>Location B: Contact Tel.</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBContactEmail" type="leaf">
+      <column>LOCATIONBCONTACTEMAIL</column>
+      <label>Location B: Contact Email</label>
+      <propertyElement type="elfld">
+        <label>Location B: Contact Email</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBUnitNumber" type="leaf">
+      <column>LOCATIONBUNITNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Location B: Unit #</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBInterface" type="leaf">
+      <column>LOCATIONBINTERFACE</column>
+      <label>Location B: Interface</label>
+      <propertyElement type="elfld">
+        <label>Location B: Interface</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="locationBRemarks" type="leaf">
+      <column>LOCATIONBREMARKS</column>
+      <label>Location B: Remarks</label>
+      <propertyElement type="elfld">
+        <label>Location B: Remarks</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="tbPortNumber" type="leaf">
+      <column>TBPORTNUMBER</column>
+      <label>Tb Port #</label>
+      <propertyElement type="elfld">
+        <label>Tb Port #</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="wires" type="leaf">
+      <column>WIRES</column>
+      <label>Wires</label>
+      <propertyElement type="elfld">
+        <label>Wires</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="serviceDate" type="leaf">
+      <column>SERVICEDATE</column>
+      <propertyElement type="eldate">
+        <displayFormat>dd/MM/yyyy</displayFormat>
+        <label>Service Date</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="creationDate" type="leaf">
+      <column>CREATIONDATE</column>
+      <propertyElement type="eldate">
+        <displayFormat>dd/MM/yyyy</displayFormat>
+        <label>Creation Date</label>
+      </propertyElement>
+      <table>STC_LINEITEM_VALIDATION_MAP</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        if(this.isStored) {
+            Global.showUserMessage(Global.translateText("AI0002"));
+        }
+        else {
+            Global.showUserMessage(Global.translateText("AI0001"));
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.lineItemValidationMapDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="nameGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="header" type="elgrd">
+                    <colWidths>100px,200px,100px,200px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <width>960px</width>
+                    <elementList>
+                      <element name="lineItemValidationMapDocumentHeader" type="elhdr">
+                        <label>LineItem Validation Map Document</label>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/permMethod_serviceTypeEditablePerm</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <label>Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderType" type="elslct">
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/permMethod_orderTypeEditablePerm</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <label>Order Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp"/>
+                    </elementList>
+                  </element>
+                  <element name="lineItemValidationMapDocumentGrid" type="elgrd">
+                    <colWidths>160px,160px,160px,160px,160px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <style>simpleBorder</style>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>960px</width>
+                    <elementList>
+                      <element name="instructionLabel" type="elhdr">
+                        <height>30px</height>
+                        <label>Please, select the fields that you would like to consider mandatory for the selected pair &amp;lt;ServiceType, OrderType&amp;gt;</label>
+                      </element>
+                      <element name="lineItemType" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_lineItemType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="oldServiceNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_oldServiceNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="productType" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_productType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="remarks" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_remarks</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="referenceTelNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_referenceTelNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceDescription" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_serviceDescription</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="bandwidth" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_bandwidth</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="accountNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_accountNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="oldAccountNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_oldAccountNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="projectId" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_projectId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="tbPortNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_tbPortNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="wires" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_wires</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDate" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_creationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceDate" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_serviceDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer1" type="elrsp">
+                        <height>10px</height>
+                        <rowSpan>10px</rowSpan>
+                      </element>
+                      <element name="locationACity" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationACity</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationACCLICode" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationACCLICode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAAccessCircuit" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAAccessCircuit</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAJVCode" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAJVCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAExchangeSwitchCode" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAExchangeSwitchCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAAccessType" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAAccessType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAPlateID" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAPlateID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAOldPlateID" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAOldPlateID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAContactAddress" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAContactAddress</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAContactName" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAContactName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAContactTel" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAContactTel</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAContactEmail" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAContactEmail</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAUnitNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAUnitNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAInterface" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAInterface</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationARemarks" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationARemarks</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer2" type="elrsp">
+                        <height>10px</height>
+                        <rowSpan>10px</rowSpan>
+                      </element>
+                      <element name="locationBCity" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBCity</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBCCLICode" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBCCLICode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBAccessCircuit" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBAccessCircuit</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBJVCode" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBJVCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBExchangeSwitchCode" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBExchangeSwitchCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBAccessType" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBAccessType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBPlateID" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBPlateID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBOldPlateID" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBOldPlateID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBContactAddress" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBContactAddress</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBContactName" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBContactName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBContactTel" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBContactTel</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBContactEmail" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBContactEmail</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBUnitNumber" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBUnitNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBInterface" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBInterface</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBRemarks" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBRemarks</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="orderTypeEditablePerm" type="permMethod">
+        <script>return (this.model.orderType == null);</script>
+      </method>
+      <method name="serviceTypeEditablePerm" type="permMethod">
+        <script>return (this.model.serviceType == null);</script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

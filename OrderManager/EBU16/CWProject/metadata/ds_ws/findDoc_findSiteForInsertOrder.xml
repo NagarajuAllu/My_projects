@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="ds_ws.findSiteForInsertOrder">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_ds_ws.search_SiteForInsertOrder</input>
+  <label>Find Site For InsertOrder</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_ds_ws.STC_INSERTORDER_SITE</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_ds_ws.STC_INSERTORDER_SITE/leaf_SITE_HUM_ID</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <vDetailForm>doc_ds_ws.STC_INSERTORDER_SITE/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_ds_ws.search_SiteForInsertOrder</document>
+      <mappedDocument>doc_ds_ws.STC_INSERTORDER_SITE</mappedDocument>
+      <mappedPath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_CLLI</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_SiteForInsertOrder/leaf_CLLI</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_SiteForInsertOrder</document>
+      <mappedDocument>doc_ds_ws.STC_INSERTORDER_SITE</mappedDocument>
+      <mappedPath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_NUM</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_SiteForInsertOrder/leaf_NUM</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_SiteForInsertOrder</document>
+      <mappedDocument>doc_ds_ws.STC_INSERTORDER_SITE</mappedDocument>
+      <mappedPath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_SITE_HUM_ID</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_SiteForInsertOrder/leaf_SITE_HUM_ID</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_SiteForInsertOrder</document>
+      <mappedDocument>doc_ds_ws.STC_INSERTORDER_SITE</mappedDocument>
+      <mappedPath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_SITE_INST_ID</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_SiteForInsertOrder/leaf_SITE_INST_ID</path>
+    </search>
+  </searchList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="cwOnInitSearch" type="uimthd">
+      <script><![CDATA[
+        this.searchDocument.SITE_HUM_ID = this.addWildCards(this.searchDocument.SITE_HUM_ID);
+
+        if(this.searchDocument.NUM != null && this.searchDocument.NUM.trim().length > 0) {
+            this.searchDocument.NUM = this.addWildCards(this.searchDocument.NUM);
+        }
+        else {
+            this.searchDocument.NUM = null;
+        }
+
+        if(this.searchDocument.CLLI != null && this.searchDocument.CLLI.trim().length > 0) {
+            this.searchDocument.CLLI = this.addWildCards(this.searchDocument.CLLI);
+        }
+        else {
+            this.searchDocument.CLLI = null;
+        }
+      ]]></script>
+    </method>
+    <method name="addWildCards" type="uimthd">
+      <parameterList>
+        <parameter name="fieldValue" type="rifp"/>
+      </parameterList>
+      <script><![CDATA[
+        var result = null;
+
+        if(fieldValue != null) {
+            while(fieldValue.charAt(0) == "%") {
+                fieldValue = fieldValue.substring(1);
+            }
+
+            while(fieldValue.endsWith("%")) {
+                fieldValue = fieldValue.substring(0, fieldValue.length -1);
+            }
+        }
+
+        if(fieldValue != null && fieldValue.trim().length > 0 && fieldValue != "%") {
+            result = "%" + fieldValue + "%";
+        }
+        else {
+            result = "%";
+        }
+
+        return result;
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.STC_INSERTORDER_SITE</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_ds_ws.search_SiteForInsertOrder/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_ds_ws.STC_INSERTORDER_SITE/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findSiteForInsertOrderResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="SITE_HUM_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_SITE_HUM_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="STATUS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_STATUS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CLLI" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_CLLI</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="NUM" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_NUM</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="BASE_NUM" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_BASE_NUM</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="LATITUDE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_LATITUDE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="LONGITUDE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_LONGITUDE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RESTRICTIONS" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_RESTRICTIONS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CONTACTS" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_CONTACTS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="COMMENTS" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_COMMENTS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ADDRESS" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_ADDRESS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CITY" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_CITY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="STATE_PROV" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_STATE_PROV</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="POST_CODE_1" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_POST_CODE_1</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="POST_CODE_2" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_POST_CODE_2</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="FLOOR" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_FLOOR</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ROOM" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_ROOM</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="NPA_NXX" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_NPA_NXX</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="COUNTY" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_COUNTY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="COUNTRY" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_COUNTRY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="INST_VER" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SITE/leaf_INST_VER</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findSiteForInsertOrderView" type="findVView">
+      <inputOverlay>doc_ds_ws.search_SiteForInsertOrder/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find Site For InsertOrder</label>
+      <outputOverlay>findDoc_ds_ws.findSiteForInsertOrder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findDoc>

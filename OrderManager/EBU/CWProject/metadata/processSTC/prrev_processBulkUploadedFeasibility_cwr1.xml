@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="5aee1ebcbaac7b5ae4e646c16d47c631" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.processBulkUploadedFeasibility_cwr1">
+  <activity name="start" type="seqActivity">
+    <guid>{63a3e19a-b26e-442e-ae6c-4aa017f0e53a}</guid>
+    <label>Start</label>
+    <x>27.0</x>
+    <y>213.0</y>
+    <childList>
+      <child name="anotherOrderToProcess" type="switchActivity">
+        <guid>{aad4b511-1eee-4cba-8203-2a4e3aabc17e}</guid>
+        <label>Another Order To Process</label>
+        <x>181.0</x>
+        <y>204.0</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <guid>{e2e77c0b-9e7a-46c0-997d-d28765fcca4c}</guid>
+            <label>No</label>
+            <x>189.0</x>
+            <y>84.0</y>
+          </child>
+          <child name="yes" type="caseActivity">
+            <guid>{1d4173de-3abe-400c-9192-ca59663c8c3a}</guid>
+            <label>Yes</label>
+            <x>326.0</x>
+            <y>211.0</y>
+            <childList>
+              <child name="startProcessSingleRecord" type="seqActivity">
+                <guid>{cb3391b4-a52c-4f19-8c2b-723c51cb4128}</guid>
+                <label>Start Process Single Record</label>
+                <x>326.0</x>
+                <y>211.0</y>
+                <childList>
+                  <child name="mapBulkRecordIntoFeasibilityOrder" type="scriptActivity">
+                    <guid>{4e4c0317-b358-4db1-8c7f-031c8042cd5e}</guid>
+                    <label>Map Bulk Record Into Feasibility Order</label>
+                    <x>491.0</x>
+                    <y>203.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var searchDoc = new Document("cwt_common.docID");
+                          searchDoc.cwDocID = this.process.processDocument.currentHeaderId;
+                          var resultFinder = Finder.runFinder("ds_ws.findInsertFeasibilityOrder", "select", searchDoc);
+                          if(resultFinder != null && resultFinder.length > 0) {
+                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Processing record with id : " + this.process.processDocument.currentHeaderId);
+
+                              var generatedOrder = ds_ws.generateFeasibilityOrderFromGUI(resultFinder[0]);
+                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Generated Feasibility Order with id : " + generatedOrder.id);
+
+                              var processId = ds_ws.startProcessingGeneratedFeasibilityOrder(generatedOrder);
+                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Started process with id : " + processId);
+
+                              resultFinder[0].generatedOrderNumber = generatedOrder.orderHeader.orderNumber;
+                              resultFinder[0].save();
+                          }
+                          else {
+                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - GRAVE!!!! Not found bulk record with id: " + this.process.processDocument.currentHeaderId);
+                          }
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="waitForGraniteResult" type="syncActivity">
+                    <element>signal_processSTC.wakeUpParentInBulk</element>
+                    <guid>{ea6363e6-422f-4101-88d2-229fbf3c67c2}</guid>
+                    <label>Wait For Granite Result</label>
+                    <x>500.0</x>
+                    <y>403.0</y>
+                  </child>
+                  <child name="repeatForNextOrder" type="repeatActivity">
+                    <element>prrev_processSTC.processBulkUploadedFeasibility_cwr1/seqActivity_start/switchActivity_anotherOrderToProcess</element>
+                    <guid>{e4f47fdf-c1c5-47d4-8441-600f6b70ebf4}</guid>
+                    <label>Repeat For Next Order</label>
+                    <x>175.0</x>
+                    <y>407.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script>this.process.processDocument.countProcessed++;</script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var finder = new Finder("ds_ws.findUploadedBulkFeasibilityOrder");
+                  finder.searchDocument.jobId = this.process.processDocument.jobId;
+                  finder.setViewByName("findUploadedFeasibilityOrderView", true);
+                  var resultList = finder.search();
+
+                  var anotherRecordToProcess = false;
+                  this.process.processDocument.currentHeaderId = null;
+                  if(resultList != null && resultList.length > 0) {
+                      if(this.process.processDocument.countProcessed < resultList.length) {
+                          this.process.processDocument.currentHeaderId = resultList[this.process.processDocument.countProcessed].cwDocId;
+                          anotherRecordToProcess = true;
+                      }
+                  }
+
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Another Record to process: " + anotherRecordToProcess + "; currentHeaderId = " + this.process.processDocument.currentHeaderId);
+
+                  return anotherRecordToProcess;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="done" type="completeActivity">
+        <guid>{0366ce22-435e-4073-9897-8cb1b85d5510}</guid>
+        <label>Done</label>
+        <x>346.0</x>
+        <y>84.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Completed for jobId: " + this.process.processDocument.jobId);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          this.process.processDocument.countProcessed = 0;
+          this.process.processDocument.currentHeaderId = null;
+
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Start for jobId: " + this.process.processDocument.jobId);
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <document>doc_processSTC.bulkFeasibilityOrderProcessDoc</document>
+  <label>Process Bulk Uploaded Feasibility Orders</label>
+  <metaVersion>4</metaVersion>
+  <priority>8</priority>
+  <process>proc_processSTC.processBulkUploadedFeasibility</process>
+  <type>User</type>
+</process__revision>

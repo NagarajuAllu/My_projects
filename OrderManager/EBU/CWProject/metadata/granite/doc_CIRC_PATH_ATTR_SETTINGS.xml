@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="dde948c73bc173c41d651faa5523af66" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.CIRC_PATH_ATTR_SETTINGS">
+  <dbSchema>XNG PRODUCTION [USER:STC_TARGET2]</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{419225d2-27c7-4657-936b-15916d39231f}</guid>
+  <label>Details: Path UDA [XNG]</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="CIRC_PATH_INST_ID" type="leaf">
+      <column>CIRC_PATH_INST_ID</column>
+      <key>2</key>
+      <table>CIRC_PATH_ATTR_SETTINGS</table>
+      <valueType>dtype_granite.INST_ID</valueType>
+    </variable>
+    <variable name="VAL_ATTR_INST_ID" type="leaf">
+      <column>VAL_ATTR_INST_ID</column>
+      <key>1</key>
+      <table>CIRC_PATH_ATTR_SETTINGS</table>
+      <valueType>dtype_granite.INST_ID</valueType>
+    </variable>
+    <variable name="ATTR_VALUE" type="leaf">
+      <column>ATTR_VALUE</column>
+      <table>CIRC_PATH_ATTR_SETTINGS</table>
+      <valueType>dtype_granite.ATTR_VALUE</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_granite.CIRC_PATH_ATTR_SETTINGS</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

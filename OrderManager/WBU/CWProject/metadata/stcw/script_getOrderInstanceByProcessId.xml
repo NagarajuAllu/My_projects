@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="f7f40f6c30aa034fb2f59289d386722c" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.getOrderInstanceByProcessId">
+  <guid>{04d931f4-ed3e-57a0-15f5-41c9af9f827d}</guid>
+  <label>Get OrderInstance By ProcessId</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_cwf_pm.PROCESS_ID</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var findOrder = new Finder("stcc:orderIdByProcessIdFinder");
+    findOrder.searchDocument.PROCESS_ID = processId;
+    findOrder.search();
+
+    var orderList = findOrder.list;
+    if (orderList == null || orderList.size <= 0) {
+          return (null);
+    }
+
+    var orderId = orderList.start.orderId;
+    var order = Order.getOrderById(orderId);
+    return order;
+  ]]></script>
+</script>

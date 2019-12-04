@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="crmToSOMMigration.createMissingOrders">
+  <highlight>14</highlight>
+  <label>Create Missing Orders</label>
+  <metaVersion>25</metaVersion>
+  <script><![CDATA[
+    var debugMsg = " CreateMissingOrders - ";
+
+    var searchDoc = new Document("stcc.genericSearchDocWithInteger1");
+    searchDoc.integer1 = 0;
+    var missingOrdersFound = Finder.runFinder("crmToSOMMigration.findSTCW_DATA_FOR_MISSING_ORDERS", "select", searchDoc);
+
+    var found = 0;
+    var countMigratedFailed = 0;
+    var countMigratedWithValidationError = 0;
+    var countMigratedSuccessfully = 0;
+
+    if(missingOrdersFound != null) {
+        found = missingOrdersFound.length;
+        for(var i=0; i<missingOrdersFound.length; i++) {
+            debugPrintln(stcc.getSysdateForLog() + debugMsg + "Processing Record with orderNumber " + missingOrdersFound[i].orderNumber);
+
+            var currentOrder = crmToSOMMigration.createOrderForMissingOrderData(missingOrdersFound[i]);
+
+            if(currentOrder != null) {
+                var validationErrors = currentOrder.validate(1000, true);
+                if(validationErrors != null) {
+                    countMigratedWithValidationError++;
+
+                    // migrated order is not valid
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Order #" + i + "; Migrated Order.id: " + currentOrder.id + " - ValidationErrors: ");
+                    for(var k=0; k<validationErrors.length; k=k+2) {
+                        debugPrintln(("" + k/2).leftPad(4, " ") + ". - " + validationErrors[k] + " = " + validationErrors[k+1]);
+                    }
+                }
+
+                var orchestrationError = stcw.writeSequenceForOrder(currentOrder);
+                if(orchestrationError != null) {
+                    for(var k=0; k<orchestrationError.length; k++) {
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Order #" + i + "; Migrated Order.id: " + currentOrder.id + " - Error in creating orchestration records: " +
+                 "<" + orchestrationError[k].ErrorCode + "," + orchestrationError[k].ErrorDescription + ">");
+                    }
+                }
+                countMigratedSuccessfully++;
+
+                missingOrdersFound[i].processed = 1;
+                currentOrder.save();
+            }
+            else {
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Order #" + i + "; Failed to create order!");
+                countMigratedFailed++;
+
+                missingOrdersFound[i].processed = 2;
+            }
+            missingOrdersFound[i].save();
+        }
+    }
+
+    var statistics = new Array(4);
+    statistics[0] = found;
+    statistics[1] = countMigratedFailed;
+    statistics[2] = countMigratedWithValidationError;
+    statistics[3] = countMigratedSuccessfully;
+
+    return statistics;
+  ]]></script>
+</script>

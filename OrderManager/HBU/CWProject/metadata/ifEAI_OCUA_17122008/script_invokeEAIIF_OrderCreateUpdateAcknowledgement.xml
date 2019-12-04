@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="c4a76185c90a8dac498bb3c58ae5547" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ifEAI_OCUA_17122008.invokeEAIIF_OrderCreateUpdateAcknowledgement">
+  <guid>{0b77575d-0f9d-0600-df74-29c62daf353f}</guid>
+  <label>[17.12.2008] Invoke EAI Interface: Order Create/Update Acknowledgement [SOAP]</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="parentOrderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = "[INVOKE EAI INTERFACE VIA 'SOAP': ORDER CREATE/UPDATE ACKNOWLEDGEMENT] ";
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "START...");
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "INPUT: " + (input != null ? input.toXML() : "") + "...");
+
+          var output = null;
+          try {
+                if (input.OrderCreateUpdateAck.BusinessUnit == "Home") {
+                      if(parentOrderNumber == null){
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " SEARCHING ParentOrderNumber USING " + input.OrderCreateUpdateAck.OrderNumber);
+                            var orderMessage = ds_ws.searchOrderMessageHomeByOrderNumber(input.OrderCreateUpdateAck.OrderNumber);
+                            if (orderMessage != null &&
+                                  orderMessage.parentOrderNumber != null) {
+                                  // - replacing the Order Number
+                                  input.OrderCreateUpdateAck.OrderNumber = orderMessage.parentOrderNumber;
+                            }
+                            else {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "WARNING: PARENT ORDER NOT FOUND FOR ORDER # " + input.OrderCreateUpdateAck.OrderNumber + "...");
+                            }
+                      }
+                      else {
+                            input.OrderCreateUpdateAck.OrderNumber = parentOrderNumber;
+                      }
+                }
+
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "INVOKING INTERFACE WITH DATA: " + (input != null ? input.toXML() : "NULL"));
+                output = Global.invokeInterface("ifEAI_OCUA_17122008:OCUA",
+                                                                "processRequest",
+                                                                input);
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "RESULT: " + output + "...");
+          }
+          catch (exc){
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "EXCEPTION: " + exc);
+          }
+
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "END...");
+          return output;
+  ]]></script>
+</script>

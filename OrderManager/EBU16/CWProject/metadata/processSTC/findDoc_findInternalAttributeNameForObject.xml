@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="processSTC.findInternalAttributeNameForObject">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_processSTC.STC_INTERNAL_NAME_MAPPING</input>
+  <label>Find Internal Attribute Name For Object</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_processSTC.STC_INTERNAL_NAME_MAPPING</output>
+  <type>document</type>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_processSTC.STC_INTERNAL_NAME_MAPPING</document>
+      <mappedDocument>doc_processSTC.STC_INTERNAL_NAME_MAPPING</mappedDocument>
+      <mappedPath>doc_processSTC.STC_INTERNAL_NAME_MAPPING/leaf_externalName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_processSTC.STC_INTERNAL_NAME_MAPPING/leaf_externalName</path>
+    </search>
+    <search type="sitem">
+      <document>doc_processSTC.STC_INTERNAL_NAME_MAPPING</document>
+      <mappedDocument>doc_processSTC.STC_INTERNAL_NAME_MAPPING</mappedDocument>
+      <mappedPath>doc_processSTC.STC_INTERNAL_NAME_MAPPING/leaf_internalName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_processSTC.STC_INTERNAL_NAME_MAPPING/leaf_internalName</path>
+    </search>
+    <search type="sitem">
+      <document>doc_processSTC.STC_INTERNAL_NAME_MAPPING</document>
+      <mappedDocument>doc_processSTC.STC_INTERNAL_NAME_MAPPING</mappedDocument>
+      <mappedPath>doc_processSTC.STC_INTERNAL_NAME_MAPPING/leaf_objectName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_processSTC.STC_INTERNAL_NAME_MAPPING/leaf_objectName</path>
+    </search>
+  </searchList>
+  <methodList>
+    <method name="editablePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_processSTC.STC_INTERNAL_NAME_MAPPING/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_processSTC.STC_INTERNAL_NAME_MAPPING/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_processSTC.STC_INTERNAL_NAME_MAPPING</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_processSTC.findInternalAttributeNameForObject/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_processSTC.findInternalAttributeNameForObject/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findInternalAttributeNameForObjectResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_processSTC.findInternalAttributeNameForObject/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="objectName" type="elfld">
+                        <label>Object Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_processSTC.findInternalAttributeNameForObject/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_processSTC.STC_INTERNAL_NAME_MAPPING/leaf_objectName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="externalName" type="elfld">
+                        <label>External Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_processSTC.findInternalAttributeNameForObject/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_processSTC.STC_INTERNAL_NAME_MAPPING/leaf_externalName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="internalName" type="elfld">
+                        <label>Internal Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_processSTC.findInternalAttributeNameForObject/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_processSTC.STC_INTERNAL_NAME_MAPPING/leaf_internalName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findInternalAttributeNameForObjectView" type="findVView">
+      <label>Find Internal Name Mapping</label>
+      <outputOverlay>findDoc_processSTC.findInternalAttributeNameForObject/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+    </view>
+  </viewList>
+</findDoc>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="workflow.biAssociationProcess">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>32.040604</x>
+    <y>26.0</y>
+    <childList>
+      <child name="validateBIRequest" type="opActivity">
+        <element>iface_workflow.biTeamIF/oper_validateRequest</element>
+        <label>Validate BI Request</label>
+        <participant>part_workflow.biTeamParticipant</participant>
+        <x>130.02203</x>
+        <y>20.0</y>
+      </child>
+      <child name="choiceValidateBIRequest" type="choiceActivity">
+        <label>Choice Validate BI Request</label>
+        <x>249.01276</x>
+        <y>16.402344</y>
+        <childList>
+          <child name="validBIRequest" type="opActivity">
+            <element>iface_workflow.biTeamIF/oper_validBIRequest</element>
+            <label>Valid BI Request</label>
+            <participant>part_workflow.biTeamParticipant</participant>
+            <x>367.0332</x>
+            <y>144.50586</y>
+            <methodList>
+              <method name="cwOnProcActAfter" type="action">
+                <category>script</category>
+                <system>true</system>
+                <script>this.process.processDocument.isBIAccepted = true;</script>
+              </method>
+            </methodList>
+          </child>
+          <child name="rejectedBIRequest" type="opActivity">
+            <element>iface_workflow.biTeamIF/oper_rejectBIRequest</element>
+            <label>Rejected BI Request</label>
+            <participant>part_workflow.biTeamParticipant</participant>
+            <x>405.0</x>
+            <y>24.50586</y>
+            <methodList>
+              <method name="cwOnProcActAfter" type="action">
+                <category>script</category>
+                <system>true</system>
+                <script>this.process.processDocument.isBIAccepted = false;</script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="loadDataSharing" type="scriptActivity">
+        <label>Load Data Sharing</label>
+        <x>533.437</x>
+        <y>25.21875</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var finder = new Finder("workflow.dataSharingForBIFinder");
+              finder.searchDocument.processId = this.process.id;
+              var resultList = finder.search();
+
+              if(resultList != null && resultList.length > 0) {
+                  this.process.processDocument.isRequestNotification = resultList[0].requestNotification;
+                  this.process.processDocument.parentProcessId = resultList[0].parentProcessId;
+                  this.process.processDocument.isRequestForPRN = resultList[0].prnSource;
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="isBIAccepted" type="switchActivity">
+        <label>Is BI Accepted?</label>
+        <x>655.3374</x>
+        <y>24.908203</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>106.02783</x>
+            <y>230.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>661.7064</x>
+                <y>147.31055</y>
+                <childList>
+                  <child name="prepareToCompleteBIMgmt" type="opActivity">
+                    <element>iface_workflow.biTeamIF/oper_prepareToCompleteBIMgmt</element>
+                    <label>Prepare To Complete BI Management</label>
+                    <participant>part_workflow.biTeamParticipant</participant>
+                    <x>780.69214</x>
+                    <y>125.31055</y>
+                  </child>
+                  <child name="biMgmtCompleted" type="opActivity">
+                    <element>iface_workflow.biTeamIF/oper_biMgmtCompleted</element>
+                    <label>BI Management Completed</label>
+                    <participant>part_workflow.biTeamParticipant</participant>
+                    <x>793.53735</x>
+                    <y>272.11523</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script>return (this.process.processDocument.isBIAccepted);</script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>1000.69214</x>
+            <y>68.362305</y>
+            <childList>
+              <child name="sendWakeUpSignalToParent" type="seqActivity">
+                <label>Send WakeUp Signal To Parent</label>
+                <x>791.69214</x>
+                <y>32.362305</y>
+                <childList>
+                  <child name="sendWakeUpToParent" type="scriptActivity">
+                    <label>Send WakeUp To Parent</label>
+                    <x>933.69214</x>
+                    <y>20.362305</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          if(this.process.processDocument.isRequestNotification) {
+                              debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Sent 'wakeUpParent' signal to parent process " + this.process.processDocument.parentProcessId);
+                              Process.sendSignal("workflow.wakeUpParent", this.process.processDocument.parentProcessId);
+                          }
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="sendWakeUpToParentForPRN" type="scriptActivity">
+        <label>Send WakeUp To Parent For PRN</label>
+        <x>933.69214</x>
+        <y>271.3623</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              if(this.process.processDocument.isRequestForPRN) {
+                  debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Sent 'wakeUpParentByBIAssocForPRN' signal to parent process " + this.process.processDocument.parentProcessId);
+                  Process.sendSignal("workflow.wakeUpParentByBIAssocForPRN", this.process.processDocument.parentProcessId);
+
+                  // reassign PRN to Network Design team
+                  var netDesignUser = workflow.getUserForOrder(this.process.processOrderId, "0", "NetworkDesign");
+                  this.process.processOrder.prnDocument.currentUserId = netDesignUser;
+                  this.process.processOrder.prnDocument.currentUserDepartment = up_priv.getDepartmentByUserId(netDesignUser);
+                  this.process.processOrder.save();
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="assignBIUserInParentProcess" type="scriptActivity">
+        <label>Assign BI User In Parent Process</label>
+        <x>940.0405</x>
+        <y>405.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var finder = new Finder("workflow.usersForOrderFinder");
+              finder.searchDocument.orderId = this.process.processOrderId;
+              finder.searchDocument.orderItemId = this.process.processOrderItemId;
+              var recordsFound = finder.search();
+
+              if(recordsFound != null && recordsFound.length > 0) {
+                  var currentBIUser = recordsFound[0].userId_BI;
+
+                  workflow.setUserInUsersForOrder(this.process.processOrderId, "0", "BI", currentBIUser);
+
+                  recordsFound[0].deleteItem();
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>949.1255</x>
+        <y>546.6211</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Completed");]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="biTeamParticipant" type="participantActivity">
+        <label>BI Team Participant</label>
+        <participant>part_workflow.biTeamParticipant</participant>
+        <x>449.0</x>
+        <y>262.0</y>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Start");
+
+          this.process.processDocument.isRequestForPRN = false;
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_workflow.biAssociationProcessDocument</document>
+  <label>Blocking Issue Association Process</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <revision>2</revision>
+  <type>User</type>
+</process>

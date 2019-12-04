@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcc.genericOutput">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{9ec6124b-6d6e-4a18-acf9-5ea9c4febb37}</guid>
+  <label>Generic Output [SQL query]</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="result" type="leaf">
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>Result</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcc.genericOutput</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="genericOutputGrid" type="elgrd">
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="genericOutputHeader" type="elhdr">
+                        <label>Generic Output [SQL query]</label>
+                      </element>
+                      <element name="result" type="elfld">
+                        <label>Result</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcc.genericOutput/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcc.genericOutput/leaf_result</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

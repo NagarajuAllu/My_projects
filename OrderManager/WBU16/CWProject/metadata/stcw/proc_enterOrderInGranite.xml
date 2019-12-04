@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.enterOrderInGranite">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>173.3781</x>
+    <y>29.0</y>
+    <childList>
+      <child name="sendOrderToGranite" type="scriptActivity">
+        <label>Send Order To Granite</label>
+        <x>163.3615</x>
+        <y>122.0</y>
+        <childList>
+          <child name="compensate" type="compensateActivity">
+            <compensatesList>
+              <compensates>7</compensates>
+            </compensatesList>
+            <label>Compensate</label>
+            <x>185.0</x>
+            <y>225.0</y>
+            <childList>
+              <child name="retry" type="scriptActivity">
+                <label>Retry</label>
+                <x>227.05827</x>
+                <y>240.75293</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      debugPrintln(stcc.getSysdateForLog() + "[" + process.id + "] - Sending SubmitOrder To Granite: Retrying ...");
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var debugHeader = "[" + this.process.id + "] SendOrderToGranite - ";
+
+              var order = this.process.processOrder;
+              var processDocument = this.process.processDocument;
+              processDocument.exceptionType = null;
+
+              try {
+                    // extracting data must be sent to Granite
+                    var crmInput = findCrmInput_ (order);
+                    var request = new DataStructure("grws:submitOrder");
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "crmInput = '" + crmInput.toXML() + "'");
+
+                          stcw.map_submitOrder_submitOrder (request, crmInput, this.process.id);
+
+                          stcw.ensureInterfaceFolder (order, "GR_SUB_ORDER");
+                          order.save ();
+
+                          var response = null;
+
+                          if(order.header.skipSendToGranite == null || order.header.skipSendToGranite == "N") {
+                                // sending data to Granite
+                                response = stcw.sendSubmitOrderToGranite(request, this.process.id);
+
+                                // managing response
+                                rpts.updateHistoryEvent (this);
+                          }
+                          else {
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "skipping because order.header.skipSendToGranite = '" + order.header.skipSendToGranite + "'");
+
+                                // skipping send order to granite ... and generating fake response ...
+                                var response = new DataStructure("grws:submitOrderResponse");
+                                response.result.OrderNumber = order.header.orderNumber;
+                                response.result.AssetNumber = order.header.orderNumber;
+                                response.result.WorkOrderStatus = "New";
+                                response.result.AssetStatus = "New";
+                                response.result.BusinessUnit = "Wholesale";
+                                response.result.Status.Status = "SUCCESS";
+                          }
+
+                          var interfaceFolder = stcw.storeInterfaceMessage (stcw.findLastInterfaceFolder (order, "GR_SUB_ORDER"), response);
+                          if (interfaceFolder != null)
+                                this.process.processOrderItemId = interfaceFolder.interfaceData.id;
+
+                          if (response == null) {
+                                processDocument.exceptionType = "Interface";
+                          }
+                          else {
+                                processDocument.ackResult = response.result.Status.Status;
+                                processDocument.errorText = stcc.limitStringLengthToCRMValue(response.result.Status.ErrorDescription);
+                          }
+
+                          order.save ();
+                    }
+                    catch(exc) {
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "Catched Exception " + exc.message);
+                          processDocument.exceptionType = "Application";
+                    }
+
+                    //
+                    //  findCrmInput_
+                    //
+                    function findCrmInput_ (order) {
+
+                          var crmInterfaceFolder = stcw.findLastInterfaceFolder (order, "CRM_ORD_REQUEST");
+                          if (crmInterfaceFolder == null) {
+                                Global.logDebug ("failed to get crmInterfaceFolder [CRM_ORD_REQUEST]");
+                                return (null);
+                          }
+
+                          var dataStructureType = "wsws:submitOrder";
+                          if(order.versions.length > 1) {
+                                // if there are more than 1 version, it means an update has been received!
+                                dataStructureType = "wsws:updateOrder";
+                          }
+                          return (stcw.readStructure (crmInterfaceFolder.interfaceData.responseData , dataStructureType));
+
+                    }            // f i n d C r m I n p u t _
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="applicationErrored" type="switchActivity">
+        <label>Application Errored?</label>
+        <x>116.33757</x>
+        <y>233.40234</y>
+        <childList>
+          <child name="interfaceError" type="caseActivity">
+            <label>Interface Error</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="interfaceExcp" type="exceptActivity">
+                <element>excp_cwf.interfaceExcp</element>
+                <label>External interface error</label>
+                <x>224.72072</x>
+                <y>344.8047</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.exceptionType == "Interface");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="ApplicationError" type="caseActivity">
+            <label>Application Error</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="applExcp" type="exceptActivity">
+                <element>excp_stcw.applicationError</element>
+                <label>Application error</label>
+                <x>116.33757</x>
+                <y>352.15527</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.exceptionType == "Application");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>138.0</x>
+            <y>357.0</y>
+            <childList>
+              <child name="done" type="scriptActivity">
+                <label>Done</label>
+                <x>30.0</x>
+                <y>359.50586</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var processDocument = this.process.processDocument;
+                      processDocument.interfaceRetryCount = 0;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          var processDocument = this.process.processDocument;
+          // processDocument.interfaceRetryCount = 0;
+          processDocument.interOperationName = "grws:XngOrderService/submitOrder";
+          this.process.processDocument.rollbackNumber = "7";
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <highlight>14</highlight>
+  <label>Enter Order In Granite</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <revision>3</revision>
+  <type>Sub-flow</type>
+</process>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.serviceType_CctTypeToGraniteCctType">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0d0dd52e-fea6-72fe-4c9f-bc9bde341967}</guid>
+  <label>ServiceType &amp; CctType To Granite CctType</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="serviceType" type="leaf">
+      <column>SERVICE_TYPE</column>
+      <key>1</key>
+      <label>Service Type</label>
+      <propertyElement type="elfld">
+        <label>Received Service Type</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_SERV_TYPE_TO_CCT_TYPE</table>
+      <valueType>dtype_ds_ws.serviceType</valueType>
+    </variable>
+    <variable name="cctType" type="leaf">
+      <column>CCT_TYPE</column>
+      <label>CCT Type</label>
+      <propertyElement type="elfld">
+        <label>Received CCT Type</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_SERV_TYPE_TO_CCT_TYPE</table>
+      <valueType>dtype_ds_ws.cctType</valueType>
+    </variable>
+    <variable name="graniteCctType" type="leaf">
+      <column>GRANITE_CCT_TYPE</column>
+      <propertyElement type="elfld">
+        <label>Granite CCT Type</label>
+      </propertyElement>
+      <table>STC_SERV_TYPE_TO_CCT_TYPE</table>
+      <valueType>dtype_ds_ws.cctType</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.serviceType_CctTypeToGraniteCctType</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="serviceTypeToCctTypeGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="serviceTypeToCctTypeGrid" type="elgrd">
+                    <colWidths>160</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>160px</width>
+                    <elementList>
+                      <element name="serviceTypeToCctTypeHeader" type="elhdr">
+                        <label>ServiceType &amp; CctType To Granite CctType</label>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.serviceType_CctTypeToGraniteCctType/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.serviceType_CctTypeToGraniteCctType/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cctType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.serviceType_CctTypeToGraniteCctType/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.serviceType_CctTypeToGraniteCctType/leaf_cctType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="graniteCctType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.serviceType_CctTypeToGraniteCctType/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.serviceType_CctTypeToGraniteCctType/leaf_graniteCctType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcconf.search_priorityMapping">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{10987199-7327-4a60-8890-2defc97761ab}</guid>
+  <label>Search Element: Priority Map</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="serviceType" type="leaf">
+      <propertyElement type="elfld">
+        <label>Service Type</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string25</valueType>
+    </variable>
+    <variable name="productCode" type="leaf">
+      <propertyElement type="elfld">
+        <label>Product Code</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="orderType" type="leaf">
+      <propertyElement type="elslct">
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_wsws.orderType</valueType>
+    </variable>
+    <variable name="reasonCode" type="leaf">
+      <propertyElement type="elfld">
+        <label>Reason Code</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcconf.search_priorityMapping</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STCW_PRIORITY_MAPGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="STCW_PRIORITY_MAPHeader" type="elhdr">
+                        <label>Search Element: Priority Mapping</label>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <label>Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_priorityMapping/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_priorityMapping/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="productCode" type="elfld">
+                        <label>Product Code</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_priorityMapping/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_priorityMapping/leaf_productCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderType" type="elslct">
+                        <label>Order Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_priorityMapping/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_priorityMapping/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="reasonCode" type="elfld">
+                        <label>Reason Code</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_priorityMapping/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_priorityMapping/leaf_reasonCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp"/>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <confirmation>doc_stcconf.search_priorityMapping/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

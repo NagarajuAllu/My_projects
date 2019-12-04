@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.prnSummaryReportResultDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{532aeb73-80c5-4a16-8888-e8aaa71a0fd4}</guid>
+  <label>PRN Summary Report Result Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="rownum" type="leaf">
+      <key>1</key>
+      <valueType>dtype_common.integer5</valueType>
+    </variable>
+    <variable name="prnId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="prnName" type="leaf">
+      <valueType>dtype_common.string16</valueType>
+    </variable>
+    <variable name="prnStatus" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="prnCreationDate" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="tfrId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="tfrNumber" type="leaf">
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="tfrStatus" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="userId" type="leaf">
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="department" type="leaf">
+      <valueType>dtype_up_priv.department</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.prnSummaryReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

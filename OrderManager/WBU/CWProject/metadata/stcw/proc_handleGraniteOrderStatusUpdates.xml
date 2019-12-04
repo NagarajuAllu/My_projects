@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process filenameHash="821e92a39ed159c90cce205194f01790" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.handleGraniteOrderStatusUpdates">
+  <activity name="start" type="seqActivity">
+    <guid>{024fb03b-6aa1-ac48-877a-a0bfb779698b}</guid>
+    <label>Start</label>
+    <x>123.87244</x>
+    <y>79.0</y>
+    <childList>
+      <child name="receiveGraniteUpdate" type="opActivity">
+        <element>iface_wgws.ifExpediter_GRANITE/oper_operation_OrderStatusUpdate</element>
+        <guid>{09d54006-0a81-1906-b850-eed9ba8e6895}</guid>
+        <label>Receive Granite Update</label>
+        <participant>part_stcw.GraniteInputInterface</participant>
+        <x>311.19568</x>
+        <y>59.0</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <guid>{010f28f1-0a97-34a6-b495-8c2dcd4bdfae}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              var debugHeader = "[" + this.process.id + "] - ReceiveGraniteUpdate - ";
+
+              rpts.updateHistoryEvent (this, "graniteStatusUpdate");
+
+              var inputMessage = this.activityData;
+              var order = this.process.processOrder;
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "received " + (inputMessage != null ? inputMessage.toXML() : "NULL") + " to process " + process.id);
+
+                    stcw.storeInterfaceMessage (stcw.createInterfaceFolder (order, "GR_STATUS_UPD"), inputMessage);
+
+                    // Moved in "Change Order Status" - "Before" to solve the issue from Raj
+                    // received 07 July 2011
+                    // order.header.orderStatus = inputMessage.workOrderStatus;
+                    order.save ();
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{026d4c38-d204-ceb8-c04c-81ca3b8f199a}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="sendOrderStatusUpdateToCrm" type="spawnActivity">
+        <element>proc_stcw.sendOrderStatusUpdateToCrm</element>
+        <guid>{05bdaf69-6dbe-aa3f-62ab-601ee4baf011}</guid>
+        <label>Send Order Status Update To CRM</label>
+        <x>301.87244</x>
+        <y>179.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{00c5d097-b926-dbd5-f07d-ec3cfa6a1faf}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              var debugHeader = "[" + this.process.id + "] - SendOSUToCRM - ";
+
+              var order = this.process.processOrder;
+              var childProcessDocument = this.activityData;
+
+              childProcessDocument.sourceInterfaceIndex = stcw.getInterfaceFolderCount (order, "GR_STATUS_UPD") - 1;
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "childProcessDocument.sourceInterfaceIndex " + childProcessDocument.sourceInterfaceIndex);
+
+                    if (stcw.createInterfaceFolder (order, "CRM_ORDER_STATUS_UPDATE") != null)
+                          childProcessDocument.targetInterfaceIndex = stcw.getInterfaceFolderCount (order, "CRM_ORDER_STATUS_UPDATE") - 1;
+                    else
+                          childProcessDocument.targetInterfaceIndex = -1;
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "childProcessDocument.targetInterfaceIndex " + childProcessDocument.targetInterfaceIndex);
+
+                    order.save ();
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="waitOnCrmUpdateprocesses" type="joinActivity">
+        <element>proc_stcw.sendOrderStatusUpdateToCrm</element>
+        <guid>{0bd7a292-49f0-37ac-0c68-ce1f7940e702}</guid>
+        <label>Wait On CRM Update processes</label>
+        <x>304.87244</x>
+        <y>322.0</y>
+        <methodList>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0fa89e19-d3c0-5527-58b5-268c8352f64f}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="changeOrderStatus" type="scriptActivity">
+        <guid>{0710ae6d-e149-6eaf-a670-15601dd2dfb0}</guid>
+        <label>Change Order Status</label>
+        <x>311.87244</x>
+        <y>467.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{00fba6eb-323e-4860-eb31-1b4d01822711}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              var debugHeader = "[" + this.process.id + "] - ChangeOrderStatus - ";
+
+              var order = this.process.processOrder;
+              var sourceInterfaceIndex = stcw.getInterfaceFolderCount (order, "GR_STATUS_UPD") - 1;
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "sourceInterfaceIndex " + sourceInterfaceIndex);
+
+                    var orderVersion = getOrderVersion_ (order);
+                    if (orderVersion == null)
+                          return;
+
+                    var graniteUpdate = findGraniteUpdate_ (orderVersion, sourceInterfaceIndex);
+                    if (graniteUpdate == null)
+                          return;
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "Update OrderStatus To " + graniteUpdate.workOrderStatus);
+
+                    order.header.orderStatus = graniteUpdate.workOrderStatus;
+                    order.save();
+
+
+                    //
+                    //  getOrderVersion_
+                    //
+                    function getOrderVersion_ (order) {
+
+                          var orderVersion = order.versions [order.versions.count - 1];
+                          if (orderVersion == undefined || orderVersion == null)
+                                Global.logDebug ("could not get the order version");
+
+                          return (orderVersion);
+
+                    }            // g e t O r d e r V e r s i o n _
+
+                    //
+                    //  findGraniteUpdate_
+                    //
+                    function findGraniteUpdate_ (orderVersion, sourceInterfaceIndex) {
+
+                          var interfaceFolder = orderVersion.interfaces [sourceInterfaceIndex];
+                          if (interfaceFolder == null) {
+                                Global.logDebug ("could not get the interfaceFolder");
+                                return (null);
+                          }
+
+                          return (stcw.readStructure (interfaceFolder.interfaceData.responseData, "wgws:updateOrderStatus"));
+
+                    }            // f i n d G r a n i t e U p d a t e _
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="moreUpdatesExpected" type="switchActivity">
+        <guid>{0ef64a51-a833-78ff-579d-b94740c55e6c}</guid>
+        <label>More Updates Expected ?</label>
+        <x>302.87244</x>
+        <y>595.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <guid>{0bf6d9ec-8d29-cb35-cf12-6e4a00e945a9}</guid>
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="continue" type="repeatActivity">
+                <element>proc_stcw.handleGraniteOrderStatusUpdates/seqActivity_start</element>
+                <guid>{0745da29-6d5e-67b0-e6f2-31b361ba9270}</guid>
+                <label>Continue</label>
+                <x>121.87244</x>
+                <y>605.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{05d10a55-4e9f-7446-d266-d20e3f3ed6a9}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  var order = this.process.processOrder;
+                  if (order.header.orderStatus == "COMPLETED" || order.header.orderStatus == "CANCELLED")
+                        return (false);
+
+                  return (true);
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{020bfdd4-a89c-07b7-b280-679edd9b7528}</guid>
+            <label>No</label>
+            <x>321.87244</x>
+            <y>525.0</y>
+            <childList>
+              <child name="wait" type="seqActivity">
+                <guid>{0a57c5cb-fd79-d997-07cf-96fc44a2a554}</guid>
+                <label>Wait</label>
+                <x>450.87244</x>
+                <y>608.0</y>
+                <childList>
+                  <child name="done" type="scriptActivity">
+                    <guid>{0d2ebe95-28e3-2d4b-2328-0b518df64a43}</guid>
+                    <label>Done</label>
+                    <x>590.87244</x>
+                    <y>605.0</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="GraniteInputInterface" type="participantActivity">
+        <guid>{0d943844-d4aa-1e36-b72e-d0f0a5f26be5}</guid>
+        <label>GRANITE Input Interface</label>
+        <participant>part_stcw.GraniteInputInterface</participant>
+        <x>515.0</x>
+        <y>51.0</y>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <guid>{0a4e187b-0c3d-423c-cd1d-5f308379b51f}</guid>
+  <label>Handle Granite Order Status Updates</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<definitions name="ifEAI_WOSU_17122008" targetNamespace="http://172.20.236.152/GraniteGW_WorkOrder/Inbound/SOAP/StatusUpdate/WSDL/WorkOrderStatusUpdate" xmlns:tns="http://172.20.236.152/GraniteGW_WorkOrder/Inbound/SOAP/StatusUpdate/WSDL/WorkOrderStatusUpdate" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:ifEAI_WOSU_17122008="http://172.20.236.152/GraniteGW_WorkOrder/Inbound/SOAP/StatusUpdate/WSDL/WorkOrderStatusUpdate">
+
+	<types>
+		<schema targetNamespace="http://172.20.236.152/GraniteGW_WorkOrder/Inbound/SOAP/StatusUpdate/WSDL/WorkOrderStatusUpdate"
+				xmlns="http://www.w3.org/2001/XMLSchema"
+			xmlns:ifEAI_WOSU_17122008="http://172.20.236.152/GraniteGW_WorkOrder/Inbound/SOAP/StatusUpdate/WSDL/WorkOrderStatusUpdate"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+
+			<annotation>
+				<documentation>&#091;17.12.2008&#093; Interface vs. &#34;EAI&#34;: via SOAP &#091;Work Order Status Update&#093;</documentation>
+				<appinfo>
+					<metadata>STC Project</metadata>
+					<created>Mon Sep 08 11:04:21 CEST 2008</created>
+					<updated>Tue Sep 17 18:52:10 EDT 2013</updated>
+				</appinfo>
+			</annotation>
+
+			<!-- Data types and elements -->
+
+			<!-- Structures -->
+
+			<complexType name="ArrayOfstring">
+				<annotation>
+					<documentation>ArrayOfstring</documentation>
+				</annotation>
+					<sequence>
+						<element name="ArrayOfstringItem" minOccurs="1" maxOccurs="unbounded" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="WorkOrderStatusUpdate">
+				<annotation>
+					<documentation>WorkOrderStatusUpdate</documentation>
+				</annotation>
+					<sequence>
+						<element name="WorkOrderStatusUpdate" minOccurs="1" maxOccurs="1" type="ifEAI_WOSU_17122008:WorkOrderStatusUpdate2"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="WorkOrderStatusUpdate2">
+				<annotation>
+					<documentation>WorkOrderStatusUpdate2</documentation>
+				</annotation>
+					<sequence>
+						<element name="OrderNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="WorkOrder" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="WorkOrderName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderType" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="ICMSTaskID" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="WorkOrderCircuitPathCompletionStatus" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="WorkOrderDescription" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="WorkOrderStatus" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="WorkOrderLastModifiedTimestamp" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="WorkOrderLastModifiedBy" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="DeptOfWorkOrder" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="WorkOrderRemarks" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="WorkOrderTotalTimeMinutes" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="TaskName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="TaskNumber" minOccurs="0" maxOccurs="1" type="ifEAI_WOSU_17122008:ArrayOfstring"/>
+						<element name="TaskDescription" minOccurs="0" maxOccurs="1" type="ifEAI_WOSU_17122008:ArrayOfstring"/>
+						<element name="TaskStatusCode" minOccurs="0" maxOccurs="1" type="ifEAI_WOSU_17122008:ArrayOfstring"/>
+						<element name="TaskPriority" minOccurs="0" maxOccurs="1" type="ifEAI_WOSU_17122008:ArrayOfstring"/>
+						<element name="TaskActualStart" minOccurs="0" maxOccurs="1" type="ifEAI_WOSU_17122008:ArrayOfstring"/>
+						<element name="TaskActualCompletion" minOccurs="0" maxOccurs="1" type="ifEAI_WOSU_17122008:ArrayOfstring"/>
+						<element name="TaskLastModifiedTimestamp" minOccurs="0" maxOccurs="1" type="ifEAI_WOSU_17122008:ArrayOfstring"/>
+						<element name="TaskLastModifiedBy" minOccurs="0" maxOccurs="1" type="ifEAI_WOSU_17122008:ArrayOfstring"/>
+						<element name="DeptOf" minOccurs="0" maxOccurs="1" type="ifEAI_WOSU_17122008:ArrayOfstring"/>
+						<element name="TaskRemarks" minOccurs="0" maxOccurs="1" type="ifEAI_WOSU_17122008:ArrayOfstring"/>
+						<element name="TaskServiceNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="TaskServiceStatus" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="TaskServiceType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="TaskJeopardyStatus" minOccurs="0" maxOccurs="1" type="ifEAI_WOSU_17122008:ArrayOfstring"/>
+						<element name="CircuitStatus" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CCTType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="BusinessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="CircuitID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<element name="WorkOrderStatusUpdate" type="ifEAI_WOSU_17122008:WorkOrderStatusUpdate"/>
+
+			<complexType name="WorkOrderStatusUpdateResponse">
+				<annotation>
+					<documentation>WorkOrderStatusUpdateResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="Status" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorDescription" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<element name="WorkOrderStatusUpdateResponse" type="ifEAI_WOSU_17122008:WorkOrderStatusUpdateResponse"/>
+
+		</schema>
+	</types>
+
+	<message name="WorkOrderStatusUpdate">
+		<part name="WorkOrderStatusUpdate" type="ifEAI_WOSU_17122008:WorkOrderStatusUpdate"/>
+	</message>
+
+	<message name="WorkOrderStatusUpdateResponse_el">
+		<part name="WorkOrderStatusUpdateResponse_el" element="ifEAI_WOSU_17122008:WorkOrderStatusUpdateResponse_el"/>
+	</message>
+
+	<portType name="WOSU">
+		<operation name="WorkOrderStatusUpdate">
+			<input message="tns:WorkOrderStatusUpdate"/>
+			<output message="tns:WorkOrderStatusUpdateResponse_el"/>
+		</operation>
+	</portType>
+
+	<binding name="GraniteGW_WorkOrder_Inbound_SOAP_StatusUpdate_WSDL_WorkOrderStatusUpdate_Binder" type="tns:WOSU">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"/>
+		<operation name="WorkOrderStatusUpdate">
+			<soap:operation soapAction="GraniteGW_WorkOrder_Inbound_SOAP_StatusUpdate_WSDL_WorkOrderStatusUpdate_Binder_WorkOrderStatusUpdate"/>
+			<input>
+				<soap:body use="literal" namespace="http://172.20.236.152/GraniteGW_WorkOrder/Inbound/SOAP/StatusUpdate/WSDL/WorkOrderStatusUpdateOriginal"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="http://172.20.236.152/GraniteGW_WorkOrder/Inbound/SOAP/StatusUpdate/WSDL/WorkOrderStatusUpdateOriginal"/>
+			</output>
+		</operation>
+	</binding>
+
+	<service name="ifEAI_WOSU_17122008">
+		<port name="GraniteGW_WorkOrder_Inbound_SOAP_StatusUpdate_WSDL_WorkOrderStatusUpdate_Port" binding="tns:GraniteGW_WorkOrder_Inbound_SOAP_StatusUpdate_WSDL_WorkOrderStatusUpdate_Binder">
+			<soap:address location="http://172.20.66.16:24004/ws/GraniteGW_WorkOrder.Inbound.SOAP.StatusUpdate.WSDL:WorkOrderStatusUpdate"/>
+		</port>
+	</service>
+
+</definitions>

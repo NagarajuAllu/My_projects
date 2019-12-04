@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="3492114d8e02feaf73a7761702abde9b" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.performFullValidationOnService">
+  <label>Perform Full Validation On Service</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="serviceContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_ds_ws.orderType</type>
+    </parameter>
+    <parameter name="orderStatus" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="parentLineItemAction" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="parentLineItemStatus" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="bundleLineItemActive" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // service
+    failureArray = ds_ws.validateElementOfOrder(serviceContainer.service, serviceContainer.service.lineItemIdentifier, isSubmit, failureArray);
+
+    // mandatory attributes according to OrderType and ServiceType
+    failureArray  = ds_ws.performValidationOfMandatoryAttributesInLineItem(serviceContainer.service, orderType, serviceContainer.service.serviceType, serviceContainer.service.lineItemIdentifier, isSubmit, failureArray);
+
+    if(!ds_ws.checkIfActionIsOKWithOrderTypeAndParentAction(orderType, orderStatus, parentLineItemAction, parentLineItemStatus, serviceContainer.service.action, serviceContainer.service.serviceType, serviceContainer.service.lineItemStatus)) {
+        var validationError = ["AE0043", Global.translateText("AE0043", null, [orderType, parentLineItemAction, serviceContainer.service.action, orderStatus])];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performFullValidationOnService (" + serviceContainer.service.lineItemIdentifier + "): Found error [" + validationError + "]");
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, serviceContainer.service.lineItemIdentifier, failureArray, isSubmit);
+    }
+
+    if(isSubmit) {
+        // check lineItemIdentifier existance ds_ws.checkIfActionIsCorrectForLineItemIdentifier(bundleLineItemActive, lineItemToCheck)
+        var validationError = ds_ws.checkIfActionIsCorrectForLineItemIdentifier(bundleLineItemActive, serviceContainer.service);
+        if(validationError != null) {
+            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, serviceContainer.service.lineItemIdentifier, failureArray, isSubmit);
+        }
+    }
+
+
+
+    // service NV pair
+    if(serviceContainer.serviceParameters != null) {
+        for(var i=0; i<serviceContainer.serviceParameters.length; i++) {
+            failureArray = ds_ws.validateElementOfOrder(serviceContainer.serviceParameters[i], serviceContainer.service.lineItemIdentifier, isSubmit, failureArray);
+            failureArray = ds_ws.validateNVPairValueForServiceTypeInPickList(serviceContainer.service.serviceType, serviceContainer.service.lineItemIdentifier,
+                                                                             serviceContainer.serviceParameters[i].serviceParameter.name, serviceContainer.serviceParameters[i].serviceParameter.value,
+                                                                             isSubmit, failureArray);
+        }
+
+        failureArray = ds_ws.performValidationOfMandatoryNVPairs(serviceContainer.serviceParameters, orderType, serviceContainer.service.serviceType, serviceContainer.service.lineItemIdentifier, isSubmit, failureArray);
+
+    }
+
+    // service Block NV pair
+    if(serviceContainer.serviceBlockParameters != null) {
+        for(var i=0; i<serviceContainer.serviceBlockParameters.length; i++) {
+            failureArray = ds_ws.validateElementOfOrder(serviceContainer.serviceBlockParameters[i], serviceContainer.service.lineItemIdentifier, isSubmit, failureArray);
+        }
+    }
+
+
+    // subServices
+    if(serviceContainer.subServices != null) {
+        for(var i=0; i<serviceContainer.subServices.length; i++) {
+            var subServiceContainer = serviceContainer.subServices[i];
+            failureArray = ds_ws.performFullValidationOnSubService(subServiceContainer, failureArray, orderType, orderStatus, serviceContainer.service.action, serviceContainer.service.lineItemStatus, bundleLineItemActive, isSubmit);
+        }
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

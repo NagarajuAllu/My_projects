@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="common.findAuditTrailForDocumentWithUDAs">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_common.auditSearchDoc</input>
+  <label>Find AuditTrail For Document With UDAs</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>21</metaVersion>
+  <output>doc_common.cwAuditDetails</output>
+  <type>SQL</type>
+  <volatility>1</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select at.docid, at.updatedby, at.lastupdateddate, at.operationType, at.recNo,
+               fat.attributeName, fat.newValue, fat.oldValue
+          from cwAuditTrail at, cwFieldAuditTrail fat
+         where fat.recNo (+) = at.recNo
+        {[0] and at.docid = ?}
+        {[2] and fat.attributeName = ?}
+        union
+        select at.docid, at.updatedby, at.lastupdateddate, at.operationType, at.recNo,
+               ca.attribute_name||'/'||fat.attributeName, fat.newValue, fat.oldValue
+          from cwAuditTrail at, cwFieldAuditTrail fat, cwmdtypes t, stc_customattr ca
+         where fat.recNo (+) = at.recNo
+           and at.docmetadatatype = t.typeid
+           and t.typename in ('tfs.customPRNRAttribute', 'tfs.customPRNAttribute', 'tfs.customTFRAttribute', 'tfs.customBIAttribute')
+        {[1] and at.docid like ?}
+           and fat.attributename = 'attributeValue'
+           and ca.customattr_id = substr(at.docid, 1, instr(at.docid, {[0] ?})-1)
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_common.cwAuditDetails</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_common.auditSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_common.cwAuditDetails/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findAuditTrailForDocResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_common.findAuditTrailForDocumentWithUDAs/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="lastUpdatedDate" type="eldate">
+                        <label>Updated Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_common.findAuditTrailForDocumentWithUDAs/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_common.cwAuditDetails/leaf_lastUpdatedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>125px</width>
+                      </element>
+                      <element name="updatedBy" type="elfld">
+                        <label>Updated By</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_common.findAuditTrailForDocumentWithUDAs/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_common.cwAuditDetails/leaf_updatedBy</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="operationType" type="elslct">
+                        <label>Operation Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_common.findAuditTrailForDocumentWithUDAs/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_common.cwAuditDetails/leaf_operationType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="attributeName" type="elfld">
+                        <label>Attribute</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_common.findAuditTrailForDocumentWithUDAs/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_common.cwAuditDetails/leaf_attributeName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="newValue" type="elfld">
+                        <label>New Value</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_common.findAuditTrailForDocumentWithUDAs/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_common.cwAuditDetails/leaf_newValue</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="oldValue" type="elfld">
+                        <label>Old Value</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_common.findAuditTrailForDocumentWithUDAs/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_common.cwAuditDetails/leaf_oldValue</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_common.findAuditTrailForDocumentWithUDAs/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_common.findAuditTrailForDocumentWithUDAs/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfDetail" type="eldel"/>
+              <override name="cwfSelect" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findAuditTrailForDocumentView" type="findVView">
+      <label>Audit Trail</label>
+      <outputOverlay>findSql_common.findAuditTrailForDocumentWithUDAs/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <sortListList>
+        <sortList type="stitem">
+          <descending>true</descending>
+          <path>doc_common.cwAuditDetails/leaf_lastUpdatedDate</path>
+        </sortList>
+        <sortList type="stitem">
+          <path>doc_common.cwAuditDetails/leaf_attributeName</path>
+        </sortList>
+      </sortListList>
+    </view>
+  </viewList>
+</findSql>

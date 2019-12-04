@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="5b1cca01753de26ac12ceed5c25563ab" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.createReservationNumber">
+  <guid>{0d80c0f8-0e3f-36d4-aec3-1c6445e3ad69}</guid>
+  <label>Create Reservation Number</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="parentQuoteNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderRowItemId" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var reservationNumber = (parentQuoteNumber + "-" + orderRowItemId);
+    return reservationNumber;
+  ]]></script>
+</script>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<userInterface filenameHash="35b8ecc0102c44baad17d1209ee38312" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="wDashboards.dashBoard">
+  <label>Process Dashboard</label>
+  <metaVersion>4</metaVersion>
+  <timerDuration>1</timerDuration>
+  <variableList>
+    <variable name="processStatusSummary" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.processStatusSummary/ui_UserInterface</valueType>
+    </variable>
+  </variableList>
+  <vformList>
+    <vform name="Forms" type="frmui">
+      <extends>ui_com.conceptwave.system.UserInterface/frmui_Forms</extends>
+      <overlayList>
+        <overlay name="Default" type="exov">
+          <base>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Default</base>
+          <extends>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Default</extends>
+          <label>Default</label>
+          <overrideList>
+            <override name="dashItemLayout" type="elvlt">
+              <height>100%</height>
+              <membersMargin>10</membersMargin>
+              <redrawOnResize>true</redrawOnResize>
+              <width>100%</width>
+              <elementList>
+                <element name="processStatusTableFrame" type="elovf">
+                  <formReference type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_wDashboards.dashBoard/leaf_processStatusSummary</variablePath>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/frmui_Forms</variablePath>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                    </variablePathList>
+                  </formReference>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_wDashboards.dashBoard/leaf_processStatusSummary</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="processStatusBarFrame" type="elovf">
+                  <formReference type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_wDashboards.dashBoard/leaf_processStatusSummary</variablePath>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/frmui_Forms</variablePath>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/frmui_Forms/exov_Chart</variablePath>
+                    </variablePathList>
+                  </formReference>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_wDashboards.dashBoard/leaf_processStatusSummary</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+              </elementList>
+            </override>
+          </overrideList>
+        </overlay>
+      </overlayList>
+    </vform>
+  </vformList>
+  <methodList>
+    <method name="dynamicTimerDuration" type="uimthd">
+      <script><![CDATA[
+        this.cw$super_dynamicTimerDuration();
+        return 1;
+      ]]></script>
+    </method>
+    <method name="onTimer" type="action">
+      <script><![CDATA[
+        this.cw$super_onTimer();
+
+        this.processStatusSummary.model.performOperation('select', null);
+        this.processStatusSummary.model.updateUI();
+      ]]></script>
+    </method>
+  </methodList>
+</userInterface>

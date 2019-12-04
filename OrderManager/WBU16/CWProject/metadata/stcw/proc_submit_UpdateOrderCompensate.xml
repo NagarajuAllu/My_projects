@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.submit_UpdateOrderCompensate">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>173.0</x>
+    <y>140.0</y>
+    <childList>
+      <child name="firstPassSw" type="switchActivity">
+        <label>First Pass Switch</label>
+        <x>169.0</x>
+        <y>247.0</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>262.0</x>
+            <y>396.0</y>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  if (this.process.processDocument.firstPassToGranite == "N")
+                        return true;
+
+                  return false;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>804.0</x>
+            <y>362.0</y>
+            <childList>
+              <child name="alert" type="scriptActivity">
+                <label>Alert</label>
+                <x>93.0</x>
+                <y>397.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      stcc.sendMailForError("Caught error in " + (this.process.processDocument.isQuote ? "ValidateQuote" : (this.process.processDocument.isSubmit ? "SubmitOrder" : "UpdateOrder")) + " process " + this.process.id,
+                                            Global.getConfigVariable("MAIL_RECEIVER_FOR_ALERTS"));
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="waitTimeforRetry" type="scriptActivity">
+        <label>Wait Time for Retry</label>
+        <schedule type="sched">
+          <duration type="dur">
+            <methodList>
+              <method name="cwOnDuration" type="action">
+                <system>true</system>
+                <script><![CDATA[
+                  // configured time for sleeping
+                  var submitSleep = Global.getConfigVariable("SUBMITSLEEP", "10");
+
+                  // if downtime
+                  var ifName = (this.processDocument.isWholesale ? (this.processDocument.isQuote ? "grws.XngQuoteService" : "grws.XngOrderService") :
+                                                                   (this.processDocument.isHome ? "cimhJMS.XngServicesWR" : "cimeWS.XngOrderService")
+                                                                   );
+
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - processDocumentInCompensate: " + this.processDocument.toXML());
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - ifName: " + ifName);
+
+
+                  var ifDelay = Global.getInterfaceDelay(ifName);
+                  ifDelay = ((ifDelay != null) ? ifDelay : "10") ;
+
+                  // sleepTime of the process = max(submitSleep, ifDelay);
+                  var sleepTime = ((submitSleep > ifDelay) ? submitSleep : ifDelay);
+
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - sleep for : " + sleepTime + " secs -- {" + submitSleep + ";" + ifDelay + "}");
+
+                  return sleepTime;
+                ]]></script>
+              </method>
+            </methodList>
+          </duration>
+        </schedule>
+        <x>179.0</x>
+        <y>505.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[this.process.processDocument.firstPassToGranite = "N";]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Submit/Update Order Compensate</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

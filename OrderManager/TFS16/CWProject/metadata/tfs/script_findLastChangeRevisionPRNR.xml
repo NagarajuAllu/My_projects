@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="tfs.findLastChangeRevisionPRNR">
+  <label>Find Last Change Revision PRNR</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="prnr" type="rifp"/>
+  </parameterList>
+  <script><![CDATA[
+    if(!prnr){
+        return null;
+    }
+
+    var baseName = prnr.prnrName.replace(/\/[0-9]+$/,"")+"/%";
+
+
+    var prnrFinder = new Finder("tfs.findPRNR");
+    prnrFinder.searchDocument.prnrName = baseName;
+    var resultList = prnrFinder.search();
+
+    var lastRev = 0;
+
+    if(resultList != null && resultList.length > 0) {
+        for(var i=0; i<resultList.length; i++){
+            var index = resultList[i].prnrName.search("/");
+            if(index == 0){
+                continue;
+            }
+            var curRev = parseInt(resultList[i].prnrName.substring(index+1));
+            if(lastRev < curRev){
+                lastRev = curRev;
+            }
+        }
+    }
+
+    return lastRev;
+  ]]></script>
+</script>

@@ -1,0 +1,2896 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfs.STC_BI">
+  <audit>true</audit>
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{2338fbb4-6339-4944-a545-149a1860afa3}</guid>
+  <label>Blocking Issue</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="biId" type="leaf">
+      <column>BI_ID</column>
+      <description><![CDATA[
+        <p style="margin-top: 0">
+          Blocking Issue ticket number
+        </p>
+      ]]></description>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>BI ID</label>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="parentProcId" type="leaf">
+      <column>PARENTPROCID</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <visible type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </visible>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="ringName" type="leaf">
+      <audit>true</audit>
+      <column>RING_NAME</column>
+      <description><![CDATA[
+        <p style="margin-top: 0">
+          Name of the ring involved
+        </p>
+      ]]></description>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyRingNamePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Ring Name</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryRingNamePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string200</valueType>
+    </variable>
+    <variable name="siteName" type="leaf">
+      <audit>true</audit>
+      <column>SITE_NAME</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySiteNamePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Site Name</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySiteNamePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_granite.siteReference</valueType>
+    </variable>
+    <variable name="networkType" type="leaf">
+      <audit>true</audit>
+      <column>NETWORK_TYPE</column>
+      <propertyElement type="elref">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyNetworkTypePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Network Type</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryNetworkTypePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.networkTypePickListReference</valueType>
+    </variable>
+    <variable name="code" type="leaf">
+      <audit>true</audit>
+      <column>CODE</column>
+      <propertyElement type="elref">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyCodePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Code</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryCodePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.codePickListReference</valueType>
+    </variable>
+    <variable name="details" type="leaf">
+      <audit>true</audit>
+      <column>DETAILS</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyDetailsPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Details</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryDetailsPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string400</valueType>
+    </variable>
+    <variable name="category" type="leaf">
+      <audit>true</audit>
+      <column>CATEGORY</column>
+      <propertyElement type="elref">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyCategoryPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Category</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryCategoryPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.categoryPickListReference</valueType>
+    </variable>
+    <variable name="mop1Status" type="leaf">
+      <audit>true</audit>
+      <column>MOP1_STATUS</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyMop1StatusPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>MoP 1 Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryMop1StatusPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.mopStatusPickListReference</valueType>
+    </variable>
+    <variable name="mop2Status" type="leaf">
+      <audit>true</audit>
+      <column>MOP2_STATUS</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyMop2StatusPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>MoP 2 Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryMop2StatusPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.mopStatusPickListReference</valueType>
+    </variable>
+    <variable name="mop3Status" type="leaf">
+      <audit>true</audit>
+      <column>MOP3_STATUS</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyMop3StatusPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>MoP 3 Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryMop3StatusPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.mopStatusPickListReference</valueType>
+    </variable>
+    <variable name="mopNumber" type="leaf">
+      <audit>true</audit>
+      <column>MOP_NUMBER</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyMopNumberPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>MoP Number</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryMopNumberPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="mopIssueDate" type="leaf">
+      <audit>true</audit>
+      <column>MOP_ISSUE_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyMopIssueDatePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>MoP Issue Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryMopIssueDatePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="mopEstimatedDate" type="leaf">
+      <audit>true</audit>
+      <column>MOP_ESTIMATED_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyMopEstimatedDatePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>MoP Estimated Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryMopEstimatedDatePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="mopImplStatus" type="leaf">
+      <audit>true</audit>
+      <column>MOP_IMPL_STATUS</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyMopImplStatusPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>MoP Impl Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryMopImplStatusPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.mopImplStatusPickListReference</valueType>
+    </variable>
+    <variable name="mopImplComplDate" type="leaf">
+      <audit>true</audit>
+      <column>MOP_IMPL_COMPL_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyMopImplComplDatePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>MoP Impl Compl Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryMopImplComplDatePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="mopImplEstimDate" type="leaf">
+      <audit>true</audit>
+      <column>MOP_IMPL_ESTIM_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyMopImplEstimDatePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>MoP Impl Estim Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryMopImplEstimDatePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="biStatus" type="leaf">
+      <audit>true</audit>
+      <column>BI_STATUS</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>BI Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryBiStatusPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="networkStatus" type="leaf">
+      <audit>true</audit>
+      <column>NETWORK_STATUS</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyNetworkStatusPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Network Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryNetworkStatusPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.networkStatusPickListReference</valueType>
+    </variable>
+    <variable name="lastFwdDept" type="leaf">
+      <audit>true</audit>
+      <column>LAST_FWD_DEPT</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Last Fwd Dept</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryLastFwdDeptPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="lastFwdEng" type="leaf">
+      <audit>true</audit>
+      <column>LAST_FWD_ENG</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Last Fwd Eng</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryLastFwdEngPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="lastFwdDate" type="leaf">
+      <audit>true</audit>
+      <column>LAST_FWD_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Last Fwd Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryLastFwdDatePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="createdBy" type="leaf">
+      <audit>true</audit>
+      <column>CREATED_BY</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Created By</label>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="creationDate" type="leaf">
+      <audit>true</audit>
+      <column>CREATION_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Creation Date</label>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="approvedSolution" type="leaf">
+      <audit>true</audit>
+      <column>APPROVED_SOLUTION</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyApprovedSolutionPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Approved Solution</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryApprovedSolutionPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string4000</valueType>
+    </variable>
+    <variable name="sow1Status" type="leaf">
+      <audit>true</audit>
+      <column>SOW1_STATUS</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySow1StatusPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>SoW 1 Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySow1StatusPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.sowStatusPickListReference</valueType>
+    </variable>
+    <variable name="sow2Status" type="leaf">
+      <audit>true</audit>
+      <column>SOW2_STATUS</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySow2StatusPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>SoW 2 Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySow2StatusPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.sowStatusPickListReference</valueType>
+    </variable>
+    <variable name="sow3Status" type="leaf">
+      <audit>true</audit>
+      <column>SOW3_STATUS</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySow3StatusPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>SoW 3 Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySow3StatusPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.sowStatusPickListReference</valueType>
+    </variable>
+    <variable name="sowNumber" type="leaf">
+      <audit>true</audit>
+      <column>SOW_NUMBER</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySowNumberPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>SoW Number</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySowNumberPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="sowIssueDate" type="leaf">
+      <audit>true</audit>
+      <column>SOW_ISSUE_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySowIssueDatePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>SoW Issue Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySowIssueDatePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="sowEstimateDate" type="leaf">
+      <audit>true</audit>
+      <column>SOW_ESTIMATE_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySowEstimateDatePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>SoW Estimated Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySowEstimateDatePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="contractor1" type="leaf">
+      <audit>true</audit>
+      <column>CONTRACTOR1</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyContractor1Perm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Contractor 1</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryContractorPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.contractorPickListReference</valueType>
+    </variable>
+    <variable name="contractor2" type="leaf">
+      <audit>true</audit>
+      <column>CONTRACTOR2</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyContractor2Perm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Contractor 2</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryContractor2Perm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.contractorPickListReference</valueType>
+    </variable>
+    <variable name="contractor3" type="leaf">
+      <audit>true</audit>
+      <column>CONTRACTOR3</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyContractor3Perm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Contractor 3</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryContractor3Perm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.contractorPickListReference</valueType>
+    </variable>
+    <variable name="ddfANote" type="leaf">
+      <audit>true</audit>
+      <column>DDF_A_NOTE</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyDdfANotePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>DDF A Note</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryDdfANotePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string4000</valueType>
+    </variable>
+    <variable name="ddfZNote" type="leaf">
+      <audit>true</audit>
+      <column>DDF_Z_NOTE</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyDdfZNotePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>DDF Z Note</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryDdfZNotePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string4000</valueType>
+    </variable>
+    <variable name="completionDate" type="leaf">
+      <audit>true</audit>
+      <column>COMPLETION_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Completion Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryCompletionDatePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="patForecastDate" type="leaf">
+      <audit>true</audit>
+      <column>PAT_FORECAST_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyPatForecastDatePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>PAT Forecast Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryPatForecastDatePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="patActualDate" type="leaf">
+      <audit>true</audit>
+      <column>PAT_ACTUAL_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyPatActualDatePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>PAT Actual Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryPatActualDatePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="customerName" type="leaf">
+      <audit>true</audit>
+      <column>CUSTOMER_NAME</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Customer Name</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.customerPickListReference</valueType>
+    </variable>
+    <variable name="mopDesignStatus" type="leaf">
+      <audit>true</audit>
+      <column>MOP_DESIGN_STATUS</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyMopDesignStatusPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>MoP Design Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryMopDesignStatusPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="areaRegion" type="leaf">
+      <audit>true</audit>
+      <column>AREA_REGION</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyAreaRegionPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Area\Region</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryAreaRegionPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.areaRegionPickListReference</valueType>
+    </variable>
+    <variable name="sdhCategory" type="leaf">
+      <audit>true</audit>
+      <column>SDH_CATEGORY</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySdhCategoryPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>SDH Category</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySDHCategoryPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.sdhCategoryPickListReference</valueType>
+    </variable>
+    <variable name="sdhDescription" type="leaf">
+      <audit>true</audit>
+      <column>SDH_DESCRIPTION</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySdhDescriptionPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>SDH Description</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySDHDescriptionPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string4000</valueType>
+    </variable>
+    <variable name="slot" type="leaf">
+      <audit>true</audit>
+      <column>SLOT</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySlotPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Slot</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySlotPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="sdhVendor" type="leaf">
+      <audit>true</audit>
+      <column>SDH_VENDOR</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySdhVendorPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>SDH Vendor</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySDHVendorPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="jobEstimatedDate" type="leaf">
+      <audit>true</audit>
+      <column>JOB_ESTIMATED_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyJobEstimatedDatePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Job Estimated Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryJobEstimatedDatePerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="biMaterialStatus" type="leaf">
+      <audit>true</audit>
+      <column>BI_MATERIAL_STATUS</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyBiMaterialStatusPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>BI Material Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryBiMaterialStatusPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="secondaryOwner" type="leaf">
+      <audit>true</audit>
+      <column>SECONDARY_OWNER</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlySecondaryOwnerPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Secondary Owner</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatorySecondaryOwnerPerm</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_tfs.secondaryOwnerPickListReference</valueType>
+    </variable>
+    <variable name="buInitiator" type="leaf">
+      <audit>true</audit>
+      <column>BU_INITIATOR</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Business Unit Initiator</label>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string128</valueType>
+    </variable>
+    <variable name="currentUserId" type="leaf">
+      <audit>true</audit>
+      <column>CURRENT_USER</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Current User</label>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="materials" type="leaf">
+      <audit>true</audit>
+      <column>MATERIALS</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_readOnlyMaterialsPerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>List Of Materials</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>doc_tfs.STC_BI/permMethod_mandatoryMaterialsPerm</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BI</table>
+      <valueType>dtype_common.string4000</valueType>
+    </variable>
+    <variable name="completionProcessed" type="leaf">
+      <column>COMPLETION_PROCESSED</column>
+      <table>STC_BI</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="cwDocStamp" type="leaf">
+      <column>CWDOCSTAMP</column>
+      <table>STC_BI</table>
+      <valueType>dtype_cwf.cwDocStamp</valueType>
+    </variable>
+    <variable name="cwOrderCreationDate" type="leaf">
+      <column>CWORDERCREATIONDATE</column>
+      <table>STC_BI</table>
+      <valueType>dtype_cwf.cwOrderCreationDate</valueType>
+    </variable>
+    <variable name="cwOrderId" type="leaf">
+      <column>CWORDERID</column>
+      <table>STC_BI</table>
+      <valueType>dtype_cwf.cwOrderId</valueType>
+    </variable>
+    <variable name="cwParentId" type="leaf">
+      <column>CWPARENTID</column>
+      <table>STC_BI</table>
+      <valueType>dtype_cwf.cwParentId</valueType>
+    </variable>
+    <variable name="lastUpdatedDate" type="leaf">
+      <column>LASTUPDATEDDATE</column>
+      <table>STC_BI</table>
+      <valueType>dtype_cwf.lastUpdatedDate</valueType>
+    </variable>
+    <variable name="updatedBy" type="leaf">
+      <column>UPDATEDBY</column>
+      <table>STC_BI</table>
+      <valueType>dtype_cwf.updatedBy</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="mandatoryRingNamePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "ringName");]]></script>
+    </method>
+    <method name="mandatorySiteNamePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "siteName");]]></script>
+    </method>
+    <method name="mandatoryNetworkTypePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "networkType");]]></script>
+    </method>
+    <method name="mandatoryCodePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "code");]]></script>
+    </method>
+    <method name="mandatoryDetailsPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "details");]]></script>
+    </method>
+    <method name="mandatoryCategoryPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "category");]]></script>
+    </method>
+    <method name="mandatoryMop1StatusPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "mop1Status");]]></script>
+    </method>
+    <method name="mandatoryMopNumberPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "mopNumber");]]></script>
+    </method>
+    <method name="mandatoryMopIssueDatePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "mopIssueDate");]]></script>
+    </method>
+    <method name="mandatoryMopEstimatedDatePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "mopEstimatedDate");]]></script>
+    </method>
+    <method name="mandatoryMopImplStatusPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "mopImplStatus");]]></script>
+    </method>
+    <method name="mandatoryMopImplComplDatePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "mopImplComplDate");]]></script>
+    </method>
+    <method name="mandatoryMopImplEstimDatePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "mopImplEstimDate");]]></script>
+    </method>
+    <method name="mandatoryBiStatusPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "biStatus");]]></script>
+    </method>
+    <method name="mandatoryLastFwdDeptPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "lastFwdDept");]]></script>
+    </method>
+    <method name="mandatoryLastFwdEngPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "lastFwdEng");]]></script>
+    </method>
+    <method name="mandatoryLastFwdDatePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "lastFwdDate");]]></script>
+    </method>
+    <method name="mandatoryApprovedSolutionPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "approvedSolution");]]></script>
+    </method>
+    <method name="mandatorySow1StatusPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "sow1Status");]]></script>
+    </method>
+    <method name="mandatorySowNumberPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "sowNumber");]]></script>
+    </method>
+    <method name="mandatorySowIssueDatePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "sowIssueDate");]]></script>
+    </method>
+    <method name="mandatorySowEstimateDatePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "sowEstimateDate");]]></script>
+    </method>
+    <method name="mandatoryContractorPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "contractor");]]></script>
+    </method>
+    <method name="mandatoryContractor2Perm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "contractor2");]]></script>
+    </method>
+    <method name="mandatoryContractor3Perm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "contractor3");]]></script>
+    </method>
+    <method name="mandatoryDdfANotePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "ddfANote");]]></script>
+    </method>
+    <method name="mandatoryDdfZNotePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "ddfZNote");]]></script>
+    </method>
+    <method name="mandatoryCompletionDatePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "completionDate");]]></script>
+    </method>
+    <method name="mandatoryPatForecastDatePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "patForecastDate");]]></script>
+    </method>
+    <method name="mandatoryPatActualDatePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "patActualDate");]]></script>
+    </method>
+    <method name="mandatoryMopDesignStatusPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "mopDesignStatus");]]></script>
+    </method>
+    <method name="mandatoryAreaRegionPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "areaRegion");]]></script>
+    </method>
+    <method name="mandatorySDHCategoryPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "sdhCategory");]]></script>
+    </method>
+    <method name="mandatorySDHDescriptionPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "sdhDescription");]]></script>
+    </method>
+    <method name="mandatorySlotPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "slot");]]></script>
+    </method>
+    <method name="mandatorySDHVendorPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "sdhVendor");]]></script>
+    </method>
+    <method name="mandatoryJobEstimatedDatePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "jobEstimatedDate");]]></script>
+    </method>
+    <method name="mandatoryBiMaterialStatusPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "biMaterialStatus");]]></script>
+    </method>
+    <method name="mandatorySecondaryOwnerPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "secondaryOwner");]]></script>
+    </method>
+    <method name="mandatoryMaterialsPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "materials");]]></script>
+    </method>
+    <method name="mandatoryNetworkStatusPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "networkStatus");]]></script>
+    </method>
+    <method name="cwOnDocVisualKey" type="action">
+      <system>true</system>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+      <script><![CDATA[return "BI " + this.biId  + " [" + this.biStatus + "]";]]></script>
+    </method>
+    <method name="cwOnDocInit" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocInit();
+
+        //this.createdBy = Global.getUserId();
+        //debugPrintln("BI document created by:"+this.createdBy);
+        this.creationDate = new Date();
+        //this.currentUserId = this.createdBy;
+
+        this.biStatus = configuration.getExternalNameForStatusByInternalName("NEW", "BI");
+      ]]></script>
+    </method>
+    <method name="mandatoryMop2StatusPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "mop2Status");]]></script>
+    </method>
+    <method name="mandatoryMop3StatusPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "mop3Status");]]></script>
+    </method>
+    <method name="mandatorySow2StatusPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "sow2Status");]]></script>
+    </method>
+    <method name="mandatorySow3StatusPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[return configuration.isFieldOptional("BI", "sow3Status");]]></script>
+    </method>
+    <method name="readOnlyRingNamePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySiteNamePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyNetworkTypePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyCodePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyDetailsPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyCategoryPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyMop1StatusPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyMop2StatusPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyMop3StatusPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyMopNumberPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyMopIssueDatePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyMopEstimatedDatePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyMopImplStatusPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySowEstimateDatePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyMopImplComplDatePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyMopImplEstimDatePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlybiStatusPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyNetworkStatusPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyCompletionDatePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyLastFwdDeptPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyMopDesignStatusPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyLastFwdEngPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyLastFwdDatePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySdhDescriptionPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyApprovedSolutionPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySow1StatusPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySow2StatusPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySow3StatusPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySowNumberPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySowIssueDatePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyContractor1Perm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyContractor2Perm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyContractor3Perm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyDdfANotePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyDdfZNotePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyPatForecastDatePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyPatActualDatePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyAreaRegionPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySdhCategoryPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySlotPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySdhVendorPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyJobEstimatedDatePerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyBiMaterialStatusPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlySecondaryOwnerPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="readOnlyMaterialsPerm" type="permMethod">
+      <parameterList>
+        <parameter name="fieldName" type="rifp">
+          <type>dtype_com.conceptwave.system.String</type>
+        </parameter>
+      </parameterList>
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        var isEditable = this.editablePerm($psCondition);
+        if(isEditable){
+            isEditable = !configuration.isReadonlyForUser("BI",fieldName,UserProfile.userId());
+        }
+        return isEditable;
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_ASPriv</privilege>
+          <task>true</task>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_BBTransPriv</privilege>
+          <task>true</task>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_BIPriv</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_FATxPriv</privilege>
+          <task>true</task>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_FNIPriv</privilege>
+          <task>true</task>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_TFAModSqPriv</privilege>
+          <task>true</task>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_TFAPriv</privilege>
+          <task>true</task>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_TransMapPriv</privilege>
+          <task>true</task>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="findAllBICustomAttributesUI" type="leaf">
+        <valueType>findSql_tfs.findAllBICustomAttributes/ui_UserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfs.STC_BI</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="customAttributesTab" type="vform">
+            <label>customAttributesTab</label>
+            <root name="customAttributesVerticalLayout" type="elvlt">
+              <fillSpace>false</fillSpace>
+              <height>100%</height>
+              <useDefaultHeight>true</useDefaultHeight>
+              <width>1100px</width>
+              <elementList>
+                <element name="customAttributesHeader" type="elhdr">
+                  <height>30px</height>
+                  <label>Custom Attributes for BI</label>
+                </element>
+                <element name="customAttributesFormFrame" type="elovf">
+                  <formReference type="varPath">
+                    <variablePathList>
+                      <variablePath>doc_tfs.STC_BI/ui_UserInterface/leaf_findAllBICustomAttributesUI</variablePath>
+                      <variablePath>findSql_tfs.findAllBICustomAttributes/ui_UserInterface/frmui_Forms/vform_showInParent</variablePath>
+                    </variablePathList>
+                  </formReference>
+                  <height>100%</height>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>doc_tfs.STC_BI/ui_UserInterface/leaf_findAllBICustomAttributesUI</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultFormGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="biHeader" type="elhdr">
+                    <label>Blocking Issue (BI) Details</label>
+                    <showValidation>true</showValidation>
+                  </element>
+                  <element name="Tabset" type="eltset">
+                    <elementList>
+                      <element name="generalTabFrame" type="eltab">
+                        <formReference type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.STC_BI/ui_UserInterface/frmui_Forms/vform_defaultTab</variablePath>
+                          </variablePathList>
+                        </formReference>
+                        <label>BI attributes</label>
+                      </element>
+                      <element name="customAttributesTabFrame" type="eltab">
+                        <formReference type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.STC_BI/ui_UserInterface/frmui_Forms/vform_customAttributesTab</variablePath>
+                          </variablePathList>
+                        </formReference>
+                        <label>Custom Attributes</label>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="generalDetailsFrame" type="vform">
+            <label>generalDetailsFrame</label>
+            <root name="VerticalLayout" type="elvlt">
+              <elementList>
+                <element name="biGeneralInfo" type="elhdr">
+                  <label>BI General Details</label>
+                  <showValidation>true</showValidation>
+                </element>
+                <element name="generalInfoGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <width>1000px</width>
+                  <elementList>
+                    <element name="biId" type="elfld">
+                      <label>BI Id</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_biId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="ringName" type="elfld">
+                      <label>Ring Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_ringName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="siteName" type="elref">
+                      <label>Site Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_siteName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="networkType" type="elslct">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_networkType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="networkStatus" type="elslct">
+                      <label>Network Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_networkStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="code" type="elslct">
+                      <label>Code</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_code</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="category" type="elslct">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_category</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="biStatus" type="elslct">
+                      <label>BI Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_biStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="createdBy" type="elref">
+                      <dataLength>30</dataLength>
+                      <label>Created By</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_createdBy</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="currentUserId" type="elref">
+                      <label>Current User</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_currentUserId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="creationDate" type="eldatetime">
+                      <label>Creation Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_creationDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="buInitiator" type="elfld">
+                      <label>Business Unit Initiator</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_buInitiator</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="updatedBy" type="elfld">
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Updated by</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_updatedBy</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="lastUpdatedDate" type="eldatetime">
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Last updated</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_lastUpdatedDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="completionDate" type="eldatetime">
+                      <label>Close Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_completionDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="details" type="eltxtArea">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_details</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="approvedSolution" type="eltxtArea">
+                      <columnSpan>3</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_approvedSolution</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="customerDetailsFrame" type="vform">
+            <label>customerDetailsFrame</label>
+            <root name="VerticalLayout" type="elvlt">
+              <elementList>
+                <element name="biCustomerData" type="elhdr">
+                  <label>BI Customer Data</label>
+                  <showValidation>true</showValidation>
+                </element>
+                <element name="customerDataGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <width>1000px</width>
+                  <elementList>
+                    <element name="customerName" type="elslct">
+                      <dataLength>30</dataLength>
+                      <label>Customer Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_customerName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="areaRegion" type="elslct">
+                      <label>Area / Region</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_areaRegion</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="sowNumber" type="elfld">
+                      <label>SoW Number</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_sowNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="sowStatus" type="elslct">
+                      <label>SoW Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_sow1Status</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="sow2Status" type="elslct">
+                      <label>SoW 2 Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_sow2Status</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="sow3Status" type="elslct">
+                      <label>SoW 3 Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_sow3Status</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="sowIssueDate" type="eldatetime">
+                      <label>SoW Issue Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_sowIssueDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="sowEstimateDate" type="eldatetime">
+                      <label>SoW Estimated Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_sowEstimateDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer2" type="elrsp"/>
+                    <element name="contractor" type="elslct">
+                      <label>Contractor 1</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_contractor1</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="contractor2" type="elslct">
+                      <label>Contractor 2</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_contractor2</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="contractor3" type="elslct">
+                      <label>Contractor 3</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_contractor3</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="completionDate" type="eldatetime">
+                      <label>Completion Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_completionDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="patForecastDate" type="eldatetime">
+                      <label>PAT Forecast Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_patForecastDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="patActualDate" type="eldatetime">
+                      <label>PAT Actual Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_patActualDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="materials" type="eltxtArea">
+                      <columnSpan>4</columnSpan>
+                      <label>List Of Materials</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_materials</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer" type="elrsp">
+                      <height>5px</height>
+                      <rowSpan>5px</rowSpan>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="provisioningDetailsFrame" type="vform">
+            <label>provisioningDetailsFrame</label>
+            <root name="VerticalLayout" type="elvlt">
+              <elementList>
+                <element name="biProvDetailInfo" type="elhdr">
+                  <label>BI Provisioning Details</label>
+                  <showValidation>true</showValidation>
+                </element>
+                <element name="biProvDetailInfoGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <fillSpace>false</fillSpace>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>1000px</width>
+                  <elementList>
+                    <element name="mopStatus" type="elslct">
+                      <label>MoP 1 Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_mop1Status</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="mop2Status" type="elslct">
+                      <label>MoP 2 Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_mop2Status</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="mop3Status" type="elslct">
+                      <label>MoP 3 Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_mop3Status</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="mopNumber" type="elfld">
+                      <label>MoP Number</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_mopNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="mopIssueDate" type="eldatetime">
+                      <label>MoP Issue Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_mopIssueDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="mopEstimatedDate" type="eldatetime">
+                      <label>MoP Estimated Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_mopEstimatedDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="mopImplStatus" type="elslct">
+                      <label>MoP Impl Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_mopImplStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="mopImplComplDate" type="eldatetime">
+                      <label>MoP Impl Compl Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_mopImplComplDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="mopImplEstimDate" type="eldatetime">
+                      <label>MoP Impl Estim Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_mopImplEstimDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="mopDesignStatus" type="elfld">
+                      <label>MoP Design Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_mopDesignStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="lastFwdDept" type="elfld">
+                      <label>Last Fwd Dept</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_lastFwdDept</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="lastFwdEng" type="elfld">
+                      <label>Last Fwd Eng</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_lastFwdEng</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="lastFwdDate" type="eldatetime">
+                      <label>Last Fwd Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_lastFwdDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer" type="elrsp"/>
+                    <element name="sdhCategory" type="elslct">
+                      <label>SDH Category</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_sdhCategory</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="sdhDescription" type="eltxtArea">
+                      <columnSpan>3</columnSpan>
+                      <label>SDH Description</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_sdhDescription</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="sdhVendor" type="elfld">
+                      <label>SDH Vendor</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_sdhVendor</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer1" type="elrsp"/>
+                    <element name="ddfANote" type="elfld">
+                      <label>DDF A Note</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_ddfANote</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="ddfZNote" type="elfld">
+                      <label>DDF B Note</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_ddfZNote</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="slot" type="elfld">
+                      <label>Slot</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_slot</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer2" type="elrsp"/>
+                    <element name="jobEstimatedDate" type="eldatetime">
+                      <label>Job Estimated Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_jobEstimatedDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="biMaterialStatus" type="elfld">
+                      <label>BI Material Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_biMaterialStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="secondaryOwner" type="elslct">
+                      <label>Secondary Owner</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.STC_BI/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.STC_BI/leaf_secondaryOwner</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="defaultTab" type="vform">
+            <label>defaultTab</label>
+            <root name="defaultFormGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="generalDetailsFormFrame" type="elovf">
+                  <formReference type="varPath">
+                    <variablePathList>
+                      <variablePath>doc_tfs.STC_BI/ui_UserInterface/frmui_Forms/vform_generalDetailsFrame</variablePath>
+                    </variablePathList>
+                  </formReference>
+                </element>
+                <element name="LayoutSpacer" type="ellsp">
+                  <height>20px</height>
+                </element>
+                <element name="customerDetailsFormFrame" type="elovf">
+                  <formReference type="varPath">
+                    <variablePathList>
+                      <variablePath>doc_tfs.STC_BI/ui_UserInterface/frmui_Forms/vform_customerDetailsFrame</variablePath>
+                    </variablePathList>
+                  </formReference>
+                </element>
+                <element name="LayoutSpacer1" type="ellsp">
+                  <height>20px</height>
+                </element>
+                <element name="provisioningDetailsFormFrame" type="elovf">
+                  <formReference type="varPath">
+                    <variablePathList>
+                      <variablePath>doc_tfs.STC_BI/ui_UserInterface/frmui_Forms/vform_provisioningDetailsFrame</variablePath>
+                    </variablePathList>
+                  </formReference>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="elext"/>
+              <override name="hl1" type="elext">
+                <elementList>
+                  <element name="biUtilitiesMenuItem" type="elmnu">
+                    <label>Utilities</label>
+                    <showDown>true</showDown>
+                    <showMenuDropDown>true</showMenuDropDown>
+                    <showRollOver>true</showRollOver>
+                    <elementList>
+                      <element name="sourceObjectMenuItem" type="elmnu">
+                        <clickMethod type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.STC_BI/ui_UserInterface/usrActionMethod_showAllLinkedObjects</variablePath>
+                          </variablePathList>
+                        </clickMethod>
+                        <label>Show Linked Elements</label>
+                      </element>
+                      <element name="auditTrailMenuItem" type="elmnu">
+                        <clickMethod type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.STC_BI/ui_UserInterface/usrActionMethod_showAuditTrail</variablePath>
+                          </variablePathList>
+                        </clickMethod>
+                        <label>Show Audit Trail</label>
+                      </element>
+                      <element name="trackingMenuItem" type="elmnu">
+                        <clickMethod type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.STC_BI/ui_UserInterface/usrActionMethod_showTracking</variablePath>
+                          </variablePathList>
+                        </clickMethod>
+                        <label>Show Tracking</label>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="cancelBICreationMenuItem" type="elmnu">
+                    <menuAccel type="mAccelP"/>
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.STC_BI/ui_UserInterface/usrActionMethod_cancelBICreation</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/back.gif</icon>
+                    <label>Cancel BI Creation</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.STC_BI/ui_UserInterface/permMethod_isCancelBICreationVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="startProcessMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.STC_BI/ui_UserInterface/usrActionMethod_startBIProcess</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/system.gif</icon>
+                    <label>Start BI Process</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.STC_BI/ui_UserInterface/permMethod_startProcessForBIVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="closeDialogMenuItem" type="elmnu">
+                    <menuAccel type="mAccelP"/>
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.STC_BI/ui_UserInterface/usrActionMethod_closeDialog</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/BasicCloseIcon.gif</icon>
+                    <label>Close Dialog</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.STC_BI/ui_UserInterface/permMethod_isCloseDialogVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="save" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <validate>true</validate>
+        <script><![CDATA[
+          this.cw$super_save();
+
+          if(this.findAllBICustomAttributesUI.model.list != null && this.findAllBICustomAttributesUI.model.list.length > 0) {
+              for(var i=0; i<this.findAllBICustomAttributesUI.model.list.length; i++) {
+                  var customAttr = this.findAllBICustomAttributesUI.model.list[i];
+                  if(customAttr.customAttrType == "Hyperlink") {
+                      customAttr.attributeValue = tfs.computeHyperlinkValue("BI", this.model.biId, customAttr.customAttributeId);
+                      tfs.storeCustomAttribute(this.model.biId, customAttr.customAttributeId, customAttr.attributeValue, "BI");
+                  }
+              }
+          }
+
+          this.findAllBICustomAttributesUI.search.model.objectId = this.model.id;
+          this.findAllBICustomAttributesUI.model.search();
+        ]]></script>
+      </method>
+      <method name="onInit" type="action">
+        <valueType>nmeta_com.conceptwave.system.Object</valueType>
+        <script><![CDATA[
+          var res = this.cw$super_onInit();
+
+          this.findAllBICustomAttributesUI = new tfs.findAllBICustomAttributes.UserInterface(null, this);
+          this.findAllBICustomAttributesUI.search.model.objectId = this.model.biId;
+          this.findAllBICustomAttributesUI.model.search();
+
+          return res;
+        ]]></script>
+      </method>
+      <method name="showAllLinkedObjects" type="usrActionMethod">
+        <dialogHeight>290</dialogHeight>
+        <dialogWidth>760</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var finder = new Finder("tfs.findAllBILinkedObjects");
+          finder.searchDocument.biId = this.model.biId;
+          finder.search();
+
+          return finder;
+        ]]></script>
+      </method>
+      <method name="showAuditTrail" type="usrActionMethod">
+        <dialogHeight>768</dialogHeight>
+        <dialogWidth>1024</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var finderAuditTrail = new Finder("common.findAuditTrailForDocumentWithUDAs");
+          finderAuditTrail.searchDocument.docId = this.model.id;
+          finderAuditTrail.searchDocument.likeDocId = '%' + this.model.id + '%';
+          finderAuditTrail.search();
+
+          return finderAuditTrail;
+        ]]></script>
+      </method>
+      <method name="showTracking" type="usrActionMethod">
+        <dialogHeight>768</dialogHeight>
+        <dialogWidth>1024</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var trackingFinder = new Finder("workflow.trackingFinder");
+          trackingFinder.searchDocument.objectId = this.model.id;
+          trackingFinder.searchDocument.objectType = "BI";
+          trackingFinder.search();
+
+          return trackingFinder;
+        ]]></script>
+      </method>
+      <method name="startProcessForBIVisible" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>STC_BIPriv</privilege>
+            <task>true</task>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+        <script><![CDATA[
+          var visible = $psCondition;
+
+          if(visible) {
+              var biDocument = this.model;
+
+              var f = new Document("cwf_pm.ProcessSearch");
+              f.ORDER_ID = biDocument.orderId;
+              f.STATUS = 1;
+
+              var resultList = Finder.runFinder("cwf_pm.ProcessFinder", "select", f);
+              visible = (resultList == null || resultList.length == 0);
+          }
+
+          return visible;
+        ]]></script>
+      </method>
+      <method name="closeDialog" type="usrActionMethod">
+        <script><![CDATA[
+          if(this.isProcessForBIMissing()) {
+              Global.throwException("AE0027", this.model.biId);
+          }
+
+          return Global.closeDialog(this.parent);
+        ]]></script>
+      </method>
+      <method name="isCloseDialogVisible" type="permMethod">
+        <script><![CDATA[return (this.parent.metadataType == "tfs.dialogWithCloseControl");]]></script>
+      </method>
+      <method name="startBIProcess" type="usrActionMethod">
+        <confirmation>doc_tfs.STC_BI/ui_UserInterface/uimthd_startBIProcessConfirmation</confirmation>
+        <script><![CDATA[
+          var f = new Document("cwf_pm.ProcessSearch");
+          f.ORDER_ID = this.model.orderId;
+          f.STATUS = 1;
+
+          var resultList = Finder.runFinder("cwf_pm.ProcessFinder", "select", f);
+          if(resultList != null && resultList.length > 0) {
+              Global.throwException("AE0006", ["BI", resultList[0].PROCESS_ID]);
+          }
+
+
+          var biOrder = Order.getOrderById(this.model.orderId);
+          if(biOrder == null) {
+              Global.throwException("AE0028");
+          }
+
+          var biProcessId = workflow.startBIProcess(biOrder, Global.getUserId());
+
+          return Global.showUserMessage(Global.translateText("AI0010", null, [this.model.biId, biProcessId]));
+        ]]></script>
+      </method>
+      <method name="startBIProcessConfirmation" type="uimthd">
+        <script><![CDATA[return "AW0016";]]></script>
+      </method>
+      <method name="isProcessForBIMissing" type="uimthd">
+        <script><![CDATA[
+          var resList = workflow.findProcessesByType(this.model.cwOrderId, "workflow.blockingIssueProcess");
+          return (resList == null || resList.length == 0);
+        ]]></script>
+      </method>
+      <method name="cancelBICreation" type="usrActionMethod">
+        <script><![CDATA[
+          if(! this.isProcessForBIMissing()) {
+              Global.throwException("AE0029");
+          }
+
+          var finder = new Finder("tfs.findAllBILinkedObjects");
+          finder.searchDocument.biId = this.model.biId;
+          var linkedObjects = finder.search();
+          if(linkedObjects != null) {
+              for(var i=0; i<linkedObjects.length; i++) {
+                  linkedObjects[i].deleteItem();
+              }
+          }
+          this.model.deleteItem();
+
+
+          return Global.closeDialog(this.parent);
+        ]]></script>
+      </method>
+      <method name="isCancelBICreationVisible" type="permMethod">
+        <script><![CDATA[return (this.parent.metadataType == "tfs.dialogWithCloseControl");]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

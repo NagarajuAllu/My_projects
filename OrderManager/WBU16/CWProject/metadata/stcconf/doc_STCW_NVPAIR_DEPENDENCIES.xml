@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcconf.STCW_NVPAIR_DEPENDENCIES">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{6efb67e3-06c3-4000-8457-7cd106d2400b}</guid>
+  <label>NV Pair Dependencies</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STCW_NVPAIR_DEPENDENCIES</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="orderType" type="leaf">
+      <column>ORDERTYPE</column>
+      <propertyElement type="elslct">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STCW_NVPAIR_DEPENDENCIES</table>
+      <valueType>dtype_wsws.orderType</valueType>
+    </variable>
+    <variable name="serviceType" type="leaf">
+      <column>SERVICETYPE</column>
+      <propertyElement type="elfld">
+        <label>Service Type</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_NVPAIR_DEPENDENCIES</table>
+      <valueType>dtype_stcw.string25</valueType>
+    </variable>
+    <variable name="sourceNVPair" type="leaf">
+      <column>SOURCE_NVPAIR</column>
+      <propertyElement type="elfld">
+        <label>Source NVPair</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_NVPAIR_DEPENDENCIES</table>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+    <variable name="sourceNVPairValue" type="leaf">
+      <column>SOURCE_NVPAIR_VALUE</column>
+      <propertyElement type="elfld">
+        <label>Source NVPair Value</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_NVPAIR_DEPENDENCIES</table>
+      <valueType>dtype_stcw.string4000</valueType>
+    </variable>
+    <variable name="dependNVPair" type="leaf">
+      <column>DEPEND_NVPAIR</column>
+      <propertyElement type="elfld">
+        <label>Dependent NVPair</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_NVPAIR_DEPENDENCIES</table>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        if(this.isStored) {
+            Global.showUserMessage(Global.translateText("AI0002"));
+        }
+        else {
+            Global.showUserMessage(Global.translateText("AI0001"));
+        }
+      ]]></script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcconf.STCW_NVPAIR_DEPENDENCIES</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="stcw_nvpair_dependenciesGrid" type="elgrd">
+                    <colWidths>90px,200px,90px,200px,90px,200px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="stcw_nvpair_dependenciesHeader" type="elhdr">
+                        <label>NV Pair Dependencies</label>
+                      </element>
+                      <element name="orderType" type="elslct">
+                        <label>Order Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <label>Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sourceNVPair" type="elfld">
+                        <label>Source NVPair</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_sourceNVPair</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sourceNVPairValue" type="elfld">
+                        <label>Source NVPair Value</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_sourceNVPairValue</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="dependNVPair" type="elfld">
+                        <label>Dependent NVPair</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_dependNVPair</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

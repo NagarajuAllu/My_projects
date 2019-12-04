@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="43103d0bf179959b4d19f3d74312c53c" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.getWOStatusInGranite">
+  <guid>{043bd4e2-c22a-dacf-8d78-d901a045f4c1}</guid>
+  <label>Get WOStatus In Granite</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="orderNumber" type="rifp">
+      <type>dtype_orb.OrderNumber</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var woStatus = null;
+
+    var woStatusFinder = new Finder ("granite:findWorkOrderStatusInGranite");
+    woStatusFinder.searchDocument.orderNumber = orderNumber;
+    woStatusFinder.search ();
+
+    var woStatusList = woStatusFinder.list;
+    if (woStatusList == null || woStatusList.size <= 0) {
+          var archiveWOStatusFinder = new Finder ("granite:findArchivedWorkOrderStatusInGranite");
+          archiveWOStatusFinder.searchDocument.orderNumber = orderNumber;
+          archiveWOStatusFinder.search ();
+
+          var archiveWOStatusList = archiveWOStatusFinder.list;
+          if (archiveWOStatusList != null && archiveWOStatusList.size > 0) {
+                woStatus = archiveWOStatusList.start.WO_STATUS;
+          }
+    }
+    else {
+          woStatus = woStatusList.start.WO_STATUS;
+    }
+    return woStatus;
+  ]]></script>
+</script>

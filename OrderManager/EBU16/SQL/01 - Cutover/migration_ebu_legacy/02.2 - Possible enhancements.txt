@@ -1,0 +1,61 @@
+enhancements for Legacy orders migration:
+1. in case the existing order doesn't have circuitNumber and it's not possible to find such circuit/WO in Granite, the migration can be skipped.  # 15 orders
+   Set migratedToBundle = 2
+2. in case the existing order has ordernumber in WD like '%#%'(107537 orders) or like '%_OLD' (270 orders), their migration can be skipped.
+   Set migratedToBundle = 3
+3. In case there is process whose status is terminated or error, the migration of the order linked to it can be skipped.  # 22 orders
+   Set migratedToBundle = 4
+4. In case the order has businessUnit equals to "Home", it can be skipped.  # 98 orders
+   Set migratedToBundle = 5
+   
+   
+Check the # of orders for each case, then generate a SQL script ot manage them.
+
+
+Check email sent out 1st June 2015 - Migration of EBU Legacy orders - 200 orders, so IGNORE! 
+
+
+
+
+Total # of EBU legacy orders: 289190!!!!
+Total # of EBU legacy orders to migrate: ~190000!!!!
+
+
+
+Update to set migratedToBundle:
+
+case 1 - circuitnumber is null
+
+   update stc_order_message
+      set migratedToBundle = 2
+    where circuitNumber is null;
+    
+ 
+
+case 2 - ordernumber like '%#%'
+
+   update stc_order_message
+      set migratedToBundle = 3
+    where ordernumber like '%#%'
+      and length(substr(ordernumber, instr(ordernumber, '#')+1)) = 19;
+      
+   update stc_order_message
+      set migratedToBundle = 3
+    where ordernumber like '%_OLD';      
+      
+case 3 - orders related to processes terminated or in error
+
+    update stc_order_message
+       set migratedToBundle = 4
+     where cworderid in (
+    select order_id
+      from cwprocess p
+     where status in (5, 6));
+   
+     
+case 4 - orders with BU = 'Home'
+
+    update stc_order_message
+       set migratedToBundle = 5
+     where businessunit = 'Home';
+ 

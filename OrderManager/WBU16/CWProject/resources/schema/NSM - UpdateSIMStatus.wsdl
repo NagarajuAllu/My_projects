@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="updateSIMStatus" targetNamespace="http://stc.com.sa:8080/OSR_NWNumInvMgmt.numAssignment.updateSIMStatus.ws.provider:updateSIMStatus" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapjms="http://www.w3.org/2010/soapjms/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://stc.com.sa:8080/OSR_NWNumInvMgmt.numAssignment.updateSIMStatus.ws.provider:updateSIMStatus" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://stc.com.sa:8080/OSR_NWNumInvMgmt.numAssignment.updateSIMStatus.ws.provider:updateSIMStatus" xmlns:tns="http://stc.com.sa:8080/OSR_NWNumInvMgmt.numAssignment.updateSIMStatus.ws.provider:updateSIMStatus" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <xsd:element name="updateSIMStatus" type="tns:updateSIMStatus"/>
+          <xsd:element name="updateSIMStatusResponse" type="tns:updateSIMStatusResponse"/>
+          <xsd:complexType name="updateSIMStatus">
+            <xsd:sequence>
+              <xsd:element name="updateSIMStatusRequest" type="tns:UpdateSIMStatusRequest"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="UpdateSIMStatusRequest">
+            <xsd:sequence>
+              <xsd:element name="header" type="tns:RequestHeader"/>
+              <xsd:element name="body" type="tns:body"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="RequestHeader">
+            <xsd:sequence>
+              <xsd:element name="systemId" type="xsd:string"/>
+              <xsd:element name="serverInfo" type="xsd:string"/>
+              <xsd:element name="messageId" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="conversationId" nillable="true" type="xsd:string"/>
+              <xsd:element name="timestamp" type="xsd:dateTime"/>
+              <xsd:element name="domainId" type="xsd:string"/>
+              <xsd:element name="serviceId" type="xsd:string"/>
+              <xsd:element name="operationType" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="userId" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="body">
+            <xsd:sequence>
+              <xsd:element name="requestHeader" type="tns:requestHeader"/>
+              <xsd:element minOccurs="0" name="requestData" nillable="true" type="tns:requestData"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="requestHeader">
+            <xsd:sequence>
+              <xsd:element name="accountId" type="xsd:string"/>
+              <xsd:element name="additionalKey" type="xsd:string"/>
+              <xsd:element name="businessUnit" type="xsd:string"/>
+              <xsd:element name="channel" type="xsd:string"/>
+              <xsd:element name="agentUserName" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="dealerId" nillable="true" type="xsd:string"/>
+              <xsd:element name="orderNumber" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="orderSubType" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="orderType" nillable="true" type="xsd:string"/>
+              <xsd:element name="serviceCategory" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="serviceNameEnglish" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="storeId" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="requestData">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="activateIPAddress" nillable="true" type="tns:activateIPAddress"/>
+              <xsd:element minOccurs="0" name="inActivateIPAddress" nillable="true" type="tns:inActivateIPAddress"/>
+              <xsd:element minOccurs="0" name="numberSIMIpDetail" nillable="true" type="tns:numberSIMIpDetail"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="activateIPAddress">
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" minOccurs="0" name="item" nillable="true" type="tns:item"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="item">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="apnId" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="ipAddress" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="inActivateIPAddress">
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" minOccurs="0" name="item" nillable="true" type="tns:item2"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="item2">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="apnId" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="ipAddress" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="numberSIMIpDetail">
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" minOccurs="0" name="item" nillable="true" type="tns:item3"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="item3">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="action" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="associationFlag" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="connectionType" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="disconnectedBY" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="iPAddress" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="inactivateSIM" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="joinExistFlag" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="number" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="oldSIMNumber" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="orderSubType" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="orderType" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="phoneNumExists" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="productId" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="reserveNumFlag" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="rootAssetId" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="secondaryNumber1" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="secondaryNumber2" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="simNumExists" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="simNumber" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="teleCode" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="toServiceProvider" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="type" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="updateSIMStatusResponse">
+            <xsd:sequence>
+              <xsd:element name="updateSIMStatusResponse" type="tns:UpdateSIMStatusResponse"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="UpdateSIMStatusResponse">
+            <xsd:sequence>
+              <xsd:element name="header" type="tns:ResponseHeader"/>
+              <xsd:element minOccurs="0" name="body" nillable="true" type="tns:body2"/>
+              <xsd:element name="status" type="tns:Status"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="ResponseHeader">
+            <xsd:sequence>
+              <xsd:element name="systemId" type="xsd:string"/>
+              <xsd:element name="serverInfo" type="xsd:string"/>
+              <xsd:element name="messageId" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="conversationId" nillable="true" type="xsd:string"/>
+              <xsd:element name="timestamp" type="xsd:dateTime"/>
+              <xsd:element name="domainId" type="xsd:string"/>
+              <xsd:element name="serviceId" type="xsd:string"/>
+              <xsd:element name="operationType" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="userId" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="integrationId" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="body2">
+            <xsd:sequence>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="Status">
+            <xsd:sequence>
+              <xsd:element name="result" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="error" nillable="true" type="tns:error"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="error">
+            <xsd:sequence>
+              <xsd:element name="errorCode" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorSystem" nillable="true" type="xsd:string"/>
+              <xsd:element name="errorType" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorCategory" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorDescription" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorReference" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorList" nillable="true" type="tns:errorList"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="errorList">
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" minOccurs="0" name="error" nillable="true" type="tns:error2"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="error2">
+            <xsd:sequence>
+              <xsd:element name="errorCode" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorSystem" nillable="true" type="xsd:string"/>
+              <xsd:element name="errorType" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorCategory" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorDescription" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorReference" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        	</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="updateSIMStatus_PortType_updateSIMStatusResponse">
+    <wsdl:part name="parameters" element="tns:updateSIMStatusResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateSIMStatus_PortType_updateSIMStatus">
+    <wsdl:part name="parameters" element="tns:updateSIMStatus">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="updateSIMStatus_PortType">
+    <wsdl:operation name="updateSIMStatus">
+      <wsdl:input message="tns:updateSIMStatus_PortType_updateSIMStatus">
+    </wsdl:input>
+      <wsdl:output message="tns:updateSIMStatus_PortType_updateSIMStatusResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OSR_NWNumInvMgmt_numAssignment_updateSIMStatus_ws_provider_updateSIMStatus_Binder" type="tns:updateSIMStatus_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="updateSIMStatus">
+      <soap:operation soapAction="OSR_NWNumInvMgmt_numAssignment_updateSIMStatus_ws_provider_updateSIMStatus_Binder_updateSIMStatus" style="document"/>
+      <wsdl:input>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OSR_NWNumInvMgmt.numAssignment.updateSIMStatus.ws.provider.updateSIMStatus">
+    <wsdl:port name="OSR_NWNumInvMgmt_numAssignment_updateSIMStatus_ws_provider_updateSIMStatus_Port" binding="tns:OSR_NWNumInvMgmt_numAssignment_updateSIMStatus_ws_provider_updateSIMStatus_Binder">
+      <soap:address location="http://stc.com.sa:8080/ws/OSR_NWNumInvMgmt.numAssignment.updateSIMStatus.ws.provider:updateSIMStatus/OSR_NWNumInvMgmt_numAssignment_updateSIMStatus_ws_provider_updateSIMStatus_Port"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

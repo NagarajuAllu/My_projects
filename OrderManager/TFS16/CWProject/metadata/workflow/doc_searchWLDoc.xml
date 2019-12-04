@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="workflow.searchWLDoc">
+  <extends>doc_cwf_pm.WorklistSearch</extends>
+  <guid>{c9eaa0d2-0511-40fa-bb03-114990c47dad}</guid>
+  <label>Search WL Doc</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="customerName" type="leaf">
+      <propertyElement type="elslct">
+        <label>Customer Name</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_tfs.customerPickListReference</valueType>
+    </variable>
+    <variable name="creationDateLE" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Creation Date &lt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="creationDateGE" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Creation Date &gt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="plannedRFSDateLE" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Planned RFS Date &lt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="plannedRFSDateGE" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Planned RFS Date &gt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="objectType" type="leaf">
+      <propertyElement type="elslct">
+        <label>Object Type</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_common.objectType</valueType>
+    </variable>
+    <variable name="objectName" type="leaf">
+      <propertyElement type="elfld">
+        <label>Object Name [%]</label>
+      </propertyElement>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_cwf_pm.WorklistSearch/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_workflow.searchWLDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_cwf_pm.WorklistSearch/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="WorklistSearchGrid" type="elgrd">
+                <colWidths>160px,160px,160px,160px</colWidths>
+                <numOfCols>4</numOfCols>
+                <width>590px</width>
+                <elementList>
+                  <element name="WorklistSearchHeader" type="elhdr">
+                    <label>Worklist Search Input Data</label>
+                  </element>
+                  <element name="customerName" type="elslct">
+                    <dataLength>30</dataLength>
+                    <label>Customer Name</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_workflow.searchWLDoc/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_workflow.searchWLDoc/leaf_customerName</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="objectType" type="elslct">
+                    <label>Object Type</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_workflow.searchWLDoc/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_workflow.searchWLDoc/leaf_objectType</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="objectName" type="elfld">
+                    <columnSpan>2</columnSpan>
+                    <label>Object Name [%]</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_workflow.searchWLDoc/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_workflow.searchWLDoc/leaf_objectName</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="creationDateGE" type="eldatetime">
+                    <label>Creation Date &gt;=</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_workflow.searchWLDoc/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_workflow.searchWLDoc/leaf_creationDateGE</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="creationDateLE" type="eldatetime">
+                    <label>Creation Date &lt;=</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_workflow.searchWLDoc/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_workflow.searchWLDoc/leaf_creationDateLE</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="plannedRFSDateGE" type="eldatetime">
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_workflow.searchWLDoc/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_workflow.searchWLDoc/leaf_plannedRFSDateGE</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="plannedRFSDateLE" type="eldatetime">
+                    <label>Planned RFS Date &lt;=</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_workflow.searchWLDoc/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_workflow.searchWLDoc/leaf_plannedRFSDateLE</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

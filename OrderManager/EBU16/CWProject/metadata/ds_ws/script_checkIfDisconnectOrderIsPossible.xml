@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.checkIfDisconnectOrderIsPossible">
+  <label>Check if Disconnect Order possible for Bundle Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="order" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+    <parameter name="errorArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <typeDescription>Returns error string if disconnect order is not possible to start</typeDescription>
+  <script><![CDATA[
+    /**
+    Check if disconnect order could be started for the active order
+     */
+    if(order.orderHeader.orderType == "O"){
+        errorArray.push("Order is already a disconnect order");
+        return false;
+    }
+
+    if(order.bundles[0].bundle.provisioningFlag != "ACTIVE"){
+        errorArray.push("Order is not in ACTIVE status; current Provisioning status is: " + order.bundles[0].bundle.provisioningFlag);
+        return false;
+    }
+
+    /**
+      Search for other orders in provisioning state
+     */
+    var resultList = ds_ws.getAllLineItemsByIdentifierAndProvisioningFlag(order.bundles[0].bundle.lineItemIdentifier, "B", "PROVISIONING");
+
+    if (resultList != null && resultList.length > 0){
+        var orderInProvisioning = Order.getOrderById(resultList[0].orderId);
+        if(orderInProvisioning == null) {
+            errorArray.push("Unexpected error: found lineItem with internal id " + resultList[0].id + " in 'PROVISIONING' status but not able to load the order");
+        }
+        else {
+            errorArray.push("There is at least another order for the same Parent LineItem in 'PROVISIONING' status; orderNumber is " + orderInProvisioning.orderHeader.orderNumber);
+        }
+    }
+
+    if(errorArray.length > 0){
+        return false;
+    }
+
+    return true;
+  ]]></script>
+</script>

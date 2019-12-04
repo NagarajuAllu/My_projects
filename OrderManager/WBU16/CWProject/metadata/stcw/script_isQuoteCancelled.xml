@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.isQuoteCancelled">
+  <label>is Quote Cancelled</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="quoteOrder" type="rifp">
+      <mandatory>true</mandatory>
+      <type>order_com.conceptwave.system.Order</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    if (quoteOrder == null)
+          return (false);
+
+    var versionNumber = quoteOrder.versions.count - 1;
+    if (versionNumber < 0)
+          return (false);
+
+    return (quoteOrder.versions [versionNumber].header.versionName == "CANCEL");
+  ]]></script>
+</script>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="dba896c5702e167e66dd6bc044b8f083" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.newAttributesNVPairName">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{f9e21f7a-3249-4073-8460-609fa4ee48ec}</guid>
+  <label>NewAttribute NV Pair Name</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="name" type="leaf">
+      <column>NAME</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>Name in NV Pair</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_NEWATTR_NVPAIR</table>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        if(ds_ws.isNameInSkipNVPairList(this.name)) {
+            Global.throwException("AE0118", [this.name, "Skip"]);
+        }
+
+        if(ds_ws.isNameInStoreAndForwardNVPairList(this.name)) {
+            Global.throwException("AE0118", [this.name, "Store & Forward"]);
+        }
+
+        if(ds_ws.isNameInNewAttrNVPairList(this.name)) {
+            Global.throwException("AE0118", [this.name, "New Attribute"]);
+        }
+
+        if(this.isStored) {
+            Global.showUserMessage(Global.translateText("AI0002"));
+        }
+        else {
+            Global.showUserMessage(Global.translateText("AI0001"));
+        }
+      ]]></script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>this.cw$super_addPerm($psCondition);</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>this.cw$super_deletePerm($psCondition);</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script><![CDATA[
+        var isEditable = this.cw$super_editablePerm($psCondition);
+
+        if(isEditable) {
+            isEditable = ((this.name == null) || (this.name.trim().length == 0));
+        }
+
+        return isEditable;
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.newAttributesNVPairName</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="newAttrNVPairGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="newAttrNVPairNameGrid" type="elgrd">
+                    <colWidths>100px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>400px</width>
+                    <elementList>
+                      <element name="newAttrNVPairNameHeader" type="elhdr">
+                        <label>New Attribute NV Pair Name</label>
+                      </element>
+                      <element name="name" type="elfld">
+                        <label>Name in NV Pair of New Attribute</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.newAttributesNVPairName/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.newAttributesNVPairName/leaf_name</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

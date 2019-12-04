@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="195d08e8f2b1ad871f27212fe4d2833c" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.getUDAValueForResource">
+  <label>Get UDA Value For Resource</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="resourceName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="udaName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="udaGroupName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = null;
+
+    if (resourceName != null && udaName != null) {
+
+       var input = new Document("granite:searchUDAValue");
+       input.ELEMENT_NAME = resourceName;
+       input.UDA_NAME = udaName;
+       input.UDA_GROUP_NAME = udaGroupName;
+
+       var output = Finder.runFinder("granite:findUDAValueInGraniteByResourceName_UDAName", "select", input);
+
+       if (output != null && output.size > 0) {
+          result = output[0].ATTR_VALUE;
+       }
+    }
+
+    return result;
+  ]]></script>
+</script>

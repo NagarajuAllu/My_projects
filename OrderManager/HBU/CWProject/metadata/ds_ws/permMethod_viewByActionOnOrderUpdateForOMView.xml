@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<permMethod filenameHash="57411065216ca5f06cc706b723401569" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.viewByActionOnOrderUpdateForOMView">
+  <metaVersion>3</metaVersion>
+  <privilegesType>NEVER</privilegesType>
+  <script><![CDATA[
+    var result = false;
+
+    if (this.model instanceof Document && this.model.metadataType == "ds_ws:details_orderMessage") {
+          result = (this.model.actionOnOrder == "Update");
+    }
+
+    return result;
+  ]]></script>
+</permMethod>

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc filenameHash="4acb32b1594cffdbedb78ff302597499" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.findCircBWByName">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_granite.search_CIRC_BW</input>
+  <label>Find CIRC_BW By Name</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>4</metaVersion>
+  <output>doc_granite.CIRC_BW</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_granite.CIRC_BW/leaf_REL_ORDER</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_granite.search_CIRC_BW</document>
+      <mappedDocument>doc_granite.CIRC_BW</mappedDocument>
+      <mappedPath>doc_granite.CIRC_BW/leaf_BW_NAME</mappedPath>
+      <operation>like</operation>
+      <path>doc_granite.search_CIRC_BW/leaf_BANDWIDTH</path>
+    </search>
+  </searchList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_granite.CIRC_BW</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_granite.search_CIRC_BW/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_granite.CIRC_BW/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findCircBWByNameResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="BW_NAME" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_BW_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="NBR_CHANNELS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_NBR_CHANNELS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CHANNEL_BW" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_CHANNEL_BW</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="PARENT_BW" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_PARENT_BW</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="PARENT_SUBRATE_CHANNELS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_PARENT_SUBRATE_CHANNELS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="PARENT_SUBRATE_BW" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_PARENT_SUBRATE_BW</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ARE_CONTIGUOUS" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_ARE_CONTIGUOUS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ARE_MULTIPLES" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_ARE_MULTIPLES</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="IS_AGGREGATE" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_IS_AGGREGATE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="OPTION_FLAGS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_OPTION_FLAGS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="REL_ORDER" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_REL_ORDER</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="REL_BW_UNITS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_REL_BW_UNITS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="MAX_PCT_OVERSUBSCRIPTION" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_MAX_PCT_OVERSUBSCRIPTION</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CHAN_TPLT_INST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_CHAN_TPLT_INST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="IS_VIRTUAL" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_IS_VIRTUAL</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ALLOW_OVERSUBSCRIPTION" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_ALLOW_OVERSUBSCRIPTION</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RED_VAL" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_RED_VAL</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="GREEN_VAL" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_GREEN_VAL</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="BLUE_VAL" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_BLUE_VAL</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CIRC_BW_INST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_CIRC_BW_INST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="BPS_USED" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_BPS_USED</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="BPS_PRESENTED" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_BPS_PRESENTED</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="USE_IN_PATHS" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_USE_IN_PATHS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="USE_IN_NETWORK" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_USE_IN_NETWORK</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="USE_IN_QOS" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_USE_IN_QOS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="IS_PACKET" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_IS_PACKET</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="TYPE_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_BW/leaf_TYPE_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_granite.findCircBWByName/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findCircBWByNameView" type="findVView">
+      <inputOverlay>doc_granite.search_CIRC_BW/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find Circuit Bandwidth</label>
+      <outputOverlay>findDoc_granite.findCircBWByName/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findDoc>

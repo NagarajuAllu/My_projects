@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.performValidationOnNVPairDependency">
+  <label>Perform Validation Of NV Pair Dependency</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="nvPairs" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="objectId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var dependencyNVPairNames = stcw.getNVPairsDependenciesForOrderTypeAndServiceType(orderType, serviceType);
+
+    var validationErrors = null;
+
+    if(dependencyNVPairNames != null) {
+        var foundSource = false;
+        var foundDependent = false;
+
+        for(var i=0; i<dependencyNVPairNames.length; i++) {
+            foundSource    = false;
+            foundDependent = false;
+
+            for(var j=0; j<nvPairs.length && !foundSource; j++) {
+                if(nvPairs[j][0].name == dependencyNVPairNames[i].sourceNVPair) {
+                    // found the nvPair
+                    if(nvPairs[j][0].value != null && nvPairs[j][0].value.trim() == dependencyNVPairNames[i].sourceNVPairValue) {
+                        // same value so the source conditions are respected...
+                        foundSource = true;
+                    }
+                }
+            }
+
+            if(foundSource) {
+                foundDependent = false;
+
+                // searching the dependent NV Pair
+                for(var j=0; j<nvPairs.length && !foundDependent; j++) {
+                    if(nvPairs[j][0].name == dependencyNVPairNames[i].dependNVPair) {
+                        // found the dependent nvPair
+                        if(nvPairs[j][0].value != null && nvPairs[j][0].value.trim().length > 0) {
+                            foundDependent = true;
+                        }
+                    }
+                }
+
+                if(!foundDependent) {
+                    if(validationErrors == null) {
+                        validationErrors = new Array();
+                    }
+
+                    // AE0182: The dependent NV Pair {0} is missing in the lineItem or has null value even if it is configured as mandatory for the received orderType {1}, serviceType {2}, source NV Pair {3} and source NV Pair value {4} received
+                    validationErrors.push("AE0182");
+                    validationErrors.push(Global.translateText("AE0182", null, [dependencyNVPairNames[i].dependNVPair, orderType, serviceType, dependencyNVPairNames[i].sourceNVPair, dependencyNVPairNames[i].sourceNVPairValue]));
+                }
+            }
+        }
+    }
+
+    if(validationErrors != null) {
+    debugPrintln(stcc.getSysdateForLog() + " performValidationOnNVPairDependency (" + objectId + "): Found errors [" + validationErrors + "]");
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, objectId, failureArray, isSubmit);
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

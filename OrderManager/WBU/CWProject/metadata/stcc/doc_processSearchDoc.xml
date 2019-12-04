@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="6e1707d355f72358e7835d627174665a" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcc.processSearchDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0e8ff532-9053-c310-226a-de55adc09fb1}</guid>
+  <label>Process Search Doc</label>
+  <metaVersion>3</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="orderId" type="leaf">
+      <guid>{0dfa2588-7af8-076b-87ca-9e674e9de4ee}</guid>
+      <label>Order ID</label>
+      <propertyElement type="elref">
+        <label>Order ID</label>
+      </propertyElement>
+      <valueType>dtype_cwf_oe.OrderIdNonRef</valueType>
+    </variable>
+    <variable name="processTypeName" type="leaf">
+      <guid>{0b30c1c4-fa6a-8ae6-7049-f944e5ae5c17}</guid>
+      <label>Process Type Name</label>
+      <propertyElement type="elfld">
+        <label>Process Type Name</label>
+      </propertyElement>
+      <valueType>dtype_stcc.typeName</valueType>
+    </variable>
+    <variable name="PROCESS_ID" type="leaf">
+      <guid>{0f6619bc-4670-40f0-9744-98a20ae94bc4}</guid>
+      <label>Process Id (non ref)</label>
+      <propertyElement type="elfld">
+        <label>Process Id (non ref)</label>
+      </propertyElement>
+      <valueType>dtype_cwf_pm.PROCESS_ID</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcc.processSearchDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="processSearchDocGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="processSearchDocGrid" type="elgrd">
+                    <colWidths>160</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>160px</width>
+                    <elementList>
+                      <element name="processSearchDocHeader" type="elhdr">
+                        <label>Process Search Doc</label>
+                      </element>
+                      <element name="orderId" type="elref">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcc.processSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcc.processSearchDoc/leaf_orderId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="processTypeName" type="eltxtArea">
+                        <height>80px</height>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcc.processSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcc.processSearchDoc/leaf_processTypeName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>100%</width>
+                      </element>
+                      <element name="PROCESS_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcc.processSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcc.processSearchDoc/leaf_PROCESS_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

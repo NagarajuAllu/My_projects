@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="failedOrders.getBlockedTasksByRejectTask">
+  <label>Get Blocked Tasks By Reject Task</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="selectedTask" type="rifp">
+      <type>doc_granite.WO_TASK_INST</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var blockedTasks = null;
+
+    if(selectedTask.TASK_OPERATION == "REJECT_FTTH_ORDER" && selectedTask.STATUS_CODE == 4) {
+        // get task blocked by this one
+        var blockedTaskIds = granite.getBlockedTaskIdsForDependency(selectedTask.WO_INST_ID, selectedTask.TASK_INST_ID);
+
+        if(blockedTaskIds != null) {
+            blockedTasks = new Array();
+            for(var i=0; i<blockedTaskIds.size; i++) {
+                blockedTasks.push(Document.readDoc("granite.WO_TASK_INST", blockedTaskIds[i]));
+            }
+        }
+    }
+
+    return blockedTasks;
+  ]]></script>
+</script>

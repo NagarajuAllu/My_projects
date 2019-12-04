@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="94a1a14960df1c86d502a7d33b867046" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.getStatusInGraniteForWO">
+  <label>Get Status In Granite For WO</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="woName" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_granite.WO_NAME</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = -1;
+
+    if (woName != null) {
+
+       var input = new Document("granite:search_WOName");
+       input.WO_NAME = woName;
+
+       var output = Finder.runFinder("granite:findWOinGraniteByWOName", "select", input);
+
+       if (output != null && output.size > 0) {
+          result = output[0].STATUS;
+       }
+    }
+
+    return result;
+  ]]></script>
+</script>

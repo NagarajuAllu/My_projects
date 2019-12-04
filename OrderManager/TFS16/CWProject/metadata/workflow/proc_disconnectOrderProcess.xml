@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="workflow.disconnectOrderProcess">
+  <activity name="startDisconnectProcess" type="seqActivity">
+    <label>Start Disconnect Process</label>
+    <x>85.43387</x>
+    <y>29.9999</y>
+    <childList>
+      <child name="disconnectOrderProcessPreSteps" type="scriptActivity">
+        <label>Disconnect Order Process PreSteps</label>
+        <x>142.65164</x>
+        <y>124.76074</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              // calculate TFR TOTAL attribute value
+              debugPrintln("Disconnect Order process presteps.");
+
+              debugPrintln("Disconnect Order presteps process done.");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="createAndSubmitDisconnectTFR" type="opActivity">
+        <element>iface_workflow.orderInitiatorTeamIF/oper_createAndSubmitDisconnectTFR</element>
+        <label>Create and submit Disconnect TFR</label>
+        <participant>part_workflow.installOrderInitiatorParticipant</participant>
+        <x>142.64578</x>
+        <y>265.56543</y>
+      </child>
+      <child name="submitDisconnectTFR" type="opActivity">
+        <element>iface_workflow.orderInitiatorTeamIF/oper_submitDisconnectTFR</element>
+        <label>Submit disconnect TFR</label>
+        <participant>part_workflow.installOrderInitiatorParticipant</participant>
+        <x>135.70508</x>
+        <y>547.1748</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <system>true</system>
+            <script><![CDATA[
+              this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("SUBMIT", "TFR");
+              this.process.processOrder.save();
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="startFacilityDesignTeamActivities" type="seqActivity">
+        <label>Start Facility Design team activities</label>
+        <x>141.44356</x>
+        <y>673.2783</y>
+        <childList>
+          <child name="isXCRequired" type="opActivity">
+            <element>iface_workflow.facilityDesignTeamIF/oper_prepareToCompleteNI</element>
+            <label>Is XC Required?</label>
+            <participant>part_workflow.facilityDesignTeamParticipant</participant>
+            <x>104.8291</x>
+            <y>773.91974</y>
+          </child>
+          <child name="checkIfXCSupportIsRequired" type="choiceActivity">
+            <label>Check If XC Support Is Required</label>
+            <x>30.0</x>
+            <y>892.67267</y>
+            <childList>
+              <child name="noXCRequired" type="opActivity">
+                <element>iface_workflow.facilityDesignTeamIF/oper_xcNotRequired</element>
+                <label>No XC required</label>
+                <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                <x>78.62598</x>
+                <y>1269.6404</y>
+                <methodList>
+                  <method name="cwOnProcActAfter" type="action">
+                    <category>script</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("NO CROSS-CONNECTION REQUIRED", "TFR");
+                      this.process.processOrder.save();
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="xcRequired" type="opActivity">
+                <element>iface_workflow.facilityDesignTeamIF/oper_xcRequired</element>
+                <label>XC required</label>
+                <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                <x>142.37598</x>
+                <y>1056.1267</y>
+                <childList>
+                  <child name="startXCTeamActivities" type="seqActivity">
+                    <label>Start XC team activities</label>
+                    <x>138.24667</x>
+                    <y>1167.5289</y>
+                    <childList>
+                      <child name="performXC" type="opActivity">
+                        <element>iface_workflow.xcTeamIF/oper_performXCToDisconnect</element>
+                        <label>Perform Cross-Connection</label>
+                        <participant>part_workflow.xcTeamParticipant</participant>
+                        <x>215.8461</x>
+                        <y>1262.2898</y>
+                      </child>
+                      <child name="xcPerformedSuccessfully" type="opActivity">
+                        <element>iface_workflow.xcTeamIF/oper_performedXCSuccessfully</element>
+                        <label>XC performed succesfully</label>
+                        <participant>part_workflow.xcTeamParticipant</participant>
+                        <x>228.63208</x>
+                        <y>1499.7957</y>
+                        <methodList>
+                          <method name="cwOnProcActAfter" type="action">
+                            <category>script</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("XC COMPLETED", "TFR");
+                              this.process.processOrder.save();
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="loadTasksForIntermediateSites" type="opActivity">
+                        <element>iface_workflow.xcTeamIF/oper_loadIntermediateSitesTasks</element>
+                        <label>Load tasks for Intermediate sites</label>
+                        <participant>part_workflow.xcTeamParticipant</participant>
+                        <x>197.11671</x>
+                        <y>1625.8992</y>
+                      </child>
+                      <child name="tasksLoaded" type="opActivity">
+                        <element>iface_workflow.xcTeamIF/oper_intermediateSitesTasksLoaded</element>
+                        <label>Tasks loaded</label>
+                        <participant>part_workflow.xcTeamParticipant</participant>
+                        <x>171.88437</x>
+                        <y>1766.7039</y>
+                        <methodList>
+                          <method name="cwOnProcActAfter" type="action">
+                            <category>script</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("LOADED INTERMEDIATE SITE TASKS", "TFR");
+                              this.process.processOrder.save();
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActAfter" type="action">
+                    <category>script</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("CROSS-CONNECTION REQUIRED", "TFR");
+                      this.process.processOrder.save();
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="startQualityTeamManagement" type="seqActivity">
+        <label>Start Quality Team Management</label>
+        <x>118.766556</x>
+        <y>1878.1062</y>
+        <childList>
+          <child name="loadA_ZSiteTasks" type="scriptActivity">
+            <label>Load A &amp; Z Site Tasks</label>
+            <x>124.76149</x>
+            <y>1972.8672</y>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[
+                  workflow.createTaskForSite(this.process.processOrder, true);
+                  workflow.createTaskForSite(this.process.processOrder, false);
+                  workflow.createEnd2EndTask(this.process.processOrder);
+
+                  this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("LOADED A & Z SITE TASKS", "TFR");
+                  this.process.processOrder.save();
+
+                  this.process.processDocument.tasksStarted = 0;
+                  this.process.processDocument.tasksCompleted = 0;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="allTasksStarted" type="switchActivity">
+            <label>All Tasks Started?</label>
+            <x>130.43434</x>
+            <y>2084.2695</y>
+            <childList>
+              <child name="no" type="caseActivity">
+                <label>No</label>
+                <x>1566.0</x>
+                <y>1992.0</y>
+                <childList>
+                  <child name="startNthTaskManagement" type="seqActivity">
+                    <label>Start N-th Task Management</label>
+                    <x>122.55066</x>
+                    <y>2211.642</y>
+                    <childList>
+                      <child name="processTask" type="scriptActivity">
+                        <label>Process Task</label>
+                        <x>129.15027</x>
+                        <y>2307.373</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Starting workflow for Task  # " + (this.process.processDocument.tasksStarted + 1));
+
+                              if(!this.process.processOrder.tasks[this.process.processDocument.tasksStarted].tfrTask.isEnd2End) {
+                                  var childElementId = this.process.processOrder.tasks[this.process.processDocument.tasksStarted].tfrTask.id;
+                                  this.process.processOrder.tasks[this.process.processDocument.tasksStarted].tfrTask.parentProcessId = this.process.id;
+                                  this.process.processOrder.save();
+
+                                  var processId = Process.startProcess("workflow:taskManagementProcess", this.process.processOrder.id, childElementId);
+
+                                  debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Started workflow for Task #"  + (this.process.processDocument.tasksStarted + 1) + "; elementId = " +  childElementId + "; processId = " + processId);
+                              }
+                              else {
+                                  debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Doesn't started workflow for Task #"  + (this.process.processDocument.tasksStarted + 1) + " because it's an End2End task");
+                              }
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="repeatTaskManagement" type="repeatActivity">
+                        <element>proc_workflow.disconnectOrderProcess/seqActivity_startDisconnectProcess/seqActivity_startQualityTeamManagement/switchActivity_allTasksStarted</element>
+                        <label>Repeat Task Management</label>
+                        <x>70.71799</x>
+                        <y>2433.7754</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              this.process.processDocument.tasksStarted++;
+
+                              return;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActCond" type="action">
+                    <category>cond</category>
+                    <system>true</system>
+                    <script><![CDATA[return (this.process.processDocument.tasksStarted < this.process.processOrder.tasks.length);]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="yes" type="caseActivity">
+                <label>Yes</label>
+                <x>236.85828</x>
+                <y>2210.6719</y>
+              </child>
+            </childList>
+          </child>
+          <child name="allTasksCompleted" type="switchActivity">
+            <label>All Tasks Completed?</label>
+            <x>220.49792</x>
+            <y>2307.373</y>
+            <childList>
+              <child name="no" type="caseActivity">
+                <label>No</label>
+                <x>1566.0</x>
+                <y>1992.0</y>
+                <childList>
+                  <child name="start" type="seqActivity">
+                    <label>Start</label>
+                    <x>218.2987</x>
+                    <y>2450.8271</y>
+                    <childList>
+                      <child name="waitForTaskManagementCompletion" type="syncActivity">
+                        <element>signal_workflow.wakeUpParentForTaskProcess</element>
+                        <label>Wait For Task Management Completion</label>
+                        <x>205.27722</x>
+                        <y>2559.879</y>
+                        <methodList>
+                          <method name="cwOnProcActAfter" type="action">
+                            <category>script</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Received wakeup from workflow for Task #"  + (this.process.processDocument.tasksCompleted + 1));
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="repeatTaskManagement" type="repeatActivity">
+                        <element>proc_workflow.disconnectOrderProcess/seqActivity_startDisconnectProcess/seqActivity_startQualityTeamManagement/switchActivity_allTasksCompleted</element>
+                        <label>Repeat Task Management</label>
+                        <x>169.76648</x>
+                        <y>2700.6836</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              this.process.processDocument.tasksCompleted++;
+
+                              return;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActCond" type="action">
+                    <category>cond</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      return (this.process.processDocument.tasksCompleted < (this.process.processOrder.tasks.length - 1)); // now there is the End2End task that doesn't have a workflow
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="yes" type="caseActivity">
+                <label>Yes</label>
+                <x>332.9989</x>
+                <y>2448.4766</y>
+              </child>
+            </childList>
+          </child>
+          <child name="completeEnd2EndTask" type="scriptActivity">
+            <label>Complete End2End Task</label>
+            <x>323.3202</x>
+            <y>2567.2295</y>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[
+                  if(this.process.processOrder.tasks != null) {
+                      for(var i=0; i<this.process.processOrder.tasks.length; i++) {
+                          if(this.process.processOrder.tasks[i].tfrTask.isEnd2End) {
+                              this.process.processOrder.tasks[i].tfrTask.acceptDate = new Date();
+                              this.process.processOrder.tasks[i].tfrTask.status = configuration.getExternalNameForStatusByInternalName("ACCEPTED", "TFR_TASK");
+                              this.process.processOrder.tasks[i].tfrTask.save();
+                              this.process.processOrder.save();
+                              debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Completed End2End task #");
+                          }
+                      }
+                      this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("FA COMPLETED", "TFR");
+                      this.process.processOrder.tfrDocument.faCompletionDate = new Date();
+                      this.process.processOrder.save();
+                  }
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              this.process.processOrder.tfrDocument.currentUserId=null;
+              this.process.processOrder.save();
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="startReviewCWOReport" type="seqActivity">
+        <label>Start Review CWO Report</label>
+        <x>312.72626</x>
+        <y>2716.3545</y>
+        <childList>
+          <child name="isDisconnectStartedFromRehome" type="switchActivity">
+            <label>Is Disconnect started from Rehome?</label>
+            <x>319.31824</x>
+            <y>2826.787</y>
+            <childList>
+              <child name="yes" type="caseActivity">
+                <label>Yes</label>
+                <x>364.3556</x>
+                <y>2580.461</y>
+                <childList>
+                  <child name="disconnectProcessForRehomeFinalization" type="seqActivity">
+                    <label>Disconnect Process For Rehome Finalization</label>
+                    <x>373.58655</x>
+                    <y>2982.2927</y>
+                    <childList>
+                      <child name="completeDisconnectForRehome" type="scriptActivity">
+                        <label>Complete Disconnect For Rehome</label>
+                        <x>365.90588</x>
+                        <y>3088.815</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              // notify parent process about completion
+                              this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("COMPLETED", "TFR");
+                              this.process.processOrder.tfrDocument.currentUserId = null;
+                              this.process.processOrder.tfrDocument.currentUserDepartment = null;
+                              this.process.processOrder.save();
+
+                              if( this.process.processOrder.tfrDocument.parentProcId ){
+                                  Process.sendSignal("workflow:tfrDisconnected", this.process.processOrder.tfrDocument.parentProcId);
+                              }
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="end" type="completeActivity">
+                        <label>End</label>
+                        <x>379.58655</x>
+                        <y>3244.3208</y>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActCond" type="action">
+                    <category>cond</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      // Complete flow in case it was started from Rehome process
+                      debugPrintln("Disconnect process: Checking if Disconnect started from Rehome...");
+                      debugPrintln("Disconnect process: Parent process id:"+this.process.processOrder.tfrDocument.parentProcId);
+
+                      if(this.process.processOrder.tfrDocument.parentProcId){
+                          var parentProcInfo = Process.getProcessInfo(this.process.processOrder.tfrDocument.parentProcId);
+                          var REHOME_PROCESS_NAME = "workflow.rehomingOrderProcess";
+                          debugPrintln("Disconnect process: parent process type:"+parentProcInfo.metadataTypeName);
+
+                          if( parentProcInfo.metadataTypeName == REHOME_PROCESS_NAME ){
+                              debugPrintln("Disconnect process: Skipped 'Review CWO Report' activity.");
+                              return true;
+                          }
+                      }
+
+                      return false;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="no" type="caseActivity">
+                <label>No</label>
+                <x>279.57092</x>
+                <y>2987.2034</y>
+              </child>
+            </childList>
+          </child>
+          <child name="startReleaseReservationInGranite" type="seqActivity">
+            <label>Start Release Reservation In Granite</label>
+            <x>268.6217</x>
+            <y>3108.8965</y>
+            <childList>
+              <child name="releaseReservationInGranite" type="opActivity">
+                <element>iface_workflow.verificationTeamIF/oper_releaseReservationInGranite</element>
+                <label>Release Reservation In Granite</label>
+                <participant>part_workflow.verificationTeamParticipant</participant>
+                <x>263.5553</x>
+                <y>3229.6196</y>
+              </child>
+              <child name="releasedReservationInGranite" type="opActivity">
+                <element>iface_workflow.verificationTeamIF/oper_releasedReservationInGranite</element>
+                <label>Released Reservation In Granite</label>
+                <participant>part_workflow.verificationTeamParticipant</participant>
+                <x>263.5553</x>
+                <y>3481.8267</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("RESERVATION RELEASED IN GRANITE", "TFR");
+                      this.process.processOrder.save();
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[
+                  workflow.overload_computeNextUser(this.process.processOrder.id, "0", this.process.id, "disconnectOrderProcess", "taskManagementCompleted");
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="startReviewCWOReportActivity" type="seqActivity">
+            <label>Start Review CWO Report Activity</label>
+            <x>259.29828</x>
+            <y>3607.9302</y>
+            <childList>
+              <child name="completeReview" type="scriptActivity">
+                <label>Complete Review</label>
+                <x>269.8922</x>
+                <y>3702.6912</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      // complete reconnect order and reset users
+                      if( this.process.processOrder.tfrDocument && this.process.processOrder.tfrDocument.tfrId){ // set status for TFR
+                          this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("COMPLETED", "TFR");
+                          this.process.processOrder.tfrDocument.currentUserId = null;
+                          this.process.processOrder.tfrDocument.currentUserDepartment = null;
+                      }
+                      if( this.process.processOrder.prnDocument && this.process.processOrder.prnDocument.prnId){ // set status for PRN
+                          this.process.processOrder.prnDocument.prnStatus = configuration.getExternalNameForStatusByInternalName("COMPLETED", "PRN");
+                          this.process.processOrder.prnDocument.currentUserId = null;
+                          this.process.processOrder.prnDocument.currentUserDepartment = null;
+                      }
+                      if( this.process.processOrder.prnrDocument && this.process.processOrder.prnrDocument.prnrId){ // set status for PRNR
+                          this.process.processOrder.prnrDocument.prnrStatus = configuration.getExternalNameForStatusByInternalName("COMPLETED", "PRNR");
+                          this.process.processOrder.prnrDocument.currentUserId = null;
+                          this.process.processOrder.prnrDocument.currentUserDepartment = null;
+                      }
+
+                      this.process.processOrder.save();
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+          <child name="end" type="completeActivity">
+            <label>End</label>
+            <x>279.57092</x>
+            <y>3814.0935</y>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[debugPrintln("rehomingOrderCompletionProcess: End.");]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="finishProcessOnStopException" type="onExceptionActivity">
+        <element>excp_cwf.stop</element>
+        <label>finishProcessOnStopException</label>
+        <x>284.42438</x>
+        <y>145.6713</y>
+        <childList>
+          <child name="finishProcessOnStopException" type="seqActivity">
+            <label>Finish Process On Stop Exception</label>
+            <x>25.751839</x>
+            <y>147.78262</y>
+            <childList>
+              <child name="disconnectStopPostSteps" type="scriptActivity">
+                <label>Disconnect Stop Post Steps</label>
+                <x>31.284454</x>
+                <y>272.91602</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      // if there is no Cancell Disconnect process running
+                      // set status of TFR to cancelled
+                      // else, proceed without changes
+                      var proc = workflow.findRunningProcessesByType(this.process.processOrder.id, "workflow.cancelDisconnectOrderProcess");
+
+                      if( proc.length < 1 ){
+                          this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("CANCELLED", "TFR");
+                          this.process.processOrder.tfrDocument.cancelledDate = new Date();
+
+                          // resetting users at the end of the workflow
+                          this.process.processOrder.tfrDocument.currentUserId = null;
+                          this.process.processOrder.tfrDocument.currentUserDepartment = null;
+
+                          this.process.processOrder.save();
+                      }
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="end" type="completeActivity">
+                <label>End</label>
+                <x>44.96512</x>
+                <y>428.42188</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[debugPrintln("Disconnect process stoped.");]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[debugPrintln("Finish Disconnect process on Stop exception...");]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="installOrderInitiatorParticipant" type="participantActivity">
+        <label>Install Order Initiator Participant</label>
+        <participant>part_workflow.installOrderInitiatorParticipant</participant>
+        <x>149.88965</x>
+        <y>406.37012</y>
+      </child>
+      <child name="facilityDesignTeamParticipant" type="participantActivity">
+        <label>Facility Design Team Participant</label>
+        <participant>part_workflow.facilityDesignTeamParticipant</participant>
+        <x>146.01953</x>
+        <y>885.3221</y>
+      </child>
+      <child name="xcTeamParticipant" type="participantActivity">
+        <label>XC Team Participant</label>
+        <participant>part_workflow.xcTeamParticipant</participant>
+        <x>146.70059</x>
+        <y>1388.3933</y>
+      </child>
+      <child name="verificationTeamParticipant" type="participantActivity">
+        <label>Verification Team Participant</label>
+        <participant>part_workflow.verificationTeamParticipant</participant>
+        <x>281.07092</x>
+        <y>3355.7231</y>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_workflow.disconnectOrderProcessDocument</document>
+  <label>Disconnect Order Process</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>User</type>
+</process>

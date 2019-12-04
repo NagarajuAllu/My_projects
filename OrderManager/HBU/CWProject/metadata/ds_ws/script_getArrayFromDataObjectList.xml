@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="256b65d525afcdfba8bcd14308d05ca1" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.getArrayFromDataObjectList">
+  <guid>{06533bb1-34b6-c95c-3cb1-d1883639aafb}</guid>
+  <label>Common Methods: Get Array From DataObjectList</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="dataObjectList" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var resultArray = null;
+    if(dataObjectList != null && dataObjectList.size > 0) {
+          resultArray = new Array();
+          var position = 0;
+          for (var i = 0; i < dataObjectList.size; i++){
+                resultArray[position++] = dataObjectList[i];
+          }
+    }
+    return resultArray;
+  ]]></script>
+</script>

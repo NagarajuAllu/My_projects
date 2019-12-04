@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="3a3abd16da0d2c23cc28681e17c249fa" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.performFullValidationOnFeasibilityOrder">
+  <label>Perform Full Validation On Feasibility Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderHeader" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="bundleContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(isSubmit) {
+        // check the correctness of the existance and of the status of the corresponding path in Granite
+        failureArray = ds_ws.performValidationOnGranitePathForFeasibilityOrder(orderHeader.feasibilityFor, bundleContainer.bundle.serviceNumber, bundleContainer.bundle.lineItemIdentifier, isSubmit, failureArray);
+    }
+
+
+    //check if it's an update and OM has already received an order for such reservation
+    if(!isSubmit) {
+        if(orderHeader.reservationNumber != null) {
+            // search all the bundle orders with the given reservation number
+            var orderList = ds_ws.getAllBundleOrdersByReservationNumber(orderHeader.reservationNumber);
+            var foundOrderWithReservation = false;
+            if(orderList != null) {
+                for(var i=0; i<orderList.length && !foundOrderWithReservation; i++) {
+                    var orderFound = Order.getOrderById(orderList[i].orderId);
+                    if(orderFound.orderHeader.orderType != 'F') {
+                        foundOrderWithReservation = true;
+
+                        var validationErrors = ["AE0094", Global.translateText("AE0094", null, orderFound.orderHeader.orderNumber)];
+                        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, orderHeader.orderNumber, failureArray, isSubmit);
+                    }
+                }
+            }
+        }
+    }
+    return failureArray;
+  ]]></script>
+</script>

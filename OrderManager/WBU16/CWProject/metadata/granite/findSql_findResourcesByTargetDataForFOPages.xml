@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="granite.findResourcesByTargetDataForFOPages">
+  <dbSchema>GRANITE</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_granite.resourceByTargetDataSearchDoc</input>
+  <label>Find Resources By TargetData For FO Pages</label>
+  <maxRowsLimit>500</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_granite.resourceDetailsForFO</output>
+  <type>SQL</type>
+  <volatility>0</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select ri.resource_inst_id, ri.parent_inst_id, ri.template_inst_id, ri.definition_inst_id, ri.name,
+               ri.category, ri.revision, ri.flags, ri.start_date, ri.end_date, ri.status, ri.ordered,
+               ri.sched_date, ri.due, ri.installed, ri.in_service, ri.decommission,
+               (select name
+                  from resource_definition_inst rdi
+                 where rdi.definition_inst_id = ri.definition_inst_id) definitionName,
+               (select attr_value
+                  from resource_attr_settings ras, val_attr_name van
+                 where van.attr_name = 'UPSTREAM_BW'
+                   and van.group_name = 'FTTH_HSI_ATTRIBUTES'
+                   and ras.val_attr_inst_id = van.val_attr_inst_id
+                   and ras.resource_inst_id = ri.resource_inst_id) upstreamBW,
+               (select attr_value
+                  from resource_attr_settings ras, val_attr_name van
+                 where van.attr_name = 'DOWNSTREAM_BW'
+                   and van.group_name = 'FTTH_HSI_ATTRIBUTES'
+                   and ras.val_attr_inst_id = van.val_attr_inst_id
+                   and ras.resource_inst_id = ri.resource_inst_id) downstreamBW,
+               (select attr_value
+                  from resource_attr_settings ras, val_attr_name van
+                 where van.attr_name = 'Change Request Type'
+                   and van.group_name = decode(ri.category, 'VOIP', 'FTTH_VOIP_ATTRIBUTES',
+                                                            'IPTV', 'FTTH_IPTV_ATTRIBUTES',
+                                                                    'FTTH_HSI_ATTRIBUTES')
+                   and ras.val_attr_inst_id = van.val_attr_inst_id
+                   and ras.resource_inst_id = ri.resource_inst_id) changeRequestType
+          from resource_inst ri
+         where ri.resource_inst_id in (select ra.resource_inst_id
+                                         from resource_associations ra
+                                        where 1 = 1
+                                    {[0]  and ra.target_inst_id = ?}
+                                    {[1]  and ra.target_type_id = ?})
+      ]]></script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>ui_com.conceptwave.system.UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_granite.resourceDetailsForFO/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_granite.resourceDetailsForFO</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findResourcesByTargetDataForFOPagesResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="RESOURCE_INST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_RESOURCE_INST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="PARENT_INST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_PARENT_INST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="TEMPLATE_INST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_TEMPLATE_INST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="DEFINITION_INST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_DEFINITION_INST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="NAME" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CATEGORY" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_CATEGORY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="REVISION" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_REVISION</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="FLAGS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_FLAGS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="START_DATE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_START_DATE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="END_DATE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_END_DATE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="STATUS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_STATUS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ORDERED" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_ORDERED</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="SCHED_DATE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_SCHED_DATE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="DUE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_DUE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="INSTALLED" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_INSTALLED</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="IN_SERVICE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_IN_SERVICE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="DECOMMISSION" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_DECOMMISSION</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RESOURCE_DEFINITION_NAME" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_RESOURCE_DEFINITION_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="UPSTREAM_BW" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_UPSTREAM_BW</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="DOWNSTREAM_BW" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_DOWNSTREAM_BW</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CHANGE_REQUEST_TYPE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.resourceDetailsForFO/leaf_CHANGE_REQUEST_TYPE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findResourcesLinkedToPathView" type="findVView">
+      <label>Find Resources Linked To Path</label>
+      <outputOverlay>findSql_granite.findResourcesByTargetDataForFOPages/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+    </view>
+  </viewList>
+</findSql>

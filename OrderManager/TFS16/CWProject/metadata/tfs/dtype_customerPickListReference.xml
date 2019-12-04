@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataType name="tfs.customerPickListReference">
+  <dbEnumTable>Customer</dbEnumTable>
+  <extends>dtype_cwf.cwDbEnum</extends>
+  <label>Customer Reference</label>
+  <length>100</length>
+  <metaVersion>4</metaVersion>
+  <methodList>
+    <method name="validatePickListValue" type="crule">
+      <message>Invalid value in enumeration</message>
+      <severity>error</severity>
+      <type>validator</type>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+      <script><![CDATA[return !(configuration.validateValueInPickList("Customer", itemData));]]></script>
+    </method>
+  </methodList>
+</dataType>

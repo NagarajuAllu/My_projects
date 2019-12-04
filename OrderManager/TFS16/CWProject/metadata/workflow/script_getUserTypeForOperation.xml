@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.getUserTypeForOperation">
+  <label>Get User Type For Operation</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="operation" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var userType = "";
+
+    if(operation.indexOf("asTeamIF") != -1){ // Access Solution team participant operations
+        userType = "AS";
+    }
+    else if(operation.indexOf("bbTransportDesignTeamIF") != -1){
+        userType = "BB_Transport_Design";
+    }
+    else if(operation.indexOf("biTeamIF") != -1){
+        userType = "BI";
+    }
+    else if(operation.indexOf("faTxTeamIF") != -1){
+        userType = "FA_Tx";
+    }
+    else if(operation.indexOf("facilityDesignTeamIF") != -1){
+        userType = "FacilityDesign";
+    }
+    else if(operation.indexOf("fniTeamIF") != -1){
+        userType = "FNI";
+    }
+    else if(operation.indexOf("integrationTeamIF") != -1){
+        userType = "Integration";
+    }
+    else if(operation.indexOf("networkDesignTeamIF") != -1){
+        userType = "NetworkDesign";
+    }
+    else if(operation.indexOf("qualityTeamIF") != -1){
+        userType = "Quality";
+    }
+    else if(operation.indexOf("siteTeamIF") != -1){
+        userType = "Site";
+    }
+    else if(operation.indexOf("switchActivationTeamIF") != -1){
+        userType = "SwitchActivation";
+    }
+    else if(operation.indexOf("tfaModSqTeamIF") != -1){
+        userType = "TFA_ModSquad";
+    }
+    else if(operation.indexOf("tfaTeamIF") != -1){
+        userType = "TFA";
+    }
+    else if(operation.indexOf("trasportMappingIF") != -1) {
+        userType = "Transport_Mapping";
+    }
+    else if(operation.indexOf("verificationTeamIF") != -1){
+        userType = "Verification";
+    }
+    else if(operation.indexOf("xcTeamIF") != -1){
+        userType = "XC";
+    }
+    else if(operation.indexOf("asBuiltTeamIF") != -1){
+        userType = "AsBuilt";
+    }
+    else {
+        userType = "OrderInitiator";
+    }
+    return userType;
+  ]]></script>
+</script>

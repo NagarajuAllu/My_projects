@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="8b820cee0a82496baa67f5a414880ecc" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="refTables.getSvcList">
+  <guid>{0c905d6d-776c-a7a0-f9bb-2b02fcff49d3}</guid>
+  <label>Get Service List</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="order_type" type="rifp">
+      <type>dtype_ds_ws.orderType</type>
+    </parameter>
+    <parameter name="ordArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var isServiceCorrect = true;
+
+    var ot = order_type;
+    //var sDoc = new Document("refTables:mopsOPNConfigTable");
+    //sDoc.orderType = ot;
+
+    //var result = Finder.runFinder("refTables:MOPS_OPN_CONFIG_TABLE_Finder","select",sDoc);
+    //for (var mopsConfig = result.start, serviceIndex = 0; mopsConfig != null && isSeqServiceCorrect; mopsConfig = mopsConfig.neext, serviceIndex++) {
+          //for (var orderIndex = 0; orderIndex < ordArray.length && isSeqServiceCorrect; orderIndex++) {
+                //isSeqServiceCorrect = (mopsConfig.serviceType == ordArray[orderIndex].serviceParametersList[serviceIndex].serviceParameters.serviceType);
+          //}
+    //}
+
+
+
+    for (var svcIndex = 0; svcIndex < ordArray[0].serviceParametersList.length && isServiceCorrect; svcIndex++) {
+                var sDoc = new Document("refTables:mopsOPNConfigTable");
+                sDoc.orderType = ot;
+                sDoc.serviceType = ordArray[0].serviceParametersList[svcIndex].serviceParameters.serviceType
+                var result = Finder.runFinder("refTables:MOPS_OPN_CONFIG_TABLE_Finder","select",sDoc);
+                if (result.size > 0)
+                      isServiceCorrect = true;
+                else
+                      isServiceCorrect = false;
+    }
+
+    return isServiceCorrect;
+  ]]></script>
+</script>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure name="wsws.ParentLineItem">
+  <container>true</container>
+  <extends>dstruct_wsws.CommonLineItemParameters</extends>
+  <label>ParentLineItem</label>
+  <metaVersion>21</metaVersion>
+  <childList>
+    <child name="ParentLineItemIdentifer" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>ParentLineItemIdentifer</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="ParentLineItemNameValueParameters" type="dstruct">
+      <container>true</container>
+      <label>ParentLineItemNameValueParameters</label>
+      <childList>
+        <child name="NameValue" type="dstruct">
+          <array>true</array>
+          <element>dstruct_wsws.nameValue</element>
+          <label>NameValue</label>
+          <maxInstance>999</maxInstance>
+        </child>
+      </childList>
+    </child>
+    <child name="ParentLineItemVASNVParameters" type="dstruct">
+      <container>true</container>
+      <label>ParentLineItemVASNVParameters</label>
+      <childList>
+        <child name="VASNameValue" type="dstruct">
+          <array>true</array>
+          <element>dstruct_wsws.VASNameValue</element>
+          <label>VASNameValue</label>
+          <maxInstance>999</maxInstance>
+        </child>
+      </childList>
+    </child>
+    <child name="ParentLineItemsBlockParameters" type="dstruct">
+      <container>true</container>
+      <label>ParentLineItemsBlockParameters</label>
+      <childList>
+        <child name="BlockNameValueParameter" type="dstruct">
+          <array>true</array>
+          <element>dstruct_wsws.BlockParameterNameValue</element>
+          <label>BlockNameValueParameter</label>
+          <maxInstance>999</maxInstance>
+        </child>
+      </childList>
+    </child>
+    <child name="SVCLineItems" type="dstruct">
+      <array>true</array>
+      <element>dstruct_wsws.ServiceLineItem</element>
+      <label>SVCLineItems</label>
+      <maxInstance>999</maxInstance>
+    </child>
+  </childList>
+</dataStructure>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.blockValue">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{d7988321-5c40-4c1d-b4ca-bd56b960ab35}</guid>
+  <label>Block Value</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_BLOCK_VALUE</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="parentDocId" type="leaf">
+      <column>PARENTDOCID</column>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BLOCK_VALUE</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="cwOrderId" type="leaf">
+      <column>CWORDERID</column>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BLOCK_VALUE</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="blockValue" type="leaf">
+      <column>BLOCKVALUE</column>
+      <propertyElement type="elfld">
+        <label>Value</label>
+      </propertyElement>
+      <table>STC_BLOCK_VALUE</table>
+      <valueType>dtype_ds_ws.string4000</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.blockValue</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="blockValue" type="elfld">
+                <label>Value</label>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>doc_ds_ws.blockValue/ui_UserInterface/uivar_model</variablePath>
+                    <variablePath>doc_ds_ws.blockValue/leaf_blockValue</variablePath>
+                  </variablePathList>
+                </variable>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

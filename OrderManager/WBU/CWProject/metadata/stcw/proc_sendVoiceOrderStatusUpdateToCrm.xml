@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process filenameHash="6f1254201112cd6068f1fa6df2d49ad0" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.sendVoiceOrderStatusUpdateToCrm">
+  <activity name="start" type="seqActivity">
+    <guid>{0fd84ddb-98ac-66f6-dbf8-b8c2ec6823a5}</guid>
+    <label>Start</label>
+    <x>231.61105</x>
+    <y>30.0</y>
+    <childList>
+      <child name="updateOrderStatusInCRM" type="scriptActivity">
+        <guid>{0a7cebc9-a7f5-36bc-4039-e02498bbe3ec}</guid>
+        <label>Update Order Status In CRM</label>
+        <x>448.75604</x>
+        <y>137.0</y>
+        <childList>
+          <child name="compensate" type="compensateActivity">
+            <compensatesList>
+              <compensates>6</compensates>
+            </compensatesList>
+            <guid>{07b297fd-39fc-7bba-cc33-dbbf3e89ae49}</guid>
+            <label>Compensate</label>
+            <x>185.0</x>
+            <y>221.0</y>
+            <childList>
+              <child name="retry" type="scriptActivity">
+                <guid>{03bd9bb8-6220-5e54-a7de-df6808646e56}</guid>
+                <label>Retry</label>
+                <x>505.11688</x>
+                <y>292.50586</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{0706c2c8-f234-cedb-8f61-3c0c4ec19fc6}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      debugPrintln(stcc.getSysdateForLog() + "[" + process.id + "] - Sending UpdateOrderStatus For Voice To EAI: Retrying ...");
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0813bc7e-91e8-3f10-5ce6-fe38cfcb62da}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              var debugHeader = "[" + this.process.id + "] - UpdateOrderStatus For Voice - ";
+
+              var processDocument = this.process.processDocument;
+              processDocument.exceptionType = null;
+
+              try {
+                    var processRequest_el = new DataStructure("siosu:processRequest_el");
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "processDocument = '" + processDocument.toXML() + "'");
+
+                          updateEAIRequestWithGraniteEvent_ (processRequest_el.Request, processDocument);
+
+                          // check payload size
+                          stcc.checkPayloadToCRMSize(processRequest_el, this.process.processDocument.interOperationName);
+
+                          // sending data to EAI
+                          var response = stcw.sendOrderUpdateToEAI(processRequest_el, this.process.id);
+
+                          if (response == null)
+                                processDocument.exceptionType = "Interface";
+                    }
+                    catch(exc) {
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "Catched Exception " + exc.message);
+                          processDocument.exceptionType = "Application";
+                    }
+
+
+
+                    //
+                    //  updateEAIRequestWithGraniteEvent_
+                    //
+                    function updateEAIRequestWithGraniteEvent_ (request, processDocument) {
+
+                          request.AssetNumber        = processDocument.assetNumber;
+                          request.AssetStatus        = processDocument.assetStatus;
+                          request.BusinessUnit       = processDocument.businessUnit;
+                          request.Comments           = processDocument.comments;
+                          request.NINumber           = processDocument.NINumber;
+                          request.OrderNumber        = processDocument.OrderNumber;
+                          request.SystemDesignation  = processDocument.systemDesignation;
+                          request.workOrderStatus    = processDocument.workOrderStatus;
+
+                    }            // u p d a t e E A I R e q  u e s t W i t h G r a n i t e E v e n t _
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="interfaceExcp" type="onExceptionActivity">
+        <element>excp_cwf_pm.interfaceExcp</element>
+        <guid>{08088a03-86e9-0343-c0ad-73cd5b4a3e31}</guid>
+        <label>External interface error</label>
+        <x>0.0</x>
+        <y>0.0</y>
+        <childList>
+          <child name="handleError" type="seqActivity">
+            <guid>{0de164ed-4db1-a517-098c-174bc808ecbc}</guid>
+            <label>Handle Error</label>
+            <x>190.50195</x>
+            <y>161.40234</y>
+            <childList>
+              <child name="handleInterfaceError" type="subflowActivity">
+                <element>proc_stcw.handleInterfaceError</element>
+                <guid>{0d528aa6-0983-ef42-1a2d-80e9645d4d18}</guid>
+                <label>Handle Interface Error</label>
+                <x>190.36621</x>
+                <y>277.8047</y>
+              </child>
+              <child name="rollbackIntfError" type="rollbackActivity">
+                <element>proc_stcw.sendVoiceOrderStatusUpdateToCrm/seqActivity_start/scriptActivity_updateOrderStatusInCRM</element>
+                <guid>{7d87c131-e4b5-4419-9f76-e9cc481fa066}</guid>
+                <label>rollbackIntfError</label>
+                <x>171.36719</x>
+                <y>418.60938</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      debugPrintln("Value read from the processDocument for compensate = " + rb);
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeIntfError" type="resumeActivity">
+                <guid>{03728463-2cd0-4d67-92f7-e5b4af36de78}</guid>
+                <label>resumeIntfError</label>
+                <x>172.03516</x>
+                <y>530.0117</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="unexpectedError" type="onExceptionActivity">
+        <guid>{064e1e59-3ab0-260f-be19-ceede26eb22e}</guid>
+        <label>Unexpected Error</label>
+        <x>0.0</x>
+        <y>0.0</y>
+        <childList>
+          <child name="handleError" type="seqActivity">
+            <guid>{020b2850-1651-4c87-c319-31da9fc926d3}</guid>
+            <label>Handle Error</label>
+            <x>51.472656</x>
+            <y>161.40234</y>
+            <childList>
+              <child name="handleApplicationError" type="subflowActivity">
+                <element>proc_stcw.handleApplicationError</element>
+                <guid>{0c78965c-0ccd-d0e7-1144-555f620e4234}</guid>
+                <label>Handle Application Error</label>
+                <x>45.323242</x>
+                <y>277.8047</y>
+              </child>
+              <child name="rollbackAppError" type="rollbackActivity">
+                <element>proc_stcw.sendVoiceOrderStatusUpdateToCrm/seqActivity_start/scriptActivity_updateOrderStatusInCRM</element>
+                <guid>{99381e55-b6cd-4799-aa09-16c6c278dee3}</guid>
+                <label>rollbackAppError</label>
+                <x>30.0</x>
+                <y>418.60938</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      debugPrintln("Value read from the processDocument for compensate = " + rb);
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeAppError" type="resumeActivity">
+                <guid>{414ff454-3325-4463-a5b8-c684b95a6e00}</guid>
+                <label>resumeAppError</label>
+                <x>30.667969</x>
+                <y>530.0117</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="applicationErrored" type="switchActivity">
+        <guid>{04ccde39-1d24-f5fc-9fcf-e464f306bb6c}</guid>
+        <label>Application Errored?</label>
+        <x>394.39615</x>
+        <y>285.15527</y>
+        <childList>
+          <child name="interfaceError" type="caseActivity">
+            <guid>{00863796-03bf-0153-28c0-cb3b3c81116d}</guid>
+            <label>Interface Error</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="interfaceExcp" type="exceptActivity">
+                <element>excp_cwf_pm.interfaceExcp</element>
+                <guid>{09a134c5-b52c-0efd-1cc5-c172ebb73175}</guid>
+                <label>External interface error</label>
+                <x>502.7793</x>
+                <y>403.9082</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{09a69eaf-5c38-dafb-8689-993b3904410d}</guid>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.exceptionType == "Interface");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="applicationError" type="caseActivity">
+            <guid>{06237523-3355-69ec-0c9a-a2161e180148}</guid>
+            <label>Application Error</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="applicationExcp" type="exceptActivity">
+                <element>excp_stcw.applicationError</element>
+                <guid>{017eedb6-8d8e-0f58-4845-3444448abdcb}</guid>
+                <label>Application error</label>
+                <x>394.39615</x>
+                <y>411.2588</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{09a69eaf-5c38-dafb-8689-993b3904410d}</guid>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.exceptionType == "Application");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{0af3d3c1-c02f-41e3-86bb-452f513d9048}</guid>
+            <label>No</label>
+            <x>138.0</x>
+            <y>357.0</y>
+            <childList>
+              <child name="done" type="scriptActivity">
+                <guid>{00a8028b-e4ab-db80-2cfe-749ece91ef55}</guid>
+                <label>Done</label>
+                <x>308.0586</x>
+                <y>418.60938</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0a729539-7f34-c0e3-6090-3ef447b49553}</guid>
+        <system>true</system>
+        <script><![CDATA[
+          var processDocument = this.process.processDocument;
+          processDocument.interfaceRetryCount = 0;
+          processDocument.interOperationName = "siosu:processRequest_PortType/processRequest";
+          this.process.processDocument.rollbackNumber = "6";
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_stcw.updateVoiceOrderStatusDocument</document>
+  <guid>{03d54268-b673-bbd4-46f4-76fb9905313b}</guid>
+  <highlight>32</highlight>
+  <label>Send Voice Order Status Update To CRM</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <revision>2</revision>
+  <type>User</type>
+</process>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="161d9e7d0550d4f46adfac239f87b913" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.isNameInStoreAndForwardNVPairList">
+  <label>Is Name In Store &amp; Forward NV Pair List</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="inputName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("ds_ws.search_NVPairName");
+    inputDoc.name = inputName;
+
+    var isInList = false;
+
+    var resultList = Finder.runFinder("ds_ws:findStoreAndForwardNVPair", "select", inputDoc);
+    if(resultList != null && resultList.length > 0) {
+        isInList = true;
+    }
+
+    return isInList;
+  ]]></script>
+</script>

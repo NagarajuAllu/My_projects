@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="1410cf4eb3d8ad219c9aa25d2997c60" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="wDashboards.countForOrderStatus">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0646b96d-f1dd-d527-1c62-212c05a3f8e2}</guid>
+  <label>Count For OrderStatus</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="totOrders" type="leaf">
+      <guid>{04e8260d-59e9-4eb1-acea-acfc2f319684}</guid>
+      <key>1</key>
+      <label>Tot. Orders</label>
+      <propertyElement type="elfld">
+        <label>Tot. Orders</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+    <variable name="completedOrders" type="leaf">
+      <guid>{0eeaca04-3414-f22e-2452-527286194609}</guid>
+      <label>Completed Orders</label>
+      <propertyElement type="elfld">
+        <label>Completed Orders</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+    <variable name="openOrders" type="leaf">
+      <guid>{05409602-a134-f05a-b7ab-43eec7255bb7}</guid>
+      <label>Open Orders</label>
+      <propertyElement type="elfld">
+        <label>Open Orders</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+    <variable name="rejectedOrders" type="leaf">
+      <guid>{03d71350-92d5-2377-24e9-e9fc20d59b0a}</guid>
+      <label>Rejected Orders</label>
+      <propertyElement type="elfld">
+        <label>Rejected Orders</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_wDashboards.countForOrderStatus</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="defaultGrid" type="elgrd">
+                    <colWidths>195,195,195,195</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>780px</width>
+                    <elementList>
+                      <element name="totOrders1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.countForOrderStatus/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.countForOrderStatus/leaf_totOrders</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="completedOrders1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.countForOrderStatus/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.countForOrderStatus/leaf_completedOrders</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="openOrders1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.countForOrderStatus/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.countForOrderStatus/leaf_openOrders</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="rejectedOrders1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.countForOrderStatus/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.countForOrderStatus/leaf_rejectedOrders</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

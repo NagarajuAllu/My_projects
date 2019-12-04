@@ -1,0 +1,32 @@
+Open Excel file from CRM (SIP BUNDLE SERVICE TO ICMS FROM CRMD v2.xslx) and add, into a new column, the following formula
+
+=CONCATENATE("insert into STC_SIP_CRM_DATA values ('";A2;"','";B2;"','";C2;"','";E2;"','";F2;"','";G2;"','";H2;"','";I2;"','";J2;"','";L2;"', 'N');")
+
+It generates the SQL statements to insert data into STC_SIP_CRM_DATA.
+
+
+
+
+=========================================
+
+2015-10-16
+They provided a different file
+
+columns are
+
+a CUSTOMER_NUMBER
+b ACCOUNT_NUMBER
+c BUNDLE_CIRCUIT_ID
+d        BUNDLE_PLATE_ID    <<<==== not used
+e BUNDLE_FICB#
+f PSIP_CIRCUIT_ID
+g PSIP_FICTITIOUS_SERVICE_NUMBER
+h CHILD_CIRCUIT_ID
+i CHILD_SERVICE_NUMBER
+j EQUIVALENT_NUMBER
+k        DIDDOD_CIRCUIT_ID  <<<==== not used
+l DIDDOD_FICTITIOUS_NUMBER
+
+=CONCATENATE("insert into STC_SIP_CRM_DATA values ('";A2;"','";B2;"','";C2;"','";E2;"','";F2;"','";G2;"','";H2;"','";I2;"','";J2;"','";L2;"', 'N');")
+
+

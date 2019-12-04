@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="granite.WORK_ORDER_INST">
+  <dbSchema>XNG PRODUCTION [USER:STC_TARGET2]</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{1d3d5aff-c4a0-4845-b3f8-bf37320b4bc4}</guid>
+  <label>Details: WorkOrder [XNG]</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="WO_INST_ID" type="leaf">
+      <column>WO_INST_ID</column>
+      <key>1</key>
+      <label>WO_INST_ID</label>
+      <mandatory>true</mandatory>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_granite.INST_ID</valueType>
+    </variable>
+    <variable name="WO_NAME" type="leaf">
+      <column>WO_NAME</column>
+      <label>WO_NAME</label>
+      <mandatory>true</mandatory>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_granite.WO_NAME</valueType>
+    </variable>
+    <variable name="ELEMENT_TYPE" type="leaf">
+      <column>ELEMENT_TYPE</column>
+      <label>ELEMENT_TYPE</label>
+      <mandatory>true</mandatory>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_granite.ELEMENT_TYPE</valueType>
+    </variable>
+    <variable name="ELEMENT_INST_ID" type="leaf">
+      <column>ELEMENT_INST_ID</column>
+      <label>ELEMENT_INST_ID</label>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_granite.INST_ID</valueType>
+    </variable>
+    <variable name="ELEMENT_NAME" type="leaf">
+      <column>ELEMENT_NAME</column>
+      <label>ELEMENT_NAME</label>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_granite.ELEMENT_NAME</valueType>
+    </variable>
+    <variable name="ELM_COMPL_STATUS" type="leaf">
+      <column>ELM_COMPL_STATUS</column>
+      <label>ELM_COMPL_STATUS</label>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_granite.ELM_COMPL_STATUS</valueType>
+    </variable>
+    <variable name="DESCRIPTION" type="leaf">
+      <column>DESCRIPTION</column>
+      <label>DESCRIPTION</label>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_granite.DESCRIPTION</valueType>
+    </variable>
+    <variable name="NBR_TASKS" type="leaf">
+      <column>NBR_TASKS</column>
+      <label>NBR_TASKS</label>
+      <mandatory>true</mandatory>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_granite.NBR_TASKS</valueType>
+    </variable>
+    <variable name="STATUS" type="leaf">
+      <column>STATUS</column>
+      <label>STATUS</label>
+      <mandatory>true</mandatory>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_granite.STATUS</valueType>
+    </variable>
+    <variable name="START_AFTER" type="leaf">
+      <column>START_AFTER</column>
+      <label>START_AFTER</label>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_com.conceptwave.system.Timestamp</valueType>
+    </variable>
+    <variable name="COMPLETE_BY" type="leaf">
+      <column>COMPLETE_BY</column>
+      <label>COMPLETE_BY</label>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_com.conceptwave.system.Timestamp</valueType>
+    </variable>
+    <variable name="ACTUAL_START" type="leaf">
+      <column>ACTUAL_START</column>
+      <label>ACTUAL_START</label>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_com.conceptwave.system.Timestamp</valueType>
+    </variable>
+    <variable name="ACTUAL_COMPL" type="leaf">
+      <column>ACTUAL_COMPL</column>
+      <label>ACTUAL_COMPL</label>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_com.conceptwave.system.Timestamp</valueType>
+    </variable>
+    <variable name="COMMENTS" type="leaf">
+      <column>COMMENTS</column>
+      <label>COMMENTS</label>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_granite.WO_COMMENTS</valueType>
+    </variable>
+    <variable name="PROBLEM_DESC" type="leaf">
+      <column>PROBLEM_DESC</column>
+      <label>PROBLEM_DESC</label>
+      <table>WORK_ORDER_INST</table>
+      <valueType>dtype_granite.PROBLEM_DESC</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_granite.WORK_ORDER_INST</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

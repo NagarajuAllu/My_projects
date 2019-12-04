@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="migrationSTC.findOrdersWithStatusNotInSynch">
+  <dbSchema>XNG PRODUCTION [USER:STC_TARGET2]</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_migrationSTC.searchExpediterSchema</input>
+  <label>Find &quot;Expediter Orders&quot; With Status Not In Synch</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>21</metaVersion>
+  <output>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU</output>
+  <type>SQL</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <volatility>0</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select distinct a.*
+        from stc_granite_data_for_hbu a, {[0,E] ?.stc_order_message_home o}
+         where (a.circuit_status <> o.circuitstatus or a.order_status <> o.orderstatus)
+           and a.order_number = o.ordernumber
+           and upper(o.orderstatus) NOT IN ('COMPLETED', 'CANCELLED')
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script>return this.enabled;</script>
+    </method>
+    <method name="cwOnInitSearch" type="uimthd">
+      <script><![CDATA[searchData.ExpediterSchema = Global.getConfigVariable("ExpediterSchema","cwh");]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findSql_migrationSTC.findOrdersWithStatusNotInSynch</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/ui_UserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_migrationSTC.searchExpediterSchema/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext">
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="_genForm_" type="vform">
+            <label>_genForm_</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="CIRC_PATH_INST_ID" type="elfld">
+                  <label>CIRC_PATH_INST_ID</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CIRC_PATH_INST_ID</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>117px</width>
+                </element>
+                <element name="CIRCUIT_NUMBER" type="elfld">
+                  <label>CIRCUIT_NUMBER</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CIRCUIT_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>720px</width>
+                </element>
+                <element name="CIRCUIT_STATUS" type="elfld">
+                  <label>CIRCUIT_STATUS</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CIRCUIT_STATUS</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="CUSTOMER" type="elfld">
+                  <label>CUSTOMER</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CUSTOMER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>360px</width>
+                </element>
+                <element name="CUSTOMER_NAME" type="elfld">
+                  <label>CUSTOMER_NAME</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CUSTOMER_NAME</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>432px</width>
+                </element>
+                <element name="CUSTOMER_NUMBER" type="elfld">
+                  <label>CUSTOMER_NUMBER</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CUSTOMER_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>360px</width>
+                </element>
+                <element name="ACCOUNT_NUMBER" type="elfld">
+                  <label>ACCOUNT_NUMBER</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ACCOUNT_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>22320px</width>
+                </element>
+                <element name="ICMS_SO_NUMBER" type="elfld">
+                  <label>ICMS_SO_NUMBER</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ICMS_SO_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>22320px</width>
+                </element>
+                <element name="ORDER_DOMAIN" type="elfld">
+                  <label>ORDER_DOMAIN</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ORDER_DOMAIN</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>112px</width>
+                </element>
+                <element name="ORDER_NUMBER" type="elfld">
+                  <label>ORDER_NUMBER</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ORDER_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="ORDER_TYPE" type="elslct">
+                  <label>ORDER_TYPE</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ORDER_TYPE</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>174px</width>
+                </element>
+                <element name="ORDER_STATUS" type="elfld">
+                  <label>ORDER_STATUS</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ORDER_STATUS</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="NBR_TASKS" type="elfld">
+                  <label>NBR_TASKS</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_NBR_TASKS</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>109px</width>
+                </element>
+                <element name="PROJECT_ID" type="elfld">
+                  <label>PROJECT_ID</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_PROJECT_ID</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>360px</width>
+                </element>
+                <element name="CCT_TYPE" type="elfld">
+                  <label>CCT_TYPE</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CCT_TYPE</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>216px</width>
+                </element>
+                <element name="SERVICE_DATE" type="elfld">
+                  <label>SERVICE_DATE</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_SERVICE_DATE</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>112px</width>
+                </element>
+                <element name="SERVICE_TYPE" type="elfld">
+                  <label>SERVICE_TYPE</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_SERVICE_TYPE</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>1836px</width>
+                </element>
+                <element name="PLATE_ID" type="elfld">
+                  <label>PLATE_ID</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_PLATE_ID</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>720px</width>
+                </element>
+                <element name="CREATED_BY" type="elfld">
+                  <label>CREATED_BY</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CREATED_BY</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>22320px</width>
+                </element>
+                <element name="DOMAIN_NAME" type="elfld">
+                  <label>DOMAIN_NAME</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_DOMAIN_NAME</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>216px</width>
+                </element>
+                <element name="ORDER_ROW_ITEM_ID" type="elfld">
+                  <label>ORDER_ROW_ITEM_ID</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ORDER_ROW_ITEM_ID</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>117px</width>
+                </element>
+                <element name="PARENT_ORDER_NUMBER" type="elfld">
+                  <label>PARENT_ORDER_NUMBER</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_PARENT_ORDER_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>22320px</width>
+                </element>
+                <element name="SUBMITTED_DATE_YEAR" type="elfld">
+                  <label>SUBMITTED_DATE_YEAR</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_SUBMITTED_DATE_YEAR</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>119px</width>
+                </element>
+                <element name="SERVICE_NUMBER" type="elfld">
+                  <label>SERVICE_NUMBER</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_SERVICE_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>360px</width>
+                </element>
+                <element name="TASK_NAME" type="elfld">
+                  <label>TASK_NAME</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_TASK_NAME</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>432px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+          </overlay>
+          <overlay name="readOnly" type="vform">
+            <label>readOnly</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="PARENT_ORDER_NUMBER" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_PARENT_ORDER_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="ORDER_NUMBER" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ORDER_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="ORDER_STATUS" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ORDER_STATUS</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="ORDER_TYPE" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ORDER_TYPE</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="SUBMITTED_DATE_YEAR" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_SUBMITTED_DATE_YEAR</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="SERVICE_TYPE" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_SERVICE_TYPE</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="SERVICE_NUMBER" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_SERVICE_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CIRCUIT_NUMBER" type="ellab">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CIRCUIT_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>360px</width>
+                </element>
+                <element name="CIRCUIT_STATUS" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CIRCUIT_STATUS</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="PLATE_ID" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_PLATE_ID</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CUSTOMER" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CUSTOMER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CUSTOMER_NAME" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CUSTOMER_NAME</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>432px</width>
+                </element>
+                <element name="CUSTOMER_NUMBER" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CUSTOMER_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="ACCOUNT_NUMBER" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ACCOUNT_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="ICMS_SO_NUMBER" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ICMS_SO_NUMBER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="DOMAIN_NAME" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_DOMAIN_NAME</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="SERVICE_DATE" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_SERVICE_DATE</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CCT_TYPE" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CCT_TYPE</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CREATED_BY" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_CREATED_BY</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="PROJECT_ID" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_PROJECT_ID</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="NBR_TASKS" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_NBR_TASKS</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="ORDER_DOMAIN" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_ORDER_DOMAIN</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>102px</width>
+                </element>
+                <element name="TASK_NAME" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_migrationSTC.STC_GRANITE_DATA_FOR_HBU/leaf_TASK_NAME</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="ReferenceForm" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_ReferenceForm</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_ReferenceForm</extends>
+            <label>ReferenceForm</label>
+            <overrideList>
+              <override name="topStack" type="elsectnstck">
+                <height>100%</height>
+                <visibilityMode>multiple</visibilityMode>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_model</variablePath>
+                    <variablePath>find_com.conceptwave.system.Finder/permMethod_visiblePerm</variablePath>
+                  </variablePathList>
+                </visible>
+                <width>100%</width>
+                <elementList>
+                  <element name="topSection" type="elsect">
+                    <header type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_header</variablePath>
+                      </variablePathList>
+                    </header>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                      </variablePathList>
+                    </visible>
+                    <elementList>
+                      <element name="finderHeader" type="elsecth">
+                        <label>Finder</label>
+                        <elementList>
+                          <element name="back" type="elmnu">
+                            <clickMethod type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_hideDetailAction</variablePath>
+                              </variablePathList>
+                            </clickMethod>
+                            <icon>/cwfv/nav_left_blue.png</icon>
+                            <tooltip>Back to results</tooltip>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                          <element name="pref" type="elmnu">
+                            <icon>/cwt/images/16/preferences.png</icon>
+                            <showMenuDropDown>true</showMenuDropDown>
+                            <elementList>
+                              <element name="toggleMenu" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_toggleSearchAction</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwfv/funnel.png</icon>
+                                <label>Show/hide search</label>
+                                <tooltip>Show/hide search</tooltip>
+                                <visible type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_toggleVisible</variablePath>
+                                  </variablePathList>
+                                </visible>
+                              </element>
+                              <element name="openView" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_findCustomView</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwf/user_view.gif</icon>
+                                <label>Open Custom View</label>
+                              </element>
+                              <element name="addView" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_addCustomView</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwf/table_add.gif</icon>
+                                <label>Add Custom View</label>
+                              </element>
+                              <element name="Separator" type="elsep"/>
+                              <element name="Iterator" type="eliter">
+                                <variable type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_views</variablePath>
+                                  </variablePathList>
+                                </variable>
+                                <elementList>
+                                  <element name="viewItem" type="elmnu">
+                                    <clickMethod type="varPath">
+                                      <variablePathList>
+                                        <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_views</variablePath>
+                                        <variablePath>ui_com.conceptwave.system.FinderViewIteratedItem/uimthd_changeView</variablePath>
+                                      </variablePathList>
+                                    </clickMethod>
+                                    <label>a</label>
+                                    <variable type="varPath">
+                                      <variablePathList>
+                                        <variablePath>ui_com.conceptwave.system.FinderViewIteratedItem/leaf_view</variablePath>
+                                      </variablePathList>
+                                    </variable>
+                                  </element>
+                                </elementList>
+                              </element>
+                            </elementList>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="sStack" type="elsectnstck">
+                        <visible type="varPath">
+                          <variablePathList>
+                            <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_topSectionVisible</variablePath>
+                          </variablePathList>
+                        </visible>
+                        <width>100%</width>
+                        <elementList>
+                          <element name="detailSection" type="elsect">
+                            <formReference type="varPath">
+                              <variablePathList>
+                                <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_detail</variablePath>
+                                <variablePath>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</variablePath>
+                              </variablePathList>
+                            </formReference>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/uivar_detail</variablePath>
+                              </variablePathList>
+                            </variable>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                          <element name="searchFormSection" type="elsect">
+                            <formReference type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                              </variablePathList>
+                            </formReference>
+                            <onEnter type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_searchAction</variablePath>
+                              </variablePathList>
+                            </onEnter>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_search</variablePath>
+                              </variablePathList>
+                            </variable>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="resStack" type="elsectnstck">
+                        <height>100%</height>
+                        <visible type="varPath">
+                          <variablePathList>
+                            <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_resultVisible</variablePath>
+                          </variablePathList>
+                        </visible>
+                        <elementList>
+                          <element name="resSection" type="elsect">
+                            <onEnter type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_searchAction</variablePath>
+                              </variablePathList>
+                            </onEnter>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_resultVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                            <elementList>
+                              <element name="resultFrame" type="elovf">
+                                <formReference type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_resultForm</variablePath>
+                                  </variablePathList>
+                                </formReference>
+                              </element>
+                            </elementList>
+                          </element>
+                        </elementList>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="default" type="findVView">
+      <label>Find &quot;Expediter Orders&quot; With Status Not In Synch - Prod</label>
+      <outputOverlay>findSql_migrationSTC.findOrdersWithStatusNotInSynch/ui_UserInterface/frmui_Forms/vform__genForm_</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+    </view>
+  </viewList>
+</findSql>

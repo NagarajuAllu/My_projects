@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="664c6eb4364807456662e30fe66f6e57" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.STC_GRANITE_EVENT_STORAGE">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{d4e06608-821c-40bf-b652-e6f7055d6774}</guid>
+  <label>STC_GRANITE_EVENT_STORAGE</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="processId" type="leaf">
+      <column>PROCESSID</column>
+      <table>STC_GRANITE_EVENT_STORAGE</table>
+      <valueType>dtype_cwf.processId</valueType>
+    </variable>
+    <variable name="msgType" type="leaf">
+      <column>MSGTYPE</column>
+      <table>STC_GRANITE_EVENT_STORAGE</table>
+      <valueType>dtype_ds_ws.string10</valueType>
+    </variable>
+    <variable name="graniteMsg" type="leaf">
+      <column>GRANITEMSG</column>
+      <table>STC_GRANITE_EVENT_STORAGE</table>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_GRANITE_EVENT_STORAGE</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_processSTC.STC_GRANITE_EVENT_STORAGE</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

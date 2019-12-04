@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="crmToSOMMigration.migrateCRMChangeQuotes">
+  <label>Migrate CRM Change Quotes</label>
+  <metaVersion>25</metaVersion>
+  <script><![CDATA[
+    var debug = " migrateCRMChangeQuotes - ";
+    var quoteType = "C";
+    var countFound = 0;
+    var countTotalMigrated = 0;
+    var countMigratedWithValidationError = 0;
+    var countMigratedSuccessfully = 0;
+    var countMigratedFailed = 0;
+
+    var allORBOrderHeaders = crmToSOMMigration.getAllORBOrderHeaderByQuoteType(quoteType);
+
+    if(allORBOrderHeaders != null) {
+    debugPrintln(stcc.getSysdateForLog() + debug + "Change quotes to be migrated: " + allORBOrderHeaders.length);
+        countFound = allORBOrderHeaders.length;
+
+        for(var i=0; i<allORBOrderHeaders.length; i++) {
+    debugPrintln(stcc.getSysdateForLog() + debug + "Started quote #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + "; orderNumber = " + allORBOrderHeaders[i].orderNumber);
+
+            var crmQuote = null;
+
+            try {
+                crmQuote = Order.getOrderById(allORBOrderHeaders[i].orderId, false);
+            }
+            catch(exc) {
+                var errMsg = Global.translateText("AE0052", null, allORBOrderHeaders[i].orderId) + "; Exc message = " + exc.message;
+    debugPrintln(stcc.getSysdateForLog() + debug + "Failed Migration quote #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + "; Unexpected error: " + errMsg);
+
+                crmQuote = null;
+            }
+
+            if(crmQuote != null) {
+                var versionsInSequence = crmToSOMMigration.getVersionIDsInSequence(allORBOrderHeaders[i].orderId);
+
+                var previousOrder = null;
+                var currentOrder = null;
+                var versionHeader = null;
+
+                var quantity = ((crmQuote.header.quantity != null &&  crmQuote.header.quantity > 0) ? crmQuote.header.quantity : 1);
+
+                for(var j=0; j<versionsInSequence.length; j++) {
+                    versionHeader = Document.readDoc("stcw.versionHeader", versionsInSequence[j].cwDocID);
+                    if(j > 0) {
+                        previousOrder = currentOrder;
+                    }
+
+                    currentOrder = crmToSOMMigration.migrateVersionForQuote(crmQuote, versionHeader.versionName, j);
+                    countTotalMigrated++;
+
+                    if(currentOrder != null) {
+                        if(currentOrder.orderHeader.orderNumber != crmQuote.header.quoteNumber) {
+                            var errMsg = Global.translateText("AE0162", null, [crmQuote.header.quoteNumber, currentOrder.orderHeader.orderNumber]);
+    debugPrintln(stcc.getSysdateForLog() + debug + "Failed Migration quote #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + "; Unexpected error: " + errMsg);
+
+                            crmToSOMMigration.logMigrationRecord(false, allORBOrderHeaders[i].id, crmQuote.header.quoteNumber, quoteType, 2, errMsg);
+
+                            // discarding migrated order
+                            currentOrder = null;
+                            countMigratedFailed++;
+                        }
+                        else if(currentOrder.orderHeader.feasibilityFor != "CHANGE") {
+                            var errMsg = Global.translateText("AE0164", null, ["CHANGE", currentOrder.orderHeader.feasibilityFor]);
+    debugPrintln(stcc.getSysdateForLog() + debug + "Failed Migration quote #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + "; Unexpected error: " + errMsg);
+
+                            crmToSOMMigration.logMigrationRecord(false, allORBOrderHeaders[i].id, crmQuote.header.quoteNumber, quoteType, 2, errMsg);
+
+                            // discarding migrated order
+                            currentOrder = null;
+                            countMigratedFailed++;
+                        }
+                        else {
+                            var searchDoc = new Document("stcw.search_bundleOrder");
+                            searchDoc.orderNumber = currentOrder.orderHeader.orderNumber;
+                            searchDoc.isMigrated  = true;
+                            var orderListFound = Finder.runFinder("stcw.findAllSTCBundleOrders_Script", "select", searchDoc);
+                            if(orderListFound != null && orderListFound.length > 0) {
+                                if(orderListFound[0].id != currentOrder.id) {
+                                    if(previousOrder == null || previousOrder.id != orderListFound[0].id) {
+                                        var errMsg = "Unexpected error: Already exists an order with orderNumber " + currentOrder.orderHeader.orderNumber + " - id: " + orderListFound[0].id;
+    debugPrintln(stcc.getSysdateForLog() + debug + "Failed Migration quote #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + "; " + errMsg);
+
+                                        crmToSOMMigration.logMigrationRecord(false, allORBOrderHeaders[i].id, crmQuote.header.quoteNumber, quoteType, 2, errMsg);
+
+                                        // discarding migrated order
+                                        currentOrder = null;
+                                        countMigratedFailed++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+    debugPrintln(stcc.getSysdateForLog() + debug + "Failed Migration quote #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + "; Returned NULL object in migration of version " + versionHeader.versionName);
+                        crmToSOMMigration.logMigrationRecord(false, allORBOrderHeaders[i].id, crmQuote.header.quoteNumber, quoteType, 2, "Returned NULL object in migration of version " + versionHeader.versionName);
+                        countMigratedFailed++;
+                    }
+
+                    if(currentOrder != null) {
+                        if(currentOrder.parentLineItems[0].parentLineItem.serviceNumber != null) {
+                            // change parentLineItem according to the serviceNumber
+                            var activeLineItem = stcw.getLineItemByServiceNumberAndLIIdAndProvFlag(currentOrder.parentLineItems[0].parentLineItem.serviceNumber, null, "ACTIVE");
+                            if(activeLineItem != null) {
+                                currentOrder.parentLineItems[0].parentLineItem.lineItemIdentifier = activeLineItem.lineItemIdentifier;
+                            }
+                            else {
+                                if(currentOrder.parentLineItems[0].parentLineItem.oldServiceNumber != null) {
+                                    // change parentLineItem according to the oldServiceNumber
+                                    activeLineItem = stcw.getLineItemByServiceNumberAndLIIdAndProvFlag(currentOrder.parentLineItems[0].parentLineItem.oldServiceNumber, null, "ACTIVE");
+                                    if(activeLineItem != null) {
+                                        currentOrder.parentLineItems[0].parentLineItem.lineItemIdentifier = activeLineItem.lineItemIdentifier;
+                                    }
+                                    else {
+                                        var errMsg = "Unexpected error: Unable to find the 'ACTIVE' lineItem for order " + currentOrder.orderHeader.orderNumber;
+    debugPrintln(stcc.getSysdateForLog() + debug + "Failed Migration order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + errMsg);
+                                        crmToSOMMigration.logMigrationRecord(false, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, quoteType, 4, errMsg);
+
+                                        /****
+                                        2017/07/03 - commented because if it exists and migration procedure accepted it, it means that Granite accepted it ...
+
+                                        // discarding migrated order
+                                        currentOrder = null;
+                                        countMigratedFailed++;
+                                        ***/
+                                    }
+                                }
+                                else {
+                                    var errMsg = "Unexpected error: OldServiceNumber for migrated order " + currentOrder.orderHeader.orderNumber + " is NULL!!!";
+    debugPrintln(stcc.getSysdateForLog() + debug + "Failed Migration order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + errMsg);
+                                    crmToSOMMigration.logMigrationRecord(false, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, quoteType, 4, errMsg);
+
+                                    /****
+                                    2017/07/03 - commented because if it exists and migration procedure accepted it, it means that Granite accepted it ...
+
+                                    // discarding migrated order
+                                    currentOrder = null;
+                                    countMigratedFailed++;
+                                    ***/
+                                }
+                            }
+                        }
+                        else {
+                            var errMsg = "Unexpected error: ServiceNumber for migrated order " + currentOrder.orderHeader.orderNumber + " is NULL!!!";
+    debugPrintln(stcc.getSysdateForLog() + debug + "Failed Migration order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + errMsg);
+                            crmToSOMMigration.logMigrationRecord(false, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, quoteType, 4, errMsg);
+
+                            /****
+                            2017/07/03 - commented because if it exists and migration procedure accepted it, it means that Granite accepted it ...
+
+                            // discarding migrated order
+                            currentOrder = null;
+                            countMigratedFailed++;
+                            ***/
+                        }
+                    }
+
+                    if(currentOrder != null) {
+                        var validationErrors = currentOrder.validate(1000, true);
+                        if(validationErrors != null) {
+                            countMigratedWithValidationError++
+
+                            // migrated order is not valid
+    debugPrintln(stcc.getSysdateForLog() + debug + "Quote #" + i + "; Migrated Order.id: " + currentOrder.orderHeader.orderNumber + " - ValidationErrors: ");
+                            for(var k=0; k<validationErrors.length; k=k+2) {
+                                debugPrintln(("" + k/2).leftPad(4, " ") + ". - " + validationErrors[k] + " = " + validationErrors[k+1]);
+                            }
+                        }
+
+                        var orchestrationError = stcw.writeSequenceForOrder(currentOrder);
+                        if(orchestrationError != null) {
+                            for(var k=0; k<orchestrationError.length; k++) {
+    debugPrintln(stcc.getSysdateForLog() + debug + "Quote #" + i + "; Migrated Order.id: " + currentOrder.id + " - Error in creating orchestration records: " +
+             "<" + orchestrationError[k].ErrorCode + "," + orchestrationError[k].ErrorDescription + ">");
+                            }
+                        }
+                        else {
+                            countMigratedSuccessfully++;
+                        }
+
+                        if(previousOrder != null) {
+                            // archiving old version of the order
+                            previousOrder.orderHeader.orderNumber = previousOrder.orderHeader.orderNumber +
+                                                                    (versionHeader.versionName == "CANCEL" ? "_CANC_" : "_REVI_") +
+                                                                    Calendar.formatDate(versionHeader.cwCreated, "yyyyMMddHHmmss");
+                            previousOrder.parentLineItems[0].parentLineItem.provisioningFlag = "OLD";
+                            previousOrder.save();
+
+                            stcw.updateOrchestrationRecordsForNewOrderNumber(previousOrder, previousOrder.orderHeader.orderNumber);
+                        }
+                        currentOrder.save();
+                    }
+                }
+
+                if(currentOrder != null) {
+                    currentOrder.parentLineItems[0].parentLineItem.lineItemStatus = crmQuote.header.quoteStatus;
+                    if(crmQuote.header.completedDate != null) {
+                        currentOrder.parentLineItems[0].parentLineItem.completionDate = crmQuote.header.completedDate;
+                        currentOrder.parentLineItems[0].parentLineItem.provisioningFlag = (versionHeader.versionName == "CANCEL" ? "CANCELLED" : "ACTIVE");
+
+                        currentOrder.orderHeader.completionDate = crmQuote.header.completedDate;
+                        currentOrder.orderHeader.orderStatus = (versionHeader.versionName == "CANCEL" ? "CANCELLED" : "COMPLETED");
+
+                        if(currentOrder.parentLineItems[0].parentLineItem.provisioningFlag == "ACTIVE") {
+                            var activeLineItems = stcw.getAllLineItemsByIdentifierAndProvisioningFlag(currentOrder.parentLineItems[0].parentLineItem.lineItemIdentifier, "B", "ACTIVE");
+                            for(var j=0; j<activeLineItems.length; j++) {
+                                activeLineItems[j].provisioningFlag = "OLD";
+                                activeLineItems[j].save();
+                            }
+                        }
+                    }
+                    currentOrder.save();
+
+                    crmQuote.header.migrated = 1;
+    crmToSOMMigration.logMigrationRecord(false, allORBOrderHeaders[i].id, crmQuote.header.quoteNumber, quoteType, 1, null);
+                }
+                else {
+                    crmQuote.header.migrated = 2;
+                }
+                crmQuote.save();
+            }
+            else {
+    debugPrintln(stcc.getSysdateForLog() + debug + "Unable to load quote #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId);
+    crmToSOMMigration.logMigrationRecord(false, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, quoteType, 3, "Unable to load quote #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId);
+                countMigratedFailed++;
+
+                // search CRM QuoteHeader and set migrated = 3
+                var crmQuoteHeader = Document.readDoc("stcw.quoteHeader", allORBOrderHeaders[i].id);
+                if(crmQuoteHeader != null) {
+                    crmQuoteHeader.migrated = 3;
+                    crmQuoteHeader.save();
+                }
+            }
+        }
+    }
+
+    var result = new Array();
+    result[0] = countFound;
+    result[1] = countTotalMigrated;
+    result[2] = countMigratedWithValidationError;
+    result[3] = countMigratedSuccessfully;
+    result[4] = countMigratedFailed;
+
+    return result;
+  ]]></script>
+</script>

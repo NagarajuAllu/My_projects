@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0">
+  <xs:element name="orderAcknowledgementWithFailure" type="orderAcknowledgementWithFailure"/>
+  <xs:simpleType name="orderStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Accepted"/>
+      <xs:enumeration value="Rejected"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="orderAcknowledgementWithFailure">
+    <xs:sequence>
+      <xs:element name="workOrderNumber" type="xs:string"/>
+      <xs:element name="crmOrderNumber" type="xs:string"/>
+      <xs:element name="lineItemIdentifier" type="xs:string"/>
+      <xs:element name="status" type="orderStatus"/>
+      <xs:element name="xngOrderNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="failure" type="orderFailure" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="orderFailure">
+    <xs:sequence>
+      <xs:element name="errorCode" type="xs:string"/>
+      <xs:element name="errorDescription" type="xs:string" minOccurs="0"/>
+      <xs:element name="errorTime" type="xs:string"/>
+      <xs:element name="errorType" type="xs:string" minOccurs="0"/>
+      <xs:element name="systemName" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

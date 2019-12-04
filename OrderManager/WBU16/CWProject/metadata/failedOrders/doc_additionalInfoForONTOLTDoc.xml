@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="failedOrders.additionalInfoForONTOLTDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{e1652ed0-fabd-4c2a-b2c0-901009a840e0}</guid>
+  <label>Additional Info For ONT/OLT</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="taskInstId" type="leaf">
+      <valueType>dtype_granite.INST_ID_10</valueType>
+    </variable>
+    <variable name="woInstId" type="leaf">
+      <valueType>dtype_granite.INST_ID_10</valueType>
+    </variable>
+    <variable name="blockingTaskInstId" type="leaf">
+      <valueType>dtype_granite.INST_ID_10</valueType>
+    </variable>
+    <variable name="pathInstId" type="leaf">
+      <valueType>dtype_granite.INST_ID_10</valueType>
+    </variable>
+    <variable name="taskOperation" type="leaf">
+      <valueType>dtype_stcw.string20</valueType>
+    </variable>
+    <variable name="isForResending" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="ONT_EQUIP_INST_ID" type="leaf">
+      <valueType>dtype_granite.INST_ID_10</valueType>
+    </variable>
+    <variable name="OLT_EQUIP_INST_ID" type="leaf">
+      <valueType>dtype_granite.INST_ID_10</valueType>
+    </variable>
+    <variable name="OLT_PORT_INST_ID" type="leaf">
+      <valueType>dtype_granite.INST_ID_10</valueType>
+    </variable>
+    <variable name="SERIAL_NO_NEW" type="leaf">
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <valueType>dtype_stcw.string30</valueType>
+    </variable>
+    <variable name="ONT_ID_NEW" type="leaf">
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <valueType>dtype_granite.ATTR_VALUE</valueType>
+    </variable>
+    <variable name="OLT_UDA_NAME_NEW" type="leaf">
+      <propertyElement type="elfld">
+        <label>OLT Name</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <valueType>dtype_granite.ATTR_VALUE</valueType>
+    </variable>
+    <variable name="OLT_UDA_SLOT_NEW" type="leaf">
+      <propertyElement type="elfld">
+        <label>OLT Slot</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <valueType>dtype_granite.ATTR_VALUE</valueType>
+    </variable>
+    <variable name="OLT_UDA_PORT_NEW" type="leaf">
+      <propertyElement type="elfld">
+        <label>OLT Port</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <valueType>dtype_granite.ATTR_VALUE</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_failedOrders.additionalInfoForONTOLTDoc</valueType>
+      </variable>
+      <variable name="ontEquipmentDetailsUI" type="leaf">
+        <valueType>doc_granite.ontEquipmentDetails/ui_UserInterface</valueType>
+      </variable>
+      <variable name="oltEquipmentDetailsUI" type="leaf">
+        <valueType>doc_granite.oltEquipmentDetails/ui_UserInterface</valueType>
+      </variable>
+      <variable name="menuLabel" type="leaf">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="HorizontalLayout" type="elhlt">
+                <elementList>
+                  <element name="LayoutSpacerForLeftBorder" type="ellsp">
+                    <width>20px</width>
+                  </element>
+                  <element name="VerticalLayout" type="elvlt">
+                    <elementList>
+                      <element name="LayoutSpacerForTopBorder" type="ellsp">
+                        <height>20px</height>
+                      </element>
+                      <element name="OLTFormFrame" type="elovf">
+                        <formReference type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/leaf_oltEquipmentDetailsUI</variablePath>
+                            <variablePath>doc_granite.oltEquipmentDetails/ui_UserInterface/frmui_Forms/vform_existingInfo</variablePath>
+                          </variablePathList>
+                        </formReference>
+                        <padding>20</padding>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/leaf_oltEquipmentDetailsUI</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="LayoutSpacer1" type="ellsp">
+                        <height>20px</height>
+                      </element>
+                      <element name="ONTFormFrame" type="elovf">
+                        <formReference type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/leaf_ontEquipmentDetailsUI</variablePath>
+                            <variablePath>doc_granite.ontEquipmentDetails/ui_UserInterface/frmui_Forms/vform_existingInfo</variablePath>
+                          </variablePathList>
+                        </formReference>
+                        <padding>20</padding>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/leaf_ontEquipmentDetailsUI</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="LayoutSpacer2" type="ellsp">
+                        <height>20px</height>
+                      </element>
+                      <element name="HorizontalLayout2" type="elhlt">
+                        <height>20px</height>
+                        <width>100%</width>
+                        <elementList>
+                          <element name="newInfoForOLTGrid" type="elgrd">
+                            <colWidths>180px,180px</colWidths>
+                            <labelOrientation>left</labelOrientation>
+                            <numOfCols>2</numOfCols>
+                            <style>fittedSimpleBorder</style>
+                            <useDefaultHeight>true</useDefaultHeight>
+                            <width>380px</width>
+                            <wrapLabel>true</wrapLabel>
+                            <elementList>
+                              <element name="LabelNew1" type="ellab">
+                                <columnSpan>2</columnSpan>
+                                <fontProperties type="pfnt">
+                                  <bold>true</bold>
+                                  <family>SansSerif,Verdana</family>
+                                  <size>12</size>
+                                </fontProperties>
+                                <label>New Info For OLT</label>
+                                <showAsTitle>true</showAsTitle>
+                                <textAlign>center</textAlign>
+                              </element>
+                              <element name="RowSpacer5" type="elrsp">
+                                <height>10px</height>
+                                <rowSpan>10px</rowSpan>
+                              </element>
+                              <element name="OLT_UDA_NAME_NEW" type="elfld">
+                                <columnSpan>1</columnSpan>
+                                <label>New Value for OLT Name</label>
+                                <variable type="varPath">
+                                  <variablePathList>
+                                    <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/uivar_model</variablePath>
+                                    <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/leaf_OLT_UDA_NAME_NEW</variablePath>
+                                  </variablePathList>
+                                </variable>
+                              </element>
+                              <element name="OLT_UDA_SLOT_NEW" type="elfld">
+                                <label>New Value for OLT Slot</label>
+                                <variable type="varPath">
+                                  <variablePathList>
+                                    <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/uivar_model</variablePath>
+                                    <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/leaf_OLT_UDA_SLOT_NEW</variablePath>
+                                  </variablePathList>
+                                </variable>
+                              </element>
+                              <element name="OLT_UDA_PORT_NEW" type="elfld">
+                                <label>New Value for OLT Port</label>
+                                <variable type="varPath">
+                                  <variablePathList>
+                                    <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/uivar_model</variablePath>
+                                    <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/leaf_OLT_UDA_PORT_NEW</variablePath>
+                                  </variablePathList>
+                                </variable>
+                              </element>
+                              <element name="RowSpacer6" type="elrsp">
+                                <height>10px</height>
+                                <rowSpan>10px</rowSpan>
+                              </element>
+                            </elementList>
+                          </element>
+                          <element name="LayoutSpacer11" type="ellsp">
+                            <width>35px</width>
+                          </element>
+                          <element name="newInfoForONTGrid" type="elgrd">
+                            <colWidths>180px,180px</colWidths>
+                            <labelOrientation>left</labelOrientation>
+                            <numOfCols>2</numOfCols>
+                            <style>fittedSimpleBorder</style>
+                            <useDefaultHeight>true</useDefaultHeight>
+                            <width>380px</width>
+                            <wrapLabel>true</wrapLabel>
+                            <elementList>
+                              <element name="LabelNew" type="ellab">
+                                <columnSpan>2</columnSpan>
+                                <fontProperties type="pfnt">
+                                  <bold>true</bold>
+                                  <family>SansSerif,Verdana</family>
+                                  <size>12</size>
+                                </fontProperties>
+                                <label>New Info For ONT</label>
+                                <showAsTitle>true</showAsTitle>
+                                <textAlign>center</textAlign>
+                              </element>
+                              <element name="RowSpacer3" type="elrsp">
+                                <height>10px</height>
+                                <rowSpan>10px</rowSpan>
+                              </element>
+                              <element name="SERIAL_NO_NEW" type="elfld">
+                                <columnSpan>1</columnSpan>
+                                <label>New Value for ONT Serial No.</label>
+                                <variable type="varPath">
+                                  <variablePathList>
+                                    <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/uivar_model</variablePath>
+                                    <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/leaf_SERIAL_NO_NEW</variablePath>
+                                  </variablePathList>
+                                </variable>
+                              </element>
+                              <element name="ONT_ID_NEW" type="elfld">
+                                <label>New Value for ONT Id </label>
+                                <variable type="varPath">
+                                  <variablePathList>
+                                    <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/uivar_model</variablePath>
+                                    <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/leaf_ONT_ID_NEW</variablePath>
+                                  </variablePathList>
+                                </variable>
+                              </element>
+                              <element name="RowSpacer4" type="elrsp">
+                                <height>10px</height>
+                                <rowSpan>10px</rowSpan>
+                              </element>
+                            </elementList>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="buttonFormFrame" type="elovf">
+                        <formReference type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/frmui_Forms/vform_buttons</variablePath>
+                          </variablePathList>
+                        </formReference>
+                        <height>10px</height>
+                        <width>100%</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="buttons" type="vform">
+            <label>buttons</label>
+            <root name="buttonsGrid_vCentering" type="elvltstck">
+              <height>10px</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="buttonsGrid" type="elgrd">
+                  <colWidths>150px,150px</colWidths>
+                  <fillSpace>false</fillSpace>
+                  <height>10px</height>
+                  <numOfCols>2</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>500px</width>
+                  <elementList>
+                    <element name="submitButton" type="elbtn">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/usrActionMethod_executeActionForTask</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Submit</label>
+                      <width>140px</width>
+                    </element>
+                    <element name="cancelButton" type="elbtn">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/usrActionMethod_cancelRequest</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Cancel</label>
+                      <width>140px</width>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="onInit" type="action">
+        <valueType>nmeta_com.conceptwave.system.Object</valueType>
+        <script><![CDATA[
+          this.menuLabel = "Update ONT/OLT Info and " + (this.model.isForResending ? "Resend" : "Complete") + " \"" + this.model.taskOperation + "\" Task";
+
+          // search ont details
+          var ontEquipmentDetails = granite.getONTEquipmentDetailsByPathInstId(this.model.pathInstId);
+          if(ontEquipmentDetails != null) {
+              this.ontEquipmentDetailsUI = new granite.ontEquipmentDetails.UserInterface(ontEquipmentDetails);
+
+              this.model.ONT_EQUIP_INST_ID = ontEquipmentDetails.EQUIP_INST_ID;
+
+              this.model.SERIAL_NO_NEW = ontEquipmentDetails.SERIAL_NO;
+              this.model.ONT_ID_NEW = ontEquipmentDetails.ONT_ID;
+          }
+          else {
+              this.ontEquipmentDetailsUI = null;
+              this.model.ONT_EQUIP_INST_ID = null;
+
+              this.model.SERIAL_NO_NEW = null;
+              this.model.ONT_ID_NEW = null;
+          }
+
+          // search olt details
+          var oltEquipmentDetails = granite.getOLTEquipmentDetailsByPathInstId(this.model.pathInstId);
+          if(oltEquipmentDetails != null) {
+              this.oltEquipmentDetailsUI = new granite.oltEquipmentDetails.UserInterface(oltEquipmentDetails);
+
+              this.model.OLT_EQUIP_INST_ID = oltEquipmentDetails.EQUIP_INST_ID;
+              this.model.OLT_PORT_INST_ID = oltEquipmentDetails.PORT_INST_ID;
+
+              this.model.OLT_UDA_NAME_NEW = oltEquipmentDetails.OLT_UDA_NAME;
+              this.model.OLT_UDA_SLOT_NEW = oltEquipmentDetails.OLT_UDA_SLOT;
+              this.model.OLT_UDA_PORT_NEW = oltEquipmentDetails.OLT_UDA_PORT;
+          }
+          else {
+              this.oltEquipmentDetailsUI = null;
+              this.model.OLT_EQUIP_INST_ID = null;
+              this.model.OLT_PORT_INST_ID = null;
+
+              this.model.OLT_UDA_NAME_NEW = null;
+              this.model.OLT_UDA_SLOT_NEW = null;
+              this.model.OLT_UDA_PORT_NEW = null;
+          }
+        ]]></script>
+      </method>
+      <method name="executeActionForTask" type="usrActionMethod">
+        <confirmation>doc_failedOrders.additionalInfoForONTOLTDoc/ui_UserInterface/uimthd_executeActionForTask_confirm</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          // updating OLT/ONT
+          var wo = granite.getWorkOrderByWOInstId(this.model.woInstId);
+          var woName = (wo != null ? wo.WO_NAME : "UNKNOWN WO_NAME");
+          var task = granite.getTaskById(this.model.taskInstId);
+          var taskName = (task != null ? task.TASK_NAME : "UNKNOWN TASK_NAME");
+
+          var userId = Global.getUserId();
+
+          var oltUDAs = this.createUDAsForOLT();
+          var ontUDAs = this.createUDAsForONT();
+
+          var resultForUpdateOLT_ONT = granitews4eoc.invokeUpdateOLT_ONTInfoAPI(this.model.OLT_EQUIP_INST_ID,
+                                                                                this.model.OLT_PORT_INST_ID,
+                                                                                oltUDAs,
+                                                                                this.model.ONT_EQUIP_INST_ID,
+                                                                                this.model.SERIAL_NO_NEW,
+                                                                                this.model.taskInstId,
+                                                                                userId,
+                                                                                ontUDAs,
+                                                                                woName,
+                                                                                taskName);
+
+          if(resultForUpdateOLT_ONT != null) {
+              var resultMessage = resultForUpdateOLT_ONT.ResultMessage;
+              if(resultMessage.result != "SUCCESS") {
+                  // there was an error in updating OLT and ONT, so throwing the error;
+                  var errorMsg = "Error in updating OLT and ONT; received Error Message: '" + resultMessage.errorDescription + "'";
+                  Global.throwException(errorMsg);
+              }
+          }
+          else {
+              // no message received
+              var errorMsg = "No response received while updating OLT and ONT! Pls refresh the WorkOrder and retry";
+              Global.throwException(errorMsg);
+          }
+
+          var actionResult = null;
+
+          // perform the action
+          if(this.model.isForResending) {
+              // it's for resending
+              if(task.STATUS_CODE == 9) {
+                  // the selected task is in status FAILED; completing it
+                  actionResult = granitews4eoc.invokeChangeTaskStatusAPI(this.model.taskInstId, 4, userId, woName, taskName);
+              }
+              else {
+                  if(this.model.blockingTaskInstId == null) {
+                      Global.throwException("Unexpected case! The task is not FAILED but there is no Blocking Task");
+                  }
+                  var blockingTask = granite.getTaskById(this.model.blockingTaskInstId);
+
+                  if(blockingTask == null) {
+                      Global.throwException("Unable to find the Blocking Task for id " + this.model.blockingTaskInstId);
+                  }
+
+                  // the selected task is in status FAILED; completing it
+                  actionResult = granitews4eoc.invokeCompleteTaskAPI(blockingTask.TASK_INST_ID, userId, woName, taskName);
+              }
+
+              // log user action
+              failedOrders.insertNewUserActionForFO(userId, "Resend With Addtional Information");
+          }
+          else {
+              // it's for complete
+              if(task.STATUS_CODE == 9) {
+                  // the selected task is in status FAILED; completing it
+                  actionResult = granitews4eoc.invokeCompleteTaskAPI(this.model.taskInstId, userId, woName, taskName);
+              }
+              else {
+                  if(this.model.blockingTaskInstId == null) {
+                      Global.throwException("Unexpected case! The task is not FAILED but there is no Blocking Task");
+                  }
+                  var blockingTask = granite.getTaskById(this.model.blockingTaskInstId);
+
+                  if(blockingTask == null) {
+                      Global.throwException("Unable to find the Blocking Task for id " + this.model.blockingTaskInstId);
+                  }
+
+                  var queueName = granite.getQueueNameById(blockingTask.QUEUE_INST_ID);
+                  if(queueName == null) {
+                      queueName = "FTTH REJECTIONS";
+                  }
+                  // the selected task is in status FAILED; completing it
+                  actionResult = granitews4eoc.invokeCompleteBlockedTaskAPI(this.model.taskInstId, queueName, blockingTask.TASK_INST_ID, userId, woName, taskName);
+              }
+
+              // log user action
+              failedOrders.insertNewUserActionForFO(userId, "Complete");
+          }
+
+          if(actionResult != null) {
+              var resultMessage = actionResult.ResultMessage;
+              if(resultMessage.result != "SUCCESS") {
+                  // there was an error in updating OLT and ONT, so throwing the error;
+                  var errorMsg = "Error in updating OLT and ONT; received Error Message: '" + resultMessage.errorDescription + "'";
+                  Global.throwException(errorMsg);
+              }
+          }
+          else {
+              // no message received
+              var errorMsg = "No response received while updating OLT and ONT! Pls refresh the WorkOrder and retry";
+              Global.throwException(errorMsg);
+          }
+
+
+          // refresh parent
+          this.parent.owner.refreshUI();
+
+          Global.showUserMessage("Action completed successfully");
+
+          // close dialog
+          return Global.STOP_UI;
+        ]]></script>
+      </method>
+      <method name="executeActionForTask_confirm" type="uimthd">
+        <script><![CDATA[return "AW0020";]]></script>
+      </method>
+      <method name="cancelRequest" type="usrActionMethod">
+        <script>return Global.STOP_UI;</script>
+      </method>
+      <method name="createUDAsForOLT" type="uimthd">
+        <script><![CDATA[
+          var oltUDAs = new Array();
+          var oltUDA1 = new DataStructure("granitews4eoc.udaDetailsPojo");
+          oltUDA1.udaName = "OLT Name";
+          oltUDA1.udaGroup = "OLT Attributes Information";
+          oltUDA1.udaValue = this.model.OLT_UDA_NAME_NEW;
+          oltUDAs.push(oltUDA1);
+
+          var oltUDA2 = new DataStructure("granitews4eoc.udaDetailsPojo");
+          oltUDA2.udaName = "OLT Physical Slot";
+          oltUDA2.udaGroup = "OLT Attributes Information";
+          oltUDA2.udaValue = this.model.OLT_UDA_SLOT_NEW;
+          oltUDAs.push(oltUDA2);
+
+          var oltUDA3 = new DataStructure("granitews4eoc.udaDetailsPojo");
+          oltUDA3.udaName = "OLT Physical Port";
+          oltUDA3.udaGroup = "OLT Attributes Information";
+          oltUDA3.udaValue = this.model.OLT_UDA_PORT_NEW;
+          oltUDAs.push(oltUDA3);
+
+          return oltUDAs;
+        ]]></script>
+      </method>
+      <method name="createUDAsForONT" type="uimthd">
+        <script><![CDATA[
+          var ontUDAs = new Array();
+          var ontUDA1 = new DataStructure("granitews4eoc.udaDetailsPojo");
+          ontUDA1.udaName = "ONT ID";
+          ontUDA1.udaGroup = "ONT/Customer Details";
+          ontUDA1.udaValue = this.model.ONT_ID_NEW;
+          ontUDAs.push(ontUDA1);
+
+          return ontUDAs
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

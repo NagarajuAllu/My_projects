@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="db16744d86e1962e5ce252ae5270444f" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="migrationSTC.createLegacyOrderDocument">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{c504d495-315e-420a-9276-f268147cd14e}</guid>
+  <label>Create LegacyOrder From Granite Document</label>
+  <metaVersion>4</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="woName" type="leaf">
+      <propertyElement type="elfld">
+        <label>Work Order Name</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string20</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_migrationSTC.createLegacyOrderDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="createEBULegacyOrderFromGraniteDataGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="createLegacyOrderDocumentGrid" type="elgrd">
+                    <colWidths>100px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>260px</width>
+                    <elementList>
+                      <element name="createLegacyOrderDocumentHeader" type="elhdr">
+                        <label>Create LegacyOrder From Granite Document</label>
+                      </element>
+                      <element name="woName" type="elfld">
+                        <label>Work Order Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.createLegacyOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.createLegacyOrderDocument/leaf_woName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="eldel"/>
+              <override name="hl1" type="elext">
+                <elementList>
+                  <element name="createOrder" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_migrationSTC.createLegacyOrderDocument/ui_UserInterface/usrActionMethod_loadOrder</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Create EBU Legacy Order</label>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="loadOrder" type="usrActionMethod">
+        <confirmation>doc_migrationSTC.createLegacyOrderDocument/ui_UserInterface/uimthd_loadOrder_confirm</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var document = this.model;
+
+          migrationSTC.createLegacyOrderFromGranite(document.woName);
+
+          Global.showUserMessage("Order '" + document.woName + "' loaded into WD");
+        ]]></script>
+      </method>
+      <method name="loadOrder_confirm" type="uimthd">
+        <script><![CDATA[return "AW0011";]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

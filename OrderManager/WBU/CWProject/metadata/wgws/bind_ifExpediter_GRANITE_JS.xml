@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<binding filenameHash="efc1a91ab5ba57dd82b4e5fb7b99ec05" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="wgws.ifExpediter_GRANITE_JS">
+  <extensionList>
+    <extension name="operation_OrderStatusUpdate" type="ext">
+      <element>Operation</element>
+      <elementItemMap>
+        <elementItem key="script"><![CDATA[
+          var errors = basicValidation_ (input);
+          if (errors != null)
+                return (createResponse_ (input, errors, "InvalidInput"));
+
+          var order = stcw.findOrderByNumber (input.orderNumber);
+          if (order == null) {
+                // not an order found in DB ... it's a Voice Order
+          debugPrintln(stcc.getSysdateForLog() + "Unable to find Order with orderNumber = '" + input.orderNumber + "' - Managing it like VoiceOrder");
+
+                      // starting process to send OrderStatusUpdate to EAI
+                      return startProcessToManageVoiceOrderStatusUpdate_(input);
+                }
+
+                // search CANCEL or REVISE VERSION in Order; if it exists, the process is Update, else is Submit!!!
+                if(stcw.existUpdateVersion(order)) {
+          debugPrintln(stcc.getSysdateForLog() + "Sending OSU to Update Order = '" + input.orderNumber + "'");
+                      return (processInputData_ (input, order, "stcw:updateOrder"));
+                }
+                else {
+          debugPrintln(stcc.getSysdateForLog() + "Sending OSU to Submit Order = '" + input.orderNumber + "'");
+                      return (processInputData_ (input, order, "stcw:submitOrder"));
+                }
+
+                return (createResponse_ (input, xcutl.createError ("UnprocessableUpdate", input.orderNumber, input.workOrderStatus), "InvalidInput"));
+
+                //
+                //  basicValidation_
+                //
+                function basicValidation_ (input) {
+
+                      if (input == undefined || input == null || input.metadataType != "wgws:updateOrderStatus") {
+                            return (xcutl.createError ("InvalidInput", "wgws:updateOrderStatus"));
+                      }
+
+                      if (input.businessUnit != "Wholesale") {
+                            return (xcutl.createError ("InvalidBusinessUnit", input.businessUnit));
+                      }
+
+                      var validationResult = input.validate(1, true);
+                      if(validationResult != null) {
+                            var error = new DataStructure ("xcutl:Error");
+                            error.code = validationResult[0];
+                            error.text = validationResult[1];
+                            return error;
+                      }
+
+
+                      return (null);
+
+                }            // b a s i c V a l i d a t i o n _
+
+                //
+                //  processInputData_
+                //
+                function processInputData_ (input, order, processType) {
+
+                      var processId = xcutl.findActiveProcessByType (processType, order.header.cwOrderId);
+                      if (processId == null)
+                            return (createResponse_ (input, xcutl.createError ("ProcessNotFound", processType, input.orderNumber, order.header.cwOrderId), "InternalError"));
+
+                      var patchResults = rpts.patchAsynchMessageLog (processId, "graniteStatusUpdate");
+                      Global.logDebug ("wgws:ifExpediter_GRANITE/operation_OrderStatusUpdate () - sending to process " + processId + "; patch results: " + patchResults);
+          debugPrintln(stcc.getSysdateForLog() + " sending " + input.toXML() + " to process " + processId + "; patch results: " + patchResults);
+                      Process.sendMessageToProcess (processId, null, "wgws:ifExpediter_GRANITE/operation_OrderStatusUpdate", input);
+
+                      return (createResponse_ (input));
+
+                }            // p r o c e s s I n p u t D a t a _
+
+
+                //
+                //  startProcessToManageVoiceOrderStatusUpdate_
+                //
+                function startProcessToManageVoiceOrderStatusUpdate_ (input) {
+                      var processDocument = new Document("stcw:updateVoiceOrderStatusDocument");
+                      processDocument.assetNumber       = input.assetNumber;
+                      processDocument.assetStatus       = input.assetStatus;
+                      processDocument.businessUnit      = input.businessUnit;
+                      processDocument.comments          = input.comments;
+                      processDocument.NINumber          = input.NINumber;
+                      processDocument.OrderNumber       = input.orderNumber;
+                      processDocument.systemDesignation = input.systemDesignation;
+                      processDocument.workOrderStatus   = input.workOrderStatus;
+
+                      var processId = Process.startProcess ("stcw:sendVoiceOrderStatusUpdateToCrm", processDocument);
+          debugPrintln(stcc.getSysdateForLog() + " started sendVoiceOrderStatusUpdateToCrm <" + input.orderNumber + ">: processId = " + processId);
+
+                      return (createResponse_ (input));
+                }      // s t a r t P r o c e s s T  o M a n a g e V o i c e O r d e r S t a t u s U p d a t e _
+
+
+                //
+                //  createResponse_
+                //
+                function createResponse_ (input, error, errorType) {
+
+                      var response = new DataStructure ("wgws:updateOrderStatusResponse");
+                      if(error == null) {
+                            response.status = "SUCCESS";
+                      }
+                      else {
+                            response.errorCode = error.code;
+                            response.errorDescription = error.text;
+                            response.errorTime = stcc.getSysdateInYYYYMMDD_HH24MMSS();
+                            response.errorType = errorType;
+                            response.status = "ERROR";
+                      }
+
+                      return (response);
+
+                }      // c r e a t e R e s p o n s e _
+        ]]></elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_QuoteStatusUpdate" type="ext">
+      <element>Operation</element>
+      <elementItemMap>
+        <elementItem key="script"><![CDATA[
+          var errors = basicValidation_ (input);
+          if (errors != null)
+                return (createResponse_ (input, errors, "InvalidInput"));
+
+          var quote = stcw.findQuoteByChildQuoteNumberAndRowItemId (input.quoteNumber, null);
+          if (quote == null) {
+          debugPrintln(stcc.getSysdateForLog() + "Unable to find Quote with ChildNumber = '" + input.quoteNumber + "'" );
+                      return (createResponse_ (input, xcutl.createError ("QuoteNotFound", input.quoteNumber, input.orderRowItemId), "InvalidInput"));
+                }
+
+                fixMissingValuesInIncomingFlow_(input, quote);
+
+
+          debugPrintln(stcc.getSysdateForLog() + "Sending QSU to Quote = <" + input.quoteNumber + "," + input.orderRowItemId + ">" );
+                return (processInputData_ (input, quote, "stcw:validateQuote"));
+
+
+                return (createResponse_ (input,
+                                                     xcutl.createError ("UnprocessableQuoteUpdate", input.quoteNumber, input.orderRowItemId, input.workOrderStatus),
+                                                     "InvalidInput"));
+
+                //
+                //  basicValidation_
+                //
+                function basicValidation_ (input) {
+
+                      if (input == undefined || input == null || input.metadataType != "wgws:updateQuoteStatus") {
+                            return (xcutl.createError ("InvalidInput", "wgws:updateQuoteStatus"));
+                      }
+
+                      var validationResult = input.validate(1, true);
+                      if(validationResult != null) {
+                            var error = new DataStructure ("xcutl:Error");
+                            error.code = validationResult[0];
+                            error.text = validationResult[1];
+                            return error;
+                      }
+
+                      return (null);
+
+                }            // b a s i c V a l i d a t i o n _
+
+
+                //
+                //  fixMissingValuesInIncomingFlow_
+                //
+                function fixMissingValuesInIncomingFlow_ (input, quote) {
+
+                      if(input.orderRowItemId != quote.header.orderRowItemId) {
+          debugPrintln(stcc.getSysdateForLog() + "Received wrong orderRowItemId = '" + input.orderRowItemId + "'; replacing with the correct one = '" + quote.header.orderRowItemId + "'" );
+                            input.orderRowItemId = quote.header.orderRowItemId;
+                      }
+
+                      input.reservationNumber = quote.header.reservationNumber;
+                      input.businessUnit = "Wholesale";
+
+                }            // f i x M i s s i n g V a l u e s I n I n c o m i n g F l o w _
+
+
+                //
+                //  processInputData_
+                //
+                function processInputData_ (input, quote, processType) {
+
+                      var processId = xcutl.findActiveProcessByType ("stcw:validateQuote", quote.header.cwOrderId);
+                      if (processId == null)
+                            return (createResponse_ (input, xcutl.createError ("QuoteProcessNotFound",
+                                                                                                      "stcw:validateQuote",
+                                                                                                      input.quoteNumber,
+                                                                                                      input.orderRowItemId,
+                                                                                                      quote.header.cwOrderId), "InternalError"));
+
+          debugPrintln(stcc.getSysdateForLog() + "Sending QSU to Quote = <" + input.quoteNumber + "," + input.orderRowItemId + "> to process " + processId);
+
+                      var patchResults = rpts.patchAsynchMessageLog (processId, "graniteStatusUpdate");
+                      Global.logDebug ("wgws:ifExpediter_GRANITE/operation_QuoteStatusUpdate () - sending to process " + processId + "; patch results: " + patchResults);
+                      Process.sendMessageToProcess (processId, null, "wgws:ifExpediter_GRANITE/operation_QuoteStatusUpdate", input);
+
+                      return (createResponse_ (input));
+
+                }            // p r o c e s s I n p u t D a t a _
+
+                //
+                //  createResponse_
+                //
+                function createResponse_ (input, error, errorType) {
+
+                      var response = new DataStructure ("wgws:updateQuoteStatusResponse");
+                      if(error == null) {
+                            response.status = "SUCCESS";
+                      }
+                      else {
+                            response.errorCode = error.code;
+                            response.errorDescription = error.text;
+                            response.errorTime = stcc.getSysdateInYYYYMMDD_HH24MMSS();
+                            response.errorType = errorType;
+                            response.status = "ERROR";
+                      }
+
+          debugPrintln(stcc.getSysdateForLog() + " QuoteStatusUpdate response = '" + response.toXML() + "'" );
+
+                      return (response);
+
+                }      // c r e a t e R e s p o n s e _
+        ]]></elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_Restoration" type="ext">
+      <element>Operation</element>
+      <elementItemMap>
+        <elementItem key="script"><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "Received Restoration with input = " + (input == null ? "null" : input.toXML()));
+
+                var errors = basicValidation_ (input);
+                if (errors != null)
+                      return (createResponse_ (input, errors, "ValidationError"));
+
+                return (processRequest_ (input));
+
+
+                //
+                //  basicValidation_
+                //
+                function basicValidation_ (input) {
+
+                      if (input == undefined || input == null || input.metadataType != "wgws:restoration")
+                            return (xcutl.createError ("InvalidInput", "wgws:restoration"));
+
+                      if (input.businessUnit != "Wholesale") {
+                            return (xcutl.createError ("InvalidBusinessUnit", input.businessUnit));
+                      }
+
+                      var validationResult = input.validate(1, true);
+                      if(validationResult != null) {
+                            var error = new DataStructure ("xcutl:Error");
+                            error.code = validationResult[0];
+                            error.text = validationResult[1];
+                            return error;
+                      }
+
+                      return (null);
+
+                }            // b a s i c V a l i d a t i o n _
+
+                //
+                //  processRequest_
+                //
+                function processRequest_ (input) {
+
+                      // starting Process
+                      var processId = Process.startProcess ("stcw:restoration", null);
+                      var patchResults = rpts.patchAsynchMessageLog (processId, "graniteReceiveRestoration");
+
+                      Process.sendMessageToProcess (processId, null, "wgws:ifExpediter_GRANITE/operation_Restoration", input);
+
+                      return (createResponse_ (input));
+
+                }            // p r o c e s s R e q u e s t _
+
+                //
+                //  createResponse_
+                //
+                function createResponse_ (input, error, errorType) {
+
+                      var response = new DataStructure ("wgws:restorationResponse");
+                      if(error != null) {
+                            response.errorCode = error.code;
+                            response.errorDescription = error.text;
+                            response.errorTime = stcc.getSysdateInYYYYMMDD_HH24MMSS();
+                            response.errorType = errorType;
+                            response.status = "ERROR";
+                      }
+                      else {
+                            response.status = "SUCCESS";
+                      }
+
+
+          debugPrintln(stcc.getSysdateForLog() + "Creating response in Restoration = " + response.toXML());
+                      return (response);
+
+                }      // c r e a t e R e s p o n s e _
+        ]]></elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_SiteInformationUpdate" type="ext">
+      <element>Operation</element>
+      <elementItemMap>
+        <elementItem key="script"><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "Received SiteInfoUpdate with input = " + (input == null ? "null" : input.toXML()));
+
+                var errors = basicValidation_ (input);
+                if (errors != null)
+                      return (createResponse_ (input, errors, "ValidationError"));
+
+                return (processRequest_ (input));
+
+
+                //
+                //  basicValidation_
+                //
+                function basicValidation_ (input) {
+
+                      if (input == undefined || input == null || input.metadataType != "wgws:siteInformationUpdate")
+                            return (xcutl.createError ("InvalidInput", "wgws:siteInformationUpdate"));
+
+                      if (input.businessUnit != "Wholesale") {
+                            return (xcutl.createError ("InvalidBusinessUnit", input.businessUnit));
+                      }
+
+                      var validationResult = input.validate(1, true);
+                      if(validationResult != null) {
+                            var error = new DataStructure ("xcutl:Error");
+                            error.code = validationResult[0];
+                            error.text = validationResult[1];
+                            return error;
+                      }
+
+                      return (null);
+
+                }            // b a s i c V a l i d a t i o n _
+
+                //
+                //  processRequest_
+                //
+                function processRequest_ (input) {
+
+                      // starting Process
+                      var processId = Process.startProcess ("stcw:siteInformationUpdate", null);
+                      var patchResults = rpts.patchAsynchMessageLog (processId, "graniteReceiveSiteInfoUpdate");
+
+                      Process.sendMessageToProcess (processId, null, "wgws:ifExpediter_GRANITE/operation_SiteInformationUpdate", input);
+
+                      return (createResponse_ (input));
+
+                }            // p r o c e s s R e q u e s t _
+
+                //
+                //  createResponse_
+                //
+                function createResponse_ (input, error, errorType) {
+
+                      var response = new DataStructure ("wgws:siteInformationUpdateResponse");
+                      if(error != null) {
+                            response.errorCode = error.code;
+                            response.errorDescription = error.text;
+                            response.errorTime = stcc.getSysdateInYYYYMMDD_HH24MMSS();
+                            response.errorType = errorType;
+                            response.status = "ERROR";
+                      }
+                      else {
+                            response.status = "SUCCESS";
+                      }
+
+
+          debugPrintln(stcc.getSysdateForLog() + "Creating response in SiteInformationUpdate = " + response.toXML());
+                      return (response);
+
+                }      // c r e a t e R e s p o n s e _
+        ]]></elementItem>
+      </elementItemMap>
+    </extension>
+  </extensionList>
+  <guid>{01f110b5-f534-b3bd-4559-23041a5d1ada}</guid>
+  <interface>iface_wgws.ifExpediter_GRANITE</interface>
+  <label>ifExpediter_GRANITE_JS</label>
+  <metaVersion>3</metaVersion>
+  <provider>prov_cwf.jsprov</provider>
+</binding>

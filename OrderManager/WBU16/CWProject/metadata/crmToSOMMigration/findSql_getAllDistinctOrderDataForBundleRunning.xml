@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="crmToSOMMigration.getAllDistinctOrderDataForBundleRunning">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <label>Get All Distinct OrderData For Bundle With Processes Running</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_crmToSOMMigration.orderDataForBundleOrdersToMigrate</output>
+  <type>SQL</type>
+  <volatility>5</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select distinct orderNumber      , count_process_running, cworderid
+          from STCW_VPNORDER_TO_MIGRATE
+         where count_process_running > 0
+           and is_bundle = 1
+      ]]></script>
+    </method>
+  </methodList>
+</findSql>

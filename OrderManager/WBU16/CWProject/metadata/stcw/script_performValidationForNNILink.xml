@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.performValidationForNNILink">
+  <label>Perform Validation For NNI Link</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="lineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="elementTypeInOrderTree" type="rifp">
+      <type>dtype_stcw.elementTypeInOrderTree</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+
+    var lineItem = null;
+    var nvPairs = null;
+    if(elementTypeInOrderTree == "B") {
+        lineItem = lineItemContainer.parentLineItem;
+        nvPairs = lineItemContainer.parentLineItemNameValueParameters;
+    }
+    else if(elementTypeInOrderTree == "C") {
+        lineItem = lineItemContainer.serviceLineItem;
+        nvPairs = lineItemContainer.serviceLineItemNameValueParameters;
+    }
+    else if(elementTypeInOrderTree == "S") {
+        lineItem = lineItemContainer.subServiceLineItem;
+        nvPairs = lineItemContainer.subServiceLineItemNameValueParameters;
+    }
+    else if(elementTypeInOrderTree == "T") {
+        lineItem = lineItemContainer.subSubServiceLineItems;
+        nvPairs = lineItemContainer.subSubServiceLineItemNameValueParameters;
+    }
+
+    var isVPNService = stcw.getIsVPNByProductCode(lineItem.productCode);
+    if(isVPNService) {
+        var nvPairNameForNNI_LINK = getNVPairNameForNNILINK_();
+
+        if(nvPairs != null) {
+            // getting the NVPair with name "NNI_LINK"
+            for(var i=0; i<nvPairs.length; i++) {
+                var nvPairName = null;
+                var nvPairValue = null;
+
+                if(elementTypeInOrderTree == "B") {
+                    nvPairName = nvPairs[i].parentLineItemNameValueParameter.name;
+                    nvPairValue = nvPairs[i].parentLineItemNameValueParameter.value;
+                }
+                else if(elementTypeInOrderTree == "C") {
+                    nvPairName = nvPairs[i].serviceLineItemNameValueParameter.name;
+                    nvPairValue = nvPairs[i].serviceLineItemNameValueParameter.value;
+                }
+                else if(elementTypeInOrderTree == "S") {
+                    nvPairName = nvPairs[i].subServiceLineItemNameValueParameter.name;
+                    nvPairValue = nvPairs[i].subServiceLineItemNameValueParameter.value;
+                }
+                else if(elementTypeInOrderTree == "T") {
+                    nvPairName = nvPairs[i].subSubServiceLineItemNameValueParameter.name;
+                    nvPairValue = nvPairs[i].subSubServiceLineItemNameValueParameter.value;
+                }
+
+                if(nvPairName == nvPairNameForNNI_LINK) {
+                    if(nvPairValue != null) {
+                        var pathInGranite = granite.getPathByName(nvPairValue);
+                        if(pathInGranite == null) {
+                            validationErrors = stcw.appendToValidationErrors("AE0173", Global.translateText("AE0173", null, [nvPairValue, nvPairNameForNNI_LINK]), validationErrors);
+    debugPrintln(stcc.getSysdateForLog() + " performValidationForNNILink (" + lineItem.lineItemIdentifier + "): Found error: <'AE0173','" + nvPairValue + "'>");
+                        }
+                        else if(pathInGranite.STATUS == "DECOMMISSIONED" || pathInGranite.STATUS == "CANCELLED") {
+                            validationErrors = stcw.appendToValidationErrors("AE0174", Global.translateText("AE0174", null, [nvPairValue, nvPairNameForNNI_LINK, pathInGranite.STATUS]), validationErrors);
+    debugPrintln(stcc.getSysdateForLog() + " performValidationForNNILink (" + lineItem.lineItemIdentifier + "): Found error: <'AE0174','" + nvPairValue + "," + pathInGranite.STATUS + "'>");
+                        }
+                        else if(pathInGranite.TYPE != "GEF") {
+                            validationErrors = stcw.appendToValidationErrors("AE0175", Global.translateText("AE0175", null, [nvPairValue, nvPairNameForNNI_LINK, pathInGranite.TYPE]), validationErrors);
+    debugPrintln(stcc.getSysdateForLog() + " performValidationForNNILink (" + lineItem.lineItemIdentifier + "): Found error: <'AE0175','" + nvPairValue + "," + pathInGranite.TYPE + "'>");
+                        }
+                        else {
+    debugPrintln(stcc.getSysdateForLog() + " performValidationForNNILink (" + lineItem.lineItemIdentifier + "): Found valid path for NNI_LINK: " + nvPairValue);
+                        }
+                    }
+                    else {
+    debugPrintln(stcc.getSysdateForLog() + " performValidationForNNILink (" + lineItem.lineItemIdentifier + "): Found valid path for NNI_LINK but with value null or <> 'Yes': " + nvPairValue);
+                    }
+                }
+            }
+        }
+    }
+
+    if(validationErrors != null) {
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, lineItem.lineItemIdentifier, failureArray, isSubmit);
+    }
+
+    return failureArray;
+
+
+
+    function getNVPairNameForNNILINK_() {
+        var configVariableName = "NNILINK_NV";
+        var nvPairDefaultValue = "NNI_LINK";
+        var nvPairName = null;
+
+        var foundConfigValue = Global.getConfigVariable(configVariableName);
+        if(foundConfigValue != null) {
+            nvPairName = foundConfigValue;
+        }
+        else {
+    debugPrintln(stcc.getSysdateForLog() + " getNVPairNameForNNILINK_ - Missing Config Variable '" + configVariableName + "'. Using the default one: '" + nvPairDefaultValue + "'");
+
+            nvPairName = nvPairDefaultValue;
+        }
+
+        return nvPairName;
+    }
+  ]]></script>
+</script>

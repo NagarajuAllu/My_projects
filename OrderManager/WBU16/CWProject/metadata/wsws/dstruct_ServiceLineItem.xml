@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure name="wsws.ServiceLineItem">
+  <container>true</container>
+  <extends>dstruct_wsws.CommonLineItemParameters</extends>
+  <label>ServiceLineItem</label>
+  <metaVersion>21</metaVersion>
+  <childList>
+    <child name="SvcLineItemInstanceIdentifier" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>SvcLineItemInstanceIdentifier</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="SvcLineItemNameValueParameters" type="dstruct">
+      <container>true</container>
+      <label>SvcLineItemNameValueParameters</label>
+      <childList>
+        <child name="NameValue" type="dstruct">
+          <array>true</array>
+          <element>dstruct_wsws.nameValue</element>
+          <label>NameValue</label>
+          <maxInstance>999</maxInstance>
+        </child>
+      </childList>
+    </child>
+    <child name="SvcLineItemVASNVParameters" type="dstruct">
+      <container>true</container>
+      <label>SvcLineItemVASNVParameters</label>
+      <childList>
+        <child name="VASNameValue" type="dstruct">
+          <array>true</array>
+          <element>dstruct_wsws.VASNameValue</element>
+          <label>VASNameValue</label>
+          <maxInstance>999</maxInstance>
+        </child>
+      </childList>
+    </child>
+    <child name="SvcLineItemsBlockParameters" type="dstruct">
+      <container>true</container>
+      <label>SvcLineItemsBlockParameters</label>
+      <childList>
+        <child name="BlockNameValueParameter" type="dstruct">
+          <array>true</array>
+          <element>dstruct_wsws.BlockParameterNameValue</element>
+          <label>BlockNameValueParameter</label>
+          <maxInstance>999</maxInstance>
+        </child>
+      </childList>
+    </child>
+  </childList>
+</dataStructure>

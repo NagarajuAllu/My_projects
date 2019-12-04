@@ -1,0 +1,27 @@
+DROP TABLE expd_hbu_order_missing;
+CREATE TABLE expd_hbu_order_missing (
+  circ_path_inst_id   NUMBER(9) NOT NULL,
+  circuit_number      VARCHAR2(100) NOT NULL,
+  circuit_status      VARCHAR2(20) NOT NULL,
+  customer            VARCHAR2(50),
+  customer_name       VARCHAR2(250),
+  customer_number     VARCHAR2(50),
+  account_number      VARCHAR2(50), 
+  icms_so_number      VARCHAR2(12),
+  order_domain        VARCHAR2(5) NOT NULL, 
+  order_number        VARCHAR2(50) NOT NULL,
+  order_type          VARCHAR2(25) NOT NULL,
+  order_status        VARCHAR2(20) NOT NULL,
+  nbr_task            NUMBER(3),
+  project_id          VARCHAR2(50),
+  cct_type            VARCHAR2(30) NOT NULL,
+  service_date        VARCHAR2(10),
+  service_type        VARCHAR2(25),
+  plate_id            VARCHAR2(50) NOT NULL,
+  created_by          VARCHAR2(3100) NOT NULL,
+  domain_name         VARCHAR2(30) NOT NULL,
+  order_row_item_id   VARCHAR2(50) NOT NULL,
+  parent_order_number VARCHAR2(3100) NOT NULL,
+  service_number      VARCHAR2(50),
+  task_name           VARCHAR2(60)
+);

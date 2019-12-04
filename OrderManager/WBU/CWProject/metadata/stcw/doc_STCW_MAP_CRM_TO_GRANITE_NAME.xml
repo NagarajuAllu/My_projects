@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="9ac24921d0bcae49820058360b499f7d" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.STCW_MAP_CRM_TO_GRANITE_NAME">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{04ab89a4-05d6-04fb-7f97-e66b4225f201}</guid>
+  <label>MapCRMToGraniteName</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="crmAttributeName" type="leaf">
+      <column>CRMATTRIBUTENAME</column>
+      <guid>{09a5ff92-0bec-44eb-7651-bd1f45106216}</guid>
+      <key>1</key>
+      <label>CRM Attribute Name</label>
+      <propertyElement type="elfld">
+        <label>CRM Attribute Name</label>
+      </propertyElement>
+      <table>STCW_CRM_TO_GRANITE_NAME</table>
+      <valueType>dtype_stcw.attributeName</valueType>
+    </variable>
+    <variable name="graniteAttributeName" type="leaf">
+      <column>GRANITEATTRIBUTENAME</column>
+      <guid>{00302245-ada4-caad-57bd-f4dfcb6be72a}</guid>
+      <label>Granite Attribute Name</label>
+      <propertyElement type="elfld">
+        <label>Granite Attribute Name</label>
+      </propertyElement>
+      <table>STCW_CRM_TO_GRANITE_NAME</table>
+      <valueType>dtype_stcw.attributeValue</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.STCW_MAP_CRM_TO_GRANITE_NAME</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="defaultGrid" type="elgrd">
+                    <colWidths>195,195</colWidths>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>390px</width>
+                    <elementList>
+                      <element name="crmAttributeName1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_NAME/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_NAME/leaf_crmAttributeName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="graniteAttributeName1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_NAME/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_NAME/leaf_graniteAttributeName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

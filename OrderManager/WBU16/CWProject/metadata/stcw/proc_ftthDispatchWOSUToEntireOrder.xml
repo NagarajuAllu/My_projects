@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.ftthDispatchWOSUToEntireOrder">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>72.0</x>
+    <y>287.0</y>
+    <childList>
+      <child name="processedAllServices" type="switchActivity">
+        <label>Processed All Services?</label>
+        <x>223.0</x>
+        <y>276.0</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>324.0</x>
+            <y>140.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>351.0</x>
+                <y>283.0</y>
+                <childList>
+                  <child name="checkIfServiceProvisionable" type="switchActivity">
+                    <label>Is Service Provisionable?</label>
+                    <x>464.0</x>
+                    <y>271.0</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>603.0</x>
+                        <y>107.0</y>
+                        <childList>
+                          <child name="sendWOSUForService" type="seqActivity">
+                            <label>Send WOSU For Service</label>
+                            <x>608.0</x>
+                            <y>278.0</y>
+                            <childList>
+                              <child name="updateLineItemForWOSU" type="scriptActivity">
+                                <label>Update LineItem For WOSU</label>
+                                <x>769.87244</x>
+                                <y>260.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - updating data for i-th lineItem in order: " + this.process.processOrder.parentLineItems[0].services[this.process.processDocument.counter].serviceLineItem.id);
+
+                                      // reading WOSU from DB
+                                      var receivedWOSU = stcw.readGraniteWOSUFromDB(this.process.processDocument.latestWOSUId);
+
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - WOSU received = " + receivedWOSU.toXML());
+
+                                      var referredLineItem = this.process.processOrder.parentLineItems[0].services[this.process.processDocument.counter].serviceLineItem;
+
+                                      // update status of the element
+                                      referredLineItem.lineItemStatus = receivedWOSU.workOrderStatus;
+                                      referredLineItem.remarks = receivedWOSU.workOrderRemarks;
+
+                                      if(receivedWOSU.nvPairs != null && receivedWOSU.nvPairs.length > 0) {
+                                          for(var n=0; n<receivedWOSU.nvPairs.length; n++) {
+                                              var paramName = receivedWOSU.nvPairs[n].name;
+                                              var paramValue = receivedWOSU.nvPairs[n].value;
+
+                                              if(paramName == "CANCELPONR_KEY" && paramValue != null) {
+                                                  referredLineItem.isPONRCancelSet = (paramValue == "SetCancelPONR");
+                                              }
+
+                                              if(paramName == "REVISEPONR_KEY" && paramValue != null) {
+                                                  referredLineItem.isPONRReviseSet = (paramValue == "SetRevisePONR");
+                                              }
+                                          }
+                                      }
+                                      referredLineItem.save();
+
+                                      if(stcw.isLineItemCompleted(receivedWOSU.workOrderStatus)) {
+                                          if(referredLineItem.isCancel) {
+                                              referredLineItem.lineItemStatus = "CANCELLED";
+                                              referredLineItem.completionDate = new Date();
+                                          }
+                                          else {
+                                              if(this.process.processOrder.orderHeader.orderType == "F") {
+                                                  if(receivedWOSU.feasibilityStatus != null) {
+                                                      referredLineItem.lineItemStatus = receivedWOSU.feasibilityStatus;
+
+                                                      if(stcw.checkIfLineItemIsFeasibleForQuote(referredLineItem.lineItemStatus.toUpperCase(), "F")) {
+                                                          referredLineItem.completionDate = new Date();
+                                                      }
+                                                  }
+                                                  else {
+                                                      // 2019/03/03 - as requested by Raj, in case the feasibilityStatus is missing as Completion,
+                                                      // EOC will consider it as "NOT FEASIBLE".
+                                                      // Previously the approach was to consider it as "FEASIBLE"
+                                                      referredLineItem.lineItemStatus = "NOT FEASIBLE";
+                                                      // referredLineItem.completionDate = new Date();
+                                                  }
+                                                  referredLineItem.reservationDays = receivedWOSU.reservationDays;
+                                              }
+                                              else {
+                                                  referredLineItem.completionDate = new Date();
+                                              }
+                                          }
+
+                                          if(receivedWOSU.nvPairs != null && receivedWOSU.nvPairs.length > 0) {
+                                              for(var n=0; n<receivedWOSU.nvPairs.length; n++) {
+                                                  var paramName = receivedWOSU.nvPairs[n].name;
+                                                  var paramValue = receivedWOSU.nvPairs[n].value;
+
+                                                  if(paramName == "CANCELPONR_KEY" && paramValue != null) {
+                                                      referredLineItem.isPONRCancelSet = (paramValue == "SetCancelPONR");
+                                                  }
+
+                                                  if(paramName == "REVISEPONR_KEY" && paramValue != null) {
+                                                      referredLineItem.isPONRReviseSet = (paramValue == "SetRevisePONR");
+                                                  }
+                                              }
+                                          }
+                                          referredLineItem.save();
+                                      }
+
+
+                                      // update the status of the orderHeader and parentLineItem
+                                      if(this.process.processOrder.orderHeader.orderType == "F") {
+                                          stcw.updateBundleAndOrderHeaderStatusForFeasibility(this.process.processOrder, referredLineItem);
+                                      }
+                                      else {
+                                          stcw.updateBundleAndOrderHeaderStatus(this.process.processOrder, referredLineItem);
+                                      }
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="sendWOSUForFTTHToCOM" type="spawnActivity">
+                                <element>proc_stcw.sendWOSUForFTTHToCOM</element>
+                                <label>Send WOSU For FTTH To COM</label>
+                                <schedule type="sched">
+                                  <duration type="dur">
+                                    <methodList>
+                                      <method name="cwOnDuration" type="action">
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          var orderStatus = this.processOrder.orderHeader.orderStatus.toUpperCase();
+
+                                          var sleepTime = 0;
+
+                                          if(orderStatus == "COMPLETED" || orderStatus == "CANCELLED") {
+                                             sleepTime = 30;
+                                          }
+
+                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - Sleeping Time for WOSU when orderStatus = '" + orderStatus + "' = " + sleepTime);
+
+                                          return sleepTime;
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </duration>
+                                </schedule>
+                                <x>770.0</x>
+                                <y>17.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      var childProcessDocument = this.activityData;
+                                      childProcessDocument.latestWOSUId = this.process.processDocument.latestWOSUId;
+                                      childProcessDocument.lineItemId = this.process.processOrder.parentLineItems[0].services[this.process.processDocument.counter].serviceLineItem.id;
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="waitForCompletion" type="joinActivity">
+                                <element>proc_stcw.sendWOSUForFTTHToCOM</element>
+                                <label>Wait For Completion</label>
+                                <x>608.0</x>
+                                <y>33.0</y>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var order = this.process.processOrder;
+                              var serviceUnderManagement = order.parentLineItems[0].services[this.process.processDocument.counter].serviceLineItem;
+
+                              var requireWOSU = (stcw.isServiceProvisionable(serviceUnderManagement.id) || (serviceUnderManagement.action != "N"));
+
+                              if(serviceUnderManagement.receivedAction == "N") {
+                                  requireWOSU = false;
+                              }
+
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Propagating WOSU to = " + serviceUnderManagement.lineItemIdentifier + "? " + requireWOSU);
+
+                              return requireWOSU;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>487.0</x>
+                        <y>171.0</y>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="increaseCounter" type="scriptActivity">
+                    <label>Increase Counter</label>
+                    <x>480.0</x>
+                    <y>33.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script>this.process.processDocument.counter++;</script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="repeatWithNextService" type="repeatActivity">
+                    <element>proc_stcw.ftthDispatchWOSUToEntireOrder/seqActivity_start/switchActivity_processedAllServices</element>
+                    <label>Repeat With Next Service</label>
+                    <x>225.0</x>
+                    <y>30.0</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var order = this.process.processOrder;
+                  var countServices = order.parentLineItems[0].services.count;
+
+                  return (this.process.processDocument.counter < countServices);
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>312.0</x>
+            <y>111.0</y>
+            <childList>
+              <child name="done" type="scriptActivity">
+                <label>Done</label>
+                <x>235.0</x>
+                <y>409.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script>this.process.processDocument.counter = 0;</script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>FTTH - Dispatch WOSU To All Elements of Entire Order</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

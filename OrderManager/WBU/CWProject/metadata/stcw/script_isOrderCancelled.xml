@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="48dde3715005fa6efda9d04b28016134" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.isOrderCancelled">
+  <guid>{07b6c095-3848-2f07-e9a8-1106e199f57e}</guid>
+  <label>Is Order Cancelled</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="order" type="rifp">
+      <mandatory>true</mandatory>
+      <type>order_com.conceptwave.system.Order</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    if (order == undefined || order == null)
+          return (false);
+
+    var versionNumber = order.versions.count - 1;
+    if (versionNumber < 0)
+          return (false);
+
+    return (order.versions [versionNumber].header.versionName == "CANCEL");
+  ]]></script>
+</script>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="4cdd7a25f44610597343dff0967ce46d" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="wDashboards.countForQuoteStatus">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{07344a28-e85c-7ba1-54a1-5b76a7cddce9}</guid>
+  <label>Count For QuoteStatus</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="totQuotes" type="leaf">
+      <guid>{07d1db1f-7797-057d-580a-743663107436}</guid>
+      <key>1</key>
+      <label>Tot. Quotes</label>
+      <propertyElement type="elfld">
+        <label>Tot. Quotes</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+    <variable name="completedQuotes" type="leaf">
+      <guid>{081f2438-c03c-d786-b291-acae3cdcba36}</guid>
+      <label>Completed Quotes</label>
+      <propertyElement type="elfld">
+        <label>Completed Quotes</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+    <variable name="openQuotes" type="leaf">
+      <guid>{0bcb694b-22dc-eeed-aedb-362d40dc01ca}</guid>
+      <label>Open Quotes</label>
+      <propertyElement type="elfld">
+        <label>Open Quotes</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+    <variable name="rejectedQuotes" type="leaf">
+      <guid>{03afd829-af2b-c3da-9048-e709323b6b71}</guid>
+      <label>Rejected Quotes</label>
+      <propertyElement type="elfld">
+        <label>Rejected Quotes</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_wDashboards.countForQuoteStatus</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="defaultGrid" type="elgrd">
+                    <colWidths>195,195,195,195</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>780px</width>
+                    <elementList>
+                      <element name="totQuotes1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.countForQuoteStatus/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.countForQuoteStatus/leaf_totQuotes</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="completedQuotes1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.countForQuoteStatus/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.countForQuoteStatus/leaf_completedQuotes</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="openQuotes1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.countForQuoteStatus/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.countForQuoteStatus/leaf_openQuotes</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="rejectedQuotes1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.countForQuoteStatus/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.countForQuoteStatus/leaf_rejectedQuotes</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="94f9e0d856c0a1500c5c61e62f212c75" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="stcw.STCW_PICKLIST_FOR_VALIDATION">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{490880b5-0df4-4bdc-b89f-4fff75396da9}</guid>
+  <label>PickList For Validation Data</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STCW_PICKLIST_FOR_VALIDATION</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="dataTypeName" type="leaf">
+      <column>DATATYPENAME</column>
+      <propertyElement type="elfld">
+        <label>DataType Name</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_PICKLIST_FOR_VALIDATION</table>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+    <variable name="value" type="leaf">
+      <column>VALUE</column>
+      <propertyElement type="elfld">
+        <label>Value</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_PICKLIST_FOR_VALIDATION</table>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.STCW_PICKLIST_FOR_VALIDATION</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STCW_PICKLIST_FOR_VALIDATIONGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>540px</width>
+                    <elementList>
+                      <element name="STCW_PICKLIST_FOR_VALIDATIONHeader" type="elhdr">
+                        <label>PickList For Validation Data</label>
+                      </element>
+                      <element name="dataTypeName" type="elfld">
+                        <label>DataType Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.STCW_PICKLIST_FOR_VALIDATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.STCW_PICKLIST_FOR_VALIDATION/leaf_dataTypeName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="value" type="elfld">
+                        <label>Value</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.STCW_PICKLIST_FOR_VALIDATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.STCW_PICKLIST_FOR_VALIDATION/leaf_value</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.search_ServiceTypeForInsertOrder">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{a533974c-015a-4b77-a224-2afb2ea7d1cd}</guid>
+  <label>Search Element: ServiceType For InsertOrder</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="serviceType" type="leaf">
+      <propertyElement type="elfld">
+        <label>ServiceType</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string30</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.search_ServiceTypeForInsertOrder</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="search_ServiceTypeForInsertOrderGrid" type="elgrd">
+                    <colWidths>90px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="search_ServiceTypeForInsertOrderHeader" type="elhdr">
+                        <label>Search Element: ServiceType For InsertOrder</label>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <label>ServiceType [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_ServiceTypeForInsertOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_ServiceTypeForInsertOrder/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>10px</height>
+                        <rowSpan>10px</rowSpan>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="8cdce6c1100cd5b7e22804a5e276f4c4" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.stcOrchestrationProcessDocument">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{4d3b8eca-f027-4804-ac9d-fdf4f0cb579a}</guid>
+  <label>STC Orchestration Process Document</label>
+  <metaVersion>4</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="sequence" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Integer</valueType>
+    </variable>
+    <variable name="counter" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Integer</valueType>
+    </variable>
+    <variable name="elementTypeInOrderTree" type="leaf">
+      <valueType>dtype_ds_ws.elementTypeInOrderTree</valueType>
+    </variable>
+    <variable name="elementIdsToBeProcessed" type="leaf">
+      <valueType>dtype_ds_ws.string4000</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_processSTC.stcOrchestrationProcessDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="eldel"/>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="stcOrchestrationProcessDocumentGrid" type="elgrd">
+                <colWidths>160,160,160,160</colWidths>
+                <numOfCols>4</numOfCols>
+                <useDefaultHeight>true</useDefaultHeight>
+                <width>640px</width>
+                <elementList>
+                  <element name="stcOrchestrationProcessDocumentHeader" type="elhdr">
+                    <label>STC Orchestration Process Document</label>
+                  </element>
+                  <element name="sequence" type="elfld">
+                    <label>Sequence</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.stcOrchestrationProcessDocument/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.stcOrchestrationProcessDocument/leaf_sequence</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="counter" type="elfld">
+                    <label>Count children</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.stcOrchestrationProcessDocument/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.stcOrchestrationProcessDocument/leaf_counter</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="elementTypeInOrderTree" type="elslct">
+                    <sorted>false</sorted>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.stcOrchestrationProcessDocument/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.stcOrchestrationProcessDocument/leaf_elementTypeInOrderTree</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="elementIdsToBeProcessed" type="elfld">
+                    <label>Element IDs to be processed</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.stcOrchestrationProcessDocument/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.stcOrchestrationProcessDocument/leaf_elementIdsToBeProcessed</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

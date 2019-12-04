@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.performFullValidationForUpdateOrder">
+  <label>Perform Full Validation For UpdateOrder</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+    <parameter name="existingBundleOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+    <parameter name="isCancel" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var failureArray = null;
+
+    // check number of bundles
+    if(bundleOrder.bundles.length > 1) {
+        var validationError = ["AE0028", Global.translateText("AE0028")];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+    }
+
+    // checking that the lineItemIdentifier of the Revise is the same of the existing order
+    var existingOrderBundleIdentifier = existingBundleOrder.bundles[0].bundle.lineItemIdentifier;
+    var receivedBundleIdentifier = bundleOrder.bundles[0].bundle.lineItemIdentifier;
+    if(existingOrderBundleIdentifier != receivedBundleIdentifier) {
+        var validationError = ["AE0076",  Global.translateText("AE0076", null, [receivedBundleIdentifier, existingOrderBundleIdentifier])];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+    }
+
+    // check if the existing bundle is in PROVISIONING, otherwise it will be rejected
+    if(existingBundleOrder.bundles[0].bundle.provisioningFlag != "PROVISIONING") {
+        if(existingBundleOrder.orderHeader.orderType != "F") {
+            var validationError = ["AE0072", Global.translateText("AE0072", null, [(isCancel ? "CancelOrder" : "ReviseOrder")])];
+            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+        }
+    }
+
+    if(isCancel && existingBundleOrder.orderHeader.orderType == "F" &&
+       existingBundleOrder.orderHeader.reservation == "N" &&
+       processSTC.isLineItemCompleted(existingBundleOrder.bundles[0].bundle.lineItemStatus)) {
+        // cancel flow is related to a completed feasibility without reservation; for this reason, the cancel have to be rejected
+        var validationError = ["AE0108", Global.translateText("AE0108", null, existingBundleOrder.bundles[0].bundle.lineItemIdentifier)];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, existingBundleOrder.bundles[0].bundle.lineItemIdentifier, failureArray, false);
+    }
+
+    /******
+
+    // 2019-04-04: Commented to support revise also for Feasibility for bundle services
+
+    if(existingBundleOrder.orderHeader.orderType == "F" &&
+       !ds_ws.isLegacyService(existingBundleOrder.bundles[0]) &&
+       !isCancel) {
+        // Revise is not supported for "F" order for bundle
+        var validationError = ["AE0074", Global.translateText("AE0074", null, ["ReviseOrder", "F"])];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+    }
+    ******/
+
+    // 2019-0407: If the "F" order was completed with FeasibilityMode = "AUTO" and the request was for ENQUIRY, Cancel cannot be accepted.
+    if(existingBundleOrder.orderHeader.orderType == "F" && isCancel) {
+        if(ds_ws.isLegacyService(existingBundleOrder.bundles[0])) {
+            if(existingBundleOrder.bundles[0].bundle.autoFeasibilityMode == true &&
+               existingBundleOrder.bundles[0].bundle.feasibilityType == "ENQUIRY" &&
+               processSTC.isLineItemCompleted(existingBundleOrder.bundles[0].bundle.lineItemStatus)) {
+                // cancel flow is related to a completed feasibility without reservation; for this reason, the cancel have to be rejected
+                var validationError = ["AE0108", Global.translateText("AE0108", null, existingBundleOrder.bundles[0].bundle.lineItemIdentifier)];
+                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, existingBundleOrder.bundles[0].bundle.lineItemIdentifier, failureArray, false);
+            }
+        }
+        else {
+            // it's a bundle - checking the lineItems
+            var circuits = existingBundleOrder.bundles[0].circuits;
+            if(circuits != null) {
+                for(var i=0; i<circuits.length; i++) {
+                    var existingCircuit = circuits[i].circuit;
+                    if(existingCircuit.autoFeasibilityMode == true &&
+                       existingCircuit.action != "N" &&
+                       existingCircuit.feasibilityType == "ENQUIRY" &&
+                       processSTC.isLineItemCompleted(existingCircuit.lineItemStatus)) {
+                        // cancel flow is related to a completed feasibility without reservation; for this reason, the cancel have to be rejected
+                        var validationError = ["AE0108", Global.translateText("AE0108", null, existingCircuit.lineItemIdentifier)];
+                        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, existingCircuit.lineItemIdentifier, failureArray, false);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    // 2015-12-30: added repush for updateOrder management
+    var existingOrderWasKO = processSTC.checkIfExistProcessKOInOrchestrationTable(existingBundleOrder.id);
+
+    // check if OM is waiting for Granite response
+    failureArray = ds_ws.checkIfLineItemIsWaitingForGraniteResp(existingBundleOrder, failureArray);
+
+    // compare and update the received order with the data of the existing order
+    failureArray = ds_ws.compareAndUpdateReceivedOrderWithExistingOne(existingBundleOrder, bundleOrder, isCancel, existingOrderWasKO, failureArray);
+
+    // perform formal validation on OrderHeader
+    failureArray = ds_ws.performFullValidationOnOrder(bundleOrder, false, failureArray);
+
+    // perform validation on Granite of the Order
+    failureArray = ds_ws.performOrderValidationInGranite(bundleOrder, false, failureArray);
+
+    // perform validation for SIP and SIPMW
+    failureArray = ds_ws.performFullValidationOnSIP_SIPMW(bundleOrder, false, isCancel, failureArray);
+
+    // perform validation for MATM
+    failureArray = ds_ws.performFullValidationOnMATM(bundleOrder, false, failureArray);
+
+    return failureArray;
+  ]]></script>
+</script>

@@ -1,0 +1,925 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<userInterface filenameHash="f9e28526ca58f5fbf1cb438fb11ac441" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.report">
+  <blockUIOnAction>true</blockUIOnAction>
+  <extends>ui_com.conceptwave.system.Application</extends>
+  <label>WD EBU Functionalities</label>
+  <metaVersion>3</metaVersion>
+  <vformList>
+    <vform name="Forms" type="frmui">
+      <extends>ui_com.conceptwave.system.Application/frmui_Forms</extends>
+      <overlayList>
+        <overlay name="Menu" type="exov">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</extends>
+          <label>Menu</label>
+          <overrideList>
+            <override name="HorizontalLayoutForMenuItems" type="elext">
+              <visible type="varPath">
+                <variablePathList>
+                  <variablePath>ui_ds_ws.report/permMethod_reportView</variablePath>
+                </variablePathList>
+              </visible>
+              <elementList>
+                <element name="options" type="elmnu">
+                  <label>Options</label>
+                  <menuType>2</menuType>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_ds_ws.report/permMethod_reportView</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="finder_bundleOrderSTC" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_finder_bundleOrderSTC</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>List &quot;Bundle Orders STC&quot;</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_finder_orderSTCView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="finder_orderSTC" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_finder_orderSTC</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>List &quot;Orders STC&quot;</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_finder_orderSTCView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="msgLOg" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_msgLOg</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/msgLog.gif</icon>
+                      <label>Message Log</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_msgLOgView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="insertFeasibilityOrder" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_insertNewFeasibilityOrder</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/MenuIconAdd.gif</icon>
+                      <label>Insert New Feasibility Order</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_insertOrderPrivilegeView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="uploadBulkFeasibilityOrders" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_uploadBulkFeasibilityOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwt/images/24/export1.png</icon>
+                      <label>Upload Bulk Feasibility Orders</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_insertOrderPrivilegeView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="finder_uploadedBulkFeasibilityOrders" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_finder_uploadedBulkFeasibilityOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/all.gif</icon>
+                      <label>Search Uploaded Bulk Feasibility Orders</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_insertOrderPrivilegeView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="sep2" type="elsep">
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_insertOrderPrivilegeView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="SelectApplication" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_SelectApplication</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/choice.gif</icon>
+                      <label>Select Application</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                    <element name="Logout" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_Logout</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/MenuIconLogout.gif</icon>
+                      <label>Logout</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="configuration" type="elmnu">
+                  <label>WD Configuration</label>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_ds_ws.report/permMethod_configMenuView</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="generalConfig" type="elmnu">
+                      <label>General Configuration</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="mapWorkOrderTypeView" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_ds_ws.report/usrActionMethod_finder_mapWorkOrderType</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Map WorkOrderType - Read only</label>
+                        </element>
+                        <element name="serviceTypeBehaviorConfiguration" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_ds_ws.report/usrActionMethod_finder_serviceTypeBehaviorConfig</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Service Type Behavior Configuration</label>
+                        </element>
+                        <element name="productTypeNameMap" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_ds_ws.report/usrActionMethod_finder_productTypeNameMap</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Product Type Name Mapping With CRM</label>
+                        </element>
+                        <element name="serviceTypeNameMap" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_ds_ws.report/usrActionMethod_finder_serviceTypeNameMap</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Service Type Name Mapping  With CRM</label>
+                        </element>
+                        <element name="scanConfigurationMgnt" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_ds_ws.report/usrActionMethod_scanCfgFinderView</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Top/Down Scan Configuration</label>
+                        </element>
+                        <element name="sep3" type="elsep"/>
+                        <element name="configFindersForNVPair4GUIMgmt" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_ds_ws.report/usrActionMethod_finder_configFindersForNVPair4GUI</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Finders For NV Pairs For Insert Order From GUI Configuration</label>
+                        </element>
+                        <element name="configurableNVPair4GUIMgmt" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_ds_ws.report/usrActionMethod_finder_configurableNVPair4GUI</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>NV Pairs For Insert Order From GUI Configuration</label>
+                        </element>
+                        <element name="insertOrderBulkMapMgmt" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_ds_ws.report/usrActionMethod_finder_insertOrder_BulkMap</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Insert Order Bulk Map Configuration</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="validation" type="elmnu">
+                      <label>Configuration for Validation</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="generalConfigValidation" type="elmnu">
+                          <label>General Configuration for Validation</label>
+                          <showDown>true</showDown>
+                          <showMenuDropDown>true</showMenuDropDown>
+                          <showRollOver>true</showRollOver>
+                          <elementList>
+                            <element name="wdBundleOrderHeaderValidationMap" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>ui_ds_ws.report/usrActionMethod_finder_bundleOrderHeaderValidationMap</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <label>BundleOrderHeader Validation Map</label>
+                            </element>
+                            <element name="mandatoryNVPairOrderTypeServiceType" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>ui_ds_ws.report/usrActionMethod_finder_mandatoryNVPairOrderTypeServiceType</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <label>Mandatory NVPair For ServiceType &amp;  OrderType</label>
+                            </element>
+                            <element name="valuesForPickListForValidation" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>ui_ds_ws.report/usrActionMethod_finder_pickListForValidation</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <label>Values For PickLists - only attributes (for Validation)</label>
+                            </element>
+                            <element name="skipNVPairMgmt" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>ui_ds_ws.report/usrActionMethod_finder_skipNVPairMgmt</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <label>Skip NVPair Management</label>
+                            </element>
+                            <element name="newAttrNVPairMgmt" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>ui_ds_ws.report/usrActionMethod_finder_newAttrNVPairMgmt</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <label>New Attribute NVPair Management</label>
+                            </element>
+                            <element name="storeForwardNVPairMgmt" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>ui_ds_ws.report/usrActionMethod_finder_storeAndForwardNVPairMgmt</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <label>Store &amp; Forward NVPair Management</label>
+                            </element>
+                            <element name="nvPair_ServiceType_pickListForValidation" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>ui_ds_ws.report/usrActionMethod_finder_nvPair_ServiceType_pickListForValidation</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <label>ServiceType &amp; NVPair Values for PickLists (for Validation)</label>
+                            </element>
+                            <element name="blockParamsMgmt" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>ui_ds_ws.report/usrActionMethod_blockParamFinderView</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <label>BlockParameters Management</label>
+                            </element>
+                          </elementList>
+                        </element>
+                        <element name="bundleConfigValidation" type="elmnu">
+                          <label>Bundle Items Configuration for Validation</label>
+                          <showDown>true</showDown>
+                          <showMenuDropDown>true</showMenuDropDown>
+                          <showRollOver>true</showRollOver>
+                          <elementList>
+                            <element name="bundleProductTypeMgmt" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>ui_ds_ws.report/usrActionMethod_finder_bundleProductTypeMgmt</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <label>Bundle ProductType Name Configuration</label>
+                            </element>
+                            <element name="wdLineItemValidationMap" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>ui_ds_ws.report/usrActionMethod_finder_lineItemValidationMap</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <label>Bundle LineItem Validation Map</label>
+                            </element>
+                          </elementList>
+                        </element>
+                      </elementList>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="migration" type="elmnu">
+                  <label>Migration</label>
+                  <menuType>2</menuType>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_ds_ws.report/permMethod_insertJMSOrderResponseView</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="insertJMSOrderResponse" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_insertJMSOrderResponse</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Insert JMS Order Response</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_insertJMSOrderResponseView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="Separator" type="elsep">
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_script_migrateOrdersToBundleView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="migrateEBULegacyToBundle" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_script_migrateEBULegacyToBundle</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Perform Migration To Bundle of EBU LegacyOrders</label>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_script_migrateOrdersToBundleView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="migrateHBUSIPToBundle" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_script_migrateHBUSIPToBundle</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Perform Migration To Bundle of HBU SIP Orders</label>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_script_migrateOrdersToBundleView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="startProcessForMigratedBundleInProv" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_script_startProcessForMigratedBundleInProv</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Start Process For Migrated BundleOrders in PROVISIONING</label>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_script_migrateOrdersToBundleView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="deleteMigratedOrders" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_script_deleteMigratedOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Delete Migrated Orders</label>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_script_migrateOrdersToBundleView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="Separator1" type="elsep"/>
+                    <element name="createLegacyOrderFromGraniteMenu" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_createLegacyOrderFromGranite</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Create Legacy Order From Granite</label>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_script_migrateOrdersToBundleView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </override>
+          </overrideList>
+        </overlay>
+        <overlay name="Page" type="expg">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</extends>
+          <label>Page</label>
+          <stylesheet>/cwf/css/cwf.css</stylesheet>
+          <title>WD EBU Functionalities</title>
+          <visible type="varPath">
+            <variablePathList>
+              <variablePath>ui_ds_ws.report/permMethod_reportView</variablePath>
+            </variablePathList>
+          </visible>
+        </overlay>
+      </overlayList>
+    </vform>
+  </vformList>
+  <methodList>
+    <method name="reportView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_InsertOrder</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Migration</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report_Dft</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report_EBU</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="finder_orderSTC" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <userInterface>findOrder_ds_ws.findAllSTCOrders</userInterface>
+      <validate>true</validate>
+      <valueType>findOrder_ds_ws.findAllSTCOrders</valueType>
+    </method>
+    <method name="finder_orderSTCView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Report</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report_Dft</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report_EBU</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="msgLOg" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findSql_ds_ws.msgLogFinder/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findSql_ds_ws.msgLogFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_ds_ws.msgLogFinder</valueType>
+    </method>
+    <method name="msgLOgView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Report</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report_Dft</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report_EBU</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="SelectApplication" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script><![CDATA[return new Document("cwf_oe:SelectApp");]]></script>
+    </method>
+    <method name="Logout" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script>UserProfile.logout();</script>
+    </method>
+    <method name="finder_bundleOrderSTC" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <userInterface>findOrder_ds_ws.findAllSTCBundleOrders</userInterface>
+      <validate>true</validate>
+      <valueType>findOrder_ds_ws.findAllSTCBundleOrders</valueType>
+    </method>
+    <method name="insertJMSOrderResponse" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>doc_migrationSTC.insertJMSOutputResponse</userInterface>
+      <validate>true</validate>
+      <valueType>doc_migrationSTC.insertJMSOutputResponse</valueType>
+    </method>
+    <method name="insertJMSOrderResponseView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="finder_lineItemValidationMap" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType</valueType>
+    </method>
+    <method name="finder_mapWorkOrderType" type="usrActionMethod">
+      <userInterface>findDoc_processSTC.findSTC_MAP_WORKORDERTYPE</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_processSTC.findSTC_MAP_WORKORDERTYPE</valueType>
+    </method>
+    <method name="finder_mandatoryNVPairOrderTypeServiceType" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findMandatoryNVNames_OrderType_ServiceType</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findMandatoryNVNames_OrderType_ServiceType</valueType>
+    </method>
+    <method name="finder_pickListForValidation" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findValuesForPickListForValidation</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findValuesForPickListForValidation</valueType>
+    </method>
+    <method name="finder_serviceTypeBehaviorConfig" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findBehaviorConfigurationForServiceType</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findBehaviorConfigurationForServiceType</valueType>
+    </method>
+    <method name="script_migrateEBULegacyToBundle" type="usrActionMethod">
+      <confirmation>ui_ds_ws.report/uimthd_script_migrateEBULegacyToBundle_confirmation</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        var found = 0;
+        var loadedSuccessfully = 0;
+        var migratedWithValidationErrors = 0;
+        var processedSuccessfully = 0;
+
+
+        for (var l=0; l<50; l++) {
+            var statisticsMigration = migrationSTC.executeEBULegacyOrderMigrationSingleRun();
+
+            found                        += statisticsMigration[0];
+            loadedSuccessfully           += statisticsMigration[1];
+            migratedWithValidationErrors += statisticsMigration[2];
+            processedSuccessfully        += statisticsMigration[3];
+
+
+            Global.commitTransaction("ORDER");
+        }
+        var msg = "Execution Completed\n" + "Statistics:\n" +
+                  "  Found: " + found + "\n" +
+                  "  Loaded Successfully: " + loadedSuccessfully + "\n" +
+                  "  Migrated With Validation Errors: " + migratedWithValidationErrors + "\n" +
+                  "  Processed Successfully: " + processedSuccessfully;
+        debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] migrateEBULegacyToBundle - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_migrateOrdersToBundleView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Migration</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="script_migrateEBULegacyToBundle_confirmation" type="uimthd">
+      <script><![CDATA[return "AW0005";]]></script>
+    </method>
+    <method name="script_startProcessForMigratedBundleInProv" type="usrActionMethod">
+      <confirmation>ui_ds_ws.report/uimthd_script_startProcessForMigratedBundleInProv_confirm</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        var orderIdsFound = Finder.runFinder("migrationSTC.findMigratedOrderIdsInProvisioning", "select", null);
+        // note: the finder returns a document whose leaf name is "cwDocID" but it contains the cwOrderId!!!!
+
+        var found = 0;
+        var migratedWithValidationErrors = 0;
+        var processedSuccessfully = 0;
+
+        if(orderIdsFound != null) {
+            found = orderIdsFound.length;
+            for(var i=0; i<orderIdsFound.length; i++) {
+                try {
+                    var order = Order.getOrderById(orderIdsFound[i].cwDocID);
+                    if(order!= null) {
+                        var validationErrors = order.validate(1000, true);
+                        if(validationErrors != null) {
+                            debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] StartProcessForMigratedBundleInProv - Order " + orderIdsFound[i].cwDocID + " has validation errors!");
+                            migratedWithValidationErrors++
+                        }
+                        else {
+                            debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] StartProcessForMigratedBundleInProv - Starting OrchestrationProcess For Order " + orderIdsFound[i].cwDocID);
+                            var processId = Process.startProcess ("processSTC.mainSTCOrchestrationProcess", orderIdsFound[i].cwDocID, orderIdsFound[i].cwDocID);
+                            debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] StartProcessForMigratedBundleInProv - Started OrchestrationProcess For Order " + orderIdsFound[i].cwDocID + "; processId = " + processId);
+                            processedSuccessfully++;
+                        }
+                    }
+                    else {
+                        debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] StartProcessForMigratedBundleInProv - Unable to load the order " + orderIdsFound[i].cwDocID + "!");
+                    }
+                }
+                catch(exc) {
+        debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] StartProcessForMigratedBundleInProv - Order.id: " + orderIdsFound[i].cwDocID + " - Exc: " + exc.message);
+                }
+            }
+        }
+
+        var msg = "Execution Completed\n" + "Statistics:\n" +
+                  "  Found: " + found + "\n" +
+                  "  Migrated with validation errors: " + migratedWithValidationErrors + "\n" +
+                  "  Processed Successfully: " + processedSuccessfully;
+        debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] StartProcessForMigratedBundleInProv - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_startProcessForMigratedBundleInProv_confirm" type="uimthd">
+      <script><![CDATA[return "AW0006";]]></script>
+    </method>
+    <method name="script_deleteMigratedOrders" type="usrActionMethod">
+      <confirmation>ui_ds_ws.report/uimthd_script_deleteMigratedOrders_confirm</confirmation>
+      <script><![CDATA[
+        var inputDoc = new Document("ds_ws.search_bundleOrder");
+        inputDoc.isMigrated = true;
+
+        var orderListFound = Finder.runFinder("ds_ws.findAllSTCBundleOrders", "select", inputDoc);
+
+        var countDeleted = 0;
+        if(orderListFound != null && orderListFound.length > 0) {
+            var limit = (orderListFound.length > 1000 ? 1000 : orderListFound.length);
+
+            for(var i=0; i<limit; i++) {
+                var order = Order.getOrderById(orderListFound[i].id);
+                order.deleteOrder();
+                ds_ws.deleteAllReasonCodesInOrder(order.id);
+                ds_ws.deleteAllBlockValuesInOrder(order.id);
+
+                var orderOrchestrationList = processSTC.findRecordsInOrchTabByOrderId_ParentId(order.id);
+                if(orderOrchestrationList != null && orderOrchestrationList.length > 0) {
+                    for(var j=0; j<orderOrchestrationList.length; j++) {
+                        orderOrchestrationList[j].deleteItem();
+                    }
+                }
+
+                countDeleted++;
+            }
+        }
+
+        var msg = "Execution Completed\n" +
+                  "  Deleted: " + countDeleted;
+        debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] deleteMigratedOrders - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_deleteMigratedOrders_confirm" type="uimthd">
+      <script><![CDATA[return "AW0007";]]></script>
+    </method>
+    <method name="finder_bundleOrderHeaderValidationMap" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findOrderHeaderValidationMapByOrdType</valueType>
+    </method>
+    <method name="finder_productTypeNameMap" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findProductTypeNameMapDocument</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findProductTypeNameMapDocument</valueType>
+    </method>
+    <method name="finder_serviceTypeNameMap" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findServiceTypeNameMapDocument</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findServiceTypeNameMapDocument</valueType>
+    </method>
+    <method name="script_migrateHBUSIPToBundle_confirmation" type="uimthd">
+      <script><![CDATA[return "AW0010";]]></script>
+    </method>
+    <method name="script_migrateHBUSIPToBundle" type="usrActionMethod">
+      <confirmation>ui_ds_ws.report/uimthd_script_migrateHBUSIPToBundle_confirmation</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        var found = 0;
+        var loadedSuccessfully = 0;
+        var migratedWithValidationErrors = 0;
+        var processedSuccessfully = 0;
+
+
+        for (var l=0; l<50; l++) {
+            var statisticsMigration = migrationSTC.executeHBUSIPOrderMigrationSingleRun();
+
+            found                        += statisticsMigration[0];
+            loadedSuccessfully           += statisticsMigration[1];
+            migratedWithValidationErrors += statisticsMigration[2];
+            processedSuccessfully        += statisticsMigration[3];
+
+
+            Global.commitTransaction("ORDER");
+        }
+        var msg = "Execution Completed\n" + "Statistics:\n" +
+                  "  Found: " + found + "\n" +
+                  "  Loaded Successfully: " + loadedSuccessfully + "\n" +
+                  "  Migrated With Validation Errors: " + migratedWithValidationErrors + "\n" +
+                  "  Processed Successfully: " + processedSuccessfully;
+        debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] migrateHBUSIPToBundle - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="finder_skipNVPairMgmt" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findSKIPNVPair</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findSKIPNVPair</valueType>
+    </method>
+    <method name="finder_newAttrNVPairMgmt" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findNewAttrNVPair</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findNewAttrNVPair</valueType>
+    </method>
+    <method name="createLegacyOrderFromGranite" type="usrActionMethod">
+      <form>doc_migrationSTC.createLegacyOrderDocument/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>doc_migrationSTC.createLegacyOrderDocument</userInterface>
+      <validate>true</validate>
+      <valueType>doc_migrationSTC.createLegacyOrderDocument</valueType>
+    </method>
+    <method name="finder_bundleProductTypeMgmt" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findBundleProductType</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findBundleProductType</valueType>
+    </method>
+    <method name="finder_nvPair_ServiceType_pickListForValidation" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findNVPair_ServiceType_pickListForValidation</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findNVPair_ServiceType_pickListForValidation</valueType>
+    </method>
+    <method name="blockParamFinderView" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findBlockParamsConf</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findBlockParamsConf</valueType>
+    </method>
+    <method name="scanCfgFinderView" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findScanCfgView</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findScanCfgView</valueType>
+    </method>
+    <method name="finder_storeAndForwardNVPairMgmt" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findStoreAndForwardNVPair</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findStoreAndForwardNVPair</valueType>
+    </method>
+    <method name="insertOrderPrivilegeView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_InsertOrder</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="insertNewFeasibilityOrder" type="usrActionMethod">
+      <form>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>doc_ds_ws.insertNewFeasibilityOrderDocument</userInterface>
+      <valueType>doc_ds_ws.insertNewFeasibilityOrderDocument</valueType>
+    </method>
+    <method name="finder_configurableNVPair4GUI" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findConfigurableNVPairsForGUI</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findConfigurableNVPairsForGUI</valueType>
+    </method>
+    <method name="finder_configFindersForNVPair4GUI" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findConfigFinderForNVPairForGUI</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findConfigFinderForNVPairForGUI</valueType>
+    </method>
+    <method name="configMenuView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report_Dft</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>STC_Report_EBU</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition</script>
+    </method>
+    <method name="uploadBulkFeasibilityOrders" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <dialogObject>ui_com.conceptwave.system.Dialog</dialogObject>
+      <form>ui_ds_ws.uploadFeasibilityOrders/frmui_Forms/exov_Default</form>
+      <userInterface>ui_ds_ws.uploadFeasibilityOrders</userInterface>
+      <validate>true</validate>
+      <valueType>ui_ds_ws.uploadFeasibilityOrders</valueType>
+    </method>
+    <method name="finder_insertOrder_BulkMap" type="usrActionMethod">
+      <userInterface>findDoc_ds_ws.findInsertOrder_BulkMap</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_ds_ws.findInsertOrder_BulkMap</valueType>
+    </method>
+    <method name="search_showErrorsForBulkLoadingByJobId" type="uimthd">
+      <parameterList>
+        <parameter name="jobId" type="rifp">
+          <type>dtype_ds_ws.integer10</type>
+        </parameter>
+      </parameterList>
+      <script><![CDATA[
+        var finder = new Finder("ds_ws.findErrorsInBulkLoading");
+        finder.searchDocument.jobId = jobId;
+        finder.search();
+
+        return finder;
+      ]]></script>
+    </method>
+    <method name="finder_uploadedBulkFeasibilityOrders" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script><![CDATA[
+        var finder = new Finder("ds_ws.findUploadedBulkFeasibilityOrder");
+        finder.setViewByName("findUploadedFeasibilityOrderWithSearchDocView", true);
+        return finder;
+      ]]></script>
+    </method>
+    <method name="search_uploadedBulkFeasibilityOrdersByJobId" type="uimthd">
+      <parameterList>
+        <parameter name="jobId" type="rifp">
+          <type>dtype_ds_ws.integer10</type>
+        </parameter>
+      </parameterList>
+      <script><![CDATA[
+        var finder = new Finder("ds_ws.findUploadedBulkFeasibilityOrder");
+        finder.searchDocument.jobId = jobId;
+        finder.setViewByName("findUploadedFeasibilityOrderView", true);
+        finder.search();
+
+        return finder;
+      ]]></script>
+    </method>
+  </methodList>
+</userInterface>

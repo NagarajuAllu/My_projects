@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.receiveSiteInfoUpdate">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>323.0</x>
+    <y>60.70117</y>
+    <childList>
+      <child name="receiveSiteInfoUpdate" type="opActivity">
+        <element>iface_wgws.ifExpediter_GRANITE/oper_operation_SiteInformationUpdate</element>
+        <label>Receive SiteInformationUpdate</label>
+        <participant>part_stcw.GraniteInputInterface</participant>
+        <x>285.65656</x>
+        <y>160.40234</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.updateHistoryEvent (this, "graniteReceiveSiteInfoUpdate");
+
+              stcw.storeGenericProcessMessage (this.process.id, "GRANITE_REQUEST", this.activityData);
+
+              stcw.storeSiteInfoUpdateData(this.process.id, this.activityData.siteID, this.activityData.siteName);
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="done" type="scriptActivity">
+        <label>Done</label>
+        <x>329.0</x>
+        <y>276.70117</y>
+      </child>
+      <child name="GraniteInputInterface" type="participantActivity">
+        <label>GRANITE Input Interface</label>
+        <participant>part_stcw.GraniteInputInterface</participant>
+        <x>8.0</x>
+        <y>166.0</y>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Receive SiteInfoUpdate</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="b53f9b79b0b20e223a1a84339f517d8c" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="migrationSTC.insertJMSOutputResponse">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{00a89c14-507c-f400-6dc5-af827a673e5f}</guid>
+  <label>Insert JMSOutput Response</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="errorCode" type="leaf">
+      <guid>{0c727dc0-8a59-a053-4df8-e7ae51062f54}</guid>
+      <label>ErrorCode</label>
+      <propertyElement type="elfld">
+        <label>ErrorCode</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="errorDescription" type="leaf">
+      <guid>{066579de-1248-a4fa-22eb-855cff091b92}</guid>
+      <label>ErrorDescription</label>
+      <propertyElement type="elfld">
+        <label>ErrorDescription</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="errorTime" type="leaf">
+      <guid>{0609dce8-a2f0-bc8b-c9dc-01b81ca4e92d}</guid>
+      <label>ErrorTime</label>
+      <propertyElement type="elfld">
+        <label>ErrorTime</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="errorType" type="leaf">
+      <guid>{0668565e-f948-3af0-59ac-97985014274f}</guid>
+      <label>ErrorType</label>
+      <propertyElement type="elfld">
+        <label>ErrorType</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="functionName" type="leaf">
+      <guid>{0fe32af7-c954-6eb7-314b-e28c92ffb7de}</guid>
+      <label>FunctionName</label>
+      <propertyElement type="elfld">
+        <label>FunctionName</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="objectId" type="leaf">
+      <guid>{0ee42dcf-12f3-9eb2-3734-5a49bcb0b763}</guid>
+      <label>ObjectId</label>
+      <propertyElement type="elfld">
+        <label>ObjectId</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="status" type="leaf">
+      <guid>{0c2e2507-777e-5efa-5bcd-10ae9bce6644}</guid>
+      <label>Status</label>
+      <propertyElement type="elfld">
+        <label>Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="systemName" type="leaf">
+      <guid>{047ceb10-b5d9-3b79-b425-f0fa508d211f}</guid>
+      <label>SystemName</label>
+      <propertyElement type="elfld">
+        <label>SystemName</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="orderNumber" type="leaf">
+      <guid>{0803770f-7db1-6d69-3266-21bc4ba59269}</guid>
+      <label>OrderNumber</label>
+      <propertyElement type="elfld">
+        <label>OrderNumber</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="xngOrderNumber" type="leaf">
+      <guid>{0adbbb0b-6e2f-1ff4-0dad-dd7cfffc2a18}</guid>
+      <label>XngOrderNumber</label>
+      <propertyElement type="elfld">
+        <label>XngOrderNumber</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="parentOrderNumber" type="leaf">
+      <guid>{0a8c261b-a4bc-3e90-66f2-301415f35dd6}</guid>
+      <label>ParentOrderNumber</label>
+      <propertyElement type="elfld">
+        <label>ParentOrderNumber</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="remarks" type="leaf">
+      <guid>{00bacd1c-ca25-9fbf-8a2f-9902e12f10d1}</guid>
+      <label>Remarks</label>
+      <propertyElement type="elfld">
+        <label>Remarks</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string1000</valueType>
+    </variable>
+    <variable name="businessUnit" type="leaf">
+      <guid>{09f9a032-85ba-796e-b3fa-8808c4f77bab}</guid>
+      <label>BusinessUnit</label>
+      <propertyElement type="elfld">
+        <label>BusinessUnit</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocInit" type="action">
+      <guid>{032abc66-25c4-0e37-b913-5c61640221d3}</guid>
+      <system>true</system>
+      <script><![CDATA[this.businessUnit = "Home";]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_migrationSTC.insertJMSOutputResponse</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="insertJMSOutputResponseHeader" type="elhdr">
+                    <label>Insert JMS Response</label>
+                    <showValidation>true</showValidation>
+                    <style>CwFOT</style>
+                  </element>
+                  <element name="insertJMSOutputResponseHeader1" type="elhdr">
+                    <label>OrderAcknowledgement Data</label>
+                  </element>
+                  <element name="groupGrid" type="elgrd">
+                    <colWidths>124,124,124,124</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <style>fittedSimpleBorder</style>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>496px</width>
+                    <wrapLabel>true</wrapLabel>
+                    <elementList>
+                      <element name="orderNumber1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <optional type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </optional>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_orderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="xngOrderNumber1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_xngOrderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="parentOrderNumber1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_parentOrderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="businessUnit1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <optional type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </optional>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_businessUnit</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="remarks1" type="eltxtArea">
+                        <columnSpan>4</columnSpan>
+                        <height>20px</height>
+                        <removeLabelLine>true</removeLabelLine>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_remarks</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>100%</width>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="groupGrid1" type="elgrd">
+                    <colWidths>124,124,124,124</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>496px</width>
+                    <elementList>
+                      <element name="rowSpacer" type="elrsp">
+                        <columnSpan>04</columnSpan>
+                        <startRow>true</startRow>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="insertJMSOutputResponseHeader2" type="elhdr">
+                    <label>Failure Data</label>
+                  </element>
+                  <element name="groupGrid2" type="elgrd">
+                    <colWidths>124,124,124,124</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <style>fittedSimpleBorder</style>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>496px</width>
+                    <wrapLabel>true</wrapLabel>
+                    <elementList>
+                      <element name="status1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <optional type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </optional>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_status</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="errorCode1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_errorCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="errorDescription1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_errorDescription</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="errorTime1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_errorTime</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="errorType1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_errorType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="functionName1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_functionName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="objectId1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_objectId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="systemName1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.insertJMSOutputResponse/leaf_systemName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="hl1" type="elext">
+                <elementList>
+                  <element name="sendDataLikeJMSResponse" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/usrActionMethod_sendDataLikeJMSResponse_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Send Data Like JMS Response</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+      <method name="sendDataLikeJMSResponse" type="usrActionMethod">
+        <autosave>true</autosave>
+        <confirmation>doc_migrationSTC.insertJMSOutputResponse/ui_UserInterface/action_sendDataLikeJMSResponse_confirm</confirmation>
+        <script><![CDATA[
+          var document = this.model;
+          var jmsResponse = new DataStructure("ds_jms:orderAcknowledgementWithFailure_el");
+          jmsResponse.failure.errorCode = document.errorCode;
+          jmsResponse.failure.errorDescription = document.errorDescription;
+          jmsResponse.failure.errorTime = document.errorTime;
+          jmsResponse.failure.errorType = document.errorType;
+          jmsResponse.failure.functionName = document.functionName;
+          jmsResponse.failure.objectId = document.objectId;
+          jmsResponse.failure.processInstanceld = null;
+          jmsResponse.failure.sourceErrorCode = null;
+          jmsResponse.failure.status = document.status;
+          jmsResponse.failure.systemName = document.systemName;
+          jmsResponse.failure.targetRecored = null;
+          jmsResponse.failure.userId = null;
+
+          jmsResponse.orderAcknowledgement.businessUnit = document.businessUnit;
+          jmsResponse.orderAcknowledgement.orderNumber = document.orderNumber;
+          jmsResponse.orderAcknowledgement.parentOrderNumber = document.parentOrderNumber;
+          jmsResponse.orderAcknowledgement.remarks = document.remarks;
+          jmsResponse.orderAcknowledgement.xngOrderNumber = document.xngOrderNumber;
+
+          ifGranite_jms.manageGraniteMsg_SubmitUpdateOrderResponse(jmsResponse);
+
+          Global.showUserMessage("Data sent to Expediter");
+        ]]></script>
+      </method>
+      <method name="sendDataLikeJMSResponse_confirm" type="action">
+        <script><![CDATA[return "AW0004";]]></script>
+      </method>
+      <method name="sendDataLikeJMSResponse_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <validate>true</validate>
+        <script><![CDATA[
+          if (!this.isValid) {
+            var messages = this.validationErrors == null ? null : this.validationErrors.getErrorsAsString(10);
+            if (messages == null)
+              Global.throwException("UU0129", this);
+            else
+              Global.throwException("UU0147", "<br>" + messages);
+          }
+          var result = this.sendDataLikeJMSResponse();
+          Global.runContentDisplayScript(this, "displayScript");
+          return result;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

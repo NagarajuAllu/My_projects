@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="9ff97a656d32e5b31d600e5a61788e93" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.forwardSiteInfoUpdateToCrm_cwr1">
+  <activity name="start" type="seqActivity">
+    <guid>{002dd5b3-2a5c-13c6-883c-5459301947e8}</guid>
+    <label>Start</label>
+    <x>202.0</x>
+    <y>23.0</y>
+    <childList>
+      <child name="sendSiteInfoUpdateToCRM" type="scriptActivity">
+        <guid>{00f7d680-5cbc-c37f-135e-2d13ccbe0f85}</guid>
+        <label>Send SiteInfoUpdate To CRM</label>
+        <x>176.0</x>
+        <y>125.0</y>
+        <childList>
+          <child name="compensate" type="compensateActivity">
+            <guid>{018b563f-8b16-b0d8-d361-fe273c0667d5}</guid>
+            <label>Compensate</label>
+            <x>190.0</x>
+            <y>226.0</y>
+            <childList>
+              <child name="retry" type="scriptActivity">
+                <guid>{0150e73d-26d5-6032-a3a7-7b347832cca4}</guid>
+                <label>Retry</label>
+                <x>33.0</x>
+                <y>143.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{0efa6c21-8de2-e8f6-665d-bef4d3c947b9}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      debugPrintln(stcc.getSysdateForLog() + "[" + process.id + "] - Sending SiteInfoUpdate To EAI: Retrying ...");
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{048d959e-cf0e-850c-7962-dc4eff45aca4}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              var debugHeader = "[" + this.process.id + "] - SendSiteInfoUpdateToCRM - ";
+
+              var processDocument = this.process.processDocument;
+              processDocument.exceptionType = null;
+
+              try {
+                    // extracting Granite response must be forward to EAI
+                    var graniteInput = stcw.findGenericProcessMessage(this.process.id, "GRANITE_REQUEST", "wgws:siteInformationUpdate");
+                    var request = new DataStructure("siSIUpdate:processRequest_el");
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "graniteInput = '" + graniteInput.toXML() + "'");
+
+                          stcw.map_graniteSiteInfoUpdate_CRMSiteInfoUpdate (request, graniteInput);
+
+                          // check payload size
+                          stcc.checkPayloadToCRMSize(request, this.process.processDocument.interOperationName);
+
+                          // sending data to EAI
+                          var response = stcw.sendSiteInfoUpdateToEAI(request, this.process.id);
+
+                          // managing response
+                          rpts.updateHistoryEvent (this);
+
+                          if (response == null) {
+                                processDocument.exceptionType = "Interface";
+                          }
+                          else {
+                                processDocument.ackResult = response.Acknowledgement.Status;
+                                stcw.storeGenericProcessMessage(this.process.id, "CRM_RESPONSE", response);
+                          }
+                    }
+                    catch(exc) {
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "Catched Exception " + exc.message);
+                          processDocument.exceptionType = "Application";
+                    }
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{012ab2a4-fa3b-0115-52a4-9f0cfb85be9b}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="interfaceExcp" type="onExceptionActivity">
+        <element>excp_cwf_pm.interfaceExcp</element>
+        <guid>{065b218f-5dca-2d64-9f7b-06805e0750b9}</guid>
+        <label>External interface error</label>
+        <x>0.0</x>
+        <y>0.0</y>
+        <childList>
+          <child name="handleError" type="seqActivity">
+            <guid>{099d03fa-9cc7-1992-4419-efc8fdcd32c0}</guid>
+            <label>Handle Error</label>
+            <x>601.0</x>
+            <y>125.0</y>
+            <childList>
+              <child name="handleInterfaceError" type="subflowActivity">
+                <element>proc_stcw.handleInterfaceError</element>
+                <guid>{046b10df-e154-6cfa-4484-18bd97037e30}</guid>
+                <label>Handle Interface Error</label>
+                <x>601.0</x>
+                <y>238.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0909992a-5f5c-2630-8ebf-91c13098ee31}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="unexpectedError" type="onExceptionActivity">
+        <element>excp_stcw.applicationError</element>
+        <guid>{0844ba3d-4ab5-dfba-74e3-267d80cc515b}</guid>
+        <label>Unexpected Error</label>
+        <x>0.0</x>
+        <y>0.0</y>
+        <childList>
+          <child name="handleError" type="seqActivity">
+            <guid>{0621c3dd-7eec-5305-4655-9a66b93743fb}</guid>
+            <label>Handle Error</label>
+            <x>802.0</x>
+            <y>23.0</y>
+            <childList>
+              <child name="handleApplicationError" type="subflowActivity">
+                <element>proc_stcw.handleApplicationError</element>
+                <guid>{016206b5-7600-9342-ab11-d4b2ac33201c}</guid>
+                <label>Handle Application Error</label>
+                <x>796.0</x>
+                <y>119.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0b1a98e9-dbe3-e050-4dfa-8f0f10aa6301}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="applicationErrored" type="switchActivity">
+        <guid>{0eb4ce97-9c11-8cbc-7480-6c93e98e52dd}</guid>
+        <label>Application Errored?</label>
+        <x>186.0</x>
+        <y>257.0</y>
+        <childList>
+          <child name="interfaceError" type="caseActivity">
+            <guid>{04404bca-bb64-102b-50e7-9bfa28b59ae7}</guid>
+            <label>Interface Error</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="interfaceExcp" type="exceptActivity">
+                <element>excp_cwf_pm.interfaceExcp</element>
+                <guid>{023d401f-9f9f-2208-81e6-ec25c9fda4ea}</guid>
+                <label>External interface error</label>
+                <x>74.0</x>
+                <y>374.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{09a69eaf-5c38-dafb-8689-993b3904410d}</guid>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.exceptionType == "Interface");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="applicationError" type="caseActivity">
+            <guid>{07e21d6a-7d94-50be-fdaa-9590708b2b77}</guid>
+            <label>Application Error</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="applicationExcp" type="exceptActivity">
+                <element>excp_stcw.applicationError</element>
+                <guid>{011b7c81-8a79-9039-3735-b38a33eeb322}</guid>
+                <label>Application error</label>
+                <x>186.0</x>
+                <y>403.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{09a69eaf-5c38-dafb-8689-993b3904410d}</guid>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.exceptionType == "Application");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{04f20eee-ae5d-9d26-418d-95d51e3b5f67}</guid>
+            <label>No</label>
+            <x>138.0</x>
+            <y>357.0</y>
+            <childList>
+              <child name="done" type="scriptActivity">
+                <guid>{0bc2be8f-1bd9-7417-24ad-e539fe00ee8b}</guid>
+                <label>Done</label>
+                <x>327.0</x>
+                <y>385.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0a729539-7f34-c0e3-6090-3ef447b49553}</guid>
+        <system>true</system>
+        <script><![CDATA[
+          var processDocument = this.process.processDocument;
+          processDocument.interfaceRetryCount = 0;
+          processDocument.interOperationName = "siSIUpdate:processRequest_PortType/processRequest";
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Forward SiteInfoUpdate To CRM</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_stcw.forwardSiteInfoUpdateToCrm</process>
+  <type>Sub-flow</type>
+</process__revision>

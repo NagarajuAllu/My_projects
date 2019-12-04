@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfs.tfrTaskSearchDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{dadab4b5-139a-4fe5-84c5-84c397e760b9}</guid>
+  <label>TFR Task Search Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="tfrTaskId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="taskName" type="leaf">
+      <propertyElement type="elfld">
+        <label>Task Name [%]</label>
+      </propertyElement>
+      <valueType>dtype_common.string60</valueType>
+    </variable>
+    <variable name="tfrNumber" type="leaf">
+      <propertyElement type="elfld">
+        <label>Number [%]</label>
+      </propertyElement>
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="taskStatus" type="leaf">
+      <propertyElement type="elfld">
+        <label>Task Status</label>
+      </propertyElement>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="creationDateGT" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Creation Date &gt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="creationDateLT" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Creation Date &lt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfs.tfrTaskSearchDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="tfrSearchDocGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>900px</width>
+                    <elementList>
+                      <element name="tfrSearchDocHeader" type="elhdr">
+                        <label>TFR Task Search Input Data</label>
+                      </element>
+                      <element name="taskName" type="elfld">
+                        <label>Task Name [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.tfrTaskSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.tfrTaskSearchDoc/leaf_taskName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="tfrNumber" type="elfld">
+                        <label>TFR Number [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.tfrTaskSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.tfrTaskSearchDoc/leaf_tfrNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="taskStatus" type="elfld">
+                        <label>Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.tfrTaskSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.tfrTaskSearchDoc/leaf_taskStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDateGT" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.tfrTaskSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.tfrTaskSearchDoc/leaf_creationDateGT</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDateLT" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.tfrTaskSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.tfrTaskSearchDoc/leaf_creationDateLT</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

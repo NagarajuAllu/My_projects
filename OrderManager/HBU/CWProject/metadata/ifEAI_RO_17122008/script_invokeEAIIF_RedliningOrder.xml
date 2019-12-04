@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="250c80362d9d94311ded75675ccfbfb0" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ifEAI_RO_17122008.invokeEAIIF_RedliningOrder">
+  <guid>{0ac81d04-f9ba-2a33-d69f-a728d3f8a462}</guid>
+  <label>[17.12.2008] Invoke EAI Interface: Redlining Order [SOAP]</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = "[INVOKE EAI INTERFACE VIA 'SOAP': REDLINING ORDER] ";
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "START...");
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "INPUT: " + (input != null ? input.toXML() : "") + "...");
+
+          var output = null;
+          try {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "INVOKING INTERFACE...");
+                output = Global.invokeInterface("ifEAI_RO_17122008:RO",
+                                                                "receiveRequest",
+                                                                input);
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "RESULT: " + output + "...");
+          }
+          catch (exc){
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "EXCEPTION: " + exc);
+          }
+
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "END...");
+          return output;
+  ]]></script>
+</script>

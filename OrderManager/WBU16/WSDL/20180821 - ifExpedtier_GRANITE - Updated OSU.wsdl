@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="wgws" targetNamespace="http://www.telcordia.com/wholesale" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.telcordia.com/wholesale" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wgws="http://www.telcordia.com/wholesale">
+	<types>
+		<schema targetNamespace="http://www.telcordia.com/wholesale" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wgws="http://www.telcordia.com/wholesale" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<annotation>
+				<documentation>Wholesale Web Services For Granite</documentation>
+				<appinfo>
+					<metadata>STC Order Management</metadata>
+					<created>Wed Jun 10 08:27:53 EDT 2009</created>
+				</appinfo>
+			</annotation>
+			<!-- Data types and elements -->
+			<!-- Structures -->
+			<element name="siteInformationUpdateResponse" type="wgws:status"/>
+			<complexType name="status">
+				<annotation>
+					<documentation>status</documentation>
+				</annotation>
+				<sequence>
+					<element maxOccurs="1" minOccurs="1" name="status" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="errorType" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="errorCode" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="errorDescription" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="sourceErrorCode" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="errorTime" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="loadSubOrders">
+				<annotation>
+					<documentation>loadSubOrders</documentation>
+				</annotation>
+				<sequence>
+					<element maxOccurs="1" minOccurs="1" name="parentOrderNumber" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="orderNumber" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="businessUnit" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="comments" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="updateOrderStatusResponse" type="wgws:status"/>
+			<complexType name="nameValuePair">
+				<annotation>
+					<documentation>nameValuePair</documentation>
+				</annotation>
+				<sequence>
+					<element maxOccurs="1" minOccurs="1" name="name" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="value" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="updateQuoteStatusResponse" type="wgws:status"/>
+			<complexType name="orderStatus">
+				<annotation>
+					<documentation>orderStatus</documentation>
+				</annotation>
+				<sequence>
+					<element maxOccurs="1" minOccurs="1" name="orderNumber" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="businessUnit" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="assetNumber" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="workOrderStatus" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="assetStatus" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NINumber" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="systemDesignation" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="comments" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="taskName" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="taskOperation" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="taskStatusCode" type="xsd:string"/>
+					<element maxOccurs="9999" minOccurs="0" name="nameValue" type="wgws:nameValuePair"/>
+				</sequence>
+			</complexType>
+			<element name="updateOrderStatus" type="wgws:orderStatus"/>
+			<element name="siteInformationUpdate" type="wgws:siteInfo"/>
+			<complexType name="siteInfo">
+				<annotation>
+					<documentation>siteInfo</documentation>
+				</annotation>
+				<sequence>
+					<element maxOccurs="1" minOccurs="1" name="businessUnit" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="ccliCode" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="city" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="cityCode" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="country" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="district" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="districtCode" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="region" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="siteID" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="siteName" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="siteType" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="status" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="commercialSiteName" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="latitude" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="longitude" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="restoration" type="wgws:restorationInfo"/>
+			<element name="restorationResponse" type="wgws:status"/>
+			<complexType name="restorationInfo">
+				<annotation>
+					<documentation>restorationInfo</documentation>
+				</annotation>
+				<sequence>
+					<element maxOccurs="1" minOccurs="1" name="orderNumber" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="accountNumber" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="productCode" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="newAssetStatus" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="oldAssetNumber" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="newAssetNumber" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="businessUnit" type="xsd:string"/>
+					<element maxOccurs="9999" minOccurs="0" name="nameValue" type="wgws:nameValuePair"/>
+				</sequence>
+			</complexType>
+			<complexType name="quoteStatus">
+				<annotation>
+					<documentation>quoteStatus</documentation>
+				</annotation>
+				<sequence>
+					<element maxOccurs="1" minOccurs="1" name="quoteNumber" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="1" name="orderRowItemId" type="xsd:integer"/>
+					<element maxOccurs="1" minOccurs="0" name="feasibilityStatus" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="reservationDays" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="plannedFeasibleDays" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="actualImplementationDays" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="reservationNumber" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="businessUnit" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="workOrderStatus" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="comments" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="updateQuoteStatus" type="wgws:quoteStatus"/>
+			<element name="loadSubOrdersResponse" type="wgws:status"/>
+			<!-- Documents -->
+		</schema>
+	</types>
+	<message name="loadSubOrdersResponse">
+		<part name="loadSubOrdersResponse" element="tns:loadSubOrdersResponse">
+    </part>
+	</message>
+	<message name="loadSubOrders">
+		<part name="loadSubOrders" type="tns:loadSubOrders">
+    </part>
+	</message>
+	<message name="siteInformationUpdate">
+		<part name="siteInformationUpdate" element="tns:siteInformationUpdate">
+    </part>
+	</message>
+	<message name="restoration">
+		<part name="restoration" element="tns:restoration">
+    </part>
+	</message>
+	<message name="updateQuoteStatus">
+		<part name="updateQuoteStatus" element="tns:updateQuoteStatus">
+    </part>
+	</message>
+	<message name="restorationResponse">
+		<part name="restorationResponse" element="tns:restorationResponse">
+    </part>
+	</message>
+	<message name="updateQuoteStatusResponse">
+		<part name="updateQuoteStatusResponse" element="tns:updateQuoteStatusResponse">
+    </part>
+	</message>
+	<message name="siteInformationUpdateResponse">
+		<part name="siteInformationUpdateResponse" element="tns:siteInformationUpdateResponse">
+    </part>
+	</message>
+	<message name="updateOrderStatusResponse">
+		<part name="updateOrderStatusResponse" element="tns:updateOrderStatusResponse">
+    </part>
+	</message>
+	<message name="updateOrderStatus">
+		<part name="updateOrderStatus" element="tns:updateOrderStatus">
+    </part>
+	</message>
+	<portType name="ifExpediter_GRANITE">
+		<operation name="operation_OrderStatusUpdate">
+			<input message="tns:updateOrderStatus">
+    </input>
+			<output message="tns:updateOrderStatusResponse">
+    </output>
+		</operation>
+		<operation name="operation_QuoteStatusUpdate">
+			<input message="tns:updateQuoteStatus">
+    </input>
+			<output message="tns:updateQuoteStatusResponse">
+    </output>
+		</operation>
+		<operation name="operation_Restoration">
+			<input message="tns:restoration">
+    </input>
+			<output message="tns:restorationResponse">
+    </output>
+		</operation>
+		<operation name="operation_SiteInformationUpdate">
+			<input message="tns:siteInformationUpdate">
+    </input>
+			<output message="tns:siteInformationUpdateResponse">
+    </output>
+		</operation>
+		<operation name="operation_LoadSubOrders">
+			<input message="tns:loadSubOrders">
+    </input>
+			<output message="tns:loadSubOrdersResponse">
+    </output>
+		</operation>
+	</portType>
+	<binding name="ifExpediter_GRANITE_SOAP" type="tns:ifExpediter_GRANITE">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="operation_OrderStatusUpdate">
+			<soap:operation soapAction="operation_OrderStatusUpdate"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_QuoteStatusUpdate">
+			<soap:operation soapAction="operation_QuoteStatusUpdate"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_Restoration">
+			<soap:operation soapAction="operation_Restoration"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_SiteInformationUpdate">
+			<soap:operation soapAction="operation_SiteInformationUpdate"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_LoadSubOrders">
+			<soap:operation soapAction="operation_LoadSubOrders"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="ifExpediter_GRANITE_Service">
+		<port name="ifExpediter_GRANITE_SOAP_Port" binding="tns:ifExpediter_GRANITE_SOAP">
+			<soap:address location="http://localhost:8282/cwf/services/ifExpediter_GRANITE"/>
+		</port>
+	</service>
+</definitions>

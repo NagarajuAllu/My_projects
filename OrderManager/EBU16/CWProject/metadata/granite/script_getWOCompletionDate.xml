@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="e788f085e4092c3e563a90bba7a55081" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.getWOCompletionDate">
+  <label>Get WO Completion Date</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="woName" type="rifp">
+      <type>dtype_granite.WO_NAME</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var complDate = null;
+
+    var wo = granite.getWOInGranite(woName);
+    if(wo != null) {
+        complDate = wo.ACTUAL_COMPL;
+    }
+
+    return complDate;
+  ]]></script>
+</script>

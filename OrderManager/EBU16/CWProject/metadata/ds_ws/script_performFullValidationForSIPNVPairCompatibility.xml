@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.performFullValidationForSIPNVPairCompatibility">
+  <label>Perform Full Validation For SIP/SIPMW NV Pair Compatibility</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var nvPairDataForE1ToParkProvisioning = ds_ws.getNVPairDataToParkProvisioning(false);
+    var nvPairDataForHatifToParkProvisioning = ds_ws.getNVPairDataToParkProvisioning(true);
+
+
+    // performing validations according to the productType of the bundle
+    for(var i=0; i<bundleOrder.bundles.length; i++) {
+        var bundleContainer = bundleOrder.bundles[i];
+
+        for(var j=0; j<bundleContainer.circuits.length; j++) {
+            var circuitContainer = bundleContainer.circuits[j];
+            var foundNVPairForE1 = false;
+            var nvPairForE1 = foundNVPair_(nvPairDataForE1ToParkProvisioning[0], circuitContainer.circuitParameters, true);
+            if(nvPairForE1 != null && nvPairForE1.value != null && nvPairForE1.value == nvPairDataForE1ToParkProvisioning[1]) {
+                if(bundleOrder.orderHeader.orderType == "I") {
+                    foundNVPairForE1 = true;
+                }
+            }
+
+            if(foundNVPairForE1) {
+                for(var k=0; k<circuitContainer.services.length; k++) {
+                    var serviceContainer = circuitContainer.services[k];
+
+                    var nvPairForHatif = foundNVPair_(nvPairDataForHatifToParkProvisioning[0], serviceContainer.serviceParameters, false);
+                    if(nvPairForHatif != null && nvPairForHatif.value != null && nvPairForHatif.value == nvPairDataForHatifToParkProvisioning[1]) {
+                        var validationErrors = ["AE0146", Global.translateText("AE0146", null, [nvPairDataForHatifToParkProvisioning[0], nvPairDataForE1ToParkProvisioning[0]])];
+                        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, serviceContainer.service.lineItemIdentifier, failureArray, isSubmit);
+                    }
+                }
+            }
+        }
+    }
+
+    return failureArray;
+
+
+
+    function foundNVPair_(nvPairName, lineItemParameters, isCircuit) {
+        var foundNVPair = null;
+        if(lineItemParameters != null) {
+            for(var j=0; j<lineItemParameters.length && foundNVPair == null; j++) {
+                if(isCircuit) {
+                    if(lineItemParameters[j].circuitParameter.name == nvPairName) {
+                        foundNVPair = lineItemParameters[j].circuitParameter;
+                    }
+                }
+                else {
+                    if(lineItemParameters[j].serviceParameter.name == nvPairName) {
+                        foundNVPair = lineItemParameters[j].serviceParameter;
+                    }
+                }
+            }
+        }
+
+        return foundNVPair;
+    }
+  ]]></script>
+</script>

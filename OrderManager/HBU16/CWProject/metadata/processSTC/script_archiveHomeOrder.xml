@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="processSTC.archiveHomeOrder">
+  <label>Archive Home Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderNumber" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_ds_ws.string50</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = "KO";
+
+    if (orderNumber != null) {
+
+       var input = new Document("ds_ws:search_orderMessage");
+       input.orderNumber = orderNumber;
+
+       var foundOrders = Finder.runFinder("ds_ws:findOrderMessageHomeByOrderNumber", "select", input);
+
+       if (foundOrders != null && foundOrders.size > 0) {
+          var foundOrder = Order.getOrderById(foundOrders[0].cwOrderId);
+          if(foundOrder != null) {
+             var archivedMessage = new Document("ds_ws:details_orderMessage_HOME_ARCHIVE");
+             foundOrder.orderMessage.mapTo(archivedMessage,
+                                           "ds_ws:archiveMapping_STC_OrderMessage_HOME",
+                                           true, false, false, false);
+             archivedMessage.save();
+
+             if(foundOrder.serviceParametersList != null) {
+                for(var i=0; i<foundOrder.serviceParametersList.length; i++) {
+                   var serviceParamContainer = foundOrder.serviceParametersList[i];
+                   var archivedServiceParameter = new Document("ds_ws:details_serviceParameters_HOME_ARCHIVE");
+                   serviceParamContainer.serviceParameters.mapTo(archivedServiceParameter,
+                                                                 "ds_ws:archiveMapping_STC_ServiceParameters_HOME",
+                                                                 true, false, false, false);
+                   archivedServiceParameter.save();
+
+                   if(serviceParamContainer.nameValueList != null) {
+                      for(var j=0; j<serviceParamContainer.nameValueList.length; j++) {
+                         var archivedNameValue = new Document("ds_ws:details_nameValue_archive");
+                         serviceParamContainer.nameValueList[j].nameValue.mapTo(archivedNameValue,
+                                                                                "ds_ws:archiveMapping_STC_NameValue",
+                                                                                true, false, false, false);
+                         archivedNameValue.save();
+                      }
+                   }
+                }
+             }
+
+             if(foundOrder.orderACK != null) {
+                var archivedOrderAck = new Document("ds_ws:orderAckWithFailure_ARCHIVE");
+                foundOrder.orderACK.mapTo(archivedOrderAck,
+                                          "ds_ws:archiveMapping_Order_Ack",
+                                          true, false, false, false);
+                archivedOrderAck.save();
+             }
+
+             result = "OK";
+          }
+       }
+    }
+
+    return result;
+  ]]></script>
+</script>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="22bdafce7f378836ee254d4aaadb4c07" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ifGranite_jms.manageGraniteMsg_CustomerInformationUpdateAcknowledgement">
+  <guid>{0c957692-2525-28f0-be97-e1fa6bc12aa9}</guid>
+  <highlight>22</highlight>
+  <label>[17.12.2008] Manage Granite Message: Customer Information Update Acknowledgement [JMS]</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = "[MANAGE GRANITE MESSAGE VIA 'JMS': CUSTOMER INFORMATION UPDATE ACKNOWLEDGEMENT] ";
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "START...");
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "INPUT: " + (input != null ? input.toXML() : "") + "...");
+
+          if (input != null) {
+
+                ds_ws.storeReceivedGraniteEvent(input, "CIUA");
+
+          }
+          else{
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- WARNING - INTERFACE NOT INVOKED: INPUT IS NULL...");
+          }
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "END...");
+  ]]></script>
+</script>

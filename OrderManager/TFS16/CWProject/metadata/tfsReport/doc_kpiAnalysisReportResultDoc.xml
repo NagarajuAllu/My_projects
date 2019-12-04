@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.kpiAnalysisReportResultDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{117207c1-05d7-4d5f-a20e-86bd00808b77}</guid>
+  <label>KPI Analysis Report Result Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="position" type="leaf">
+      <valueType>dtype_common.integer2</valueType>
+    </variable>
+    <variable name="type" type="leaf">
+      <key>1</key>
+      <valueType>dtype_common.string20</valueType>
+    </variable>
+    <variable name="total" type="leaf">
+      <valueType>dtype_common.integer7</valueType>
+    </variable>
+    <variable name="cancelled" type="leaf">
+      <valueType>dtype_common.integer5</valueType>
+    </variable>
+    <variable name="average" type="leaf">
+      <valueType>dtype_common.number5_2</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.kpiAnalysisReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="3c2c9c00675b74f63c250a6a72be7533" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.getLineItemInBundleWithIdentifier">
+  <label>Get LineItem In Bundle With Identifier</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleLineItem" type="rifp">
+      <type>doc_ds_ws.lineItemDocument</type>
+    </parameter>
+    <parameter name="childLineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var foundLineItem = null;
+    if(bundleLineItem.lineItemIdentifier == childLineItemIdentifier) {
+        foundLineItem = bundleLineItem;
+    }
+    else {
+        var foundLineItemId = null;
+        var circuitsInOrchestrationRecord = processSTC.findRecordsInOrchTabByOrderId_ParentId(bundleLineItem.cwOrderId, bundleLineItem.id);
+        if(circuitsInOrchestrationRecord != null) {
+            for(var i=0; i<circuitsInOrchestrationRecord.length && foundLineItemId == null; i++) {
+                if(circuitsInOrchestrationRecord[i].lineItemIdentifier == childLineItemIdentifier) {
+                    foundLineItemId = circuitsInOrchestrationRecord[i].cwDocId;
+                }
+                else {
+                    var servicesInOrchestrationRecord = processSTC.findRecordsInOrchTabByOrderId_ParentId(bundleLineItem.cwOrderId, circuitsInOrchestrationRecord[i].cwDocId);
+                    if(servicesInOrchestrationRecord != null) {
+                        for(var j=0; j<servicesInOrchestrationRecord.length && foundLineItemId == null; j++) {
+                            if(servicesInOrchestrationRecord[j].lineItemIdentifier == childLineItemIdentifier) {
+                                foundLineItemId = servicesInOrchestrationRecord[j].cwDocId;
+                            }
+                            else {
+                                var subServicesInOrchestrationRecord = processSTC.findRecordsInOrchTabByOrderId_ParentId(bundleLineItem.cwOrderId, servicesInOrchestrationRecord[j].cwDocId);
+                                if(subServicesInOrchestrationRecord != null) {
+                                    for(var k=0; k<subServicesInOrchestrationRecord.length && foundLineItemId == null; k++) {
+                                        if(subServicesInOrchestrationRecord[k].lineItemIdentifier == childLineItemIdentifier) {
+                                            foundLineItemId = subServicesInOrchestrationRecord[k].cwDocId;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(foundLineItemId != null) {
+            foundLineItem = Document.readDoc("ds_ws.lineItemDocument", foundLineItemId);
+        }
+    }
+
+    return foundLineItem;
+  ]]></script>
+</script>

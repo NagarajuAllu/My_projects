@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="processSTC.getInternalAttributeNameForObject">
+  <label>Get Internal Attribute Name For Object</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="objectName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="attributeName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("processSTC.STC_INTERNAL_NAME_MAPPING");
+    inputDoc.objectName = objectName;
+    inputDoc.externalName = attributeName;
+
+    var internalAttributeName = null;
+
+    var resultList = Finder.runFinder("processSTC.findInternalAttributeNameForObject", "select", inputDoc);
+    if(resultList != null && resultList.length > 0) {
+        internalAttributeName = resultList[0].internalName;
+    }
+    return internalAttributeName;
+  ]]></script>
+</script>

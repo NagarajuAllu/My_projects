@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.checkIfServiceTypeRequireFlagForAutoDesign">
+  <label>Check If ServiceType Requires Flag For AutoDesign</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_ds_ws.serviceType</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("ds_ws.search_ServiceTypeBehaviorConfigurationDoc");
+    inputDoc.serviceType = serviceType;
+
+    var resultList = Finder.runFinder("ds_ws.findBehaviorConfigurationForServiceType", "select", inputDoc);
+
+    var requireAutoDesign = false;
+
+    if(resultList != null && resultList.length > 0) {
+        requireAutoDesign = resultList[0].requireAutoDesign;
+    }
+
+    return requireAutoDesign;
+  ]]></script>
+</script>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getBlockValuesAsString">
+  <label>Get BlockValues as String</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="parentDocId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="valueSeparator" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var stringResult = null;
+
+    if(valueSeparator != null) {
+        var blockValues = stcw.getBlockValuesAsArray(parentDocId);
+        if(blockValues != null && blockValues.length > 0) {
+            stringResult = "";
+            for(var i=0; i<blockValues.length; i++) {
+                if(i>0 && stringResult != "") {
+                    stringResult = stringResult + valueSeparator;
+                }
+                if(blockValues[i].blockValue != null) {
+                    stringResult = stringResult + blockValues[i].blockValue;
+                }
+            }
+        }
+    }
+
+    return stringResult;
+  ]]></script>
+</script>

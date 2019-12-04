@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.writeGraniteResponseIntoDB">
+  <label>Write Granite Response Into DB</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_cwf.processId</type>
+    </parameter>
+    <parameter name="graniteResponseDS" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("stcw.STCW_GRANITE_EVENT_STORAGE");
+    inputDoc.processId = processId;
+    inputDoc.msgType = "OCUA";
+    inputDoc.graniteMsg = graniteResponseDS.toXML();
+    inputDoc.whenInserted = new Date();
+    inputDoc.save();
+
+    return inputDoc.id;
+  ]]></script>
+</script>

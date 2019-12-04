@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="migrationSTC.generateWOSUForOrdersCompletedInGranite">
+  <label>Generate WOSU For Orders Completed In Granite But not in OM</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderDomain" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = "[" + processId + "][generateWOSUForOrdersCompletedInGranite] - ";
+
+
+    var notCompletedOrders = ds_ws.searchChildOrdersNotCompletedByOrderDomain(orderDomain);
+    if(notCompletedOrders != null && notCompletedOrders.length > 0) {
+
+        for(var i=0; i<notCompletedOrders.length; i++) {
+            var wo = granite.getWOInGranite(notCompletedOrders[i].orderNumber);
+
+            if(wo != null) {
+                var woStatus = wo.STATUS;
+
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + notCompletedOrders[i].orderNumber + " = " + woStatus);
+
+                if(woStatus == '7') {
+                    // it means the wo is COMPLETED or CANCELLED in Granite
+                    var orderInGranite = migrationSTC.getOrderInGranite(notCompletedOrders[i].orderNumber, notCompletedOrders[i].parentOrderNumber);
+                    if(orderInGranite != null) {
+                        var input = new DataStructure("ds_jms:workOrderStatusUpdate_el");
+
+                        // [a]. create message for EAI...
+                        input.businessUnit                         = "Home";
+                        input.circuitStatus                        = orderInGranite.CIRCUIT_STATUS;
+                        input.circuitNumber                        = orderInGranite.CIRCUIT_NUMBER;
+                        input.orderNumber                          = orderInGranite.ORDER_NUMBER;
+                        input.orderType                            = orderInGranite.ORDER_TYPE;
+                        input.workOrderDescription                 = "";
+                        input.workOrder                            = orderInGranite.ORDER_NUMBER;
+                        input.workOrderCircuitPathCompletionStatus = orderInGranite.CIRCUIT_STATUS;
+                        input.workOrderLastModifiedBy              = orderInGranite.CREATED_BY;
+                        input.workOrderLastModifiedTimestamp       = computeWOLastModTimestamp_(orderInGranite.SERVICE_DATE, wo.ACTUAL_COMPL);
+
+                        input.workOrderName                        = orderInGranite.ORDER_NUMBER;
+                        input.workOrderRemarks                     = "";
+                        input.workOrderStatus                      = orderInGranite.ORDER_STATUS;
+                        input.workOrderTotalTime                   = "0";
+                        input.circuitNumber                        = orderInGranite.CIRCUIT_NUMBER;
+                        input.taskServiceType                      = orderInGranite.SERVICE_TYPE;
+                        input.icmsSONumber                         = orderInGranite.ICMS_SO_NUMBER;
+
+                        if(orderInGranite.ORDER_STATUS == "COMPLETED" || orderInGranite.ORDER_STATUS == "CANCELLED") {
+                            input.taskName                         = null;
+                        }
+                        else {
+                            input.taskName                         = orderInGranite.TASK_NAME;
+                        }
+
+                        // orderDomain parameter
+                        input.parameters[0]                        = new DataStructure("ds_jms:nameValue");
+                        input.parameters[0].name                   = ifEAI_WOSU_17122008.getElementNameForOrderDomain();
+                        input.parameters[0].value                  = orderInGranite.ORDER_DOMAIN;
+                        // circuitNumber parameter
+                        input.parameters[1]                        = new DataStructure("ds_jms:nameValue");
+                        input.parameters[1].name                   = ifEAI_WOSU_17122008.getElementNameForSIPCircuitID();
+                        input.parameters[1].value                  = orderInGranite.CIRCUIT_NUMBER;
+                        // plateId parameter
+                        input.parameters[2]                        = new DataStructure("ds_jms:nameValue");
+                        input.parameters[2].name                   = ifEAI_WOSU_17122008.getElementNameForPlateID();
+                        input.parameters[2].value                  = orderInGranite.PLATE_ID;
+                        // workOrderStage parameter
+                        input.parameters[3]                        = new DataStructure("ds_jms:nameValue");
+                        input.parameters[3].name                   = ifEAI_WOSU_17122008.getElementNameForWorkOrderStage();
+                        input.parameters[3].value                  = granite.getUDAValueForWorkOrder(orderInGranite.ORDER_NUMBER, "Order Stage", "Work Order Info");
+
+
+                        // [b]. save message in queue for EAI...
+                        ifGranite_jms.manageGraniteMsg_WorkOrderStatusUpdate(input);
+                    }
+                    else {
+                        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug +
+                                     "[ERROR] Unable to find order in STC_GRANITE_DATA_FOR_HBU for order <" + notCompletedOrders[i].orderNumber + "," + notCompletedOrders[i].parentOrderNumber + ">");
+                    }
+                }
+            }
+            else {
+                debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug +
+                             "[ERROR] Unable to find WO in Granite for order <" + notCompletedOrders[i].orderNumber + ">");
+            }
+        }
+    }
+    else {
+        debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "Unable to find orders with orderDomain '" + orderDomain + "'");
+    }
+
+    function computeWOLastModTimestamp_(serviceDate, actualCompl) {
+        var result = null;
+        if(actualCompl != null) {
+            result = Calendar.formatDate(actualCompl, "MM/dd/yyyy HH:mm:ss");
+        }
+    /****
+        else {
+            result = (serviceDate != null ?
+                         (serviceDate.indexOf(":") != -1 ? serviceDate : serviceDate + " 00:00:00") :
+                         null);
+        }
+    ****/
+
+        return result;
+    }
+  ]]></script>
+</script>

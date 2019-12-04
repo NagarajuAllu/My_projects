@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcw.stcwOrchestrationProcessDocument">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{4d3b8eca-f027-4804-ac9d-fdf4f0cb579a}</guid>
+  <label>STCW Orchestration Process Document</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="sequence" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Integer</valueType>
+    </variable>
+    <variable name="counter" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Integer</valueType>
+    </variable>
+    <variable name="elementTypeInOrderTree" type="leaf">
+      <valueType>dtype_stcw.elementTypeInOrderTree</valueType>
+    </variable>
+    <variable name="elementIdsToBeProcessed" type="leaf">
+      <valueType>dtype_stcw.string4000</valueType>
+    </variable>
+    <variable name="vasCounter" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Integer</valueType>
+    </variable>
+    <variable name="vasElementIdsToBeProcessed" type="leaf">
+      <valueType>dtype_stcw.string4000</valueType>
+    </variable>
+    <variable name="totElementCounter" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Integer</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.stcwOrchestrationProcessDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="eldel"/>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="stcOrchestrationProcessDocumentGrid" type="elgrd">
+                <colWidths>110px,160px,110px,160px</colWidths>
+                <labelOrientation>left</labelOrientation>
+                <numOfCols>4</numOfCols>
+                <useDefaultHeight>true</useDefaultHeight>
+                <width>640px</width>
+                <elementList>
+                  <element name="stcwOrchestrationProcessDocumentHeader" type="elhdr">
+                    <label>STCW Orchestration Process Document</label>
+                  </element>
+                  <element name="sequence" type="elfld">
+                    <label>Sequence</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/leaf_sequence</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="totElementCounter" type="elfld">
+                    <label>Count all child processes started</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/leaf_totElementCounter</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="RowSpacer" type="elrsp">
+                    <height>10px</height>
+                    <rowSpan>10px</rowSpan>
+                  </element>
+                  <element name="counter" type="elfld">
+                    <label>Count children</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/leaf_counter</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="elementTypeInOrderTree" type="elslct">
+                    <sorted>false</sorted>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/leaf_elementTypeInOrderTree</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="elementIdsToBeProcessed" type="elfld">
+                    <label>Element IDs to be processed</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/leaf_elementIdsToBeProcessed</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="RowSpacer2" type="elrsp">
+                    <height>10px</height>
+                    <rowSpan>10px</rowSpan>
+                  </element>
+                  <element name="vasCounter" type="elfld">
+                    <label>Count VAS children</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/leaf_vasCounter</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="vasElementIdsToBeProcessed" type="elfld">
+                    <label>VAS Element IDs to be processed</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.stcwOrchestrationProcessDocument/leaf_vasElementIdsToBeProcessed</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

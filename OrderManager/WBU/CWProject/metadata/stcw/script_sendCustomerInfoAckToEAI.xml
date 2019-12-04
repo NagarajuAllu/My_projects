@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="b47541c0ab594d8d7e6d4ca558b5ae97" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.sendCustomerInfoAckToEAI">
+  <guid>{0150fee6-aa49-da5d-11fa-c3ef46244199}</guid>
+  <label>Send CustomerInfoAck To EAI</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="request" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // it uses the common method:
+    // sendDataToInterface( request, processId, operationDescription, interfaceName, operationName )
+    var response = stcc.sendDataToInterface(request, processId, "sendCustomerInfoAckToEAI", "sicustack:processRequest_PortType", "processRequest");
+    return response;
+  ]]></script>
+</script>

@@ -1,0 +1,1062 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<binding name="wsws.bindingForExpediterIF_JS_WHOLESALE">
+  <extensionList>
+    <extension name="operation_CustomerInformationUpdate" type="ext">
+      <element>Operation</element>
+      <elementItemMap>
+        <elementItem key="script"><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "Received CustomerInformationUpdate with input = " + (input == null ? "null" : input.toXML()));
+
+                var response = null;
+                var errors = basicValidation_ (input);
+                if (errors != null) {
+                      response = (createResponse_ (input, errors));
+                }
+                else {
+                      response = (processRequest_ (input));
+                }
+
+                stcc.checkPayloadToCRMSize(response, "wsws:operation_CustomerInformationUpdate");
+
+                return response;
+
+
+                //
+                //  basicValidation_
+                //
+                function basicValidation_ (input) {
+
+                      if (input == null || input.metadataType != "wsws:customerInformationUpdate") {
+                            return (xcutl.createError ("InvalidInput", "wsws:customerInformationUpdate"));
+                      }
+
+                      if (input.businessUnit != "Wholesale") {
+                            return (xcutl.createError ("InvalidBusinessUnit", input.businessUnit));
+                      }
+
+                }            // b a s i c V a l i d a t i o n _
+
+                //
+                //  processRequest_
+                //
+                function processRequest_ (input) {
+
+                      // starting Process
+                      var processId = Process.startProcess ("stcw:customerInfoUpdate", null);
+                      var patchResults = rpts.patchAsynchMessageLog (processId, "crmCustomerInformationUpdate");
+
+                      Process.sendMessageToProcess (processId, null, "wsws:ifExpedtier_WHOLESALE/operation_CustomerInformationUpdate", input);
+
+                      return (createResponse_ (input));
+
+                }            // p r o c e s s R e q u e s t _
+
+                //
+                //  createResponse_
+                //
+                function createResponse_ (input, error) {
+
+                      var response = new DataStructure ("wsws:customerInformationUpdateAcknowledgement");
+                      response.businessUnit  = input.businessUnit;
+                      response.accountNumber = input.accountNumber;
+                      if(error != null) {
+                            response.status.errorCode = error.code;
+                            response.status.errorDescription = stcc.limitStringLengthToCRMValue(error.text);
+                            response.status.errorType = "FUNCTIONAL";
+                            response.status.status = "ERROR";
+                      }
+                      else {
+                            response.status.status = "SUCCESS";
+                      }
+
+          debugPrintln(stcc.getSysdateForLog() + "Creating response in CustomerInformationUpdate = " + response.toXML());
+
+                      return (response);
+
+                }      // c r e a t e R e s p o n s e _
+        ]]></elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_SubmitOrder" type="ext">
+      <element>Operation</element>
+      <elementItemMap>
+        <elementItem key="script"><![CDATA[
+          var debug = "[BINDING FOR EXPEDITER INTERFACE [JAVASCRIPT]: SUBMIT ORDER] ";
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Start");
+
+          // checking that the input message is not empty
+          if(input == null) {
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Received empty message!!! Returning message error...");
+
+              var output = createRejectionResponse_("NA", ["AE0034", Global.translateText("AE0034")]);
+              return output;
+          }
+
+
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Received: " + input.toXML());
+
+
+          // setting the UserData1 in CWMESSAGELOG to OrderNumber, so the input message can be easily found
+          var logDoc = UserProfile.getMsgLogDoc();
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Adding UserData_1 = " + input.OrderNumber + " to id = " + logDoc.messageID);
+          logDoc.userData1 = input.OrderNumber;
+          logDoc.save();
+
+          debug = debug + "(" + input.OrderNumber + ") ";
+
+          // adding orderNumber to the list of orders under management
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Adding order to list of OrdersUnderManagement");
+          try {
+              stcw.addOrderToOrdersUnderManagement(input.OrderNumber);
+          }
+          catch(exc) {
+              var validationErrors = ["AE0018", Global.translateText("AE0018", null, input.OrderNumber)];
+              var output = createRejectionResponse_(input.OrderNumber, validationErrors);
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- OM is already processing the order! - Output: " + output.toXML() + "...");
+              return output;
+          }
+
+
+          // performing base validation on the received data structure
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Starting Base Validation for incoming DataStructure");
+          var validationErrors = stcw.performBaseValidationForIncomingDSForSubmitOrder(input);
+          if(validationErrors != null && validationErrors.length > 0) {
+              // remove order from list of orders under management
+              stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+              var output = createRejectionResponse_(input.OrderNumber, validationErrors);
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Errors in Base Validation - Output: " + output.toXML());
+              return output;
+          }
+
+          // mapping the received data structure into an order
+          var orderForReceivedData = null;
+          var existOrder = false;
+
+          try {
+              // checking if the order exists
+              var searchDoc = new Document("stcw.search_bundleOrder");
+              searchDoc.orderNumber = input.OrderNumber;
+              var orderListFound = Finder.runFinder("stcw.findAllSTCBundleOrders", "select", searchDoc);
+              if(orderListFound != null && orderListFound.length > 0) {
+                  // CR for resubmit orders
+                  existOrder = true;
+                  var existingOrder = Order.getOrderById(orderListFound[0].cwOrderId, false);
+
+
+                  var failureArray = stcw.updateExistingOrderForResubmit(existingOrder, input);
+                  if(failureArray != null && failureArray.length > 0) {
+                      // remove order from list of orders under management
+                      stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+                      var output = createRejectionResponseWithFailureArray_(input.OrderNumber, failureArray);
+
+                      debugPrintln(stcc.getSysdateForLog() + debug + "- Error in updating existing order with received data - Output: " + output.toXML() + "...");
+                      return output;
+                  }
+
+                  orderForReceivedData = existingOrder;
+              }
+              else {
+                  // the method has to throws exceptions in case of errors
+                  orderForReceivedData = stcw.mappingIncomingDSIntoBundleOrder(input, true, false);
+
+                  if(orderForReceivedData == null) {
+                      // remove order from list of orders under management
+                      stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+                      // strange situation - order converted is null but no exception throws ...
+                      var output = createRejectionResponse_(input.OrderNumber, ["AE0035", Global.translateText("AE0035")]);
+
+                      debugPrintln(stcc.getSysdateForLog() + debug + "- Unable to convert input DS to order [NULL!] - Output: " + output.toXML() + "...");
+                      return output;
+                  }
+                  else {
+                      // map NV pairs into LineItem attributes
+                      var failureArray = stcw.mapNVPairsIntoLineItemAttributes(orderForReceivedData, true);
+
+                      // Replace COM ServiceType with GI one
+                      failureArray = stcw.replaceCOMServiceTypeWithGIServiceTypeInOrder(orderForReceivedData, true, failureArray);
+
+                      if(failureArray != null && failureArray.length > 0) {
+                          // remove order from list of orders under management
+                          stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+                          var output = createRejectionResponseWithFailureArray_(input.OrderNumber, failureArray);
+
+                          if(orderForReceivedData != null && !existOrder) {
+                              cleanUpOrder_(orderForReceivedData);
+                          }
+
+                          debugPrintln(stcc.getSysdateForLog() + debug + "- Errors in Mapping NVPairs and ServiceType - Output: " + output.toXML() + "...");
+                          return output;
+                      }
+                  }
+              }
+          }
+          catch(exc) {
+              // remove order from list of orders under management
+              stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+              // mappingIncomingDSIntoOrder throws exception with message equals to the reason or rejection; the message has to be in Application Resource
+              var validationErrors = [exc.message,  Global.translateText(exc.message)];
+              var output = createRejectionResponse_(input.OrderNumber, validationErrors);
+
+              if(orderForReceivedData != null && !existOrder) {
+                  cleanUpOrder_(orderForReceivedData);
+              }
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Unable to convert input DS to order - Output: " + output.toXML() + "...");
+              return output;
+          }
+
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Received Order = " + orderForReceivedData.toXML());
+
+
+          // performing full validation on the order
+          if(!existOrder) {
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Starting Full Validation for Order");
+              var failureArray = stcw.performFullValidationForSubmitOrder(orderForReceivedData);
+              if(failureArray != null && failureArray.length > 0) {
+                  // remove order from list of orders under management
+                  stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+                  var output = createRejectionResponseWithFailureArray_(input.OrderNumber, failureArray);
+
+                  if(orderForReceivedData != null && !existOrder) {
+                      cleanUpOrder_(orderForReceivedData);
+                  }
+
+                  debugPrintln(stcc.getSysdateForLog() + debug + "- Errors in Full Validation - Output: " + output.toXML() + "...");
+                  return output;
+              }
+          }
+
+          if(existOrder) {
+              // delete old orchestration table
+              try {
+                  stcw.deleteOrchestrationTableForOrder(orderForReceivedData.id);
+              }
+              catch(exc) {
+                  // remove order from list of orders under management
+                  stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+                  var validationErrors = [exc.message,  Global.translateText(exc.message)];
+                  var output = createRejectionResponse_(input.OrderNumber, validationErrors);
+
+                  debugPrintln(stcc.getSysdateForLog() + debug + "- Error in Cleaining Orchestration Table for ResubmitOrder - Output: " + output.toXML() + "...");
+                  return output;
+              }
+          }
+
+          // performing orchestration analysis
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Starting Orchestration Analysis for Order");
+          var orchestrationError = stcw.writeSequenceForOrder(orderForReceivedData);
+          if(orchestrationError != null) {
+              // remove order from list of orders under management
+              stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+              var output = createRejectionResponseWithFailureArray_(input.OrderNumber, [orchestrationError]);
+
+              if(orderForReceivedData != null && !existOrder) {
+                  cleanUpOrder_(orderForReceivedData);
+              }
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Error in Orchestration Analysis - Output: " + output.toXML() + "...");
+              return output;
+          }
+
+          // check if there is a "PROVISIONING" version of the PLI for VAS and complete
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Starting Checking for Completion 'F' Legacy order in Provisioning With VAS 'Not Feasible'");
+          try {
+              stcw.complete_F_LegacyProvisioningWithVASNotFeasible(orderForReceivedData);
+          }
+          catch(exc) {
+              // remove order from list of orders under management
+              stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+              var detailMsg =  Global.translateText("AE0119", null, exc.message);
+              var persistentErrorArray = ["AE0119", detailMsg];
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- " + detailMsg);
+
+              var output = createRejectionResponse_(input.OrderNumber, persistentErrorArray);
+
+              if(orderForReceivedData != null) {
+                  cleanUpOrder_(orderForReceivedData);
+              }
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Error in Orchestration Analysis - Output: " + output.toXML() + "...");
+              return output;
+          }
+
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Saving Received Order");
+          try {
+              orderForReceivedData.save();
+          }
+          catch(exc) {
+              // remove order from list of orders under management
+              stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+              var persistentErrorArray = ["AE0090", Global.translateText("AE0090", null, null)];
+
+              var excMessage = exc.message;
+              if(excMessage.indexOf("java.sql.SQLIntegrityConstraintViolationException: ORA-00001:") >= 0) {
+                  var detailMsg = Global.translateText("AE0092", null, null);
+                  persistentErrorArray = stcw.appendToValidationErrors("AE0092", detailMsg, persistentErrorArray, debug);
+
+                  debugPrintln(stcc.getSysdateForLog() + debug + "- " + detailMsg);
+              }
+              else {
+                  if(excMessage.indexOf("java.sql.SQLException") >= 0) {
+                      var detailMsg =  Global.translateText("AE0119", null, excMessage.substring(excMessage.indexOf("java.sql.SQLException")));
+                      persistentErrorArray = stcw.appendToValidationErrors("AE0119", detailMsg, persistentErrorArray, debug);
+                  }
+                  else {
+                      var detailMsg =  Global.translateText("AE0119", null, excMessage);
+                      persistentErrorArray = stcw.appendToValidationErrors("AE0119", detailMsg, persistentErrorArray, debug);
+                  }
+              }
+
+              var output = createRejectionResponse_(input.OrderNumber, persistentErrorArray);
+
+              if(orderForReceivedData != null) {
+                  cleanUpOrder_(orderForReceivedData);
+              }
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Error in Orchestration Analysis - Output: " + output.toXML() + "...");
+              return output;
+          }
+
+          // starting orchestration process
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Starting OrchestrationProcess For Order " + orderForReceivedData.id);
+          var processId = Process.startProcess ("stcw.mainSTCWOrchestrationProcess_3", orderForReceivedData.id, orderForReceivedData.id);
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Started OrchestrationProcess For Order " + orderForReceivedData.id + "; processId = " + processId);
+
+
+          var output = createPositiveResponse_(input.OrderNumber);
+
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Response: " + output.toXML() + "...");
+          debugPrintln(stcc.getSysdateForLog() + debug + "- END!");
+
+          return output;
+
+
+
+          function createRejectionResponse_(orderNumber, validationErrors) {
+              var output = new DataStructure("wsws.submitOrderResponse");
+              output.returns.MasterOrderNumber = orderNumber;
+              output.returns.MasterOrderStatus = "Rejected";
+
+              var failureCounter = 0;
+              for (var j=0; j<validationErrors.length; j=(j+2)) {
+                  var failureDS = new DataStructure("wsws.Failure");
+                  failureDS.ErrorCode = ((validationErrors[j] == null) ? "DE1107" : validationErrors[j]);
+                  failureDS.ErrorDescription = validationErrors[j+1];
+                  failureDS.ErrorTime = stcc.getSysdateInYYYYMMDD_HH24MMSS();
+                  failureDS.ErrorType = "Validation Error";
+                  failureDS.FunctionName = "SUBMIT ORDER";
+                  failureDS.ObjectId = (input == null ? null : input.OrderNumber);
+                  failureDS.SystemName = "EOC";
+
+                  output.returns.Failure[failureCounter] = failureDS;
+                  failureCounter++;
+              }
+              return output;
+          }
+
+          function createRejectionResponseWithFailureArray_(orderNumber, failureArray) {
+              var output = new DataStructure("wsws.submitOrderResponse");
+              output.returns.MasterOrderNumber = orderNumber;
+              output.returns.MasterOrderStatus = "Rejected";
+              for(var i=0; i<failureArray.length; i++) {
+                  output.returns.Failure[i] = failureArray[i];
+              }
+              return output;
+          }
+
+
+          function createPositiveResponse_(orderNumber) {
+              var output = new DataStructure("wsws.submitOrderResponse");
+              output.returns.MasterOrderNumber = orderNumber;
+              output.returns.MasterOrderStatus = "New";
+
+              return output;
+          }
+
+          function cleanUpOrder_(order) {
+              // remove all the blockValues created for the order
+              stcw.deleteAllBlockValuesInOrder(order.id);
+
+              order.deleteOrder();
+          }
+        ]]></elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_SubmitOrder$Input" type="ext">
+      <element>Message</element>
+      <elementItemMap>
+        <elementItem key="use">literal</elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_SubmitOrder$Output" type="ext">
+      <element>Message</element>
+      <elementItemMap>
+        <elementItem key="use">literal</elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_UpdateOrder" type="ext">
+      <element>Operation</element>
+      <elementItemMap>
+        <elementItem key="script"><![CDATA[
+          var debug = "[BINDING FOR EXPEDITER INTERFACE [JAVASCRIPT]: UPDATE ORDER] ";
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Start");
+
+          // checking that the input message is not empty
+          if(input == null) {
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Received empty message!!! Returning message error...");
+
+              var output = createRejectionResponse_("NA", ["AE0034", Global.translateText("AE0034")]);
+              return output;
+          }
+
+
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Received: " + input.toXML());
+
+
+          // setting the UserData1 in CWMESSAGELOG to OrderNumber, so the input message can be easily found
+          var logDoc = UserProfile.getMsgLogDoc();
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Adding UserData_1 = " + input.OrderNumber + " to id = " + logDoc.messageID);
+          logDoc.userData1 = input.OrderNumber;
+          logDoc.save();
+
+          debug = debug + "(" + input.OrderNumber + ") ";
+
+          // adding orderNumber to the list of orders under management
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Adding order to list of OrdersUnderManagement");
+          try {
+              stcw.addOrderToOrdersUnderManagement(input.OrderNumber);
+          }
+          catch(exc) {
+              var validationErrors = ["AE0018", Global.translateText("AE0018", null, input.OrderNumber)];
+              var output = createRejectionResponse_(input.OrderNumber, validationErrors);
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- OM is already processing the order! - Output: " + output.toXML() + "...");
+              return output;
+          }
+
+
+          // performing base validation on the received data structure
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Starting Base Validation for incoming DataStructure");
+          var validationErrors = stcw.performBaseValidationForIncomingDSForUpdateOrder(input);
+          if(validationErrors != null && validationErrors.length > 0) {
+              // remove order from list of orders under management
+              stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+              var output = createRejectionResponse_(input.OrderNumber, validationErrors);
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Errors in Base Validation - Output: " + output.toXML());
+              return output;
+          }
+
+          // mapping the received data structure into an order
+          var orderForReceivedData = null;
+          var existOrder = false;
+          var isCancel = (input.OrderStatus.toUpperCase() == "CANCEL");
+
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Starting Mapping for incoming DataStructure");
+
+          try {
+              // the method has to throws exceptions in case of errors
+              orderForReceivedData = stcw.mappingIncomingDSIntoBundleOrder(input, false, isCancel);
+
+              if(orderForReceivedData == null) {
+                  // remove order from list of orders under management
+                  stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+                  // strange situation - order converted is null but no exception throws ...
+                  var output = createRejectionResponse_(input.OrderNumber, ["AE0035", Global.translateText("AE0035")]);
+
+                  debugPrintln(stcc.getSysdateForLog() + debug + "- Unable to convert input DS to order [NULL!] - Output: " + output.toXML() + "...");
+                  return output;
+              }
+              else {
+                  // map NV pairs into LineItem attributes
+                  var failureArray = stcw.mapNVPairsIntoLineItemAttributes(orderForReceivedData, false);
+
+                  // Replace COM ServiceType with GI one
+                  failureArray = stcw.replaceCOMServiceTypeWithGIServiceTypeInOrder(orderForReceivedData, false, failureArray);
+
+                  if(failureArray != null && failureArray.length > 0) {
+                      // remove order from list of orders under management
+                      stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+                      var output = createRejectionResponseWithFailureArray_(input.OrderNumber, failureArray);
+
+                      if(orderForReceivedData != null && !existOrder) {
+                          cleanUpOrder_(orderForReceivedData);
+                      }
+
+                      debugPrintln(stcc.getSysdateForLog() + debug + "- Errors in Mapping NVPairs and ServiceType - Output: " + output.toXML() + "...");
+                      return output;
+                  }
+              }
+          }
+          catch(exc) {
+              // remove order from list of orders under management
+              stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+              // mappingIncomingDSIntoOrder throws exception with message equals to the reason or rejection; the message has to be in Application Resource
+              var validationErrors = [exc.message,  Global.translateText(exc.message)];
+              var output = createRejectionResponse_(input.OrderNumber, validationErrors);
+
+              if(orderForReceivedData != null && !existOrder) {
+                  cleanUpOrder_(orderForReceivedData);
+              }
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Unable to convert input DS to order - Output: " + output.toXML() + "...");
+              return output;
+          }
+
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Received Order = " + orderForReceivedData.toXML());
+
+
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Starting searching existingOrder with Order # " + input.OrderNumber);
+          // search exising order to compare it with the just received
+          var searchDoc = new Document("stcw.search_bundleOrder");
+          searchDoc.orderNumber = input.OrderNumber;
+          var orderListFound = Finder.runFinder("stcw.findAllSTCBundleOrders_Script", "select", searchDoc);
+          if(orderListFound == null) {
+              // remove order from list of orders under management
+              stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+              var validationErrors = ["AE0004", Global.translateText("AE0004", null, ["Bundle Order STC", input.OrderNumber])];
+              var output = createRejectionResponse_(input.OrderNumber, validationErrors);
+
+              if(orderForReceivedData != null) {
+                  cleanUpOrder_(orderForReceivedData);
+              }
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Unable to find existingOrder in WD - Output: " + output.toXML() + "...");
+              return output;
+          }
+
+          // loading the order
+          var orderFound = Order.getOrderById(orderListFound[0].cwOrderId, false);
+
+          // performing full validation on the order
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Starting Full Validation for Order");
+          var failureArray = stcw.performFullValidationForUpdateOrder(orderForReceivedData, orderFound, isCancel);
+          if(failureArray != null && failureArray.length > 0) {
+              // remove order from list of orders under management
+              stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+              var output = createRejectionResponseWithFailureArray_(input.OrderNumber, failureArray);
+
+              if(orderForReceivedData != null && !existOrder) {
+                  cleanUpOrder_(orderForReceivedData);
+              }
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Errors in Full Validation - Output: " + output.toXML() + "...");
+              return output;
+          }
+
+          // performing orchestration analysis
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Starting Orchestration Analysis for Order");
+          var orchestrationError = stcw.writeSequenceForOrder(orderForReceivedData);
+          if(orchestrationError != null) {
+              // remove order from list of orders under management
+              stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+              var output = createRejectionResponseWithFailureArray_(input.OrderNumber, [orchestrationError]);
+
+              if(orderForReceivedData != null && !existOrder) {
+                  cleanUpOrder_(orderForReceivedData);
+              }
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Error in Orchestration Analysis - Output: " + output.toXML() + "...");
+              return output;
+          }
+
+
+          var archivedExistingOrder = false;
+
+          try {
+              // interrupt existing process
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Interrupting Existing Provisining Process");
+              var errorsInInterruptingProcess = stcw.interruptProvisioningProcessesForOrder(orderFound);
+              if(errorsInInterruptingProcess != null) {
+                  // remove order from list of orders under management
+                  stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+                  var output = createRejectionResponseWithFailureArray_(input.OrderNumber, [errorsInInterruptingProcess]);
+
+                  if(orderForReceivedData != null) {
+                      cleanUpOrder_(orderForReceivedData);
+                  }
+                  orderForReceivedData.deleteOrder();
+
+                  debugPrintln(stcc.getSysdateForLog() + debug + "- Error in Interrupting existing provisioning process - Output: " + output.toXML() + "...");
+                  return output;
+              }
+
+              // archiving existing order:
+              // - renaming existing order from xxxx to xxxx_CANCELLED_<DATE_IN_FORMAT YYYYMMDDHH24MISS> in case of Cancel, otherwise to xxx_REVISED_<DATE_IN_FORMAT YYYYMMDDHH24MISS>
+              // - renaming the order in orchestration record
+              // - chnage the provisioning flag of the bundle to OLD
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Archiving existing order");
+              stcw.archiveExistingOrderDueToUpdate(orderFound, isCancel);
+
+              archivedExistingOrder = true;
+
+              orderForReceivedData.save();
+          }
+          catch(exc) {
+              // remove order from list of orders under management
+              stcw.removeOrderToOrdersUnderManagement(input.OrderNumber);
+
+              var persistentErrorArray = ["AE0090", Global.translateText("AE0090", null, null)];
+
+              var excMessage = exc.message;
+              if(excMessage.indexOf("java.sql.SQLIntegrityConstraintViolationException: ORA-00001:") >= 0) {
+                  var detailMsg = null;
+                  if(archivedExistingOrder) {
+                      detailMsg = Global.translateText("AE0092", null, null);
+                      persistentErrorArray = stcw.appendToValidationErrors("AE0092", detailMsg, persistentErrorArray, debug);
+                  }
+                  else {
+                      detailMsg = Global.translateText("AE0091", null, (isCancel ? "Cancel" : "Revise"));
+                      persistentErrorArray = stcw.appendToValidationErrors("AE0091", detailMsg, persistentErrorArray, debug);
+                  }
+
+                  debugPrintln(stcc.getSysdateForLog() + debug + "- " + detailMsg);
+              }
+              else {
+                  if(excMessage.indexOf("java.sql.SQLException") >= 0) {
+                      var detailMsg =  Global.translateText("AE0119", null, excMessage.substring(excMessage.indexOf("java.sql.SQLException")));
+                      persistentErrorArray = stcw.appendToValidationErrors("AE0119", detailMsg, persistentErrorArray, debug);
+                  }
+                  else {
+                      var detailMsg =  Global.translateText("AE0119", null, excMessage);
+                      persistentErrorArray = stcw.appendToValidationErrors("AE0119", detailMsg, persistentErrorArray, debug);
+                  }
+              }
+
+              var output = createRejectionResponse_(input.OrderNumber, persistentErrorArray);
+
+              if(orderForReceivedData != null) {
+                  cleanUpOrder_(orderForReceivedData);
+              }
+
+              debugPrintln(stcc.getSysdateForLog() + debug + "- Error in Orchestration Analysis - Output: " + output.toXML() + "...");
+              return output;
+          }
+
+
+          // starting orchestration process
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Starting OrchestrationProcess For Order " + orderForReceivedData.id);
+          var processId = Process.startProcess ("stcw.mainSTCWOrchestrationProcess_3", orderForReceivedData.id, orderForReceivedData.id);
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Started OrchestrationProcess For Order " + orderForReceivedData.id + "; processId = " + processId);
+
+
+          var output = createPositiveResponse_(input.OrderNumber);
+
+          debugPrintln(stcc.getSysdateForLog() + debug + "- Response: " + output.toXML() + "...");
+          debugPrintln(stcc.getSysdateForLog() + debug + "- END!");
+
+          return output;
+
+
+
+          function createRejectionResponse_(orderNumber, validationErrors) {
+              var output = new DataStructure("wsws.updateOrderResponse");
+              output.returns.MasterOrderNumber = orderNumber;
+              output.returns.MasterOrderStatus = "Rejected";
+
+              var failureCounter = 0;
+              for (var j=0; j<validationErrors.length; j=(j+2)) {
+                  var failureDS = new DataStructure("wsws.Failure");
+                  failureDS.ErrorCode = ((validationErrors[j] == null) ? "DE1107" : validationErrors[j]);
+                  failureDS.ErrorDescription = validationErrors[j+1];
+                  failureDS.ErrorTime = stcc.getSysdateInYYYYMMDD_HH24MMSS();
+                  failureDS.ErrorType = "Validation Error";
+                  failureDS.FunctionName = "UPDATE ORDER";
+                  failureDS.ObjectId = (input == null ? null : input.OrderNumber);
+                  failureDS.SystemName = "EOC";
+
+                  output.returns.Failure[failureCounter] = failureDS;
+                  failureCounter++;
+              }
+              return output;
+          }
+
+          function createRejectionResponseWithFailureArray_(orderNumber, failureArray) {
+              var output = new DataStructure("wsws.updateOrderResponse");
+              output.returns.MasterOrderNumber = orderNumber;
+              output.returns.MasterOrderStatus = "Rejected";
+              for(var i=0; i<failureArray.length; i++) {
+                  output.returns.Failure[i] = failureArray[i];
+              }
+              return output;
+          }
+
+
+          function createPositiveResponse_(orderNumber) {
+              var output = new DataStructure("wsws.updateOrderResponse");
+              output.returns.MasterOrderNumber = orderNumber;
+              output.returns.MasterOrderStatus = "New";
+
+              return output;
+          }
+
+          function cleanUpOrder_(order) {
+              // delete all blockValues created for the order
+              stcw.deleteAllBlockValuesInOrder(order.id);
+          }
+        ]]></elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_UpdateOrder$Input" type="ext">
+      <element>Message</element>
+      <elementItemMap>
+        <elementItem key="use">literal</elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_UpdateOrder$Output" type="ext">
+      <element>Message</element>
+      <elementItemMap>
+        <elementItem key="use">literal</elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_QuoteValidation" type="ext">
+      <element>Operation</element>
+      <elementItemMap>
+        <elementItem key="script"><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "Received ValidateQuote with input = " + (input == null ? "null" : input.toXML()));
+
+          var response = (createResponse_ (input));
+
+          stcc.checkPayloadToCRMSize(response, "wsws:operation_QuoteValidation");
+
+          return response;
+
+                //
+                //  createResponse_
+                //
+                function createResponse_ (input) {
+
+                      var response = new DataStructure ("wsws:quoteValidationResponse");
+                      response.businessUnit = input.businessUnit;
+                      response.quoteNumber = input.quoteNumber;
+                      response.status.errorCode = "-1";
+                      response.status.errorDescription = "Operation no more supported";
+                      response.status.errorType = "FUNCTIONAL";
+                      response.status.status = "ERROR";
+
+          debugPrintln(stcc.getSysdateForLog() + "Creating response in ValidateQuote = " + response.toXML());
+                      return (response);
+
+                }      // c r e a t e R e s p o n s e _
+        ]]></elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_ReportFailure" type="ext">
+      <element>Operation</element>
+      <elementItemMap>
+        <elementItem key="script"><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "Received ReportFailure with input = " + (input == null ? "null" : input.toXML()));
+
+                var response = null;
+                var errors = basicValidation_ (input);
+                if (errors != null) {
+                      response = (createResponse_ (input, errors));
+                }
+                else {
+                      insertReportFailureData_(input);
+                      response = (createResponse_ (input));
+                }
+
+                stcc.checkPayloadToCRMSize(response, "wsws:operation_ReportFailure");
+
+                return response;
+
+
+                //
+                //  basicValidation_
+                //
+                function basicValidation_ (input) {
+
+                      if (input == null || input.metadataType != "wsws:reportFailure") {
+                            return (xcutl.createError ("InvalidInput", "wsws:reportFailure"));
+                      }
+
+                      return (null);
+
+                }            // b a s i c V a l i d a t i o n _
+
+                //
+                //  insertReportFailureData_
+                //
+                function insertReportFailureData_ (input) {
+
+                      var doc              = new Document ("stcw:reportFailureData");
+                      doc.errorCode        = input.errorCode;
+                      doc.errorDescription = input.errorDescription;
+                      doc.errorType        = input.errorType;
+                      doc.functionName     = input.functionName;
+                      doc.sourceErrorCode  = input.sourceErrorCode;
+                      doc.status           = input.status;
+                      doc.save();
+
+                }      // i n s e r t R e p o r t F a i l u r e D a t a _
+
+                //
+                //  createResponse_
+                //
+                function createResponse_ (input, error) {
+
+                      var response = new DataStructure ("wsws:reportFailureAcknowledgement");
+                      if(error != null) {
+                            response.errorCode = error.code;
+                            response.errorDescription = stcc.limitStringLengthToCRMValue(error.text);
+                            response.errorType = "FUNCTIONAL";
+                            response.status = "ERROR";
+                      }
+                      else {
+                            response.status = "SUCCESS";
+                      }
+
+
+          debugPrintln(stcc.getSysdateForLog() + "Creating response in ReportFailure = " + response.toXML());
+                      return (response);
+
+                }      // c r e a t e R e s p o n s e _
+        ]]></elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_ReportFailure$Input" type="ext">
+      <element>Message</element>
+      <elementItemMap>
+        <elementItem key="use">literal</elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_ReportFailure$Output" type="ext">
+      <element>Message</element>
+      <elementItemMap>
+        <elementItem key="use">literal</elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_SiteInformationUpdateAck" type="ext">
+      <element>Operation</element>
+      <elementItemMap>
+        <elementItem key="script"><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "Received SiteInformationUpdate with input = " + (input == null ? "null" : input.toXML()));
+
+                var response = null;
+                var errors = basicValidation_ (input);
+                if (errors != null) {
+                      response = (createResponse_ (input, errors));
+                }
+                else {
+                      var processId = stcw.findProcessIdForSiteInfoUpdate(input.siteID);
+                      if (processId == null) {
+          debugPrintln(stcc.getSysdateForLog() + "Unable to find Process for SiteInformationUpdate = '" + input.siteID + "'");
+                            response = (createResponse_ (input));
+                      }
+                      else {
+                            response = (processInputData_ (input, processId, "stcw:siteInformationUpdate"));
+                      }
+                }
+
+                stcc.checkPayloadToCRMSize(response, "wsws:operation_SiteInformationUpdateAck");
+
+                return response;
+
+                //
+                //  basicValidation_
+                //
+                function basicValidation_ (input) {
+
+                      if (input == null || input.metadataType != "wsws:siteInformationUpdateAcknowledgement") {
+                            return (xcutl.createError ("InvalidInput", "wsws:siteInformationUpdateAcknowledgement"));
+                      }
+
+                      if (input.businessUnit != "Wholesale") {
+                            return (xcutl.createError ("InvalidBusinessUnit", input.businessUnit));
+                      }
+
+                      var validationResult = input.validate(1, true);
+                      if(validationResult != null) {
+                            var error = new DataStructure ("xcutl:Error");
+                            error.code = validationResult[0];
+                            error.text = validationResult[1];
+                            return error;
+                      }
+
+
+                      return (null);
+
+                }            // b a s i c V a l i d a t i o n _
+
+                //
+                //  processInputData_
+                //
+                function processInputData_ (input, processId, processType) {
+
+                      Global.logDebug ("wsws:ifExpedtier_WHOLESALE/operation_SiteInformationUpdateAck () - sending to process " + processId + " input='" + input.toXML() + "'");
+
+                      var patchResults = rpts.patchAsynchMessageLog (processId, "eaiReceiveSiteInfoUpdateAck");
+
+                      Process.sendMessageToProcess (processId, null, "wsws:ifExpedtier_WHOLESALE/operation_SiteInformationUpdateAck", input);
+
+                      return (createResponse_ (input));
+
+                }            // p r o c e s s I n p u t D a t a _
+
+                //
+                //  createResponse_
+                //
+                function createResponse_ (input, error) {
+
+                      var response = new DataStructure ("wsws:siteInformationUpdateAcknowledgementResponse");
+                      if(error == null) {
+                            response.status = "SUCCESS";
+                      }
+                      else {
+                            response.errorCode = error.code;
+                            response.errorDescription = stcc.limitStringLengthToCRMValue(error.text);
+                            response.errorType = "FUNCTIONAL";
+                            response.status = "ERROR";
+                      }
+
+          debugPrintln(stcc.getSysdateForLog() + "Creating response in SiteInformationUpdate = " + response.toXML());
+
+                      return (response);
+
+                }      // c r e a t e R e s p o n s e _
+        ]]></elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_SiteInformationUpdateAck$Input" type="ext">
+      <element>Message</element>
+      <elementItemMap>
+        <elementItem key="use">literal</elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_SiteInformationUpdateAck$Output" type="ext">
+      <element>Message</element>
+      <elementItemMap>
+        <elementItem key="use">literal</elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_RestorationAcknowledgement" type="ext">
+      <element>Operation</element>
+      <elementItemMap>
+        <elementItem key="script"><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "Received RestorationAcknowledgement with input = " + (input == null ? "null" : input.toXML()));
+
+                var response = null;
+                var errors = basicValidation_ (input);
+                if (errors != null) {
+                      response = (createResponse_ (input, errors));
+                }
+                else {
+                      var processId = stcw.findProcessIdForRestoration(input.maintOrderNumber);
+                      if (processId == null) {
+          debugPrintln(stcc.getSysdateForLog() + "Unable to find Process for Restoration = '" + input.maintOrderNumber + "'");
+                            response = (createResponse_ (input));
+                      }
+                      else {
+                            response = (processInputData_ (input, processId, "stcw:restoration"));
+                      }
+                }
+
+                stcc.checkPayloadToCRMSize(response, "wsws:operation_RestorationAcknowledgement");
+
+                return response;
+
+                //
+                //  basicValidation_
+                //
+                function basicValidation_ (input) {
+
+                      if (input == null || input.metadataType != "wsws:restorationAcknowledgement") {
+                            return (xcutl.createError ("InvalidInput", "wsws:restorationAcknowledgement"));
+                      }
+
+                      if (input.businessUnit != "Wholesale") {
+                            return (xcutl.createError ("InvalidBusinessUnit", input.businessUnit));
+                      }
+
+                      var validationResult = input.validate(1, true);
+                      if(validationResult != null) {
+                            var error = new DataStructure ("xcutl:Error");
+                            error.code = validationResult[0];
+                            error.text = validationResult[1];
+                            return error;
+                      }
+
+
+                      return (null);
+
+                }            // b a s i c V a l i d a t i o n _
+
+                //
+                //  processInputData_
+                //
+                function processInputData_ (input, order, processType) {
+
+                      Global.logDebug ("wsws:ifExpedtier_WHOLESALE/operation_RestorationAcknowledgement () - sending to process " + processId + " input='" + input.toXML() + "'");
+
+                      var patchResults = rpts.patchAsynchMessageLog (processId, "eaiReceiveRestorationAck");
+
+                      Process.sendMessageToProcess (processId, null, "wsws:ifExpedtier_WHOLESALE/operation_RestorationAcknowledgement", input);
+
+                      return (createResponse_ (input));
+
+                }            // p r o c e s s I n p u t D a t a _
+
+                //
+                //  createResponse_
+                //
+                function createResponse_ (input, error) {
+
+                      var response = new DataStructure ("wsws:restorationAcknowledgementResponse");
+                      if(error == null) {
+                            response.status = "SUCCESS";
+                      }
+                      else {
+                            response.errorCode = error.code;
+                            response.errorDescription = stcc.limitStringLengthToCRMValue(error.text);
+                            response.errorType = "FUNCTIONAL";
+                            response.status = "ERROR";
+                      }
+
+          debugPrintln(stcc.getSysdateForLog() + "Creating response in RestorationAcknowledgement = " + response.toXML());
+
+                      return (response);
+
+                }      // c r e a t e R e s p o n s e _
+        ]]></elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_RestorationAcknowledgement$Input" type="ext">
+      <element>Message</element>
+      <elementItemMap>
+        <elementItem key="use">literal</elementItem>
+      </elementItemMap>
+    </extension>
+    <extension name="operation_RestorationAcknowledgement$Output" type="ext">
+      <element>Message</element>
+      <elementItemMap>
+        <elementItem key="use">literal</elementItem>
+      </elementItemMap>
+    </extension>
+  </extensionList>
+  <interface>iface_wsws.ifExpedtier_WHOLESALE</interface>
+  <label>bindingForExpediterIF_JS_WHOLESALE</label>
+  <metaVersion>3</metaVersion>
+  <provider>prov_cwf.jsprov</provider>
+</binding>

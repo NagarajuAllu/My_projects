@@ -1,0 +1,1872 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="workflow.changeOrderProcess_cwr1">
+  <activity name="start" type="seqActivity">
+    <label>Main Start</label>
+    <x>663.5638</x>
+    <y>3398.1855</y>
+    <childList>
+      <child name="checkForPendingStatus" type="switchActivity">
+        <label>Check For Pending Status</label>
+        <x>579.6414</x>
+        <y>30.0</y>
+        <childList>
+          <child name="isInCompletedStatus" type="caseActivity">
+            <label>Is In Completed Status</label>
+            <x>30.0</x>
+            <y>1406.2822</y>
+            <childList>
+              <child name="newDocumentsForChange" type="seqActivity">
+                <label>Start New Documents For Change</label>
+                <x>128.40292</x>
+                <y>183.83456</y>
+                <childList>
+                  <child name="skipPRNRSubmit" type="switchActivity">
+                    <label>Skip PRNR Submit?</label>
+                    <x>126.87323</x>
+                    <y>312.20703</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <label>yes</label>
+                        <x>152.65973</x>
+                        <y>438.31055</y>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script>return (this.process.processDocument.isPRNRRevised);</script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <label>no</label>
+                        <x>801.24384</x>
+                        <y>1719.0352</y>
+                        <childList>
+                          <child name="preparePRNR" type="seqActivity">
+                            <label>Prepare PRNR</label>
+                            <x>32.00371</x>
+                            <y>1035.127</y>
+                            <childList>
+                              <child name="prepareToSubmitPRNR" type="opActivity">
+                                <element>iface_workflow.orderInitiatorTeamIF/oper_prepareToSubmitPRNR</element>
+                                <label>Prepare To Submit PRNR</label>
+                                <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                                <x>30.0</x>
+                                <y>1724.2422</y>
+                              </child>
+                              <child name="submitPRNR" type="opActivity">
+                                <element>iface_workflow.orderInitiatorTeamIF/oper_submitPRNR</element>
+                                <label>Submit PRNR</label>
+                                <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                                <x>269.52948</x>
+                                <y>2222.9033</y>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="prepareToValidatePRNRAndFeasibilityCheck" type="opActivity">
+                    <element>iface_workflow.networkDesignTeamIF/oper_prepareToValidatePRNRAndFeasibilityCheck</element>
+                    <label>Prepare To Validate PRNR &amp; Feasibility Check</label>
+                    <participant>part_workflow.networkDesignParticipant</participant>
+                    <x>224.39679</x>
+                    <y>557.0635</y>
+                  </child>
+                  <child name="choiceValidatePRNR" type="choiceActivity">
+                    <label>Choice Validate PRNR</label>
+                    <x>280.95795</x>
+                    <y>1181.5293</y>
+                    <childList>
+                      <child name="rejectPRNR" type="opActivity">
+                        <element>iface_workflow.networkDesignTeamIF/oper_rejectPRNR</element>
+                        <label>Reject PRNR</label>
+                        <participant>part_workflow.networkDesignParticipant</participant>
+                        <x>372.91824</x>
+                        <y>1382.334</y>
+                        <methodList>
+                          <method name="cwOnProcActAfter" type="action">
+                            <category>script</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              this.process.processDocument.isPRNRAccepted = false;
+
+                              this.process.processOrder.prnrDocument.prnrStatus = configuration.getExternalNameForStatusByInternalName("REJECTED", "PRNR");
+                              this.process.processOrder.save();
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="acceptPRNR" type="opActivity">
+                        <element>iface_workflow.networkDesignTeamIF/oper_acceptPRNR</element>
+                        <label>Accept PRNR</label>
+                        <participant>part_workflow.networkDesignParticipant</participant>
+                        <x>284.21707</x>
+                        <y>1382.334</y>
+                        <methodList>
+                          <method name="cwOnProcActAfter" type="action">
+                            <category>script</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              this.process.processDocument.isPRNRAccepted = true;
+                              this.process.processDocument.skipReservationManagement = false;
+
+                              this.process.processOrder.prnrDocument.releasedDate = new Date();
+                              this.process.processOrder.prnrDocument.prnrStatus =  configuration.getExternalNameForStatusByInternalName("ACCEPTED", "PRNR");
+                              this.process.processOrder.save();
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActAfter" type="action">
+                    <category>script</category>
+                    <system>true</system>
+                    <script><![CDATA[debugPrintln("Change Order: NEW PRNR Document");]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[(this.process.processDocument.tfrStatus == "COMPLETED");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="isInPendingStatus" type="caseActivity">
+            <label>Is In Pending Status</label>
+            <x>239.2716</x>
+            <y>1244.2305</y>
+            <childList>
+              <child name="tfrStatusPending" type="seqActivity">
+                <label>TFR Status Pending</label>
+                <x>340.4261</x>
+                <y>587.4359</y>
+                <childList>
+                  <child name="terminateInstall" type="scriptActivity">
+                    <label>Terminate Install</label>
+                    <x>380.32318</x>
+                    <y>1188.8799</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln("Run terminate install by : "+this.process.processOrder.tfrDocument);
+
+                          var tfrDocId = this.process.processOrder.prnrDocument.changedTFRId;
+                          var tfr = Document.readDoc("tfs.tfr", tfrDocId);
+                          if(tfr && tfr.cwOrderId){
+                              workflow.terminateProcessByOrderId(tfr.cwOrderId, "workflow.installOrderProcess");
+                              workflow.terminateProcessByOrderId(tfr.cwOrderId, "workflow.changeOrderProcess");
+                          };
+                          //workflow.overload_computeNextUser(this.process.processOrder.id, null, this.process.id, "changeOrderProcess", "reservationPerformedOK");
+
+                          debugPrintln("Running Route Setup For: "+this.process.processOrder.tfrDocument);
+                          /*
+                           * Skip all not needed steps to reach trf procesing
+                           */
+                          this.process.processDocument.isPRNRAccepted = true;
+                          this.process.processDocument.skipReservationManagement = true;
+                          this.process.processDocument.skipTFRGeneration = true;
+                          this.process.processDocument.isBICreatedDuringReservation = false;
+                          this.process.processDocument.skipFacilityDesignTeamActivities = false;
+                          this.process.processOrder.save();
+
+                          /*
+                           *
+                           * Set TFR status as SUBMIT
+                           */
+                          if(this.process.processOrder.tfrDocument){
+                              this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("SUBMIT", "TFR");
+                              this.process.processOrder.tfrDocument.creationDate = new Date();
+                              this.process.processOrder.save();
+                          }
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="prepareToReviseTFR" type="opActivity">
+                    <element>iface_workflow.orderInitiatorTeamIF/oper_prepareToReviseTFR</element>
+                    <label>Prepare To Revise TFR</label>
+                    <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                    <x>386.61774</x>
+                    <y>1731.5928</y>
+                  </child>
+                  <child name="reviseTFR" type="opActivity">
+                    <element>iface_workflow.orderInitiatorTeamIF/oper_reviseTFR</element>
+                    <label>Revise TFR</label>
+                    <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                    <x>515.3658</x>
+                    <y>2230.254</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("REVISED", "TFR");
+                          this.process.processOrder.save();
+                        ]]></script>
+                      </method>
+                      <method name="cwOnProcActAfter" type="action">
+                        <category>script</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln("Setting status for TFR to REVISE");
+                          this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("REVISED", "TFR");
+                          this.process.processOrder.save();
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="isPRNRAccepted" type="switchActivity">
+        <label>Is PRNR Accepted?</label>
+        <x>432.66397</x>
+        <y>2356.3574</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>495.0</x>
+            <y>472.0</y>
+            <childList>
+              <child name="startRejectedPRNRManaging" type="seqActivity">
+                <label>Start Rejected PRNR Managing</label>
+                <x>507.85065</x>
+                <y>2528.4312</y>
+                <childList>
+                  <child name="receiveRejection" type="opActivity">
+                    <element>iface_workflow.orderInitiatorTeamIF/oper_receiveRejection</element>
+                    <label>Receive Rejection</label>
+                    <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                    <x>524.52466</x>
+                    <y>2631.5127</y>
+                  </child>
+                  <child name="rejectedPRNRManagement" type="choiceActivity">
+                    <label>Rejected PRNR Management</label>
+                    <x>598.8905</x>
+                    <y>2757.6162</y>
+                    <childList>
+                      <child name="revisePRNR" type="opActivity">
+                        <element>iface_workflow.orderInitiatorTeamIF/oper_revisedPRNR</element>
+                        <label>Revise PRNR</label>
+                        <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                        <x>493.3762</x>
+                        <y>2928.421</y>
+                        <methodList>
+                          <method name="cwOnProcActAfter" type="action">
+                            <category>script</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              this.process.processDocument.isPRNRRevised = true;
+                              this.process.processOrder.prnrDocument.prnrStatus = configuration.getExternalNameForStatusByInternalName("REVISED", "PRNR");
+                              this.process.processOrder.save();
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="cancelPRNR" type="opActivity">
+                        <element>iface_workflow.orderInitiatorTeamIF/oper_cancelPRNR</element>
+                        <label>Cancel PRNR</label>
+                        <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                        <x>646.746</x>
+                        <y>2928.421</y>
+                        <methodList>
+                          <method name="cwOnProcActAfter" type="action">
+                            <category>script</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              this.process.processDocument.isPRNRRevised = false;
+
+                              this.process.processOrder.prnrDocument.prnrStatus =  configuration.getExternalNameForStatusByInternalName("CANCELLED", "PRNR");
+                              this.process.processOrder.prnrDocument.cancelledDate = new Date();
+                              this.process.processOrder.prnrDocument.currentUserId = null;
+                              this.process.processOrder.prnrDocument.currentUserDepartment = null;
+                              this.process.processOrder.save();
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="isPRNRRevised" type="switchActivity">
+                    <label>Is PRNR Revised?</label>
+                    <x>563.5557</x>
+                    <y>3076.875</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>615.0</x>
+                        <y>89.0</y>
+                        <childList>
+                          <child name="submitAgainPRNR" type="repeatActivity">
+                            <element>proc_workflow.changeOrderProcess_cwr1/seqActivity_start</element>
+                            <label>Submit Again PRNR</label>
+                            <x>526.54694</x>
+                            <y>3210.329</y>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script>return this.process.processDocument.isPRNRRevised;</script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>819.0</x>
+                        <y>193.0</y>
+                        <childList>
+                          <child name="end" type="completeActivity">
+                            <label>End</label>
+                            <x>615.9102</x>
+                            <y>3225.0303</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Completed: PRNR Rejected and cancelled by the initiator");
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script>return (!this.process.processDocument.isPRNRAccepted);</script>
+              </method>
+            </methodList>
+          </child>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>524.0</x>
+            <y>532.0</y>
+            <childList>
+              <child name="startPRNAndTFRManagement" type="seqActivity">
+                <label>Start PRN and TFR Management</label>
+                <x>672.37006</x>
+                <y>2528.4312</y>
+                <childList>
+                  <child name="skipReservationManagement" type="switchActivity">
+                    <label>Skip Reservation Management?</label>
+                    <x>810.7051</x>
+                    <y>171.10352</y>
+                    <childList>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>133.35756</x>
+                        <y>945.18884</y>
+                        <childList>
+                          <child name="startReservationManagement" type="seqActivity">
+                            <label>Start Reservation Management</label>
+                            <x>452.84326</x>
+                            <y>320.52774</y>
+                            <childList>
+                              <child name="generatePRNUsingPRNR" type="scriptActivity">
+                                <label>Generate PRN Using PRNR</label>
+                                <x>456.25128</x>
+                                <y>423.60938</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln("Generate prn from prnr...");
+
+                                      var tfrDoc = Document.readDoc("tfs.tfr",this.process.processOrder.prnrDocument.changedTFRId);
+                                      var oldPrn = Document.readDoc("tfs.prn",tfrDoc.prnId);
+
+
+
+                                      var prnDocument = this.process.processOrder.createOrderItemByPath("prnDocument");
+                                      tfs.copyValuesUsing_STC_MAP_DOC2DOC(prnDocument, "PRN", this.process.processOrder.prnrDocument, "PRNR");
+                                      var rev = 1;
+                                      if(tfrDoc.revision > 1){
+                                          rev = tfrDoc.revision;
+                                      };
+                                      // set the current new revision
+                                      rev += 1;
+                                      prnDocument.prnName = workflow.getNewRevisionName(oldPrn.prnName, rev);
+                                      prnDocument.releasedDate = null;
+
+                                      prnDocument.prnrId = this.process.processOrder.prnrDocument.id;
+                                      // reset cancelledDate in case of Revise PRNR
+                                      prnDocument.cancelledDate = null;
+                                      prnDocument.parentProcId = this.process.id;
+
+                                      debugPrintln("Parent process id:"+this.process.id);
+                                      debugPrintln("1.PRN parentProcId:"+prnDocument.parentProcId);
+                                      this.process.processOrder.save();
+
+
+                                      debugPrintln("2.PRN parentProcId:"+this.process.processOrder.prnDocument.parentProcId);
+                                      debugPrintln("PRNR generated.");
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="prepareToCreateReservation" type="opActivity">
+                                <element>iface_workflow.networkDesignTeamIF/oper_prepareToCreateReservation</element>
+                                <label>Prepare To Create Reservation</label>
+                                <participant>part_workflow.networkDesignParticipant</participant>
+                                <x>453.91046</x>
+                                <y>571.76465</y>
+                              </child>
+                              <child name="createReservation" type="opActivity">
+                                <element>iface_workflow.networkDesignTeamIF/oper_createReservation</element>
+                                <label>Create Reservation</label>
+                                <participant>part_workflow.networkDesignParticipant</participant>
+                                <x>440.82196</x>
+                                <y>1025.4258</y>
+                                <methodList>
+                                  <method name="cwOnProcActAfter" type="action">
+                                    <category>script</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      this.process.processOrder.prnDocument.prnStatus =  configuration.getExternalNameForStatusByInternalName("RESERVATION CREATED", "PRN");
+                                      this.process.processOrder.prnDocument.createdBy = workflow.getUserForOrder(this.process.processOrder.id, "0", "NetworkDesign"); // returns user current user id
+                                      this.process.processOrder.save();
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="startGraniteReservationMngt" type="seqActivity">
+                                <label>Start Granite reservation management</label>
+                                <x>503.9404</x>
+                                <y>1736.9733</y>
+                                <childList>
+                                  <child name="performReservationOnGranite" type="opActivity">
+                                    <element>iface_workflow.networkDesignTeamIF/oper_performReservationOnGranite</element>
+                                    <label>Perform Reservation On Granite</label>
+                                    <participant>part_workflow.networkDesignParticipant</participant>
+                                    <x>474.52008</x>
+                                    <y>1992.3975</y>
+                                  </child>
+                                  <child name="acceptOrRejectReservationOnGranite" type="choiceActivity">
+                                    <label>Accept Or Reject Reservation On Granite</label>
+                                    <x>612.97205</x>
+                                    <y>824.9199</y>
+                                    <childList>
+                                      <child name="acceptReservationOnGranite" type="opActivity">
+                                        <element>iface_workflow.networkDesignTeamIF/oper_acceptReservation</element>
+                                        <label>Accept Reservation on Granite</label>
+                                        <participant>part_workflow.networkDesignParticipant</participant>
+                                        <x>672.21454</x>
+                                        <y>1018.0752</y>
+                                        <methodList>
+                                          <method name="cwOnProcActAfter" type="action">
+                                            <category>script</category>
+                                            <system>true</system>
+                                            <script><![CDATA[
+                                              this.process.processDocument.skipTFRGeneration = false;
+                                              this.process.processOrder.prnDocument.prnStatus =  configuration.getExternalNameForStatusByInternalName("RESERVATION_PERFORMED", "PRN");
+                                              this.process.processOrder.save();
+                                            ]]></script>
+                                          </method>
+                                        </methodList>
+                                      </child>
+                                      <child name="issueInReservation" type="opActivity">
+                                        <element>iface_workflow.networkDesignTeamIF/oper_issueInReservation</element>
+                                        <label>Issue in reservation</label>
+                                        <participant>part_workflow.networkDesignParticipant</participant>
+                                        <x>556.8532</x>
+                                        <y>1025.4258</y>
+                                        <childList>
+                                          <child name="startAsyncBIManagement" type="seqActivity">
+                                            <label>Start async Blocking Issue management</label>
+                                            <x>501.3277</x>
+                                            <y>1194.2604</y>
+                                            <childList>
+                                              <child name="startBIForPRN" type="scriptActivity">
+                                                <label>Start Blocking Issue for PRN</label>
+                                                <x>505.26715</x>
+                                                <y>1367.6328</y>
+                                                <methodList>
+                                                  <method name="cwOnProcActBefore" type="action">
+                                                    <category>before</category>
+                                                    <system>true</system>
+                                                    <script><![CDATA[
+                                                      debugPrintln("Requested BI Management for PRN");
+
+                                                      this.process.processDocument.isBICreatedDuringReservation = true;
+
+                                                      var processId = Process.startProcess("workflow.biAssociationProcess", this.process.processOrder.id, this.process.processOrder.prnDocument.id);
+
+                                                      var dataSharing = new Document("workflow.dataSharingForBIAssociation");
+                                                      dataSharing.processId = processId;
+                                                      dataSharing.parentProcessId = this.process.id;
+                                                      dataSharing.requestNotification = false;
+                                                      dataSharing.save();
+
+                                                      debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Started BI Association Process with id " + processId);
+                                                    ]]></script>
+                                                  </method>
+                                                </methodList>
+                                              </child>
+                                              <child name="repeatReservationAfterBIStarted" type="repeatActivity">
+                                                <element>proc_workflow.changeOrderProcess_cwr1/seqActivity_start/switchActivity_isPRNRAccepted/caseActivity_yes/seqActivity_startPRNAndTFRManagement/switchActivity_skipReservationManagement/caseActivity_no/seqActivity_startReservationManagement/seqActivity_startGraniteReservationMngt</element>
+                                                <label>Repeat reservation after BI started</label>
+                                                <x>498.59625</x>
+                                                <y>1553.4375</y>
+                                              </child>
+                                            </childList>
+                                          </child>
+                                        </childList>
+                                      </child>
+                                    </childList>
+                                  </child>
+                                </childList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script>return (!this.process.processDocument.skipReservationManagement);</script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>775.29987</x>
+                        <y>586.4658</y>
+                      </child>
+                    </childList>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[debugPrintln("Prepare to skip Reservation Mgmt, yes or no?");]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="skipTFRGeneration" type="switchActivity">
+                    <label>Skip TFR Generation?</label>
+                    <x>745.93524</x>
+                    <y>1188.8799</y>
+                    <childList>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>133.35756</x>
+                        <y>945.18884</y>
+                        <childList>
+                          <child name="submitTFRManagement" type="seqActivity">
+                            <label>Submit TFR Management</label>
+                            <x>611.955</x>
+                            <y>1390.6547</y>
+                            <childList>
+                              <child name="generateTFRUsingPRN" type="scriptActivity">
+                                <label>Generate TFR Using PRN</label>
+                                <x>607.3023</x>
+                                <y>1560.7881</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      /****
+                                      var sem = theAVM.getSemaphore("TFRNumberLock");
+                                      if(!sem){
+                                       sem = theAVM.setSemaphore("TFRNumberLock",0);
+                                      }
+                                      while( sem > 0){
+                                        sem = theAVM.getSemaphore("TFRNumberLock");
+                                      }
+                                      theAVM.setSemaphore("TFRNumberLock",0,1);
+                                      ***/
+
+                                      var tfrDocument = this.process.processOrder.createOrderItemByPath("tfrDocument");
+                                      tfs.copyValuesUsing_STC_MAP_DOC2DOC(tfrDocument, "TFR", this.process.processOrder.prnDocument, "PRN");
+                                      tfrDocument.prnId = this.process.processOrder.prnDocument.id;
+                                      tfrDocument.generateTFRNumber();
+                                      tfrDocument.save();
+
+                                      /// theAVM.setSemaphore("TFRNumberLock",1,0);
+
+
+                                      var tfrDocId = this.process.processOrder.prnrDocument.changedTFRId;
+                                      var tfr = Document.readDoc("tfs.tfr", tfrDocId);
+                                      if(tfr){
+
+                                          var changeTfrRevision = tfr.revision;
+                                          var changeTfrNumber = tfr.tfrNumber;
+                                          if(!tfr.revision){
+                                              changeTfrRevision = 1;
+                                          }
+                                          var rev = tfs.findLastChangeRevision(tfr);
+                                          var currentRevision = changeTfrRevision;
+                                          if(tfr.revision < rev){
+                                              debugPrintln("Revision mismatch : Current:"+tfr.revision+" Found: "+rev);
+                                              currentRevision = rev;
+                                          }
+
+                                          tfrDocument.revision = currentRevision + 1;
+                                          tfrDocument.existing = tfr.existing + tfr.required;
+                                          tfrDocument.tfrNumber = workflow.getNewRevisionName(changeTfrNumber, tfrDocument.revision);
+                                          tfrDocument.faCompletionDate = null;
+                                      }
+                                      this.process.processOrder.save();
+
+
+                                      this.process.processOrder.prnDocument.tfrId = tfrDocument.id;
+                                      this.process.processOrder.save();
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="prepareToSubmitTFR" type="opActivity">
+                                <element>iface_workflow.orderInitiatorTeamIF/oper_prepareToSubmitTFR</element>
+                                <label>Prepare To Submit TFR</label>
+                                <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                                <x>605.9576</x>
+                                <y>1724.2422</y>
+                              </child>
+                              <child name="submitTFR" type="opActivity">
+                                <element>iface_workflow.orderInitiatorTeamIF/oper_submitTFR</element>
+                                <label>Submit TFR</label>
+                                <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                                <x>760.55133</x>
+                                <y>2222.9033</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("SUBMIT", "TFR");
+                                      this.process.processOrder.tfrDocument.creationDate = new Date();
+                                      this.process.processOrder.save();
+
+                                      this.process.processDocument.skipFacilityDesignTeamActivities = false;
+                                    ]]></script>
+                                  </method>
+                                  <method name="cwOnProcActAfter" type="action">
+                                    <category>script</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln("Change: Setting TFR status to SUBMIT");
+                                      this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("SUBMIT", "TFR");
+                                      this.process.processOrder.tfrDocument.creationDate = new Date();
+                                      this.process.processOrder.save();
+
+                                      this.process.processDocument.skipFacilityDesignTeamActivities = false;
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script>return (!this.process.processDocument.skipTFRGeneration);</script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>972.26624</x>
+                        <y>1389.6846</y>
+                      </child>
+                    </childList>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[debugPrintln("Prepare to check if to skip TFR Generation");]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="skipWaitForBIOnReservation" type="switchActivity">
+                    <label>Skip Wait For BI On Reservation?</label>
+                    <x>883.4163</x>
+                    <y>1560.7881</y>
+                    <childList>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>316.25702</x>
+                        <y>2521.224</y>
+                        <childList>
+                          <child name="waitForBIOnReservation" type="syncActivity">
+                            <element>signal_workflow.wakeUpParent</element>
+                            <label>Wait For BI On Reservation</label>
+                            <x>981.9821</x>
+                            <y>1724.2422</y>
+                            <methodList>
+                              <method name="cwOnProcActAfter" type="action">
+                                <category>script</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  this.process.processOrder.prnDocument.prnStatus =  configuration.getExternalNameForStatusByInternalName("ISSUE IN COMPLETING RESERVATION SOLVED", "PRN");
+                                  this.process.processOrder.save();
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              // return this.process.processDocument.isBICreatedDuringReservation;
+
+                              var hasToWait = false;
+
+                              if(this.process.processOrder.prnDocument != null) {
+                                  var biFinder = new Finder("tfs.findBIForPRNOrTFR");
+                                  biFinder.searchDocument.sourcePRNId = this.process.processOrder.prnDocument.prnId;
+                                  var biFoundList = biFinder.search();
+
+                                  hasToWait = (biFoundList != null && biFoundList.length > 0);
+                              }
+
+                              if(!hasToWait) {
+                                  // search if there is a biAssociation process for the order still running
+                                  var procList = workflow.findRunningProcessesByType(this.process.processOrder.id, "workflow.biAssociationProcess");
+                                  hasToWait = (procList != null && procList.length > 0);
+                              }
+
+                              return hasToWait;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>897.9821</x>
+                        <y>1738.9434</y>
+                      </child>
+                    </childList>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[debugPrintln("Is Wait on BI skipped?");]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="skipFacilityDesignTeamActivities" type="switchActivity">
+                    <label>Skip Facility Design Team Activities?</label>
+                    <x>1065.0115</x>
+                    <y>1985.0469</y>
+                    <childList>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>508.6974</x>
+                        <y>2356.224</y>
+                        <childList>
+                          <child name="start" type="seqActivity">
+                            <label>Start</label>
+                            <x>1410.9307</x>
+                            <y>2529.8115</y>
+                            <childList>
+                              <child name="prepareToCompleteNI" type="opActivity">
+                                <element>iface_workflow.facilityDesignTeamIF/oper_prepareToCompleteNI</element>
+                                <label>Prepare To Complete NI</label>
+                                <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                <x>1538.3785</x>
+                                <y>2624.162</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln("Task Assigned to Facility Team");
+
+                                      this.process.processDocument.isCompleteNIOK = false;
+                                      this.process.processDocument.assignToXC = false;
+                                      this.process.processDocument.rejectToInitiator = false;
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="completeNIOrRequestBIOrRejectToInitiatorTeam" type="choiceActivity">
+                                <label>Complete NI Or Request BI Or Reject To Initiator Team</label>
+                                <x>1033.9395</x>
+                                <y>549.7129</y>
+                                <childList>
+                                  <child name="crossConnectionRequired" type="opActivity">
+                                    <element>iface_workflow.facilityDesignTeamIF/oper_xcRequired</element>
+                                    <label>Cross-Connection Required</label>
+                                    <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                    <x>1198.4036</x>
+                                    <y>832.2705</y>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("CROSS-CONNECTION REQUIRED", "TFR");
+                                          this.process.processOrder.save();
+
+                                          this.process.processDocument.isCompleteNIOK = true;
+                                          this.process.processDocument.assignToXC = true;
+                                          this.process.processDocument.rejectToInitiator = false;
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="crossConnectionNotRequired" type="opActivity">
+                                    <element>iface_workflow.facilityDesignTeamIF/oper_xcNotRequired</element>
+                                    <label>Cross Connection not required</label>
+                                    <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                    <x>1060.8262</x>
+                                    <y>824.9199</y>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("NO CROSS-CONNECTION REQUIRED", "TFR");
+                                          this.process.processOrder.save();
+
+                                          this.process.processDocument.isCompleteNIOK = true;
+                                          this.process.processDocument.assignToXC = false;
+                                          this.process.processDocument.rejectToInitiator = false;
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="rejectToInitiator" type="opActivity">
+                                    <element>iface_workflow.facilityDesignTeamIF/oper_rejectToInitiator</element>
+                                    <label>Reject To Initiator</label>
+                                    <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                    <x>957.4746</x>
+                                    <y>839.6211</y>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          this.process.processDocument.isCompleteNIOK = false;
+                                          this.process.processDocument.assignToXC = false;
+                                          this.process.processDocument.rejectToInitiator = true;
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="requestBITicket" type="opActivity">
+                                    <element>iface_workflow.facilityDesignTeamIF/oper_requestBI</element>
+                                    <label>Request BI Ticket</label>
+                                    <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                    <x>846.1074</x>
+                                    <y>839.6211</y>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("ISSUE IN COMPLETING NI", "TFR");
+                                          this.process.processOrder.save();
+
+                                          this.process.processDocument.isCompleteNIOK = false;
+                                          this.process.processDocument.assignToXC = false;
+                                          this.process.processDocument.rejectToInitiator = false;
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                </childList>
+                              </child>
+                              <child name="possibleProceedWithNextStep" type="switchActivity">
+                                <label>Possible proceed With Next Step?</label>
+                                <x>902.4854</x>
+                                <y>1010.7246</y>
+                                <childList>
+                                  <child name="notProceed" type="caseActivity">
+                                    <label>Not Proceed</label>
+                                    <x>945.1829</x>
+                                    <y>1654.6846</y>
+                                    <childList>
+                                      <child name="start" type="seqActivity">
+                                        <label>Start</label>
+                                        <x>863.9822</x>
+                                        <y>1198.581</y>
+                                        <childList>
+                                          <child name="backToInitiator" type="switchActivity">
+                                            <label>Back To Initiator?</label>
+                                            <x>851.24084</x>
+                                            <y>1382.334</y>
+                                            <childList>
+                                              <child name="rejectedToInitiator" type="caseActivity">
+                                                <label>Rejected To Initiator</label>
+                                                <x>121.350586</x>
+                                                <y>3547.9785</y>
+                                                <childList>
+                                                  <child name="start" type="seqActivity">
+                                                    <label>Start Revise TFR</label>
+                                                    <x>716.8505</x>
+                                                    <y>1577.8398</y>
+                                                    <childList>
+                                                      <child name="prepareToReviseTFR" type="opActivity">
+                                                        <element>iface_workflow.orderInitiatorTeamIF/oper_prepareToReviseTFR</element>
+                                                        <label>Prepare To Revise TFR</label>
+                                                        <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                                                        <x>717.9869</x>
+                                                        <y>1731.5928</y>
+                                                      </child>
+                                                      <child name="reviseTFR" type="opActivity">
+                                                        <element>iface_workflow.orderInitiatorTeamIF/oper_reviseTFR</element>
+                                                        <label>Revise TFR</label>
+                                                        <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                                                        <x>1368.9977</x>
+                                                        <y>2230.254</y>
+                                                        <methodList>
+                                                          <method name="cwOnProcActBefore" type="action">
+                                                            <category>before</category>
+                                                            <system>true</system>
+                                                            <script><![CDATA[
+                                                              this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("REVISED", "TFR");
+                                                              this.process.processOrder.save();
+                                                            ]]></script>
+                                                          </method>
+                                                          <method name="cwOnProcActAfter" type="action">
+                                                            <category>script</category>
+                                                            <system>true</system>
+                                                            <script><![CDATA[
+                                                              debugPrintln("Setting status for TFR to REVISE");
+                                                              this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("REVISED", "TFR");
+                                                              this.process.processOrder.save();
+                                                            ]]></script>
+                                                          </method>
+                                                        </methodList>
+                                                      </child>
+                                                      <child name="returnToDesignFacilityTeam" type="repeatActivity">
+                                                        <element>proc_workflow.changeOrderProcess_cwr1/seqActivity_start/switchActivity_isPRNRAccepted/caseActivity_yes/seqActivity_startPRNAndTFRManagement/switchActivity_skipFacilityDesignTeamActivities/caseActivity_no/seqActivity_start</element>
+                                                        <label>Return To Design Facility Team</label>
+                                                        <x>1370.7517</x>
+                                                        <y>2341.6562</y>
+                                                      </child>
+                                                    </childList>
+                                                  </child>
+                                                </childList>
+                                                <methodList>
+                                                  <method name="cwOnProcActCond" type="action">
+                                                    <category>cond</category>
+                                                    <system>true</system>
+                                                    <script>return this.process.processDocument.rejectToInitiator;</script>
+                                                  </method>
+                                                </methodList>
+                                              </child>
+                                              <child name="createBITicket" type="caseActivity">
+                                                <label>Create BI Ticket</label>
+                                                <x>1315.9666</x>
+                                                <y>2939.2876</y>
+                                                <childList>
+                                                  <child name="startIssueInFacilityDesignManagement" type="seqActivity">
+                                                    <label>Start Issue In Facility Design Management</label>
+                                                    <x>1476.9135</x>
+                                                    <y>1736.9733</y>
+                                                    <childList>
+                                                      <child name="biProcForFacilityManagement" type="scriptActivity">
+                                                        <label>Start Blocking Issue process for Facility Management</label>
+                                                        <x>1469.1013</x>
+                                                        <y>1970.3457</y>
+                                                        <methodList>
+                                                          <method name="cwOnProcActBefore" type="action">
+                                                            <category>before</category>
+                                                            <system>true</system>
+                                                            <script><![CDATA[
+                                                              debugPrintln("Requested BI Management for TFR");
+
+                                                              var processId = Process.startProcess("workflow.biAssociationProcess", this.process.processOrder.id, this.process.processOrder.tfrDocument.id);
+
+                                                              var dataSharing = new Document("workflow.dataSharingForBIAssociation");
+                                                              dataSharing.processId = processId;
+                                                              dataSharing.parentProcessId = this.process.id;
+                                                              dataSharing.requestNotification = true;
+                                                              dataSharing.save();
+
+                                                              debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Started BI Association Process with id " + processId);
+                                                            ]]></script>
+                                                          </method>
+                                                        </methodList>
+                                                      </child>
+                                                      <child name="wait" type="syncActivity">
+                                                        <element>signal_workflow.wakeUpParent</element>
+                                                        <label>Wait</label>
+                                                        <x>1488.1228</x>
+                                                        <y>2230.254</y>
+                                                      </child>
+                                                      <child name="issueInFacilityManagementSolved" type="repeatActivity">
+                                                        <element>proc_workflow.changeOrderProcess_cwr1/seqActivity_start/switchActivity_isPRNRAccepted/caseActivity_yes/seqActivity_startPRNAndTFRManagement/switchActivity_skipFacilityDesignTeamActivities/caseActivity_no/seqActivity_start</element>
+                                                        <label>Issue In Reservation Solved</label>
+                                                        <x>1472.1072</x>
+                                                        <y>2349.0068</y>
+                                                        <methodList>
+                                                          <method name="cwOnProcActBefore" type="action">
+                                                            <category>before</category>
+                                                            <system>true</system>
+                                                            <script><![CDATA[
+                                                              this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("ISSUE IN COMPLETING NI SOLVED", "TFR");
+                                                              this.process.processOrder.save();
+                                                            ]]></script>
+                                                          </method>
+                                                        </methodList>
+                                                      </child>
+                                                    </childList>
+                                                  </child>
+                                                </childList>
+                                              </child>
+                                            </childList>
+                                          </child>
+                                        </childList>
+                                      </child>
+                                    </childList>
+                                    <methodList>
+                                      <method name="cwOnProcActCond" type="action">
+                                        <category>cond</category>
+                                        <system>true</system>
+                                        <script>return (! this.process.processDocument.isCompleteNIOK);</script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="proceedWithNextStep" type="caseActivity">
+                                    <label>ProceedWithNextStep</label>
+                                    <x>1094.0134</x>
+                                    <y>1738.9434</y>
+                                  </child>
+                                </childList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script>return (!this.process.processDocument.skipFacilityDesignTeamActivities);</script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>1069.0212</x>
+                        <y>2230.254</y>
+                      </child>
+                    </childList>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[debugPrintln("Skip Assign to Facility Design Team?");]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="assignToXCTeam" type="switchActivity">
+                    <label>Assign To XC Team?</label>
+                    <x>1098.3499</x>
+                    <y>2356.3574</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>937.06116</x>
+                        <y>2189.8218</y>
+                        <childList>
+                          <child name="startXCManagement" type="seqActivity">
+                            <label>Start XC Management</label>
+                            <x>1113.9108</x>
+                            <y>2528.4312</y>
+                            <childList>
+                              <child name="performXC" type="opActivity">
+                                <element>iface_workflow.xcTeamIF/oper_performCrossConnection</element>
+                                <label>Perform CrossConnection</label>
+                                <participant>part_workflow.xcTeamParticipant</participant>
+                                <x>1160.1886</x>
+                                <y>2631.5127</y>
+                              </child>
+                              <child name="xcConnectionManagement" type="choiceActivity">
+                                <label>XC Connection Management</label>
+                                <x>1109.4636</x>
+                                <y>2757.6162</y>
+                                <childList>
+                                  <child name="switchActivationNotRequired" type="opActivity">
+                                    <element>iface_workflow.xcTeamIF/oper_switchActivationNotRequired</element>
+                                    <label>Switch Activation Not Required</label>
+                                    <participant>part_workflow.xcTeamParticipant</participant>
+                                    <x>1109.4636</x>
+                                    <y>3062.1738</y>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("SWITCH ACTIVATION NOT REQUIRED", "TFR");
+                                          this.process.processOrder.save();
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="switchActivationRequired" type="opActivity">
+                                    <element>iface_workflow.xcTeamIF/oper_switchActivationRequired</element>
+                                    <label>Switch Activation Required</label>
+                                    <participant>part_workflow.xcTeamParticipant</participant>
+                                    <x>1191.8909</x>
+                                    <y>2921.0703</y>
+                                    <childList>
+                                      <child name="startSwitchActivationActivities" type="seqActivity">
+                                        <label>Start Switch Activation Activities</label>
+                                        <x>1198.4171</x>
+                                        <y>3085.1958</y>
+                                        <childList>
+                                          <child name="prepareToCompleteSwitchActivation" type="opActivity">
+                                            <element>iface_workflow.switchActivationTeamIF/oper_prepareToCompleteActivation</element>
+                                            <label>Prepare To Complete Switch Activation</label>
+                                            <participant>part_workflow.switchActivationParticipant</participant>
+                                            <x>1161.1763</x>
+                                            <y>3202.9785</y>
+                                          </child>
+                                          <child name="switchActivationCompleted" type="opActivity">
+                                            <element>iface_workflow.switchActivationTeamIF/oper_switchActivationCompleted</element>
+                                            <label>Switch Activation Completed</label>
+                                            <participant>part_workflow.switchActivationParticipant</participant>
+                                            <x>1145.3889</x>
+                                            <y>3514.588</y>
+                                            <methodList>
+                                              <method name="cwOnProcActAfter" type="action">
+                                                <category>script</category>
+                                                <system>true</system>
+                                                <script><![CDATA[
+                                                  this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("SWITCH ACTIVATION COMPLETED", "TFR");
+                                                  this.process.processOrder.save();
+                                                ]]></script>
+                                              </method>
+                                            </methodList>
+                                          </child>
+                                        </childList>
+                                      </child>
+                                    </childList>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("SWITCH ACTIVATION REQUIRED", "TFR");
+                                          this.process.processOrder.save();
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                </childList>
+                              </child>
+                              <child name="startLoadingTasksForIntermediateSites" type="seqActivity">
+                                <label>Start loading tasks for intermediate sites</label>
+                                <x>1108.1748</x>
+                                <y>3653.4224</y>
+                                <childList>
+                                  <child name="loadIntermediateSiteTasks" type="opActivity">
+                                    <element>iface_workflow.xcTeamIF/oper_loadIntermediateSitesTasks</element>
+                                    <label>Load intermediate site tasks</label>
+                                    <participant>part_workflow.xcTeamParticipant</participant>
+                                    <x>1189.7698</x>
+                                    <y>3766.795</y>
+                                  </child>
+                                  <child name="intermediateSitesTasksLoaded" type="opActivity">
+                                    <element>iface_workflow.xcTeamIF/oper_intermediateSitesTasksLoaded</element>
+                                    <label>Intermediate sites tasks loaded</label>
+                                    <participant>part_workflow.xcTeamParticipant</participant>
+                                    <x>1238.4983</x>
+                                    <y>3892.8984</y>
+                                    <methodList>
+                                      <method name="cwOnProcActBefore" type="action">
+                                        <category>before</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("LOADED INTERMEDIATE SITE TASKS", "TFR");
+                                          this.process.processOrder.save();
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="cleanTFRUser" type="scriptActivity">
+                                    <label>Clean TFR User</label>
+                                    <x>1242.843</x>
+                                    <y>4019.002</y>
+                                    <methodList>
+                                      <method name="cwOnProcActBefore" type="action">
+                                        <category>before</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          // clean TFR user after XC activities finished
+                                          this.process.processOrder.tfrDocument.currentUserId=null;
+                                          this.process.processOrder.save();
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                </childList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script>return (this.process.processDocument.assignToXC);</script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>1060.9124</x>
+                        <y>3395.835</y>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="startQualityTeamManagement" type="seqActivity">
+                    <label>Start Quality Team Management</label>
+                    <x>1134.3687</x>
+                    <y>4130.4043</y>
+                    <childList>
+                      <child name="loadA_ZSiteTasks" type="scriptActivity">
+                        <label>Load A &amp; Z Site Tasks</label>
+                        <x>1140.3635</x>
+                        <y>4225.165</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              workflow.createTaskForSite(this.process.processOrder, true);
+                              workflow.createTaskForSite(this.process.processOrder, false);
+                              //workflow.createEnd2EndTask(this.process.processOrder);
+                              // Prevent from adding end to end into change process
+                              if(!this.process.processOrder.tasks || this.process.processOrder.tasks.length < 3){
+                                  workflow.createEnd2EndTask(this.process.processOrder);
+                              }
+                              else{
+                                  for(var i=0; i<this.process.processOrder.tasks.length; i++) {
+                                      if(this.process.processOrder.tasks[i].tfrTask.isEnd2End) {
+                                          this.process.processOrder.tasks[i].tfrTask.acceptDate = null;
+                                          this.process.processOrder.tasks[i].tfrTask.status = null;
+                                      }
+                                      this.process.processOrder.tasks[i].tfrTask.tfrRevisionNumber = this.process.processOrder.tfrDocument.revision;
+                                      this.process.processOrder.tasks[i].tfrTask.save();
+                                      this.process.processOrder.save();
+                                  }
+                              }
+
+                              this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("LOADED A & Z SITE TASKS", "TFR");
+                              this.process.processOrder.save();
+
+                              this.process.processDocument.tasksStarted = 0;
+                              this.process.processDocument.tasksCompleted = 0;
+                              this.process.processDocument.tasksActive = 0;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="allTasksStarted" type="switchActivity">
+                        <label>All Tasks Started?</label>
+                        <x>1189.6893</x>
+                        <y>4351.2686</y>
+                        <childList>
+                          <child name="no" type="caseActivity">
+                            <label>No</label>
+                            <x>1566.0</x>
+                            <y>1992.0</y>
+                            <childList>
+                              <child name="startNthTaskManagement" type="seqActivity">
+                                <label>Start N-th Task Management</label>
+                                <x>1185.7606</x>
+                                <y>4478.3423</y>
+                                <childList>
+                                  <child name="processTask" type="scriptActivity">
+                                    <label>Process Task</label>
+                                    <x>1192.3602</x>
+                                    <y>4574.073</y>
+                                    <methodList>
+                                      <method name="cwOnProcActBefore" type="action">
+                                        <category>before</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Starting workflow for Task  # " + (this.process.processDocument.tasksStarted + 1));
+                                          var statusAccepted = configuration.getExternalNameForStatusByInternalName("ACCEPTED", "TFR_TASK");
+                                          if( !this.process.processOrder.tasks[this.process.processDocument.tasksStarted].tfrTask.isEnd2End) {
+                                              var childElementId = this.process.processOrder.tasks[this.process.processDocument.tasksStarted].tfrTask.id;
+                                              this.process.processOrder.tasks[this.process.processDocument.tasksStarted].tfrTask.parentProcessId = this.process.id;
+                                              this.process.processOrder.save();
+
+                                              if(this.process.processOrder.tasks[this.process.processDocument.tasksStarted].tfrTask.status == statusAccepted){
+                                                  debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Doesn't started workflow for Task #"  + (this.process.processDocument.tasksStarted + 1) + " because it's already processed in previous process");
+                                                  return;
+                                              }
+                                              this.process.processOrder.tasks[this.process.processDocument.tasksStarted].tfrTask.tfrRevisionNumber = this.process.processOrder.tfrDocument.revision;
+                                              this.process.processOrder.save();
+                                              var processId = Process.startProcess("workflow:taskManagementProcess", this.process.processOrder.id, childElementId);
+                                              this.process.processDocument.tasksActive += 1;
+
+                                              debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Started workflow for Task #"  + (this.process.processDocument.tasksStarted + 1) + "; elementId = " +  childElementId + "; processId = " + processId);
+                                          }
+                                          else {
+                                              debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Doesn't started workflow for Task #"  + (this.process.processDocument.tasksStarted + 1) + " because it's an End2End task");
+                                          }
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="repeatTaskManagement" type="repeatActivity">
+                                    <element>proc_workflow.changeOrderProcess_cwr1/seqActivity_start/switchActivity_isPRNRAccepted/caseActivity_yes/seqActivity_startPRNAndTFRManagement/seqActivity_startQualityTeamManagement/switchActivity_allTasksStarted</element>
+                                    <label>Repeat Task Management</label>
+                                    <x>1106.4143</x>
+                                    <y>4715.4756</y>
+                                    <methodList>
+                                      <method name="cwOnProcActBefore" type="action">
+                                        <category>before</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          this.process.processDocument.tasksStarted++;
+
+                                          return;
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                </childList>
+                              </child>
+                            </childList>
+                            <methodList>
+                              <method name="cwOnProcActCond" type="action">
+                                <category>cond</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  debugPrintln("Task startded for 'no' case: "+this.process.processDocument.tasksStarted);
+                                  //return (this.process.processDocument.tasksActive <= 2);
+                                  return (this.process.processDocument.tasksStarted < this.process.processOrder.tasks.length);
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="yes" type="caseActivity">
+                            <label>Yes</label>
+                            <x>1343.2305</x>
+                            <y>4477.372</y>
+                          </child>
+                        </childList>
+                      </child>
+                      <child name="allTasksCompleted" type="switchActivity">
+                        <label>All Tasks Completed?</label>
+                        <x>1326.8701</x>
+                        <y>4574.073</y>
+                        <childList>
+                          <child name="no" type="caseActivity">
+                            <label>No</label>
+                            <x>1566.0</x>
+                            <y>1992.0</y>
+                            <childList>
+                              <child name="start" type="seqActivity">
+                                <label>Start</label>
+                                <x>1250.7688</x>
+                                <y>4732.5273</y>
+                                <childList>
+                                  <child name="waitForTaskManagementCompletion" type="syncActivity">
+                                    <element>signal_workflow.wakeUpParentForTaskProcess</element>
+                                    <label>Wait For Task Management Completion</label>
+                                    <x>1237.7473</x>
+                                    <y>4841.579</y>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Received wakeup from workflow for Task #"  + (this.process.processDocument.tasksCompleted + 1));
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="repeatTaskManagement" type="repeatActivity">
+                                    <element>proc_workflow.changeOrderProcess_cwr1/seqActivity_start/switchActivity_isPRNRAccepted/caseActivity_yes/seqActivity_startPRNAndTFRManagement/seqActivity_startQualityTeamManagement/switchActivity_allTasksCompleted</element>
+                                    <label>Repeat Task Management</label>
+                                    <x>1202.2366</x>
+                                    <y>4997.384</y>
+                                    <methodList>
+                                      <method name="cwOnProcActBefore" type="action">
+                                        <category>before</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          this.process.processDocument.tasksCompleted++;
+
+                                          return;
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                </childList>
+                              </child>
+                            </childList>
+                            <methodList>
+                              <method name="cwOnProcActCond" type="action">
+                                <category>cond</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  debugPrintln("All tasks: "+this.process.processOrder.tasks.length+" Tasks completed: "+this.process.processDocument.tasksCompleted+" Tasks started: "+this.process.processDocument.tasksStarted+" Tasks Active:"+this.process.processDocument.tasksActive);
+                                  //return (this.process.processDocument.tasksCompleted < (this.process.processOrder.tasks.length - 1)); // now there is the End2End task that doesn't have a workflow
+
+                                  //return (this.process.processDocument.tasksCompleted < (this.process.processDocument.tasksStarted));
+                                  return (this.process.processDocument.tasksCompleted < (this.process.processDocument.tasksActive));
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="yes" type="caseActivity">
+                            <label>Yes</label>
+                            <x>1365.469</x>
+                            <y>4730.177</y>
+                          </child>
+                        </childList>
+                      </child>
+                      <child name="completeEnd2EndTask" type="scriptActivity">
+                        <label>Complete End2End Task</label>
+                        <x>1355.7903</x>
+                        <y>4848.9297</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              if(this.process.processOrder.tasks != null) {
+                                  for(var i=0; i<this.process.processOrder.tasks.length; i++) {
+                                      if(this.process.processOrder.tasks[i].tfrTask.isEnd2End) {
+                                          this.process.processOrder.tasks[i].tfrTask.acceptDate = new Date();
+                                          this.process.processOrder.tasks[i].tfrTask.status = configuration.getExternalNameForStatusByInternalName("ACCEPTED", "TFR_TASK");
+                                          this.process.processOrder.tasks[i].tfrTask.save();
+                                          this.process.processOrder.save();
+                                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Completed End2End task #");
+                                      }
+                                  }
+                                  this.process.processOrder.prnDocument.releasedDate = new Date();
+                                  this.process.processOrder.prnDocument.prnAvailable = true;
+                                  this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("FA COMPLETED", "TFR");
+                                  this.process.processOrder.tfrDocument.faCompletionDate = new Date();
+                                  this.process.processOrder.save();
+                              }
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          this.process.processOrder.tfrDocument.currentUserId=null;
+                          this.process.processOrder.tfrDocument.currentUserDepartment = null;
+                          this.process.processOrder.save();
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="startReviewCWOReport" type="seqActivity">
+                    <label>Start Review CWO Report</label>
+                    <x>1558.686</x>
+                    <y>5013.055</y>
+                    <childList>
+                      <child name="reviewCWOReport" type="opActivity">
+                        <element>iface_workflow.orderInitiatorTeamIF/oper_reviewCWOReport</element>
+                        <label>Review CWO Report</label>
+                        <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                        <x>1268.0681</x>
+                        <y>1724.2422</y>
+                      </child>
+                      <child name="cwoReportReview" type="choiceActivity">
+                        <label>CWO Report Review</label>
+                        <x>1302.4338</x>
+                        <y>1992.3975</y>
+                        <childList>
+                          <child name="rejectCWOReport" type="opActivity">
+                            <element>iface_workflow.orderInitiatorTeamIF/oper_rejectCWOReport</element>
+                            <label>Reject CWO Report</label>
+                            <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                            <x>1273.742</x>
+                            <y>2215.5527</y>
+                            <methodList>
+                              <method name="cwOnProcActAfter" type="action">
+                                <category>script</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  this.process.processDocument.isCWOReportOK = false;
+
+                                  this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("REJECTED", "TFR");
+                                  this.process.processOrder.prnDocument.prnStatus = configuration.getExternalNameForStatusByInternalName("REJECTED", "PRN");
+                                  this.process.processOrder.prnrDocument.prnrStatus = configuration.getExternalNameForStatusByInternalName("REJECTED", "PRNR");
+                                  this.process.processOrder.save();
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="acceptCWOReport" type="opActivity">
+                            <element>iface_workflow.orderInitiatorTeamIF/oper_acceptCWOReport</element>
+                            <label>Accept CWO Report</label>
+                            <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                            <x>1185.0408</x>
+                            <y>2215.5527</y>
+                            <methodList>
+                              <method name="cwOnProcActAfter" type="action">
+                                <category>script</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  this.process.processDocument.isCWOReportOK = true;
+
+                                  // update the status and remove the current user from all the documents of the order
+                                  this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("COMPLETED", "TFR");
+                                  this.process.processOrder.tfrDocument.currentUserId = null;
+                                  this.process.processOrder.tfrDocument.currentUserDepartment = null;
+                                  this.process.processOrder.prnDocument.prnStatus = configuration.getExternalNameForStatusByInternalName("COMPLETED", "PRN");
+                                  this.process.processOrder.prnDocument.currentUserId = null;
+                                  this.process.processOrder.prnDocument.currentUserDepartment = null;
+                                  this.process.processOrder.prnrDocument.prnrStatus = configuration.getExternalNameForStatusByInternalName("COMPLETED", "PRNR");
+                                  this.process.processOrder.prnrDocument.currentUserId = null;
+                                  this.process.processOrder.prnrDocument.currentUserDepartment = null;
+                                  this.process.processOrder.save();
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                      </child>
+                      <child name="isCWOReportAccepted" type="switchActivity">
+                        <label>Is CWO Report Accepted</label>
+                        <x>1222.5466</x>
+                        <y>2349.0068</y>
+                        <childList>
+                          <child name="accepted" type="caseActivity">
+                            <label>Accepted</label>
+                            <x>730.8557</x>
+                            <y>5236.6826</y>
+                            <childList>
+                              <child name="end" type="completeActivity">
+                                <label>End</label>
+                                <x>1221.8962</x>
+                                <y>2527.461</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[debugPrintln("CWO report reviewed and accepted!.");]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                            <methodList>
+                              <method name="cwOnProcActCond" type="action">
+                                <category>cond</category>
+                                <system>true</system>
+                                <script>return this.process.processDocument.isCWOReportOK;</script>
+                              </method>
+                            </methodList>
+                          </child>
+                          <child name="rejected" type="caseActivity">
+                            <label>Rejected</label>
+                            <x>530.0</x>
+                            <y>206.0</y>
+                            <childList>
+                              <child name="startRejectionProcess" type="seqActivity">
+                                <label>Start Rejection Process</label>
+                                <x>1643.9403</x>
+                                <y>2528.4312</y>
+                                <childList>
+                                  <child name="startRejectionProcess" type="scriptActivity">
+                                    <label>Start Rejection Process</label>
+                                    <x>1646.4078</x>
+                                    <y>2624.162</y>
+                                    <methodList>
+                                      <method name="cwOnProcActBefore" type="action">
+                                        <category>before</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Starting Rejection Process");
+
+                                          var rejectionProcessOrder = new Order("tfs.rejectionOrder");
+                                          rejectionProcessOrder.rejectionProcData.tfrId = this.process.processOrder.tfrDocument.id;
+                                          rejectionProcessOrder.rejectionProcData.currentUserId = workflow.getUserForOrder(this.process.processOrder.id, this.process.processOrderItemId, "OrderInitiator");
+                                          rejectionProcessOrder.rejectionProcData.parentProcessId = this.process.id;
+                                          rejectionProcessOrder.save();
+
+                                          var processId = Process.startProcess("workflow.rejectionProcess", rejectionProcessOrder.id);
+
+                                          this.process.processDocument.rejectionProcessId = processId;
+
+                                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Started Rejection Process with id " + processId);
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="waitForWakeUpParentSignal" type="syncActivity">
+                                    <element>signal_workflow.wakeUpParent</element>
+                                    <label>Wait For &quot;Wake Up Parent&quot; Signal</label>
+                                    <x>1644.6178</x>
+                                    <y>2750.2656</y>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Completed Rejection Process");
+
+                                          var rejectionProcessDocument = Process.getProcessDocument(this.process.processDocument.rejectionProcessId);
+                                          var returnPoint = rejectionProcessDocument.returnPoint;
+                                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Completed Rejection Process - returnPoint is " + returnPoint);
+
+                                          workflow.overload_computeNextUser(this.process.processOrder.id, "0", this.process.id, "installOrderProcess", "rejectionProcessCompleted");
+
+                                          this.process.processOrder.tfrDocument.rejectionCode = returnPoint;
+                                          this.process.processOrder.save();
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                </childList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                      </child>
+                      <child name="rejectionProcessCompleted" type="scriptActivity">
+                        <label>Rejection Process Completed</label>
+                        <x>1642.4059</x>
+                        <y>2921.0703</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              debugPrintln("Rejection process completed. Assign task to Integration team.");
+                              workflow.overload_computeNextUser(this.process.processOrder.id, this.process.processOrderItemId, this.process.id, "installOrderProcess", "rejectionProcessCompleted");
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="analyzeRejection" type="opActivity">
+                        <element>iface_workflow.integrationTeamIF/oper_analyzeRejection</element>
+                        <label>Analyze Rejection</label>
+                        <participant>part_workflow.integrationTeamParticipant</participant>
+                        <x>1607.4703</x>
+                        <y>3076.875</y>
+                      </child>
+                      <child name="acceptOrReject" type="choiceActivity">
+                        <label>Accept Or Reject</label>
+                        <x>1676.2466</x>
+                        <y>3217.6797</y>
+                        <childList>
+                          <child name="acceptAnalysis" type="opActivity">
+                            <element>iface_workflow.integrationTeamIF/oper_accept</element>
+                            <label>Accept Analysis</label>
+                            <participant>part_workflow.integrationTeamParticipant</participant>
+                            <x>1579.1948</x>
+                            <y>3388.4844</y>
+                            <childList>
+                              <child name="startIssueFixing" type="seqActivity">
+                                <label>Start Issue Fixing</label>
+                                <x>1568.464</x>
+                                <y>3531.6396</y>
+                                <childList>
+                                  <child name="fixIssue" type="opActivity">
+                                    <element>iface_workflow.integrationTeamIF/oper_fixIssue</element>
+                                    <label>Fix Issue</label>
+                                    <participant>part_workflow.integrationTeamParticipant</participant>
+                                    <x>1560.1948</x>
+                                    <y>3655.3926</y>
+                                  </child>
+                                  <child name="issueFixed" type="opActivity">
+                                    <element>iface_workflow.integrationTeamIF/oper_issueFixed</element>
+                                    <label>Issue Fixed</label>
+                                    <participant>part_workflow.integrationTeamParticipant</participant>
+                                    <x>1527.5181</x>
+                                    <y>3781.496</y>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("REJECTION FIXED", "TFR");
+                                          this.process.processOrder.save();
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="returnToReviewCWOReport" type="repeatActivity">
+                                    <element>proc_workflow.changeOrderProcess_cwr1/seqActivity_start/switchActivity_isPRNRAccepted/caseActivity_yes/seqActivity_startPRNAndTFRManagement/seqActivity_startReviewCWOReport</element>
+                                    <label>Return To Review CWO Report</label>
+                                    <x>1531.52</x>
+                                    <y>4336.5674</y>
+                                  </child>
+                                </childList>
+                              </child>
+                            </childList>
+                          </child>
+                          <child name="rejectAnalysis" type="opActivity">
+                            <element>iface_workflow.integrationTeamIF/oper_reject</element>
+                            <label>Reject Analysis</label>
+                            <participant>part_workflow.integrationTeamParticipant</participant>
+                            <x>1660.2065</x>
+                            <y>3648.042</y>
+                            <childList>
+                              <child name="returnToReviewCWOReport" type="repeatActivity">
+                                <element>proc_workflow.changeOrderProcess_cwr1/seqActivity_start/switchActivity_isPRNRAccepted/caseActivity_yes/seqActivity_startPRNAndTFRManagement/seqActivity_startReviewCWOReport</element>
+                                <label>Return To Review CWO Report</label>
+                                <x>1655.8784</x>
+                                <y>4336.5674</y>
+                              </child>
+                            </childList>
+                            <methodList>
+                              <method name="cwOnProcActAfter" type="action">
+                                <category>script</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("REJECTION REJECTED", "TFR");
+                                  this.process.processOrder.save();
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActAfter" type="action">
+                    <category>script</category>
+                    <system>true</system>
+                    <script><![CDATA[debugPrintln("Change Order: Start Reservation Management");]]></script>
+                  </method>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      debugPrintln("Change Order: Prepare to Start Reservation Management");
+                      var tfrDocId = this.process.processOrder.prnrDocument.changedTFRId;
+                      var tfr = Document.readDoc("tfs.tfr", tfrDocId);
+                      if(tfr && tfr.cwOrderId){
+                          workflow.terminateProcessByOrderId(tfr.cwOrderId, "workflow.installOrderProcess");
+                          workflow.terminateProcessByOrderId(tfr.cwOrderId, "workflow.changeOrderProcess");
+                      };
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[debugPrintln("Choise: Is PRNR Accepted: "+this.process.processDocument.isPRNRAccepted);]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="handleStopCall" type="onExceptionActivity">
+        <element>excp_cwf.stop</element>
+        <label>Handle Stop Call</label>
+        <x>1480.2844</x>
+        <y>1479.2305</y>
+        <childList>
+          <child name="startHandleStop" type="seqActivity">
+            <label>Start Handle Stop</label>
+            <x>651.67474</x>
+            <y>3531.6396</y>
+            <childList>
+              <child name="stoppedProcess" type="completeActivity">
+                <label>Stopped Process and Exit</label>
+                <x>663.21027</x>
+                <y>3640.6914</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="installOrderInitiatorParticipant" type="participantActivity">
+        <label>Install Order Initiator Participant</label>
+        <participant>part_workflow.installOrderInitiatorParticipant</participant>
+        <x>590.55133</x>
+        <y>1985.0469</y>
+      </child>
+      <child name="networkDesignParticipant" type="participantActivity">
+        <label>Network Design Participant</label>
+        <participant>part_workflow.networkDesignParticipant</participant>
+        <x>386.4261</x>
+        <y>832.2705</y>
+      </child>
+      <child name="facilityDesignTeamParticipant" type="participantActivity">
+        <label>Facility Design Team Participant</label>
+        <participant>part_workflow.facilityDesignTeamParticipant</participant>
+        <x>1145.3066</x>
+        <y>564.41406</y>
+      </child>
+      <child name="xcTeamParticipant" type="participantActivity">
+        <label>XC Team Participant</label>
+        <participant>part_workflow.xcTeamParticipant</participant>
+        <x>1231.5066</x>
+        <y>2764.9668</y>
+      </child>
+      <child name="switchActivationParticipant" type="participantActivity">
+        <label>Switch Activation Team Participant</label>
+        <participant>part_workflow.switchActivationParticipant</participant>
+        <x>1159.9124</x>
+        <y>3373.7832</y>
+      </child>
+      <child name="integrationTeamParticipant" type="participantActivity">
+        <label>Integration Team Participant</label>
+        <participant>part_workflow.integrationTeamParticipant</participant>
+        <x>1510.2466</x>
+        <y>3210.329</y>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("Starting change process for TFR status: "+this.process.processDocument.tfrStatus);
+          if(!this.process.processDocument.tfrStatus){
+              this.process.processDocument.tfrStatus = "";
+          };
+
+          if(this.process.processOrder.tfrDocument && this.process.processOrder.tfrDocument.tfrStatus){
+              this.process.processDocument.tfrStatus = this.process.processOrder.tfrDocument.tfrStatus;
+          }
+          else if( this.process.processOrder.prnrDocument.prnrStatus == "NEW"){
+              this.process.processDocument.tfrStatus = "COMPLETED";
+          }
+
+          this.process.processOrder.save();
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_workflow.changeOrderProcessDocument</document>
+  <label>Change Order Process</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>User</type>
+</process>

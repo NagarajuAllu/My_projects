@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcconf.search_pickListForValidationData">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{8694f4ba-dcf4-4356-9462-dbec5c172f5e}</guid>
+  <label>Search Element: PickList For Validation</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="dataTypeName" type="leaf">
+      <propertyElement type="elfld">
+        <label>DataType Name</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+    <variable name="value" type="leaf">
+      <propertyElement type="elfld">
+        <label>Value</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcconf.search_pickListForValidationData</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="searchPickListForValidationDataGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>640px</width>
+                    <elementList>
+                      <element name="searchPickListForValidationDataHeader" type="elhdr">
+                        <label>Search PickList For Validation Data</label>
+                      </element>
+                      <element name="dataTypeName" type="elfld">
+                        <label>DataType Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_pickListForValidationData/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_pickListForValidationData/leaf_dataTypeName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="value" type="elfld">
+                        <label>Value</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_pickListForValidationData/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_pickListForValidationData/leaf_value</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>20px</height>
+                        <rowSpan>20px</rowSpan>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getNVPairsDependenciesForOrderTypeAndServiceType">
+  <label>Get NV Pairs Dependencies For OrderType And ServiceType</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var nvPairDependencies = null;
+
+    if(orderType != null && serviceType != null) {
+        var inputDoc = new Document("stcconf.search_ValidationMap_ServiceType_OrderTypeDoc");
+        inputDoc.orderType = orderType;
+        inputDoc.serviceType = serviceType;
+
+        var resultList = Finder.runFinder("stcconf.findNVPairDependencies", "select", inputDoc);
+
+        if(resultList != null && resultList.length > 0) {
+            nvPairDependencies = resultList;
+        }
+    }
+
+    return nvPairDependencies;
+  ]]></script>
+</script>

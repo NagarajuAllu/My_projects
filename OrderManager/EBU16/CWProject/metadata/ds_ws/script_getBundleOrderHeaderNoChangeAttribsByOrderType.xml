@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.getBundleOrderHeaderNoChangeAttribsByOrderType">
+  <label>Get BundleOrderHeader No Change Attributes By OrderType</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_ds_ws.orderType</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("ds_ws.search_ValidationMap_OrderTypeDoc");
+    inputDoc.orderType = orderType;
+
+    var resultList = Finder.runFinder("ds_ws.findOrderHeaderValidMapNoChangeByOrdType", "select", inputDoc);
+
+    var noChangeableFieldNames = null;
+
+    if(resultList != null && resultList.length > 0) {
+        var validationMapDocument = resultList[0];
+
+        var arrayOfLeavesAndValues = validationMapDocument.getDocumentAsList(false);
+        for(var i=0; i<arrayOfLeavesAndValues.length; i=(i+2)) {
+            if(arrayOfLeavesAndValues[i+1] == 1) {
+                if(arrayOfLeavesAndValues[i] != "orderType") {
+                    if(noChangeableFieldNames == null) {
+                        noChangeableFieldNames = new Array();
+                    }
+
+                    noChangeableFieldNames.push(arrayOfLeavesAndValues[i]);
+                }
+            }
+        }
+    }
+
+    return noChangeableFieldNames;
+  ]]></script>
+</script>

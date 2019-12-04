@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="7bf09880bb0cc11795b08ff673731d14" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="migrationSTC.searchByCwOrderId">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{1154cb22-3694-4a9f-a9aa-3e1cae4e0958}</guid>
+  <label>Search By CWOrderId</label>
+  <metaVersion>4</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="cwOrderId" type="leaf">
+      <valueType>dtype_cwf.cwOrderId</valueType>
+    </variable>
+    <variable name="cwParentId" type="leaf">
+      <valueType>dtype_cwf.cwParentId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_migrationSTC.searchByCwOrderId</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

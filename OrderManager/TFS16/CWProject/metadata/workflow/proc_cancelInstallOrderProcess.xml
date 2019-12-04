@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="workflow.cancelInstallOrderProcess">
+  <activity name="startInstallOrderCancelation" type="seqActivity">
+    <label>Start Install Order Cancelation</label>
+    <x>293.22372</x>
+    <y>30.0</y>
+    <childList>
+      <child name="pickCancelBranch" type="switchActivity">
+        <label>Pick Cancel Branch</label>
+        <x>307.82547</x>
+        <y>124.76094</y>
+        <childList>
+          <child name="cancelTFR" type="caseActivity">
+            <label>Cancel TFR</label>
+            <x>140.27686</x>
+            <y>579.20703</y>
+            <childList>
+              <child name="startCancelTFR" type="seqActivity">
+                <label>Start Cancel TFR</label>
+                <x>452.68594</x>
+                <y>481.43018</y>
+                <childList>
+                  <child name="validateCancellation" type="opActivity">
+                    <element>iface_workflow.facilityDesignTeamIF/oper_validateCancellation</element>
+                    <label>Validate Cancellation</label>
+                    <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                    <x>452.7412</x>
+                    <y>689.8325</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          workflow.overload_computeNextUser(this.process.processOrder.id, null, this.process.id, "cancelInstallOrderProcess", "validationOfCancellation");
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="decideOnCancellation" type="choiceActivity">
+                    <label>Decide On Cancellation</label>
+                    <x>512.4216</x>
+                    <y>890.6372</y>
+                    <childList>
+                      <child name="acceptCancellation" type="opActivity">
+                        <element>iface_workflow.facilityDesignTeamIF/oper_acceptCancellation</element>
+                        <label>Accept Cancellation</label>
+                        <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                        <x>378.09937</x>
+                        <y>1091.7407</y>
+                        <childList>
+                          <child name="performXCCancel" type="seqActivity">
+                            <label>Perform XC Cancel</label>
+                            <x>419.156</x>
+                            <y>1241.4637</y>
+                            <childList>
+                              <child name="prepareToCompleteNICancellation" type="opActivity">
+                                <element>iface_workflow.facilityDesignTeamIF/oper_prepareToCompleteNICancellation</element>
+                                <label>Prepare to Complete NI Cancellation</label>
+                                <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                <x>334.7002</x>
+                                <y>675.13135</y>
+                              </child>
+                              <child name="isXCRequired" type="choiceActivity">
+                                <label>Is XC Required?</label>
+                                <x>222.78491</x>
+                                <y>890.6372</y>
+                                <childList>
+                                  <child name="xcRequired" type="opActivity">
+                                    <element>iface_workflow.facilityDesignTeamIF/oper_xcRequired</element>
+                                    <label>XC Required</label>
+                                    <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                    <x>277.4021</x>
+                                    <y>1091.7407</y>
+                                    <childList>
+                                      <child name="startXCCancellation" type="seqActivity">
+                                        <label>Start XC Cancellation</label>
+                                        <x>279.33432</x>
+                                        <y>1241.4637</y>
+                                        <childList>
+                                          <child name="cancelXC" type="opActivity">
+                                            <element>iface_workflow.xcTeamIF/oper_cancelXC</element>
+                                            <label>Cancel XC</label>
+                                            <participant>part_workflow.xcTeamParticipant</participant>
+                                            <x>246.04297</x>
+                                            <y>1374.2466</y>
+                                          </child>
+                                          <child name="cancelledXC" type="opActivity">
+                                            <element>iface_workflow.xcTeamIF/oper_cancelledXC</element>
+                                            <label>Cancelled XC</label>
+                                            <participant>part_workflow.xcTeamParticipant</participant>
+                                            <x>249.64517</x>
+                                            <y>1597.0513</y>
+                                            <methodList>
+                                              <method name="cwOnProcActAfter" type="action">
+                                                <category>script</category>
+                                                <system>true</system>
+                                                <script><![CDATA[
+                                                  this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("XC CANCELLED", "TFR");
+                                                  this.process.processOrder.save();
+                                                ]]></script>
+                                              </method>
+                                            </methodList>
+                                          </child>
+                                        </childList>
+                                      </child>
+                                    </childList>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          //"CROSS-CONNECTION REQUIRED FOR CANCEL"
+                                          this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("CROSS-CONNECTION REQUIRED FOR CANCEL", "TFR");
+                                          this.process.processOrder.save();
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="xcNotRequired" type="opActivity">
+                                    <element>iface_workflow.facilityDesignTeamIF/oper_xcNotRequiredCancelInstall</element>
+                                    <label>XC Not Required</label>
+                                    <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                    <x>179.05347</x>
+                                    <y>1233.1431</y>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          //"NO CROSS-CONNECTION REQUIRED FOR CANCEL"
+                                          this.process.processOrder.tfrDocument.tfrStatus =  configuration.getExternalNameForStatusByInternalName("NO CROSS-CONNECTION REQUIRED FOR CANCEL", "TFR");
+                                          this.process.processOrder.save();
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                </childList>
+                              </child>
+                              <child name="startCancelReservationInGraniteActivities" type="seqActivity">
+                                <label>Start Cancel Reservation In Granite Activities</label>
+                                <x>213.56705</x>
+                                <y>1708.4537</y>
+                                <childList>
+                                  <child name="cancelReservationInGranite" type="opActivity">
+                                    <element>iface_workflow.facilityDesignTeamIF/oper_cancellationReservationInGranite</element>
+                                    <label>Cancel Reservation In Granite</label>
+                                    <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                    <x>336.35178</x>
+                                    <y>1809.095</y>
+                                  </child>
+                                  <child name="reservationInGraniteCancelled" type="opActivity">
+                                    <element>iface_workflow.facilityDesignTeamIF/oper_cancelledReservationInGranite</element>
+                                    <label>Reservation In Granite Cancelled</label>
+                                    <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                    <x>407.2461</x>
+                                    <y>1935.1985</y>
+                                    <methodList>
+                                      <method name="cwOnProcActAfter" type="action">
+                                        <category>script</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          if( this.process.processOrder.prnDocument ){
+                                              this.process.processOrder.prnDocument.prnStatus = configuration.getExternalNameForStatusByInternalName("RESERVATION CANCELLED", "PRN");
+                                              this.process.processOrder.save();
+                                          }
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                </childList>
+                                <methodList>
+                                  <method name="cwOnProcActAfter" type="action">
+                                    <category>script</category>
+                                    <system>true</system>
+                                    <script><![CDATA[debugPrintln("Started cancel reservation in Granite activities...");]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActAfter" type="action">
+                            <category>script</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              // terminate Install process
+                              workflow.terminateProcessByOrderId(this.process.processOrder.id, "workflow.installOrderProcess");
+
+                              // terminate Change process
+                              workflow.terminateProcessByOrderId(this.process.processOrder.id, "workflow.changeOrderProcess");
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="rejectCancellation" type="opActivity">
+                        <element>iface_workflow.facilityDesignTeamIF/oper_rejectCancellation</element>
+                        <label>Reject Cancellation</label>
+                        <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                        <x>538.156</x>
+                        <y>1233.1431</y>
+                        <childList>
+                          <child name="completeRejectionCancellation" type="seqActivity">
+                            <label>Complete Rejection Cancellation</label>
+                            <x>548.76013</x>
+                            <y>1708.4537</y>
+                            <childList>
+                              <child name="ackRejection" type="opActivity">
+                                <element>iface_workflow.orderInitiatorTeamIF/oper_acknowledgeRejection</element>
+                                <label>Acknowledge Rejection</label>
+                                <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                                <x>343.37878</x>
+                                <y>2171.682</y>
+                              </child>
+                              <child name="acknowledgedRejection" type="opActivity">
+                                <element>iface_workflow.orderInitiatorTeamIF/oper_acknowledgedRejection</element>
+                                <label>Acknowledged Rejection</label>
+                                <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                                <x>403.98907</x>
+                                <y>2624.3948</y>
+                                <methodList>
+                                  <method name="cwOnProcActAfter" type="action">
+                                    <category>script</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      workflow.resumeWorkItemsForOrder(this.process.processOrder.id, this.process.id);
+
+                                      /** Resume WorkItems for related Disconnect Order in Rehome process */
+                                      if ( this.process.processOrder.tfrDocument && this.process.processOrder.tfrDocument.connectionTFRId != null){
+                                          var discFinder = new Finder("tfs.findTFRWithDisconnectedTFRIdByTFRId");
+                                          discFinder.searchDocument.tfrId = this.process.processOrder.tfrDocument.connectionTFRId;
+                                          var resultList = discFinder.search();
+
+                                          for( var i=0; i < resultList.length; i++ ){
+                                              var currentTFR = resultList[i];
+                                              workflow.resumeWorkItemsForOrder(currentTFR.cwOrderId, this.process.id);
+                                          };
+                                      };
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="completeWithReject" type="completeActivity">
+                                <label>Cancellation Rejected</label>
+                                <x>397.20718</x>
+                                <y>2750.4983</y>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActAfter" type="action">
+                    <category>script</category>
+                    <system>true</system>
+                    <script><![CDATA[debugPrintln("EXECUTING TFR BRANCH!!!");]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+          <child name="cancelPRNandPRNR" type="caseActivity">
+            <label>Cancel PRN and PRNR</label>
+            <x>140.27686</x>
+            <y>579.20703</y>
+            <childList>
+              <child name="startCancelPRNandPRNR" type="seqActivity">
+                <label>Start Cancel PRN and PRNR</label>
+                <x>134.03102</x>
+                <y>250.86447</y>
+                <childList>
+                  <child name="interruptInstallProcess" type="scriptActivity">
+                    <label>Interrupt Install Process</label>
+                    <x>145.56598</x>
+                    <y>345.62552</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln("Running interrupt install process without TFR branch");
+                          workflow.terminateProcessByOrderId(this.process.processOrder.id, "workflow.installOrderProcess");
+                          workflow.terminateProcessByOrderId(this.process.processOrder.id, "workflow.changeOrderProcess");
+                          //workflow.overload_computeNextUser(this.process.processOrder.id, "0", this.process.id, "cancelInstallOrderProcess", "cancelExistingPRNandPRNR");
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="checkIfPRNExists" type="switchActivity">
+                    <label>Check If PRN Exists</label>
+                    <x>137.57379</x>
+                    <y>471.729</y>
+                    <childList>
+                      <child name="existPRN" type="caseActivity">
+                        <label>Exist PRN</label>
+                        <x>78.33865</x>
+                        <y>627.23474</y>
+                        <childList>
+                          <child name="startCancellation" type="seqActivity">
+                            <label>Start Cancellation</label>
+                            <x>145.4696</x>
+                            <y>583.13135</y>
+                            <childList>
+                              <child name="cancelReservationInGranite" type="opActivity">
+                                <element>iface_workflow.facilityDesignTeamIF/oper_cancellationReservationInGranite</element>
+                                <label>Cancel Reservation In Granite</label>
+                                <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                <x>218.66895</x>
+                                <y>682.48193</y>
+                              </child>
+                              <child name="cancelledReservationInGranite" type="opActivity">
+                                <element>iface_workflow.facilityDesignTeamIF/oper_cancelledReservationInGranite</element>
+                                <label>Cancelled Reservation In Granite</label>
+                                <participant>part_workflow.facilityDesignTeamParticipant</participant>
+                                <x>126.01172</x>
+                                <y>1359.5454</y>
+                                <methodList>
+                                  <method name="cwOnProcActAfter" type="action">
+                                    <category>script</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      this.process.processOrder.prnDocument.prnStatus =  configuration.getExternalNameForStatusByInternalName("RESERVATION CANCELLED", "PRN");
+                                      this.process.processOrder.save();
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              debugPrintln("PRN Exists, getting into right branch");
+
+                              if( this.process.processOrder.prnDocument && this.process.processOrder.prnDocument.prnId != null ){
+                                  workflow.overload_computeNextUser(this.process.processOrder.id, null, this.process.id, "cancelInstallOrderProcess", "cancellationReservationInGranite");
+
+                                  return true;
+
+                              }
+                              //return (this.process.processOrder.prnDocument && this.process.processOrder.prnDocument.prnId != null);
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="notExistPRN" type="caseActivity">
+                        <label>Not Exist PRN</label>
+                        <x>360.62573</x>
+                        <y>1768.6846</y>
+                        <childList>
+                          <child name="notExistPRN" type="scriptActivity">
+                            <label>Not Exist PRN</label>
+                            <x>30.0</x>
+                            <y>1366.896</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  debugPrintln("PRN does not exist");
+                                  workflow.overload_computeNextUser(this.process.processOrder.id, "0", this.process.id, "cancelInstallOrderProcess", "cancelExistingPRNandPRNR");
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActAfter" type="action">
+                    <category>script</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      debugPrintln("Executing PRN&PRNR branch.");
+                      debugPrintln(">>>> "+this.process.processOrder);
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script>return (!this.process.processOrder.tfrDocument || !this.process.processOrder.tfrDocument.tfrId);</script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="completeCancelInParallel" type="allActivity">
+        <label>Complete Cancel In Parallel</label>
+        <x>182.94702</x>
+        <y>2076.302</y>
+        <childList>
+          <child name="startNetworkDesignCancellActivity" type="seqActivity">
+            <label>Start Network Design Cancell Activity</label>
+            <x>235.47592</x>
+            <y>2177.0625</y>
+            <childList>
+              <child name="cancelExistingPRNandPRNR" type="opActivity">
+                <element>iface_workflow.networkDesignTeamIF/oper_cancelExistingPRNandPRNR</element>
+                <label>Cancel Existing PRN and PRNR</label>
+                <participant>part_workflow.networkDesignParticipant</participant>
+                <x>326.49792</x>
+                <y>2298.0842</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      //workflow.overload_computeNextUser(this.process.processOrder.id, null, this.process.id, "cancelInstallOrderProcess", "cancelExistingPRNandPRNR");
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="cancelledExistingPRNandPRNR" type="opActivity">
+                <element>iface_workflow.networkDesignTeamIF/oper_cancelledExistingPRNandPRNR</element>
+                <label>Cancelled Existing PRN and PRNR</label>
+                <participant>part_workflow.networkDesignParticipant</participant>
+                <x>285.82632</x>
+                <y>2609.6936</y>
+                <methodList>
+                  <method name="cwOnProcActAfter" type="action">
+                    <category>script</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      this.process.processOrder.prnrDocument.prnrStatus = configuration.getExternalNameForStatusByInternalName("CANCELLED", "PRNR");
+                      this.process.processOrder.prnrDocument.cancelledDate = new Date();
+                      this.process.processOrder.prnrDocument.currentUserId = null;
+                      this.process.processOrder.prnrDocument.currentUserDepartment = null;
+
+                      if (this.process.processOrder.prnDocument && this.process.processOrder.prnDocument.prnId != null){
+                          this.process.processOrder.prnDocument.prnStatus = configuration.getExternalNameForStatusByInternalName("CANCELLED", "PRN");
+                          this.process.processOrder.prnDocument.cancelledDate = new Date();
+                          this.process.processOrder.prnDocument.currentUserId = null;
+                          this.process.processOrder.prnDocument.currentUserDepartment = null;
+                      }
+
+                      this.process.processOrder.save();
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+          <child name="startOrderInitiatorActivities" type="seqActivity">
+            <label>Start Order Initiator Activities</label>
+            <x>130.94469</x>
+            <y>2180.0024</y>
+            <childList>
+              <child name="approveCancellation" type="opActivity">
+                <element>iface_workflow.orderInitiatorTeamIF/oper_approveCancellation</element>
+                <label>Approve Cancellation</label>
+                <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                <x>171.41565</x>
+                <y>2312.7854</y>
+              </child>
+              <child name="approvedCancellation" type="opActivity">
+                <element>iface_workflow.orderInitiatorTeamIF/oper_approvedCancellation</element>
+                <label>Approved Cancellation</label>
+                <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                <x>167.76968</x>
+                <y>2624.3948</y>
+                <methodList>
+                  <method name="cwOnProcActAfter" type="action">
+                    <category>script</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      if (this.process.processOrder.tfrDocument && this.process.processOrder.tfrDocument.tfrId != null){
+                          this.process.processOrder.tfrDocument.tfrStatus = configuration.getExternalNameForStatusByInternalName("CANCELLED", "TFR");
+                          this.process.processOrder.tfrDocument.cancelledDate = new Date();
+                          this.process.processOrder.tfrDocument.currentUserId = null;
+                          this.process.processOrder.tfrDocument.currentUserDepartment = null;
+                      }
+
+                      this.process.processOrder.save();
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[debugPrintln("Start In Parallel OrderInitiator and NetworkDesign activities");]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="completeCancellation" type="completeActivity">
+        <label>Complete Cancellation</label>
+        <x>223.63345</x>
+        <y>2750.4983</y>
+      </child>
+      <child name="facilityDesignTeamParticipant" type="participantActivity">
+        <label>Facility Design Team Participant</label>
+        <participant>part_workflow.facilityDesignTeamParticipant</participant>
+        <x>337.71045</x>
+        <y>875.93604</y>
+      </child>
+      <child name="xcTeamParticipant" type="participantActivity">
+        <label>XC Team Participant</label>
+        <participant>part_workflow.xcTeamParticipant</participant>
+        <x>261.82877</x>
+        <y>1485.6489</y>
+      </child>
+      <child name="installOrderInitiatorParticipant" type="participantActivity">
+        <label>Install Order Initiator Participant</label>
+        <participant>part_workflow.installOrderInitiatorParticipant</participant>
+        <x>186.67853</x>
+        <y>2438.889</y>
+      </child>
+      <child name="networkDesignParticipant" type="participantActivity">
+        <label>Network Design Participant</label>
+        <participant>part_workflow.networkDesignParticipant</participant>
+        <x>356.67853</x>
+        <y>2446.2395</y>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          workflow.suspendWorkItemsForOrder(this.process.processOrder.id, this.process.id);
+
+
+
+          /** Suspend WorkItems for related Disconnect Order in Rehome process */
+          if ( this.process.processOrder.tfrDocument && this.process.processOrder.tfrDocument.connectionTFRId != null){
+              var discFinder = new Finder("tfs.findTFRWithDisconnectedTFRIdByTFRId");
+              discFinder.searchDocument.tfrId = this.process.processOrder.tfrDocument.connectionTFRId;
+              var resultList = discFinder.search();
+
+              for( var i=0; i < resultList.length; i++ ){
+                  var currentTFR = resultList[i];
+                  workflow.suspendWorkItemsForOrder(currentTFR.cwOrderId, this.process.id);
+              };
+          };
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_workflow.cancelInstallOrderProcessDocument</document>
+  <label>Cancel Install Order Process</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <type>User</type>
+</process>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.performValidationForBlockParameters">
+  <label>Perform Validation of Block Parameters for Line Item</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="blockParameters" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="elementTypeInOrderTree" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="receivedServiceType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="lineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var configurationFound = getBlockParameterConfig_(orderType,receivedServiceType);
+    var blockParamsInOrder = extractBlockParamNamesFromOrder_(blockParameters, elementTypeInOrderTree);
+
+    var blockParamNamesInOrder = null;
+    var blockParamValuesInOrder = null;
+    if(blockParamsInOrder != null) {
+        blockParamNamesInOrder = blockParamsInOrder[0];
+        blockParamValuesInOrder = blockParamsInOrder[1];
+    }
+    failureArray = checkBlockParametersConfigured_(blockParamNamesInOrder, configurationFound, failureArray);
+    failureArray = checkMandatoryBlockParameters_(blockParamNamesInOrder, blockParamValuesInOrder, configurationFound, failureArray);
+
+    return failureArray;
+
+
+
+    // to extract the current configuration for the given orderType and serviceType
+    function getBlockParameterConfig_(orderType, serviceType){
+        var searchDoc = new Document("stcconf.search_blockParams_Configuration");
+        searchDoc.orderType = orderType;
+        searchDoc.serviceType = serviceType;
+        var resultList = Finder.runFinder("stcconf:findBlockParameterConfiguration", "select", searchDoc);
+
+        return resultList;
+    }
+
+    // to extract the names of the block parameters received
+    function extractBlockParamNamesFromOrder_(blockParameters, elementTypeInOrderTree) {
+        if(blockParameters == null || blockParameters.length == 0) {
+            return null;
+        }
+
+        var blockParameterTypeName = "parentLineItemBlockParameter";
+        if(elementTypeInOrderTree == "C") {
+            blockParameterTypeName = "serviceLineItemBlockParameter";
+        }
+        else if(elementTypeInOrderTree == "S") {
+            blockParameterTypeName = "subServiceLineItemBlockParameter";
+        }
+        else if(elementTypeInOrderTree == "T") {
+            blockParameterTypeName = "subSubServiceLineItemBlockParameter";
+        }
+
+        var blockParamNamesInOrder = [];
+        var blockParamValuesInOrder = [];
+
+        for(var i=0; i<blockParameters.length; i++){
+            blockParamNamesInOrder.push(blockParameters[i][blockParameterTypeName].name);
+            blockParamValuesInOrder.push(stcw.getBlockValuesAsString(blockParameters[i][blockParameterTypeName].id, ";"));
+        }
+
+        var blockParamsInOrder = [blockParamNamesInOrder, blockParamValuesInOrder];
+        return blockParamsInOrder;
+    }
+
+    // perform configuration of received block NV pairs - they have to be configured in the DB
+    function checkBlockParametersConfigured_(blockParamNamesInOrder, configurationFound, failureArray) {
+        var validationErrors = null;
+
+        if(blockParamNamesInOrder != null) {
+            for(var i=0; i<blockParamNamesInOrder.length; i++){
+                var found = false;
+
+                if(configurationFound != null) {
+                    for(var j=0; j<configurationFound.length; j++) {
+                        if(configurationFound[j].blockParameterName == blockParamNamesInOrder[i]) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if(!found) {
+                    validationErrors = stcw.appendToValidationErrors("AE0168", Global.translateText("AE0168", null, blockParamNamesInOrder[i]), validationErrors, "performValidationForBlockParameters");
+                }
+            }
+        }
+
+        if(validationErrors != null) {
+            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, lineItemIdentifier, failureArray, isSubmit);
+        }
+
+        return failureArray;
+    }
+
+    // perform validation for block NV pairs configured as mandatory
+    function checkMandatoryBlockParameters_(blockParamNamesInOrder, blockParamValuesInOrder, configurationFound, failureArray) {
+        var validationErrors = null;
+
+        if(configurationFound != null) {
+            for(var i=0; i<configurationFound.length; i++) {
+                if(configurationFound[i].isMandatory) {
+                    var found = false;
+                    // the attribute is mandatory
+                    if(blockParamNamesInOrder != null) {
+                        for(var j=0; j<blockParamNamesInOrder.length; j++) {
+                            if(blockParamNamesInOrder[j] == configurationFound[i].blockParameterName) {
+                                if(blockParamValuesInOrder[j] != null && blockParamValuesInOrder[j].length > 0) {
+                                    found = true;
+                                }
+                            }
+                        }
+                    }
+
+                    if(!found) {
+                        validationErrors = stcw.appendToValidationErrors("AE0169", Global.translateText("AE0169", null, configurationFound[i].blockParameterName), validationErrors, "performValidationForBlockParameters");
+                    }
+                }
+            }
+        }
+
+        if(validationErrors != null) {
+            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, lineItemIdentifier, failureArray, isSubmit);
+        }
+
+        return failureArray;
+    }
+  ]]></script>
+</script>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="f45778fbd0e6ddbbc5ce971e6d14d082" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.linkReceivedSIP_SIPMWToExistingBundle">
+  <label>Link Received SIP or SIPMW To Existing Bundle</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrderReceived" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="isCancel" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="isRequestedToRollbackSetting" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+
+    var bundleSIPMWProductTypes  = ds_ws.getAllCRMProductTypesForOMInternalProductType("Bundle SIPMW");
+    if(bundleSIPMWProductTypes == null || bundleSIPMWProductTypes.length == 0) {
+        validationErrors = ["AE0083", Global.translateText("AE0083", null, "Bundle SIPMW")];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrderReceived.orderHeader.orderNumber, failureArray, isSubmit);
+    }
+
+    var bundleSIPProductTypes  = ds_ws.getAllCRMProductTypesForOMInternalProductType("Bundle SIP");
+    if(bundleSIPProductTypes == null || bundleSIPProductTypes.length == 0) {
+        validationErrors = ["AE0083", Global.translateText("AE0083", null, "Bundle SIP")];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrderReceived.orderHeader.orderNumber, failureArray, isSubmit);
+    }
+
+    var primarySIPMWServiceTypeName = ds_ws.getCRMServiceTypeForOMInternalServiceType("SIPMW/Primary SIPMW");
+    if(primarySIPMWServiceTypeName == null) {
+        validationErrors = ["AE0084", Global.translateText("AE0084", null, "SIPMW/Primary SIPMW")];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrderReceived.orderHeader.orderNumber, failureArray, isSubmit);
+    }
+
+    var primarySIPServiceTypeName = ds_ws.getCRMServiceTypeForOMInternalServiceType("SIP/Primary SIP");
+    if(primarySIPServiceTypeName == null) {
+        validationErrors = ["AE0084", Global.translateText("AE0084", null, "SIP/Primary SIP")];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrderReceived.orderHeader.orderNumber, failureArray, isSubmit);
+    }
+
+
+    if(bundleOrderReceived.orderHeader.orderType == "I" && (failureArray == null || failureArray.length == 0)) {
+        for(var i=0; i<bundleOrderReceived.bundles.length; i++) {
+            var bundleContainer = bundleOrderReceived.bundles[i];
+            var bundleProductType = bundleContainer.bundle.productType;
+            if(isSIPMWProductType_(bundleProductType) || isSIPProductType_(bundleProductType)) {
+                for(var j=0; j<bundleContainer.circuits.length; j++) {
+                    if(bundleContainer.circuits[j].circuit.serviceType == primarySIPMWServiceTypeName ||
+                       bundleContainer.circuits[j].circuit.serviceType == primarySIPServiceTypeName) {
+                        var existingCircuitNVPair = foundNVPair_("Existing Circuit", bundleContainer.circuits[j].circuitParameters);
+
+                        if(existingCircuitNVPair != null && !common.isNullValue(existingCircuitNVPair.value)) {
+                            var existingCircuitActiveList = ds_ws.getAllLineItemsByIdentifierAndProvisioningFlag(existingCircuitNVPair.value, 'B', "ACTIVE");
+                            if(existingCircuitActiveList != null && existingCircuitActiveList.length > 0) {
+                                var referredOrder = Order.getOrderById(existingCircuitActiveList[0].orderId);
+
+                                if(referredOrder != null) {
+                                    if(isSubmit) {
+                                        if(isRequestedToRollbackSetting) {
+                                            // rollbacking due to some error in receiving submit; so resetting the attribute
+                                            referredOrder.orderHeader.primaryOrderNumber = null;
+                                            bundleContainer.bundle.disconnectOrderLinked = false;
+                                        }
+                                        else {
+                                            if(referredOrder.orderHeader.primaryOrderNumber != null) {
+                                                validationErrors = ["AE0105", Global.translateText("AE0105", null, ['\'Existing Circuit\'', referredOrder.orderHeader.orderNumber, referredOrder.orderHeader.primaryOrderNumber])];
+                                                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrderReceived.orderHeader.orderNumber, failureArray, isSubmit);
+                                            }
+                                            else {
+                                                referredOrder.orderHeader.primaryOrderNumber = bundleOrderReceived.orderHeader.orderNumber;
+                                                bundleContainer.bundle.disconnectOrderLinked = true;
+                                            }
+                                        }
+                                    }
+                                    else if(isCancel) {
+                                        if(isRequestedToRollbackSetting) {
+                                            // rollbacking due to some errr in receiving Cancel order; so setting again the attribute with the orderNumber of the received order;
+                                            referredOrder.orderHeader.primaryOrderNumber = bundleOrderReceived.orderHeader.orderNumber;
+                                            bundleContainer.bundle.disconnectOrderLinked = true;
+                                        }
+                                        else {
+                                            referredOrder.orderHeader.primaryOrderNumber = null;
+                                            bundleContainer.bundle.disconnectOrderLinked = false;
+                                        }
+                                    }
+
+                                    referredOrder.save();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return failureArray;
+
+
+    function foundNVPair_(nvPairName, lineItemParameters) {
+        var foundNVPair = null;
+        if(lineItemParameters != null) {
+            for(var j=0; j<lineItemParameters.length && foundNVPair == null; j++) {
+                if(lineItemParameters[j].circuitParameter.name == nvPairName) {
+                    foundNVPair = lineItemParameters[j].circuitParameter;
+                }
+            }
+        }
+
+        return foundNVPair;
+    }
+
+    function isSIPMWProductType_(foundProductType) {
+        var found = false;
+        for(var i=0; i<bundleSIPMWProductTypes.length && !found; i++) {
+            found = (foundProductType == bundleSIPMWProductTypes[i]);
+        }
+
+        return found;
+    }
+
+    function isSIPProductType_(foundProductType) {
+        var found = false;
+        for(var i=0; i<bundleSIPProductTypes.length && !found; i++) {
+            found = (foundProductType == bundleSIPProductTypes[i]);
+        }
+
+        return found;
+    }
+  ]]></script>
+</script>

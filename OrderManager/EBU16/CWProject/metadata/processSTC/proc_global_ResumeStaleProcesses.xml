@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="processSTC.global_ResumeStaleProcesses">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <schedule type="sched">
+      <duration type="dur">
+        <length>P0Y0M0DT0H5M0S</length>
+      </duration>
+    </schedule>
+    <x>56.0</x>
+    <y>352.0</y>
+    <childList>
+      <child name="findAllProcessesWithParticipantMsg" type="scriptActivity">
+        <label>Find All Processes With Participant Msg</label>
+        <x>201.0</x>
+        <y>324.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var resultList = Finder.runFinder("processSTC.findSTC_PARTICIPANT_FOR_STALE", "select", null);
+              if(resultList != null && resultList.length > 0) {
+
+                  for(var i=0; i<resultList.length; i++) {
+                      if(i == 0) {
+                          this.process.processDocument.processIdList = resultList[i].PROCESS_ID;
+                      }
+                      else {
+                          this.process.processDocument.processIdList = this.process.processDocument.processIdList + ";" + resultList[i].PROCESS_ID;
+                      }
+                  }
+
+              }
+              else {
+                  this.process.processDocument.processIdList = null;
+              }
+
+
+              this.process.processDocument.currentProcessId = null;
+              this.process.processDocument.index = 0;
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="anotherRecordToProcess" type="switchActivity">
+        <label>Another Record To Process?</label>
+        <x>344.0</x>
+        <y>339.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>513.0</x>
+            <y>126.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>482.0</x>
+                <y>353.0</y>
+                <childList>
+                  <child name="setCurrentProcessId" type="scriptActivity">
+                    <label>Set Current ProcessId</label>
+                    <x>581.0</x>
+                    <y>346.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          this.process.processDocument.currentProcessId = this.process.processDocument.processIdList.split(";")[this.process.processDocument.index];
+                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Setting currentProcessId equals to " + this.process.processDocument.currentProcessId);
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="updateProcessStatusToStale" type="scriptActivity">
+                    <label>Update Process Status To Stale</label>
+                    <x>586.0</x>
+                    <y>480.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var processInfo = Process.getProcessInfo(this.process.processDocument.currentProcessId);
+
+                          if(processInfo != null) {
+                              if(processInfo.processStatus == 1) {
+                                  processSTC.changeProcessStatusViaSQL(this.process.processDocument.currentProcessId, processInfo.bucket, 8);
+                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Setting STALE status for Process " + this.process.processDocument.currentProcessId);
+                              }
+                              else {
+                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Process [" + this.process.processDocument.currentProcessId + "] has status equals to " + processInfo.processStatus + ", so do nothing!");
+                              }
+                          }
+                          else {
+                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Unable to find processInfo for Process " + this.process.processDocument.currentProcessId);
+                          }
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="repeat" type="repeatActivity">
+                    <element>proc_processSTC.global_ResumeStaleProcesses/seqActivity_start/switchActivity_anotherRecordToProcess</element>
+                    <label>Repeat</label>
+                    <x>353.0</x>
+                    <y>505.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script>this.process.processDocument.index++;</script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var existAnotherRecord = (this.process.processDocument.processIdList != null &&
+                                            this.process.processDocument.processIdList.split(";").length > this.process.processDocument.index);
+
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Another record found? " + existAnotherRecord);
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - ProcessIdList: " + this.process.processDocument.processIdList);
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Index: " + this.process.processDocument.index);
+
+                  // existAnotherRecord = false;
+                  return existAnotherRecord;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>361.0</x>
+            <y>9.0</y>
+            <childList>
+              <child name="resetCounter" type="scriptActivity">
+                <label>Reset Counter</label>
+                <x>351.0</x>
+                <y>159.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      this.process.processDocument.currentProcessId = null;
+                      this.process.processDocument.index = 0;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="anotherRecordToResume" type="switchActivity">
+        <label>Another Record To Resume?</label>
+        <x>739.0</x>
+        <y>151.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>513.0</x>
+            <y>126.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>884.0</x>
+                <y>160.0</y>
+                <childList>
+                  <child name="setCurrentProcessId" type="scriptActivity">
+                    <label>Set Current ProcessId</label>
+                    <x>1011.0</x>
+                    <y>158.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          this.process.processDocument.currentProcessId = this.process.processDocument.processIdList.split(";")[this.process.processDocument.index];
+                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Setting currentProcessId equals to " + this.process.processDocument.currentProcessId);
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="resumeStaleProcess" type="scriptActivity">
+                    <label>Resume Stale Process</label>
+                    <x>1019.0</x>
+                    <y>279.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          Process.resumeAllStaleProcesses(this.process.processDocument.currentProcessId);
+                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Resumed STALE Process " + this.process.processDocument.currentProcessId);
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="repeat" type="repeatActivity">
+                    <element>proc_processSTC.global_ResumeStaleProcesses/seqActivity_start/switchActivity_anotherRecordToResume</element>
+                    <label>Repeat</label>
+                    <x>748.0</x>
+                    <y>302.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script>this.process.processDocument.index++;</script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var existAnotherRecord = (this.process.processDocument.processIdList != null &&
+                                            this.process.processDocument.processIdList.split(";").length > this.process.processDocument.index);
+
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Another record found? " + existAnotherRecord);
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - ProcessIdList: " + this.process.processDocument.processIdList);
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Index: " + this.process.processDocument.index);
+
+                  return existAnotherRecord;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>751.0</x>
+            <y>42.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>880.0</x>
+        <y>42.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Completed Global process 'Resume All Stale Processes'");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Start Global process 'Resume All Stale Processes'");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_processSTC.resumeStaleProcessDocument</document>
+  <label>Global: Resume Stale Processes</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>Global</type>
+</process>

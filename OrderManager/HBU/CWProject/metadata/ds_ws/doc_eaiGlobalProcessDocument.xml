@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="eab3ffa04e96880b4dbc9492c8588123" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.eaiGlobalProcessDocument">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0d9a794a-0f11-b86e-81af-5ead0ae0edf1}</guid>
+  <highlight>10</highlight>
+  <label>EAI Global Process Document</label>
+  <metaVersion>3</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="eventType" type="leaf">
+      <guid>{073245b5-a730-0044-803b-85228ce27e99}</guid>
+      <label>Event Type</label>
+      <propertyElement type="elslct">
+        <label>Event Type</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.eventType</valueType>
+    </variable>
+    <variable name="eventDocId" type="leaf">
+      <guid>{05a10f6f-a9dc-0a66-e8fd-36b7bc79a8b9}</guid>
+      <label>Event Doc Id</label>
+      <propertyElement type="elfld">
+        <label>Event Doc Id</label>
+      </propertyElement>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="resultType" type="leaf">
+      <guid>{0f13d543-341b-8ad7-634b-0cad71f45508}</guid>
+      <label>Result Type</label>
+      <propertyElement type="elslct">
+        <label>Result Type</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.invokeResultType</valueType>
+    </variable>
+    <variable name="interfaceName" type="leaf">
+      <guid>{0220f0f5-58ab-3fd7-0693-fe7fa4ff3a64}</guid>
+      <label>Interface Name</label>
+      <propertyElement type="elfld">
+        <label>Interface Name</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.interfaceName</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.eaiGlobalProcessDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

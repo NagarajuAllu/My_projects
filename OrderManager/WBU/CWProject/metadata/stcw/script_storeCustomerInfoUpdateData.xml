@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="4fe3207dd19def0951b868cc09c65896" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.storeCustomerInfoUpdateData">
+  <guid>{03269ac4-41ea-84be-7356-5e30e5898925}</guid>
+  <label>Store CustomerInfoUpdate Data</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="accountNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="accountName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var doc = new Document("stcw:custInfoUpdateData");
+    doc.processId     = processId;
+    doc.accountNumber = accountNumber;
+    doc.accountName   = accountName;
+    doc.save();
+  ]]></script>
+</script>

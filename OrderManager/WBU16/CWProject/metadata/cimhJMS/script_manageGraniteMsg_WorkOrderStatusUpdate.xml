@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="cimhJMS.manageGraniteMsg_WorkOrderStatusUpdate">
+  <label>Manage Granite Message: Work Order Status Update [JMS]</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // remember:
+    //    orderNumber (or xngOrderNumber) is the WO Number
+    //    parentOrderNumber is the COM Order Number
+
+    var debug = "[CIMH JMS MESSAGE: WOSU] ";
+
+    debugPrintln(stcc.getSysdateForLog() + debug + "Received: " + (input != null ? input.toXML() : "'NULL'") + "...");
+
+    var logDoc = UserProfile.getMsgLogDoc();
+
+    if (input != null) {
+        var orderNumber = input.orderNumber;
+        var parentOrderNumber = input.parentOrderNumber;
+
+        if(orderNumber != null && parentOrderNumber != null) {
+            var wosuUnifiedModel = stcw.convertHBUWOSUToUnifiedModel(input);
+
+            var lineItem = stcw.getLineItemWithProvProcessByCOMOrderNumAndWONumber(parentOrderNumber, orderNumber);
+
+            if(lineItem != null) {
+                wosuUnifiedModel.lineItemIdentifier = lineItem.id;
+
+                var orchestrationRecord = stcw.getRecordInOrchestrationTableByLineItemId(lineItem.id);
+                if(orchestrationRecord != null) {
+                    var provisioningProcessId = orchestrationRecord.provisioningProcessId;
+
+                    if(provisioningProcessId != null) {
+                        var processInstance = Process.getProcessInfo(provisioningProcessId);
+                        if(processInstance != null) {
+                            if(processInstance.processStatus == 8) {
+                                // the process is in status 8, so STALE; resume it
+                                debugPrintln(stcc.getSysdateForLog() + debug + "Resuming Stale process " + provisioningProcessId);
+                                Process.resumeAllStaleProcesses(provisioningProcessId);
+                            }
+                        }
+
+                        var wosuId = stcw.writeGraniteWOSUIntoDB(provisioningProcessId, wosuUnifiedModel);
+
+                        var wosuNotificationDS = new DataStructure("stcw.wosuNotificationDS");
+                        wosuNotificationDS.wosuId = wosuId;
+
+                        debugPrintln(stcc.getSysdateForLog() + debug + "Sending WOSU Notification for <" + parentOrderNumber + "," + orderNumber + "> to process " + provisioningProcessId);
+                        Process.sendMessageToProcess(provisioningProcessId, null, "stcw.xngServicesNotificationToProcesses/workOrderStatusUpdateNotification", wosuNotificationDS);
+                    }
+                    else {
+                        debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Unable to find Provisioning Process for received granite WOSU for <" + parentOrderNumber + "," + orderNumber + ">; starting standalone process");
+
+                        var wosuId = stcw.writeGraniteWOSUIntoDB(-1, wosuUnifiedModel);
+
+                        var processDocument = new Document("stcw.STCW_PROCESS_DOCUMENT");
+                        processDocument.firstPassWOSU = "Y";
+                        processDocument.latestWOSUId = wosuId;
+
+                        var processId = Process.startProcess ("stcw.sendWOSUToCOM", processDocument);
+                        debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Started sendWOSUToCOM <" + parentOrderNumber + "," + orderNumber + ">: processId = " + processId);
+                    }
+                }
+                else {
+                    debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Unable to find process for <" + parentOrderNumber + "," + orderNumber + ">");
+                }
+            }
+            else {
+                debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Unable to find LineItem for received granite WOSU for <" + parentOrderNumber + "," + orderNumber + ">");
+            }
+        }
+        else {
+            debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Received granite WOSU with parentOrderNumber NULL or orderNumber NULL!!!");
+        }
+
+        if(logDoc != null) {
+            logDoc.userData1 = parentOrderNumber;
+            logDoc.userData2 = orderNumber;
+            logDoc.save();
+        }
+    }
+    else{
+        debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Interface invoked with input NULL...");
+    }
+  ]]></script>
+</script>

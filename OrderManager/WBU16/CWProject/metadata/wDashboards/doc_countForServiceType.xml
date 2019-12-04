@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="wDashboards.countForServiceType">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{07c3c813-2df8-6780-09b9-22706b6d7e78}</guid>
+  <label>Count For ServiceType</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="serviceType" type="leaf">
+      <key>1</key>
+      <label>Product Code</label>
+      <propertyElement type="elfld">
+        <label>Service Type</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string25</valueType>
+    </variable>
+    <variable name="counter" type="leaf">
+      <label>Counter</label>
+      <propertyElement type="elfld">
+        <label>Counter</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_wDashboards.countForServiceType</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="defaultGrid" type="elgrd">
+                    <colWidths>120px,190px,120px,190px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>780px</width>
+                    <elementList>
+                      <element name="serviceType" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <label>Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.countForServiceType/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.countForServiceType/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="counter" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.countForServiceType/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.countForServiceType/leaf_counter</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

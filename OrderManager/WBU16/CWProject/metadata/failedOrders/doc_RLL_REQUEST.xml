@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="failedOrders.RLL_REQUEST">
+  <dbSchema>RMS_RLL</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{4f49c144-632c-4672-885a-9b3b9946cbe9}</guid>
+  <label>Request in RLL</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="REQ_ID" type="leaf">
+      <column>REQ_ID</column>
+      <key>1</key>
+      <table>RLL_REQUEST</table>
+      <valueType>dtype_stcw.integer19</valueType>
+    </variable>
+    <variable name="INBOUND_XML" type="leaf">
+      <column>INBOUND_XML</column>
+      <table>RLL_REQUEST</table>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+    <variable name="OUTBOUND_XML" type="leaf">
+      <column>OUTBOUND_XML</column>
+      <table>RLL_REQUEST</table>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+    <variable name="PROCESS_STATUS" type="leaf">
+      <column>PROCESS_STATUS</column>
+      <table>RLL_REQUEST</table>
+      <valueType>dtype_stcw.integer10</valueType>
+    </variable>
+    <variable name="REQ_OPERATION" type="leaf">
+      <column>REQ_OPERATION</column>
+      <table>RLL_REQUEST</table>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="REQ_STATUS" type="leaf">
+      <column>REQ_STATUS</column>
+      <table>RLL_REQUEST</table>
+      <valueType>dtype_stcw.integer10</valueType>
+    </variable>
+    <variable name="REQ_STRUCTURE" type="leaf">
+      <column>REQ_STRUCTURE</column>
+      <table>RLL_REQUEST</table>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="REQUEST_TS" type="leaf">
+      <column>REQUEST_TS</column>
+      <table>RLL_REQUEST</table>
+      <valueType>dtype_com.conceptwave.system.Timestamp</valueType>
+    </variable>
+    <variable name="TASK_NUM" type="leaf">
+      <column>TASK_NUM</column>
+      <table>RLL_REQUEST</table>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="WO_NAME" type="leaf">
+      <column>WO_NAME</column>
+      <table>RLL_REQUEST</table>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+  </methodList>
+</document>

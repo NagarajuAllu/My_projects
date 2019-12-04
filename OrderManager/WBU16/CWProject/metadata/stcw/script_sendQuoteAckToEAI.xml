@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="39f702d51c1992184d64909d9c90fc39" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.sendQuoteAckToEAI">
+  <guid>{04877ca9-4b15-7d5e-109a-6d2c71f2ca7b}</guid>
+  <label>Send QuoteAck To EAI</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="request" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // it uses the common method:
+    // sendDataToInterface( request, processId, operationDescription, interfaceName, operationName )
+    var response = stcc.sendDataToInterface(request, processId, "sendQuoteAckToEAI", "siquoAck:processRequest_PortType", "processRequest" );
+    return response;
+  ]]></script>
+</script>

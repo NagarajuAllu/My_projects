@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.completeParticipantActivity">
+  <label>Complete Participant Activity</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="workItemDocument" type="rifp">
+      <type>doc_com.conceptwave.system.Document</type>
+    </parameter>
+    <parameter name="taskPerformed" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    workflow.completeActivityOnTracking(workItemDocument.id,
+                                        orderId,
+                                        workItemDocument.objectId,
+                                        workItemDocument.objectType,
+                                        workItemDocument.Operation,
+                                        workItemDocument.userId,
+                                        new Date(),
+                                        taskPerformed,
+                                        workItemDocument.SenderId);
+  ]]></script>
+</script>

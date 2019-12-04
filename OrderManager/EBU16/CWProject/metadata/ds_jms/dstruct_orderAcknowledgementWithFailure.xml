@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure name="ds_jms.orderAcknowledgementWithFailure">
+  <container>true</container>
+  <label>orderAcknowledgementWithFailure</label>
+  <metaVersion>21</metaVersion>
+  <childList>
+    <child name="workOrderNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>workOrderNumber</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="crmOrderNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>crmOrderNumber</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="lineItemIdentifier" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>lineItemIdentifier</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="status" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_ds_jms.orderStatus</element>
+      <label>status</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="xngOrderNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>xngOrderNumber</label>
+    </child>
+    <child name="fulfillmentMode" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>fulfillmentMode</label>
+    </child>
+    <child name="failure" type="dstruct">
+      <array>true</array>
+      <element>dstruct_ds_jms.orderFailure</element>
+      <label>failure</label>
+      <maxInstance>-1</maxInstance>
+    </child>
+  </childList>
+  <UserInterface name="UserInterface" type="tree">
+    <defaultFolderImage>undefined</defaultFolderImage>
+    <defaultLeafImage>undefined</defaultLeafImage>
+    <element>dstruct_ds_jms.orderAcknowledgementWithFailure</element>
+    <extends>tree_com.conceptwave.system.DataStructureUserInterface</extends>
+    <tableDoc>doc_com.conceptwave.system.TreeDocument</tableDoc>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>dstruct_ds_jms.orderAcknowledgementWithFailure</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>tree_com.conceptwave.system.DataStructureUserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</dataStructure>

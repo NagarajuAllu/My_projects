@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="granite.search_VAL_CUSTOMER">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{023977c0-0525-967d-9664-cea12a2b80af}</guid>
+  <label>Search Customer</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="CUSTOMER_ID" type="leaf">
+      <label>Id.</label>
+      <propertyElement type="elfld">
+        <label>Id. [%]</label>
+      </propertyElement>
+      <valueType>dtype_granite.CUSTOMER_ID</valueType>
+    </variable>
+    <variable name="CUSTOMER_NAME" type="leaf">
+      <label>Name</label>
+      <propertyElement type="elfld">
+        <label>Name [%]</label>
+      </propertyElement>
+      <valueType>dtype_granite.CUSTOMER_NAME</valueType>
+    </variable>
+    <variable name="TYPE" type="leaf">
+      <label>Type</label>
+      <propertyElement type="elfld">
+        <label>Type [%]</label>
+      </propertyElement>
+      <valueType>dtype_granite.CUSTOMER_TYPE</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_granite.search_VAL_CUSTOMER</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="search_VAL_CUSTOMERHeader1" type="elhdr">
+                    <label>Customer Information Search Data</label>
+                  </element>
+                  <element name="groupGrid" type="elgrd">
+                    <colWidths>90px,160px,90px,160px,90px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>780px</width>
+                    <wrapLabel>true</wrapLabel>
+                    <elementList>
+                      <element name="CUSTOMER_ID1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.search_VAL_CUSTOMER/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.search_VAL_CUSTOMER/leaf_CUSTOMER_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CUSTOMER_NAME1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.search_VAL_CUSTOMER/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.search_VAL_CUSTOMER/leaf_CUSTOMER_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="TYPE1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.search_VAL_CUSTOMER/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.search_VAL_CUSTOMER/leaf_TYPE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="LayoutSpacer" type="ellsp">
+                    <height>15px</height>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

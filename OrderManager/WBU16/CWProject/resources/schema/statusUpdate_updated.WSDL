@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="orderStatusUpdate" targetNamespace="orderStatusUpdate" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapjms="http://www.w3.org/2010/soapjms/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="orderStatusUpdate" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="orderStatusUpdate" xmlns:tns="orderStatusUpdate" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <xsd:element name="receiveOrderStatusUpdate" type="tns:receiveOrderStatusUpdate"/>
+          <xsd:element name="receiveOrderStatusUpdateResponse" type="tns:receiveOrderStatusUpdateResponse"/>
+          <xsd:complexType name="receiveOrderStatusUpdate">
+            <xsd:sequence>
+              <xsd:element name="orderStatusUpdateRequest" nillable="true" type="tns:OrderStatusUpdateRequest"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="OrderStatusUpdateRequest">
+            <xsd:sequence>
+              <xsd:element name="header" type="tns:RequestHeader"/>
+              <xsd:element name="body" type="tns:body"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="RequestHeader">
+            <xsd:sequence>
+              <xsd:element name="systemId" type="xsd:string"/>
+              <xsd:element name="serverInfo" type="xsd:string"/>
+              <xsd:element name="messageId" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="conversationId" nillable="true" type="xsd:string"/>
+              <xsd:element name="timestamp" type="xsd:dateTime"/>
+              <xsd:element name="domainId" type="xsd:string"/>
+              <xsd:element name="serviceId" type="xsd:string"/>
+              <xsd:element name="operationType" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="userId" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="body">
+            <xsd:sequence>
+              <xsd:element name="orderNo" type="xsd:string"/>
+              <xsd:element name="orderStatus" type="xsd:string"/>
+              <xsd:element name="businessUnit" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="reservationNo" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="feasibilityStatus" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="reservationDays" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="actualImplementationDays" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="plannedFeasibleDays" nillable="true" type="xsd:string"/>
+              <xsd:element name="lineItemIdentifier" type="xsd:string"/>
+              <xsd:element name="lineItemStatus" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="assetNo" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="niNo" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="systemDesignation" nillable="true" type="xsd:string"/>
+              <xsd:element maxOccurs="unbounded" minOccurs="0" name="attributes" nillable="true" type="tns:attributes"/>
+              <xsd:element minOccurs="0" name="workOrderName" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="workOrderStatus" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="workOrderRemarks" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="workOrderProblemDescription" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="taskNumber" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="taskName" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="taskAllocatedTime" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="taskDescription" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="taskOperation" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="taskPriority" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="taskServiceStatus" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="taskStatusCode" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="taskRemarks" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="workOrderStage" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="attributes">
+            <xsd:sequence>
+              <xsd:element name="name" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="value" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="receiveOrderStatusUpdateResponse">
+            <xsd:sequence>
+              <xsd:element name="orderStatusUpdateResponse" nillable="true" type="tns:OrderStatusUpdateResponse"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="OrderStatusUpdateResponse">
+            <xsd:sequence>
+              <xsd:element name="header" type="tns:ResponseHeader"/>
+              <xsd:element name="status" type="tns:status"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="ResponseHeader">
+            <xsd:sequence>
+              <xsd:element name="systemId" type="xsd:string"/>
+              <xsd:element name="serverInfo" type="xsd:string"/>
+              <xsd:element name="messageId" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="conversationId" nillable="true" type="xsd:string"/>
+              <xsd:element name="timestamp" type="xsd:string"/>
+              <xsd:element name="domainId" type="xsd:string"/>
+              <xsd:element name="serviceId" type="xsd:string"/>
+              <xsd:element name="operationType" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="userId" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="status">
+            <xsd:sequence>
+              <xsd:element name="result" type="xsd:string"/>
+              <xsd:element maxOccurs="unbounded" minOccurs="0" name="error" nillable="true" type="tns:error"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="error">
+            <xsd:sequence>
+              <xsd:element name="errorCode" type="xsd:string"/>
+              <xsd:element name="errorSystem" type="xsd:string"/>
+              <xsd:element name="errorType" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorDescription" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorReference" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        	</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="orderStatusUpdate_PortType_receiveOrderStatusUpdateResponse">
+    <wsdl:part name="parameters" element="tns:receiveOrderStatusUpdateResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="orderStatusUpdate_PortType_receiveOrderStatusUpdate">
+    <wsdl:part name="parameters" element="tns:receiveOrderStatusUpdate">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="orderStatusUpdate_PortType">
+    <wsdl:operation name="receiveOrderStatusUpdate">
+      <wsdl:input message="tns:orderStatusUpdate_PortType_receiveOrderStatusUpdate">
+    </wsdl:input>
+      <wsdl:output message="tns:orderStatusUpdate_PortType_receiveOrderStatusUpdateResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GraniteGW_Wholesale_order_statusUpdate_ws_provider_orderStatusUpdate_Binder" type="tns:orderStatusUpdate_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="receiveOrderStatusUpdate">
+      <soap:operation soapAction="GraniteGW_Wholesale_order_statusUpdate_ws_provider_orderStatusUpdate_Binder_receiveOrderStatusUpdate" style="document"/>
+      <wsdl:input>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GraniteGW_Wholesale.order.statusUpdate.ws.provider.orderStatusUpdate">
+    <wsdl:port name="GraniteGW_Wholesale_order_statusUpdate_ws_provider_orderStatusUpdate_Port" binding="tns:GraniteGW_Wholesale_order_statusUpdate_ws_provider_orderStatusUpdate_Binder">
+      <soap:address location="http://STC.com.sa:8080/ws/GraniteGW_Wholesale.order.statusUpdate.ws.provider:orderStatusUpdate/GraniteGW_Wholesale_order_statusUpdate_ws_provider_orderStatusUpdate_Port"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

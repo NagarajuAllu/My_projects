@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="tfsReport.summaryReportFinder">
+  <dbSchema>INTERFACE</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_tfsReport.summaryReportSearchDoc</input>
+  <label>Summary Report Finder</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_tfsReport.summaryReportResultDoc</output>
+  <rtConfigurable>true</rtConfigurable>
+  <type>SQL</type>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select u.userid,
+               ur.roleid,
+               rownum,
+               tfr_data.received,
+               tfr_data.completed,
+               tfr_data.cancelled,
+               (tfr_data.received - (tfr_data.completed + tfr_data.cancelled)) pending,
+               (tfr_data.completed*100/tfr_data.received) ratio
+          from tfs.cwuser u, tfs.cwuserrole ur, tfs.cwusergroupprivilege ugp, tfs.stc_privilege_v p,
+               (select user_id,
+                       count(*) received,
+                       count(case when tfr.fa_completion_date is not null then 1 else null end) completed,
+                       count(case when tfr.cancelled_date is not null then 1 else null end) cancelled
+                  from tfs.stc_tracking t, tfs.stc_tfr tfr
+                 where t.object_type = 'TFR'
+                   and tfr.tfr_id = t.object_id
+                   {[2] and t.assign_to_user_date >= ? }
+                   {[3] and t.assign_to_user_date <= ? }
+                   and t.user_id in (select userid
+                                       from tfs.cwuserrole
+                                      where 1=1
+                                     {[0] and  roleid in ?}
+                                     )
+                  group by user_id) tfr_data
+         where ur.userid = u.userid
+           and ugp.usergroup = ur.roleid
+           and ugp.privilege = p.privilege_name
+           and u.userid = tfr_data.user_id
+        {[1] and u.userid in ?}
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_tfsReport.summaryReportSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_tfsReport.summaryReportResultDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_tfsReport.summaryReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.summaryReportFinder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.summaryReportFinder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="summaryReportFinderResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.summaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="userId" type="elref">
+                        <label>User Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.summaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.summaryReportResultDoc/leaf_userId</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="department" type="elref">
+                        <label>Department Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.summaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.summaryReportResultDoc/leaf_department</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>250px</width>
+                      </element>
+                      <element name="receivedTFR" type="elfld">
+                        <label># Received TFR</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.summaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.summaryReportResultDoc/leaf_receivedTFR</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="completedTFR" type="elfld">
+                        <label># Completed TFR</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.summaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.summaryReportResultDoc/leaf_completedTFR</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="cancelledTFR" type="elfld">
+                        <label># Cancelled TFR</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.summaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.summaryReportResultDoc/leaf_cancelledTFR</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="pendingTFR" type="elfld">
+                        <label># Pending TFR</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.summaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.summaryReportResultDoc/leaf_pendingTFR</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="percentageCompleted" type="elfld">
+                        <label>% Completed TFR</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.summaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.summaryReportResultDoc/leaf_percentageCompleted</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfDetail" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="summaryReportFinderView" type="findVView">
+      <inputOverlay>doc_tfsReport.summaryReportSearchDoc/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Summary Report</label>
+      <outputOverlay>findSql_tfsReport.summaryReportFinder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findSql>

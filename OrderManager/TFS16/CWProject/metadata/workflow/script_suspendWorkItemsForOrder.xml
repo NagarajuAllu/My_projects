@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.suspendWorkItemsForOrder">
+  <label>Suspend Work Items For Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderId" type="rifp"/>
+    <parameter name="excludeProcessId" type="rifp"/>
+  </parameterList>
+  <script><![CDATA[
+    var f = new Document("cwf_pm.ProcessSearch");
+    f.ORDER_ID = orderId;
+
+    var resultList = Finder.runFinder("workflow:workItemFinder", "select", f);
+
+    // Disable all realated work items for current order
+    for(var i=0; i< resultList.length; i++){
+        if(resultList[i].senderId == excludeProcessId){
+            continue;
+        }
+        resultList[i].disabled = 1;
+        resultList[i].save();
+    };
+  ]]></script>
+</script>

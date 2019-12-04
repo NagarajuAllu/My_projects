@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="granite.existBandwidth">
+  <label>Exist Bandwidth</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bwName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var bwExists = false;
+
+    if(bwName != null) {
+        var bwFinder = new Finder("granite.bwFinder");
+        bwFinder.searchDocument.BW_NAME = bwName;
+
+        var bwList = bwFinder.search();
+        if(bwList != null && bwList.size > 0) {
+            bwExists = true;
+        }
+    }
+
+    return bwExists;
+  ]]></script>
+</script>

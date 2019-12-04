@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.createEnd2EndTask">
+  <label>Create End2End Task</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="order" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var existingTasks = (order.tasks != null ? order.tasks.length : 0);
+
+    var tfrTask = order.createOrderItemByPath("tasks." + (existingTasks + 1) + ".tfrTask");
+    tfrTask.taskName = "E2E Task for TFR " + order.tfrDocument.tfrNumber;
+    tfrTask.tfrId =  order.tfrDocument.tfrId;
+    tfrTask.status = "NEW";
+    tfrTask.isEnd2End = true;
+    tfrTask.creationDate = new Date();
+    tfrTask.description = "E2ETask automatically created by the system for TFR " + order.tfrDocument.tfrNumber;
+    tfrTask.save();
+    order.save();
+  ]]></script>
+</script>

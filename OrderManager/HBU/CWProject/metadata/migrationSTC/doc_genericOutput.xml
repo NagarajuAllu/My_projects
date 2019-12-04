@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="83d9e84ce3a3960f124712f0b431cf10" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="migrationSTC.genericOutput">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0c1d6353-d7a4-773d-6e65-b4f8b3dbc4fe}</guid>
+  <label>Generic Output [SQL query]</label>
+  <metaVersion>3</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="result" type="leaf">
+      <guid>{0d0b6efd-2d3b-976a-47d9-c753384eb6ca}</guid>
+      <key>1</key>
+      <label>result</label>
+      <propertyElement type="elfld">
+        <label>result</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_migrationSTC.genericOutput</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="e2ac4a96d854178b3e260883d1632204" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.map_updateQuoteStatus_quoteUpdate">
+  <guid>{063b705e-0dbb-637f-381d-10b75779e67d}</guid>
+  <label>(map) map_updateQuoteStatus_quoteUpdate</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="output" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="input" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="parentQuoteNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    if (output == undefined || output == null || output.metadataType != "siqsu:processRequest_el") {
+          Global.logDebug ("map_updateQuoteStatus_quoteUpdate - nonexistant/wrong output: " + output);
+          return (false);
+    }
+
+    if (input == undefined || input == null || input.metadataType != "wgws:updateQuoteStatus") {
+          Global.logDebug ("map_updateQuoteStatus_quoteUpdate - nonexistant/wrong input: " + input);
+          return (false);
+    }
+
+    var outputRequest = output.Request;
+
+    outputRequest.ActualImplementationDays = input.actualImplementationDays;
+    outputRequest.BusinessUnit             = input.businessUnit;
+    outputRequest.Comments                 = input.comments;
+    outputRequest.FeasibilityStatus        = input.feasibilityStatus;
+    outputRequest.LineItemNumber           = input.orderRowItemId;
+    outputRequest.PlannedFeasibleDays      = input.plannedFeasibleDays;
+    outputRequest.QuoteNumber              = parentQuoteNumber;
+    outputRequest.ReservationDays          = input.reservationDays;
+    outputRequest.ReservationNumber        = input.reservationNumber;
+    outputRequest.WorkOrderStatus          = input.workOrderStatus;
+
+    return (true);
+  ]]></script>
+</script>

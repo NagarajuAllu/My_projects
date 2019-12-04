@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql filenameHash="772c41fe490bb55696597c2782277755" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="wDashboards.processStatusSummary">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <label>Process Status Summary</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>4</metaVersion>
+  <output>doc_rpts.processSummary</output>
+  <type>SQL</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <volatility>1</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select PROCESS_METADATYPE,
+         count(case when STATUS = 1 then 1 else null end) as "Running",
+         count(case when STATUS = 2 then 1 else null end) as "Suspended",
+         count(case when STATUS = 5 then 1 else null end) as "In Error",
+         count(case when STATUS = 3 then 1 else null end) as "Complete",
+         count(case when STATUS = 1 or STATUS = 2 or STATUS = 5 or STATUS = 3 then 1 else 1 end) as "Total Active"
+         from CWPROCESS
+         group by PROCESS_METADATYPE order by PROCESS_METADATYPE
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script>return this.enabled;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findSql_wDashboards.processStatusSummary</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_rpts.processSummary</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_rpts.processSummary/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext">
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="processStatusSummaryBar" type="vform">
+            <label>processStatusSummaryBar</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Numeric_process_type" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_process</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>300px</width>
+                </element>
+                <element name="Active" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_executing</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Suspended" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_suspended</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Error" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_error</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Complete" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_complete</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Total" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_totalNonCompleted</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_addAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <icon>/cwf/MenuIconAdd.gif</icon>
+                <tooltip>Add</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfAddView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfCopy" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_copyAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <enable type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfCopyEnabled</variablePath>
+                  </variablePathList>
+                </enable>
+                <icon>/cwf/MenuIconCopy.gif</icon>
+                <tooltip>Copy</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfCopyView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfDelete" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_deleteAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <enable type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfDeleteEnabled</variablePath>
+                  </variablePathList>
+                </enable>
+                <icon>/cwf/MenuIconDelete.gif</icon>
+                <tooltip>Delete</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfDeleteView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfUpdate" type="elmnu">
+                <menuAccel type="mAccelP"/>
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_updateAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <icon>/cwf/MenuIconEdit.gif</icon>
+                <tooltip>Edit</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfUpdateView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="detailMenu" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="processPlat" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/usrActionMethod_processPlat_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/MenuIconChildProc.gif</icon>
+                    <label>Process Platform</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                  </element>
+                  <element name="detailMenuEx" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_detail</variablePath>
+                        <variablePath>doc_rpts.processSummary/ui_UserInterface/frmui_Forms</variablePath>
+                        <variablePath>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <overflow>visible</overflow>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_detail</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <width>1px</width>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="processStatusSummaryPie" type="vform">
+            <label>processStatusSummaryPie</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Numeric_process_type" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_process</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Active" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_executing</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Suspended" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_suspended</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Error" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_error</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Complete" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_complete</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="processStatusBar" type="vform">
+            <label>processStatusBar</label>
+            <root name="processStatusBar" type="elchart">
+              <caption>Process Status Dashboard</caption>
+              <height>600px</height>
+              <is3D>true</is3D>
+              <numberDivLines>10</numberDivLines>
+              <showZeros>true</showZeros>
+              <type>Column</type>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <width>900px</width>
+              <xaxis>Process Type</xaxis>
+              <yaxis>Count</yaxis>
+              <elementList>
+                <element name="process_metadatatype" type="elchartf">
+                  <label>Metadata Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_process</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="executing" type="elchartf">
+                  <label>Executing</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_executing</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="suspended" type="elchartf">
+                  <label>Suspended</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_suspended</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="error" type="elchartf">
+                  <label>In Error</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_error</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="completed" type="elchartf">
+                  <label>Completed</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_complete</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="totalNonCompleted" type="elchartf">
+                  <label>Total</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_totalNonCompleted</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Chart" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Chart</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Chart</extends>
+            <label>Chart</label>
+            <overrideList>
+              <override name="FormFrame" type="elovf">
+                <cellAlignment></cellAlignment>
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/frmui_Forms</variablePath>
+                    <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/frmui_Forms/vform_processStatusBar</variablePath>
+                  </variablePathList>
+                </formReference>
+                <overflow>auto</overflow>
+                <padding>2000</padding>
+                <removeLabelLine>true</removeLabelLine>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="processStatusPie" type="vform">
+            <label>processStatusPie</label>
+            <root name="processStatusPie" type="elchart">
+              <height>800px</height>
+              <is3D>true</is3D>
+              <showZeros>true</showZeros>
+              <type>Pie</type>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <width>700px</width>
+              <elementList>
+                <element name="process_metadatatype" type="elchartf">
+                  <label>Metadata Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_process</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="executing" type="elchartf">
+                  <label>Executing</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_executing</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="suspended" type="elchartf">
+                  <label>Suspended</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_suspended</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="error" type="elchartf">
+                  <label>In Error</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_error</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="completed" type="elchartf">
+                  <label>Completed</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.processStatusSummary/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_rpts.processSummary/leaf_complete</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="processPlat" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>800</dialogWidth>
+        <parameterList>
+          <parameter name="cwDialogParam" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          cwDialogParam.title = "Process Platform";
+
+          var document;
+          if(this.parent instanceof NavTree && this.model.parent == null) {
+            document = this.parent.detailNode == null ? null : this.parent.detailNode.model;
+          } else {
+            document = this.result.selected == null ? null : this.result.selected[0];
+          }
+          if (document) {
+                var f = new Finder("cwf_pm:ProcessFinder");
+                f._searchDocument.PROCESS_METADATYPE = document.process;
+                f._search();
+                return f;
+          }
+        ]]></script>
+      </method>
+      <method name="processPlat_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>findSql_wDashboards.processStatusSummary/ui_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.processPlat();
+          Global.runContentDisplayScript(this, "displayScript");
+          return result;
+        ]]></script>
+      </method>
+      <method name="cwAutosaveConfirmation" type="action">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if (!this.isValid && Global.isAutosaveEnabled()) {
+            return "UU0256:YN";
+          }
+          return null;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="processStatusSummaryBar" type="findVView">
+      <label>Process Status Summary</label>
+      <outputOverlay>findSql_wDashboards.processStatusSummary/ui_UserInterface/frmui_Forms/vform_processStatusSummaryBar</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+    </view>
+  </viewList>
+</findSql>

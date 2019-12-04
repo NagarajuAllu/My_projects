@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="61a9adc8232f045942514e8073e1ba2b" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.checkIfServiceTypeAllowsProvisioning">
+  <label>Check If ServiceType Allows Provisioning</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_ds_ws.serviceType</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("ds_ws.search_ServiceTypeBehaviorConfigurationDoc");
+    inputDoc.serviceType = serviceType;
+
+    var resultList = Finder.runFinder("ds_ws.findBehaviorConfigurationForServiceType", "select", inputDoc);
+
+    var supportProvisioning = true;
+
+    if(resultList != null && resultList.length > 0) {
+        supportProvisioning = resultList[0].supportProvisioning;
+    }
+
+    return supportProvisioning;
+  ]]></script>
+</script>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.performFullValidationOnLineItemWithReservInGranite">
+  <label>Perform Full Validation On LineItem With Reservation In Granite</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="lineItemServiceNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="lineItemReservationNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="lineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+    var reservationStatus = "RESERVATION";
+    var orderedStatus = "ORDERED";
+
+    var mrLaptop = Global.getConfigVariable("MR_LAPTOP", "N");
+    var isMRLaptop = false;
+    if(mrLaptop != null && mrLaptop == "Y") {
+        isMRLaptop = true;
+    }
+
+
+    if(isSubmit) {
+        if(! isMRLaptop) {
+            var pathInGranite = granite.getPathInGranite(lineItemServiceNumber);
+
+            if(orderType == "I") {
+                if(lineItemReservationNumber == null || lineItemReservationNumber.trim().length == 0) {
+                    /***
+                     * 2016/02/15 - Check removed as requested by Rao with email "SMR-3836 reservation number"
+                     *
+                    if(pathInGranite != null) {
+                        // Install, no reservation but path exists in Granite
+                        validationErrors = ["AE0096", Global.translateText("AE0096", null, ["order", lineItemServiceNumber])];
+                    }
+                     *
+                     ***/
+                }
+                else {
+                    if(pathInGranite == null) {
+                        // Install, reservation but path is missing in Granite
+                        validationErrors = ["AE0097", Global.translateText("AE0097", null, ["order linked to reservation", lineItemServiceNumber])];
+                    }
+                    else {
+                        if(! pathInGranite.STATUS.toUpperCase().equals(reservationStatus)) {
+                            // Install, reservation, path is in Granite but has wrong status
+                            validationErrors = ["AE0098", Global.translateText("AE0098", null, ["order linked to reservation", lineItemServiceNumber, pathInGranite.STATUS, reservationStatus])];
+                        }
+                    }
+                }
+            }
+            else if(orderType == "C") {
+                if(lineItemReservationNumber == null || lineItemReservationNumber.trim().length == 0) {
+                    /***
+                     * 2016/02/15 - Check removed as requested by Rao with email "SMR-3836 reservation number"
+                     *
+                    if(pathInGranite != null) {
+                        if(pathInGranite.STATUS.toUpperCase().equals(reservationStatus) || pathInGranite.STATUS.toUpperCase().equals(orderedStatus)) {
+                            // Change, no reservation, path is in Granite but has wrong status
+                            validationErrors = ["AE0099", Global.translateText("AE0099", null, [lineItemServiceNumber, pathInGranite.STATUS])];
+                        }
+                    }
+                    *
+                    ***/
+                }
+                else {
+                    if(pathInGranite == null) {
+                        // Change, reservation but path is not in Granite
+                        validationErrors = ["AE0097", Global.translateText("AE0097", null, ["order linked to reservation", lineItemServiceNumber])];
+                    }
+                    else {
+                        if(! pathInGranite.STATUS.toUpperCase().equals(reservationStatus)) {
+                            // Change, reservation, path is in Granite but has wrong status
+                            // STCSUP-1657: due to it's a "C" order linked to a reservation, EOC extracts all the paths with that name and checks if there is a path with the correct name status
+
+                            if(granite.existsPathInGraniteWithNameAndStatus(lineItemServiceNumber, reservationStatus)) {
+                                // the path for reservation exists so continue without throwing the error
+                            }
+                            else {
+                                // there is no path in Granite with status "RESERVATION"
+                                validationErrors = ["AE0098", Global.translateText("AE0098", null, ["order linked to reservation", lineItemServiceNumber, pathInGranite.STATUS, reservationStatus])];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(orderType == "I" || orderType == "C") {
+            if(lineItemReservationNumber != null && lineItemReservationNumber.trim().length > 0) {
+                var allOrdersWithReservationNumber = ds_ws.getAllBundleOrdersByReservationNumber(lineItemReservationNumber);
+                if(allOrdersWithReservationNumber != null) {
+                    var foundOrderNumber = null;
+                    for(var i=0; i<allOrdersWithReservationNumber.length && (foundOrderNumber == null); i++) {
+                        var orderWithReservation = Order.getOrderById(allOrdersWithReservationNumber[i].orderId);
+                        if(orderWithReservation != null) {
+                            if(orderWithReservation.orderHeader.orderType != 'F' &&
+                               !orderWithReservation.bundles[0].bundle.alreadyReceivedCancel &&
+                               orderWithReservation.bundles[0].bundle.provisioningFlag != "OLD" &&
+                               orderWithReservation.bundles[0].bundle.provisioningFlag != "CANCELLED" &&
+                               orderWithReservation.orderHeader.orderNumber.indexOf("_REVI") == 0  &&
+                               orderWithReservation.orderHeader.orderNumber.indexOf("_CANC_") == 0) {
+                                foundOrderNumber = orderWithReservation.orderHeader.orderNumber;
+                            }
+                        }
+                    }
+
+                    if(foundOrderNumber != null) {
+                        // there is another order that is already usning the reservation
+                        validationErrors = ds_ws.appendToValidationErrors("AE0094", Global.translateText("AE0094", null, foundOrderNumber), validationErrors, "performFullValidationOnLineItemWithReservInGranite(" + lineItemIdentifier + ")");
+                    }
+                }
+            }
+        }
+    }
+
+    if(validationErrors != null) {
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, lineItemIdentifier, failureArray, isSubmit);
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

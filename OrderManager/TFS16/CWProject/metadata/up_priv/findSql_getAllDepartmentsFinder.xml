@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="up_priv.getAllDepartmentsFinder">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <label>Get All Departments Finder</label>
+  <metaVersion>25</metaVersion>
+  <output>doc_cwf_up.group</output>
+  <type>SQL</type>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select distinct r.roleid, r.role_name, r.calendar
+          from cwrole r, cwusergroupprivilege ugp
+         where r.roleid = ugp.usergroup
+           and ugp.privilege like 'STC_%'
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="selectedRecords" type="leaf">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+      </variable>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_cwf_up.group/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_cwf_up.group</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_up_priv.getAllDepartmentsFinder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="getAllDepartmentsFinderResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_up_priv.getAllDepartmentsFinder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="groupName" type="elfld">
+                        <dataLength>30</dataLength>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_up_priv.getAllDepartmentsFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_cwf_up.group/leaf_groupName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="groupDesc" type="elfld">
+                        <dataLength>40</dataLength>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_up_priv.getAllDepartmentsFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_cwf_up.group/leaf_groupDesc</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="calendar" type="elslct">
+                        <multiselect>false</multiselect>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_up_priv.getAllDepartmentsFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_cwf_up.group/leaf_calendar</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="groupUsers" type="elref">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_up_priv.getAllDepartmentsFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_cwf_up.group/leaf_groupUsers</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="groupPrivileges" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_up_priv.getAllDepartmentsFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_cwf_up.group/leaf_groupPrivileges</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="groupList" type="vform">
+            <label>groupList</label>
+            <root name="table" type="elvlt">
+              <height>100%</height>
+              <width>100%</width>
+              <elementList>
+                <element name="Header" type="elhdr">
+                  <cellAlignment>center,center</cellAlignment>
+                  <height>20px</height>
+                  <label>Departments</label>
+                  <width>350px</width>
+                </element>
+                <element name="getAllDepartmentsFinderResultTable" type="eltabl">
+                  <onSelectChange type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_up_priv.getAllDepartmentsFinder/ui_UserInterface/action_OnSelChanged</variablePath>
+                    </variablePathList>
+                  </onSelectChange>
+                  <selectionAppearance>checkbox</selectionAppearance>
+                  <showDetailColumn>false</showDetailColumn>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_up_priv.getAllDepartmentsFinder/ui_UserInterface/uivar_result</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>350px</width>
+                  <elementList>
+                    <element name="groupName" type="elfld">
+                      <dataLength>30</dataLength>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findSql_up_priv.getAllDepartmentsFinder/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_cwf_up.group/leaf_groupName</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <width>100%</width>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="OnSelChanged" type="action">
+        <script><![CDATA[
+          var superSelChanged = this.cw$super_OnSelChanged();
+
+          if(this.model.selected != null && this.model.selected.length > 0) {
+              var sel = this.model.selected.join(";");
+              if(sel != this.selectedRecords) {
+                  this.selectedRecords = sel;
+                  this.parent.departmentSelectionChanged();
+              }
+          }
+          else {
+              if(this.selectedRecords != null) {
+                  this.selectedRecords = null;
+                  this.parent.departmentSelectionChanged();
+              }
+          }
+        ]]></script>
+      </method>
+      <method name="onInit" type="action">
+        <script><![CDATA[
+          var onInit = this.cw$super_onInit();
+
+          this.selectedRecords = null;
+
+          return onInit;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="getAllDepartmentsFinderView" type="findVView">
+      <label>Get All Departments</label>
+      <outputOverlay>findSql_up_priv.getAllDepartmentsFinder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+      <sortListList>
+        <sortList type="stitem">
+          <path>doc_cwf_up.group/leaf_groupDesc</path>
+        </sortList>
+      </sortListList>
+    </view>
+  </viewList>
+</findSql>

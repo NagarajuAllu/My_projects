@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="configuration.isFieldRevisable">
+  <label>Is Field Revisable</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="objectType" type="rifp"/>
+    <parameter name="attributeName" type="rifp"/>
+  </parameterList>
+  <script><![CDATA[
+    var finder = new Finder("configuration.revisableAttributeFinder");
+    finder.searchDocument.objectType = objectType;
+    finder.searchDocument.attributeName = attributeName;
+    var result = finder.search();
+
+    return !(result == null || result.length == 0);
+  ]]></script>
+</script>

@@ -1,0 +1,43 @@
+Services tab
+    Active:         Enabled!
+    
+    Location:       t3://rmscim.stc.com.sa:8089/
+    JNDI Class:     weblogic.jndi.WLInitialContextFactory
+    Factory:        cim/jms/queue/ConnectionFactory
+    JNDI User:      system
+    JNDI Password:  weblogic12
+    
+    Retry Count:    15 for jmsCIMHXngServiceWEPort, otherwise blank
+    Recover After:  1
+    
+Binding tab
+    SubmitOrderResult
+        Transactional:  Enabled
+        Log Msg:        Enabled
+        Destination:    cim/jms/queue/SubmitOrderResultSom
+        Timeout:        40
+        
+    UpdateOrderResult
+        Transactional:  Enabled
+        Log Msg:        Enabled
+        Destination:    cim/jms/queue/UpdateOrderResultSom
+        Timeout:        40
+
+    WorkOrderStatusUpdate
+        Transactional:  Enabled
+        Log Msg:        Enabled
+        Destination:    cim/jms/queue/WorkOrderStatusUpdateSom
+        Timeout:        40        
+
+    SubmitOrderHome
+        Log Msg:        Enabled
+        Destination:    cim/jms/queue/SubmitOrder
+           
+    UpdateOrderHome
+        Log Msg:        Enabled
+        Destination:    cim/jms/queue/UpdateOrder
+        
+
+Listeners tab
+    all jmsCIMHServices => 4
+     

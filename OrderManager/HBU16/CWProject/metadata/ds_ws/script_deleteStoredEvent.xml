@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="a8111b60dbdeae339200c00758dabf5" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.deleteStoredEvent">
+  <guid>{01193d5f-f3c6-aba8-281f-3b4976805363}</guid>
+  <highlight>10</highlight>
+  <label>Delete Stored Event</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="eventId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = " - deleteStoredEvent - ";
+
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "Deleting event with id " + eventId);
+          var receivedEventData = null;
+          if(eventId != null) {
+                var event = ds_ws.searchStoredGraniteEventById(eventId);
+                if(event != null) {
+                      event.deleteItem();
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "Deleted event with id " + eventId);
+                }
+          }
+
+          return ;
+  ]]></script>
+</script>

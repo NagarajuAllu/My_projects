@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="9028911d8879dc8f8ebf279484e22e58" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="workflow.setEmailForProcess">
+  <label>Set Email For Process</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="emailNotification" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var finder = new Finder('workflow.processAdditionalInfoFinder');
+    finder.searchDocument.cwDocID = processId;
+
+    var resultList = finder.search();
+    var additionalInfoDoc = null;
+
+    if(resultList == null || resultList.length == 0) {
+        additionalInfoDoc = new Document("workflow.processAdditionalInfo");
+        additionalInfoDoc.processId = processId;
+    }
+    else {
+        additionalInfoDoc = resultList[0];
+    }
+
+    additionalInfoDoc.emailNotification = emailNotification;
+    additionalInfoDoc.save();
+  ]]></script>
+</script>

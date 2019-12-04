@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure name="ds_ws.ParentLineItem">
+  <container>true</container>
+  <extends>dstruct_ds_ws.CommonLineItemParameters</extends>
+  <highlight>38</highlight>
+  <label>ParentLineItem</label>
+  <metaVersion>21</metaVersion>
+  <childList>
+    <child name="ParentLineItemIdentifer" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>ParentLineItemIdentifer</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="ParentLineItemNameValueParameters" type="dstruct">
+      <container>true</container>
+      <label>ParentLineItemNameValueParameters</label>
+      <childList>
+        <child name="NameValue" type="dstruct">
+          <array>true</array>
+          <element>dstruct_ds_ws.BundleNameValue</element>
+          <label>NameValue</label>
+          <maxInstance>999</maxInstance>
+        </child>
+      </childList>
+    </child>
+    <child name="ParentLineItemsBlockParameters" type="dstruct">
+      <container>true</container>
+      <label>ParentLineItemsBlockParameters</label>
+      <childList>
+        <child name="BlockNameValueParameter" type="dstruct">
+          <array>true</array>
+          <element>dstruct_ds_ws.BlockParameter</element>
+          <label>BlockNameValueParameter</label>
+          <maxInstance>999</maxInstance>
+        </child>
+      </childList>
+    </child>
+    <child name="SVCLineItems" type="dstruct">
+      <array>true</array>
+      <element>dstruct_ds_ws.ServiceLineItem</element>
+      <label>SVCLineItems</label>
+      <maxInstance>999</maxInstance>
+    </child>
+  </childList>
+  <UserInterface name="UserInterface" type="tree">
+    <defaultFolderImage>undefined</defaultFolderImage>
+    <defaultLeafImage>undefined</defaultLeafImage>
+    <element>dstruct_ds_ws.ParentLineItem</element>
+    <extends>tree_com.conceptwave.system.DataStructureUserInterface</extends>
+    <tableDoc>doc_com.conceptwave.system.TreeDocument</tableDoc>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>dstruct_ds_ws.ParentLineItem</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>tree_com.conceptwave.system.DataStructureUserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</dataStructure>

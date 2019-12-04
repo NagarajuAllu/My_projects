@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc filenameHash="61701e4eb189bda653469b1f297859fe" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.findReasonCodeForInsertOrder">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_cwt_common.docID</input>
+  <label>Find ReasonCode For Insert Order</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>4</metaVersion>
+  <output>doc_ds_ws.STC_INSERTORDER_REASONCODE_CFG</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_ds_ws.STC_INSERTORDER_REASONCODE_CFG/leaf_reasonCode</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_cwt_common.docID</document>
+      <mappedDocument>doc_ds_ws.STC_INSERTORDER_REASONCODE_CFG</mappedDocument>
+      <mappedPath>doc_ds_ws.STC_INSERTORDER_REASONCODE_CFG/leaf_cwDocId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwt_common.docID/leaf_cwDocID</path>
+    </search>
+  </searchList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.STC_INSERTORDER_REASONCODE_CFG</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_ds_ws.STC_INSERTORDER_REASONCODE_CFG/ui_UserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_cwt_common.docID/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findReasonCodeForInsertOrderResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_ds_ws.findReasonCodeForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="reasonCode" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findReasonCodeForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_REASONCODE_CFG/leaf_reasonCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_ds_ws.findReasonCodeForInsertOrder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_ds_ws.findReasonCodeForInsertOrder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findReasonCodeForInsertOrderView" type="findVView">
+      <label>Find Reason Code For InsertOrder</label>
+      <outputOverlay>findDoc_ds_ws.findReasonCodeForInsertOrder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+    </view>
+  </viewList>
+</findDoc>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.writeRecordForOrderHeaderInOrchestrationTable">
+  <label>Write Record For OrderHeader In Orchestration Table</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderHeader" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="provisionable" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var orchestrationRecord = new Document("stcw.STCW_ORDER_ORCHESTRATION");
+    orchestrationRecord.orderNumber = orderHeader.orderNumber;
+    orchestrationRecord.cwOrderId = orderHeader.cwOrderId;
+    orchestrationRecord.cwParentObjectId = orderHeader.cwOrderId;
+    orchestrationRecord.sequence = 1;
+    orchestrationRecord.provisionable = provisionable;
+    orchestrationRecord.cwDocId = orderHeader.cwOrderId;
+    orchestrationRecord.cwOrderItemPath = orderHeader.orderDataPath;
+    orchestrationRecord.lineItemIdentifier = orderHeader.orderNumber;
+    orchestrationRecord.elementTypeInOrchestration = "O";
+
+    orchestrationRecord.save();
+  ]]></script>
+</script>

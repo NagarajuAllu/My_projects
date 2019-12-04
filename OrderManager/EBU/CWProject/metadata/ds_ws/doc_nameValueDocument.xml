@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="51e17e64ea0bcbd9e24f2abf00a9aeb6" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.nameValueDocument">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{018af567-129f-7640-e841-e59fe113d2be}</guid>
+  <label>Name Value</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="name" type="leaf">
+      <column>NAME</column>
+      <guid>{0a8224c3-ab9d-6ae7-224a-f3d622e48834}</guid>
+      <label>Name</label>
+      <propertyElement type="elfld">
+        <label>Name</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_NAME_VALUE</table>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="value" type="leaf">
+      <column>VALUE</column>
+      <guid>{0c3c234d-df44-dc21-0bf3-5f53eae8bef3}</guid>
+      <label>Value</label>
+      <propertyElement type="elfld">
+        <label>Value</label>
+      </propertyElement>
+      <table>STC_NAME_VALUE</table>
+      <valueType>dtype_ds_ws.string4000</valueType>
+    </variable>
+    <variable name="action" type="leaf">
+      <column>ACTION</column>
+      <propertyElement type="elfld">
+        <label>Action</label>
+      </propertyElement>
+      <table>STC_NAME_VALUE</table>
+      <valueType>dtype_ds_ws.nvAction</valueType>
+    </variable>
+    <variable name="cwDocStamp" type="leaf">
+      <column>CWDOCSTAMP</column>
+      <guid>{0d554b5e-7f0e-1abb-2b4f-ef33a8ed8f30}</guid>
+      <label>System doc stamp</label>
+      <propertyElement type="elfld">
+        <label>System doc stamp</label>
+      </propertyElement>
+      <table>STC_NAME_VALUE</table>
+      <valueType>dtype_cwf.cwDocStamp</valueType>
+    </variable>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <guid>{05d01f17-bc88-7d5f-e312-04781ae0b3db}</guid>
+      <key>1</key>
+      <label>System document ID</label>
+      <propertyElement type="elfld">
+        <label>System document ID</label>
+      </propertyElement>
+      <table>STC_NAME_VALUE</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="lastUpdatedDate" type="leaf">
+      <column>LASTUPDATEDDATE</column>
+      <guid>{04cfd735-0b2f-551c-c36b-60b6966b92d0}</guid>
+      <label>System last updated timestamp</label>
+      <propertyElement type="eldatetime">
+        <label>System last updated timestamp</label>
+      </propertyElement>
+      <table>STC_NAME_VALUE</table>
+      <valueType>dtype_cwf.lastUpdatedDate</valueType>
+    </variable>
+    <variable name="cwOrderCreationDate" type="leaf">
+      <column>CWORDERCREATIONDATE</column>
+      <guid>{03770147-019d-4913-bcd1-551cb181cd2c}</guid>
+      <label>System order creation timestamp</label>
+      <propertyElement type="eldatetime">
+        <label>System order creation timestamp</label>
+      </propertyElement>
+      <table>STC_NAME_VALUE</table>
+      <valueType>dtype_cwf.cwOrderCreationDate</valueType>
+    </variable>
+    <variable name="cwOrderId" type="leaf">
+      <column>CWORDERID</column>
+      <guid>{0ecf8cf5-998e-c8c4-55d0-2f262385ab07}</guid>
+      <label>System order ID</label>
+      <propertyElement type="elfld">
+        <label>System order ID</label>
+      </propertyElement>
+      <table>STC_NAME_VALUE</table>
+      <valueType>dtype_cwf.cwOrderId</valueType>
+    </variable>
+    <variable name="cwParentId" type="leaf">
+      <column>CWPARENTID</column>
+      <guid>{0def84e0-9d80-59ca-1a0a-8b7c03ee5993}</guid>
+      <label>System parent ID</label>
+      <propertyElement type="elfld">
+        <label>System parent ID</label>
+      </propertyElement>
+      <table>STC_NAME_VALUE</table>
+      <valueType>dtype_cwf.cwParentId</valueType>
+    </variable>
+    <variable name="updatedBy" type="leaf">
+      <column>UPDATEDBY</column>
+      <guid>{029dd33d-4b5e-24b7-12c1-d4a0b8e7e4c1}</guid>
+      <label>System updated by</label>
+      <propertyElement type="elfld">
+        <label>System updated by</label>
+      </propertyElement>
+      <table>STC_NAME_VALUE</table>
+      <valueType>dtype_cwf.updatedBy</valueType>
+    </variable>
+    <variable name="parentElementId" type="leaf">
+      <column>PARENTELEMENTID</column>
+      <table>STC_NAME_VALUE</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocVisualKey" type="action">
+      <guid>{0122eaf1-4581-63ef-94fd-d66c7c129d9c}</guid>
+      <system>true</system>
+      <script><![CDATA[
+        var name = null;
+        name = (document.name != null ? document.name : "Not Defined") +
+                 (document.value != null ? " [" + document.value + "]" : "");
+        return name;
+      ]]></script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <script><![CDATA[
+        this.cw$super_deletePerm($psCondition);
+        return false;
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script><![CDATA[
+        this.cw$super_editablePerm($psCondition);
+        return false;
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.DocumentWithTabsUserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.nameValueDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.DocumentWithTabsUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="default_mainInformationGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="details_nameValueHeader" type="elhdr">
+                    <label>Name Value: Main Information</label>
+                    <showValidation>true</showValidation>
+                    <style>CwFOT</style>
+                  </element>
+                  <element name="default_mainInformationGrid" type="elgrd">
+                    <colWidths>195px,195px,195px</colWidths>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>585px</width>
+                    <elementList>
+                      <element name="name" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <labelOrientation>left</labelOrientation>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.nameValueDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.nameValueDocument/leaf_name</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="value" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <labeAlign>left</labeAlign>
+                        <labelOrientation>left</labelOrientation>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.nameValueDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.nameValueDocument/leaf_value</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="action" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <labelOrientation>left</labelOrientation>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.nameValueDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.nameValueDocument/leaf_action</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="cwAutosaveConfirmation" type="action">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if (!this.isValid && Global.isAutosaveEnabled() && !this.model.readonly && this.model.isSavable()) {
+            return "UU0256:YN";
+          }
+          return null;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

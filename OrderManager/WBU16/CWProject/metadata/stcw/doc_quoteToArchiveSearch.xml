@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcw.quoteToArchiveSearch">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{00981f06-9df5-4a71-dd11-11337b03ff88}</guid>
+  <label>Quote To Archive Search</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="parentQuoteNumber" type="leaf">
+      <label>Parent Quote Number</label>
+      <propertyElement type="elfld">
+        <label>Parent Quote Number</label>
+      </propertyElement>
+      <valueType>dtype_orb.OrderNumber</valueType>
+    </variable>
+    <variable name="childQuoteNumber" type="leaf">
+      <label>Child Quote Number</label>
+      <propertyElement type="elfld">
+        <label>Child Quote Number</label>
+      </propertyElement>
+      <valueType>dtype_stcw.quoteNumber</valueType>
+    </variable>
+    <variable name="orderStatus" type="leaf">
+      <label>OrderStatus</label>
+      <propertyElement type="elfld">
+        <label>OrderStatus</label>
+      </propertyElement>
+      <valueType>dtype_stcw.OrderStatus</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.quoteToArchiveSearch</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="searchFormGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="searchFormGrid" type="elgrd">
+                    <colWidths>195,195,195,195</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>780px</width>
+                    <elementList>
+                      <element name="parentQuoteNumber1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteToArchiveSearch/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.quoteToArchiveSearch/leaf_parentQuoteNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="childQuoteNumber1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <tooltip>Child Quote Number [%]</tooltip>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteToArchiveSearch/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.quoteToArchiveSearch/leaf_childQuoteNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

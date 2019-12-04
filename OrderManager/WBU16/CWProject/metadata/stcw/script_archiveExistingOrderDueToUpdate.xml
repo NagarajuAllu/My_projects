@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.archiveExistingOrderDueToUpdate">
+  <label>Archive Existing Order Due To Update</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="existingOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="isCancel" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var newOrderNumber = existingOrder.orderHeader.orderNumber + (isCancel ? "_CANC_" : "_REVI_") + stcc.getCurrentDateInFormat("yyyyMMddHHmm");
+
+    existingOrder.orderHeader.orderNumber = newOrderNumber;
+
+    if(existingOrder.parentLineItems != null) {
+        for(var i=0; i<existingOrder.parentLineItems.length; i++) {
+            existingOrder.parentLineItems[i].parentLineItem.provisioningFlag = "OLD";
+        }
+    }
+
+    existingOrder.save();
+
+    stcw.updateOrchestrationRecordsForNewOrderNumber(existingOrder, newOrderNumber);
+  ]]></script>
+</script>

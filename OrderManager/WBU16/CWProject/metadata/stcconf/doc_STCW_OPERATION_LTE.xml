@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcconf.STCW_OPERATION_LTE">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{812ffa3f-fd7e-4407-bd2d-89cda570d968}</guid>
+  <label>Operation For LTE Process Configuration</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STCW_OPERATION_LTE</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="step" type="leaf">
+      <column>STEP</column>
+      <propertyElement type="elfld">
+        <label>Step in Workflow</label>
+      </propertyElement>
+      <table>STCW_OPERATION_LTE</table>
+      <valueType>dtype_stcw.integer1</valueType>
+    </variable>
+    <variable name="orderType" type="leaf">
+      <column>ORDERTYPE</column>
+      <propertyElement type="elslct">
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STCW_OPERATION_LTE</table>
+      <valueType>dtype_wsws.orderType</valueType>
+    </variable>
+    <variable name="isSubmit" type="leaf">
+      <column>ISSUBMIT</column>
+      <propertyElement type="elchk">
+        <label>Is Submit</label>
+      </propertyElement>
+      <table>STCW_OPERATION_LTE</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="changeRequestType" type="leaf">
+      <column>CHANGEREQUESTTYPE</column>
+      <propertyElement type="elfld"/>
+      <table>STCW_OPERATION_LTE</table>
+      <valueType>dtype_wsws.changeRequestType</valueType>
+    </variable>
+    <variable name="interfaceName" type="leaf">
+      <column>INTERFACENAME</column>
+      <propertyElement type="elfld">
+        <label>Interface Name</label>
+      </propertyElement>
+      <table>STCW_OPERATION_LTE</table>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="operationName" type="leaf">
+      <column>OPERATIONNAME</column>
+      <propertyElement type="elfld">
+        <label>Operation Name</label>
+      </propertyElement>
+      <table>STCW_OPERATION_LTE</table>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="outputDocumentName" type="leaf">
+      <column>OUTPUTDOCNAME</column>
+      <propertyElement type="elfld">
+        <label>Output Document Name</label>
+      </propertyElement>
+      <table>STCW_OPERATION_LTE</table>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="retryCount" type="leaf">
+      <column>RETRYCOUNT</column>
+      <propertyElement type="elfld">
+        <label>Retry Count</label>
+      </propertyElement>
+      <table>STCW_OPERATION_LTE</table>
+      <valueType>dtype_stcw.integer1</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>NEVER</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>NEVER</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>NEVER</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcconf.STCW_OPERATION_LTE</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="STCW_OPERATION_LTEGrid" type="elgrd">
+                <colWidths>90px,150px,90px,150px</colWidths>
+                <labelOrientation>left</labelOrientation>
+                <numOfCols>4</numOfCols>
+                <useDefaultHeight>true</useDefaultHeight>
+                <elementList>
+                  <element name="STCW_OPERATION_LTEHeader" type="elhdr">
+                    <label>Operation For LTE Process Configuration</label>
+                  </element>
+                  <element name="step" type="elfld">
+                    <label>Step in Workflow</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/leaf_step</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="orderType" type="elslct">
+                    <label>Order Type</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/leaf_orderType</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="isSubmit" type="elchk">
+                    <label>Is Submit</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/leaf_isSubmit</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="changeRequestType" type="elfld">
+                    <label>Change Request Type</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/leaf_changeRequestType</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="interfaceName" type="elfld">
+                    <label>Operation Name</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/leaf_operationName</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="operationName" type="elfld">
+                    <label>Operation Name</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/leaf_operationName</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="outputDocumentName" type="elfld">
+                    <label>Output Document Name</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/leaf_outputDocumentName</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="retryCount" type="elfld">
+                    <label>Retry Count</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcconf.STCW_OPERATION_LTE/leaf_retryCount</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

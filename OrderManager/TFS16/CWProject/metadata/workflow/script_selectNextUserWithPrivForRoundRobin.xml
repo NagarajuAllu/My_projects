@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.selectNextUserWithPrivForRoundRobin">
+  <label>Select Next User With Privilege For RoundRobin</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="privilegeCode" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var groupName = up_priv.getGroupNameByPrivilegeCode(privilegeCode);
+
+    var user = null;
+
+    if(groupName != null) {
+        // invoke procedure
+        var arrayList = Global.runDBStoredProcedure("ORDER", "{call assignTokenToNextUserInGroup(?, ?)}", [groupName], "cwt_common.docID",
+                                                    false, true, "cwt_common.docID", "I-O");
+        if(arrayList != null && arrayList.length > 0) {
+            user = UserProfile.getUserProfile(arrayList[0].cwDocID);
+        }
+        else {
+            debugPrintln("Next User not found");
+        }
+    }
+    else {
+        debugPrintln("Not able to find a group!");
+    }
+
+    return user;
+  ]]></script>
+</script>

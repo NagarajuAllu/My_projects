@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfs.prnSearchDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{a54e994e-c9b6-462b-a03c-0d006ebdecb7}</guid>
+  <label>PRN Search Doc</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="prnId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="prnName" type="leaf">
+      <propertyElement type="elfld">
+        <label>Name [%]</label>
+      </propertyElement>
+      <valueType>dtype_common.string16</valueType>
+    </variable>
+    <variable name="prnStatus" type="leaf">
+      <propertyElement type="elfld">
+        <label>PRN Status</label>
+      </propertyElement>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="customerName" type="leaf">
+      <propertyElement type="elslct">
+        <label>Customer Name</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_tfs.customerPickListReference</valueType>
+    </variable>
+    <variable name="creationDateGT" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Creation Date &gt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="creationDateLT" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Creation Date &lt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="plannedRFSDateGT" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Planned RFS Date &gt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="plannedRFSDateLT" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Planned RFS Date &lt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="userId" type="leaf">
+      <propertyElement type="elfld">
+        <label>Current User</label>
+      </propertyElement>
+      <valueType>dtype_cwf.userId</valueType>
+    </variable>
+    <variable name="userDep" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfs.prnSearchDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="prnSearchDocGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>900px</width>
+                    <elementList>
+                      <element name="prnSearchDocHeader" type="elhdr">
+                        <label>PRN Search Input Data</label>
+                      </element>
+                      <element name="prnName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.prnSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.prnSearchDoc/leaf_prnName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnStatus" type="elfld">
+                        <label>Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.prnSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.prnSearchDoc/leaf_prnStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerName" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.prnSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.prnSearchDoc/leaf_customerName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="userId" type="elfld">
+                        <dataLength>30</dataLength>
+                        <label>Current User</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.prnSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.prnSearchDoc/leaf_userId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="userDep" type="elfld">
+                        <label>Current Department [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.prnSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.prnSearchDoc/leaf_userDep</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDateGT" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.prnSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.prnSearchDoc/leaf_creationDateGT</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDateLT" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.prnSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.prnSearchDoc/leaf_creationDateLT</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="plannedRFSDateGT" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.prnSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.prnSearchDoc/leaf_plannedRFSDateGT</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="plannedRFSDateLT" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.prnSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.prnSearchDoc/leaf_plannedRFSDateLT</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

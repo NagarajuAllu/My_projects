@@ -1,0 +1,1 @@
+drop index mau_cworderinstance_mdtype;

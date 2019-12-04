@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.search_ProductType">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{7fbed409-e23b-4e17-84e4-ff09943a722b}</guid>
+  <label>Search Element: ProductType</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="productType" type="leaf">
+      <propertyElement type="elfld">
+        <label>Product Type</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string255</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.search_ProductType</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="nameGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="header" type="elgrd">
+                    <colWidths>100px,150px,100px,150px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <width>600px</width>
+                    <elementList>
+                      <element name="productType" type="elhdr">
+                        <height>30px</height>
+                        <label>Bundle ProductType</label>
+                      </element>
+                      <element name="crmProductType" type="elfld">
+                        <label>Bundle Product Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_ProductType/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_ProductType/leaf_productType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>30px</height>
+                        <rowSpan>30px</rowSpan>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="internalProductTypeEditable" type="permMethod">
+        <script>return (this.model.internalProductType == null);</script>
+      </method>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>doc_ds_ws.search_ProductType/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

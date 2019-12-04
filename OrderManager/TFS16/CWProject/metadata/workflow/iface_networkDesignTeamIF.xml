@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<interface name="workflow.networkDesignTeamIF">
+  <label>Network Design Team I/F</label>
+  <metaVersion>4</metaVersion>
+  <operationList>
+    <operation name="prepareToValidatePRNRAndFeasibilityCheck" type="oper">
+      <label>Prepare To Validate PRNR And Feasibility Check</label>
+      <type>One-Way</type>
+    </operation>
+    <operation name="acceptPRNR" type="oper">
+      <label>Accept PRNR</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="rejectPRNR" type="oper">
+      <label>Reject PRNR</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="prepareToCreateReservation" type="oper">
+      <label>Prepare To Create Reservation</label>
+      <type>One-Way</type>
+    </operation>
+    <operation name="createReservation" type="oper">
+      <label>Create Reservation</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="cancelExistingPRNandPRNR" type="oper">
+      <label>Cancel Existing PRN and PRNR</label>
+      <privilegeList>
+        <privilege>STC_NetwDesPriv</privilege>
+      </privilegeList>
+      <type>One-Way</type>
+    </operation>
+    <operation name="cancelledExistingPRNandPRNR" type="oper">
+      <label>Cancelled Existing PRN &amp; PRNR</label>
+      <privilegeList>
+        <privilege>STC_NetwDesPriv</privilege>
+      </privilegeList>
+      <type>Notification</type>
+    </operation>
+    <operation name="performReservationOnGranite" type="oper">
+      <label>Perform Reservation On Granite</label>
+      <privilegeList>
+        <privilege>STC_NetwDesPriv</privilege>
+      </privilegeList>
+      <type>One-Way</type>
+    </operation>
+    <operation name="acceptReservation" type="oper">
+      <label>Accept reservation on Granite</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="issueInReservation" type="oper">
+      <label>Issue in reservation</label>
+      <type>Notification</type>
+    </operation>
+  </operationList>
+  <privilegeList>
+    <privilege>STC_NetwDesPriv</privilege>
+  </privilegeList>
+  <revision>6</revision>
+</interface>

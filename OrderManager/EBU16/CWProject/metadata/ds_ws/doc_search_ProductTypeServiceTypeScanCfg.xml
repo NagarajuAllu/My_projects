@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.search_ProductTypeServiceTypeScanCfg">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{244c3e86-1a2a-4ced-b55b-f4dfd38bf057}</guid>
+  <label>Search Element: Product Type &amp; Service Type Scan Configuration</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="productType" type="leaf">
+      <propertyElement type="elfld">
+        <label>Product Type</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string255</valueType>
+    </variable>
+    <variable name="serviceType" type="leaf">
+      <propertyElement type="elfld"/>
+      <valueType>dtype_ds_ws.serviceType</valueType>
+    </variable>
+    <variable name="reasonCode" type="leaf">
+      <propertyElement type="elfld">
+        <label>Reason Code</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string1000</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.search_ProductTypeServiceTypeScanCfg</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="SearchGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STC_PRODTYPE_SCAN_CFGGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>960px</width>
+                    <elementList>
+                      <element name="STC_PRODTYPE_SCAN_CFGHeader" type="elhdr">
+                        <label>STC Product Type &amp; Service Type Scan Configuration Search</label>
+                      </element>
+                      <element name="productType" type="elfld">
+                        <cellAlignment></cellAlignment>
+                        <labelOrientation>left</labelOrientation>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_ProductTypeServiceTypeScanCfg/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_ProductTypeServiceTypeScanCfg/leaf_productType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <label>Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_ProductTypeServiceTypeScanCfg/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_ProductTypeServiceTypeScanCfg/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="reasonCode" type="elfld">
+                        <labelOrientation>left</labelOrientation>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_ProductTypeServiceTypeScanCfg/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_ProductTypeServiceTypeScanCfg/leaf_reasonCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp"/>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

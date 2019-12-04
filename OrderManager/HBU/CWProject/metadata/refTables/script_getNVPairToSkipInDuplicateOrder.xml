@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="23a98403e1122dec42365bab3ae27614" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="refTables.getNVPairToSkipInDuplicateOrder">
+  <label>Get NVPair to Skip In Duplicate Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var searchDoc = new Document("refTables.searchNVPairToSKipInDuplOrder");
+    searchDoc.serviceType = serviceType;
+    var recordsFound = Finder.runFinder("refTables.nvPairToSkipInDuplicateOrderFinder", "select", searchDoc);
+
+    return recordsFound;
+  ]]></script>
+</script>

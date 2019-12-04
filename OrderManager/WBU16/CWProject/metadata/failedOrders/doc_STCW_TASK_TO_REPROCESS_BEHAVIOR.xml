@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{c1abd473-4008-4189-a2b0-3eab9357558d}</guid>
+  <label>Task To Reprocess Configuration</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STCW_TASK_2_REPROC_BEHAVIOR</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="taskOperation" type="leaf">
+      <column>TASK_OPERATION</column>
+      <table>STCW_TASK_2_REPROC_BEHAVIOR</table>
+      <valueType>dtype_stcw.string20</valueType>
+    </variable>
+    <variable name="statusCode" type="leaf">
+      <column>STATUS_CODE</column>
+      <table>STCW_TASK_2_REPROC_BEHAVIOR</table>
+      <valueType>dtype_stcw.string1</valueType>
+    </variable>
+    <variable name="existDependent" type="leaf">
+      <column>EXIST_DEPENDENT</column>
+      <table>STCW_TASK_2_REPROC_BEHAVIOR</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="alreadyCompletedTaskOp" type="leaf">
+      <column>ALREADY_COMPLETED_TASKOP</column>
+      <table>STCW_TASK_2_REPROC_BEHAVIOR</table>
+      <valueType>dtype_stcw.string20</valueType>
+    </variable>
+    <variable name="supportsResend" type="leaf">
+      <column>SUPPORT_RESEND</column>
+      <table>STCW_TASK_2_REPROC_BEHAVIOR</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="supportsResendWithAdditionalInfo" type="leaf">
+      <column>SUPPORT_RESEND_WINFO</column>
+      <table>STCW_TASK_2_REPROC_BEHAVIOR</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="supportsComplete" type="leaf">
+      <column>SUPPORT_COMPLETE</column>
+      <table>STCW_TASK_2_REPROC_BEHAVIOR</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="ontMandatory" type="leaf">
+      <column>REQUIRE_ONT</column>
+      <table>STCW_TASK_2_REPROC_BEHAVIOR</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="additionalInfoDocument" type="leaf">
+      <column>ADDITIONAL_INFO_DOC</column>
+      <table>STCW_TASK_2_REPROC_BEHAVIOR</table>
+      <valueType>dtype_stcw.string256</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STCW_TASK_TO_REPROCESSGrid" type="elgrd">
+                    <colWidths>90px,160px,90px,160px,90px,160px,90px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>8</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="STCW_TASK_TO_REPROCESSHeader" type="elhdr">
+                        <label>Task To Reprocess Configuration</label>
+                      </element>
+                      <element name="taskOperation" type="elfld">
+                        <label>Task Operation</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/leaf_taskOperation</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="statusCode" type="elfld">
+                        <label>Task Status Code</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/leaf_statusCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="existDependent" type="elchk">
+                        <label>Exist Dependent?</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/leaf_existDependent</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="alreadyCompletedTaskOp" type="elfld">
+                        <label>Already Completed Task Op.</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/leaf_alreadyCompletedTaskOp</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="supportsResend" type="elchk">
+                        <label>Support Resend?</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/leaf_supportsResend</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="supportsResendWithAdditionalInfo" type="elchk">
+                        <label>Support Resend With Additional Info?</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/leaf_supportsResendWithAdditionalInfo</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="supportsComplete" type="elchk">
+                        <label>Support Complete?</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/leaf_supportsComplete</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ontMandatory" type="elchk">
+                        <label>Is ONT Mandatory?</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/leaf_ontMandatory</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="additionalInfoDocument" type="elfld">
+                        <label>Additional Name Doc Info</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.STCW_TASK_TO_REPROCESS_BEHAVIOR/leaf_additionalInfoDocument</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.details_serviceParameters">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{02039df7-efa9-bf39-8077-eb315a8b0776}</guid>
+  <highlight>12</highlight>
+  <label>Details: Service Parameters</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="creationDate" type="leaf">
+      <column>CREATIONDATE</column>
+      <label>Creation Date</label>
+      <propertyElement type="eldate">
+        <displayFormat>MM/dd/yyyy</displayFormat>
+        <label>Creation Date</label>
+        <showPickerIcon>false</showPickerIcon>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_cwf.date</valueType>
+    </variable>
+    <variable name="serviceNumber" type="leaf">
+      <column>SERVICENUMBER</column>
+      <label>Service #</label>
+      <propertyElement type="elfld">
+        <label>Service #</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="oldServiceNumber" type="leaf">
+      <column>OLDSERVICENUMBER</column>
+      <label>Old Service #</label>
+      <propertyElement type="elfld">
+        <label>Old Service #</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="serviceDate" type="leaf">
+      <column>SERVICEDATE</column>
+      <label>Service Date</label>
+      <propertyElement type="eldate">
+        <label>Service Date</label>
+        <showPickerIcon>false</showPickerIcon>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_cwf.date</valueType>
+    </variable>
+    <variable name="serviceDescription" type="leaf">
+      <column>SERVICEDESCRIPTION</column>
+      <label>Service Description</label>
+      <propertyElement type="elfld">
+        <label>Service Description</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_ds_ws.string1000</valueType>
+    </variable>
+    <variable name="serviceType" type="leaf">
+      <column>SERVICETYPE</column>
+      <label>Service Type</label>
+      <propertyElement type="elfld">
+        <label>Service Type</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_ds_ws.serviceType</valueType>
+    </variable>
+    <variable name="cwDocStamp" type="leaf">
+      <column>CWDOCSTAMP</column>
+      <label>System doc stamp</label>
+      <propertyElement type="elfld">
+        <label>System doc stamp</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_cwf.cwDocStamp</valueType>
+    </variable>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <label>System document ID</label>
+      <propertyElement type="elfld">
+        <label>System document ID</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="lastUpdatedDate" type="leaf">
+      <column>LASTUPDATEDDATE</column>
+      <label>System last updated timestamp</label>
+      <propertyElement type="eldatetime">
+        <label>System last updated timestamp</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_cwf.lastUpdatedDate</valueType>
+    </variable>
+    <variable name="cwOrderCreationDate" type="leaf">
+      <column>CWORDERCREATIONDATE</column>
+      <label>System order creation timestamp</label>
+      <propertyElement type="eldatetime">
+        <label>System order creation timestamp</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_cwf.cwOrderCreationDate</valueType>
+    </variable>
+    <variable name="cwOrderId" type="leaf">
+      <column>CWORDERID</column>
+      <label>System order ID</label>
+      <propertyElement type="elfld">
+        <label>System order ID</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_cwf.cwOrderId</valueType>
+    </variable>
+    <variable name="cwParentId" type="leaf">
+      <column>CWPARENTID</column>
+      <label>System parent ID</label>
+      <propertyElement type="elfld">
+        <label>System parent ID</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_cwf.cwParentId</valueType>
+    </variable>
+    <variable name="updatedBy" type="leaf">
+      <column>UPDATEDBY</column>
+      <label>System updated by</label>
+      <propertyElement type="elfld">
+        <label>System updated by</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_cwf.updatedBy</valueType>
+    </variable>
+    <variable name="serviceStatus" type="leaf">
+      <column>SERVICESTATUS</column>
+      <label>Service Status</label>
+      <propertyElement type="elfld">
+        <label>Service Status</label>
+      </propertyElement>
+      <table>STC_SERVICE_PARAMETERS</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="attributeCSC" type="leaf">
+      <dontMap>true</dontMap>
+      <label>Attribute CSC</label>
+      <propertyElement type="elfld">
+        <label>Attribute CSC</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+    <variable name="attributeRatePlan" type="leaf">
+      <dontMap>true</dontMap>
+      <label>Attribute Rate Plan</label>
+      <propertyElement type="elfld">
+        <label>Attribute Rate Plan</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+    <variable name="attributeSuppCodes" type="leaf">
+      <dontMap>true</dontMap>
+      <label>Attribute SUPP_CODES</label>
+      <propertyElement type="elfld">
+        <label>Attribute SUPP_CODES</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+    <variable name="attributeDownStreamBW" type="leaf">
+      <dontMap>true</dontMap>
+      <label>Attribute DownstreamBandwidth</label>
+      <propertyElement type="elfld">
+        <label>Attribute DownstreamBandwidth</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+    <variable name="attributeUpStreamBW" type="leaf">
+      <dontMap>true</dontMap>
+      <label>Attribute UpstreamBandwidth</label>
+      <propertyElement type="elfld">
+        <label>Attribute UpstreamBandwidth</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocVisualKey" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        var name = null;
+        name = (document.serviceNumber != null ? document.serviceNumber : "Not Defined") +
+                 (document.serviceType != null ? " [" + document.serviceType + "]" : " [Not Defined]");
+        return name;
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.DocumentWithTabsUserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.details_serviceParameters</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.DocumentWithTabsUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="default_mainInformation" type="vform">
+            <label>default_mainInformation</label>
+            <root name="default_mainInformationGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="details_serviceParametersHeader" type="elhdr">
+                  <label>Service Parameters: Main Information</label>
+                  <showValidation>true</showValidation>
+                  <style>CwFOT</style>
+                </element>
+                <element name="details_serviceParametersHeader7" type="elhdr">
+                  <label>Service Information</label>
+                </element>
+                <element name="groupGrid" type="elgrd">
+                  <colWidths>117,195,117,195,117,195</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>936px</width>
+                  <wrapLabel>true</wrapLabel>
+                  <elementList>
+                    <element name="serviceNumber6" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.details_serviceParameters/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.details_serviceParameters/leaf_serviceNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Description6" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Description</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.details_serviceParameters/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.details_serviceParameters/leaf_serviceDescription</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Type6" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.details_serviceParameters/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.details_serviceParameters/leaf_serviceType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="oldServiceNumber6" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.details_serviceParameters/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.details_serviceParameters/leaf_oldServiceNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceDate6" type="eldate">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.details_serviceParameters/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.details_serviceParameters/leaf_serviceDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Status6" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.details_serviceParameters/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.details_serviceParameters/leaf_serviceStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="Forms" type="eltset">
+                <dataSource type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.DocumentWithTabsUserInterface/leaf_selectedTab</variablePath>
+                  </variablePathList>
+                </dataSource>
+                <tabChangedMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.DocumentWithTabsUserInterface/uimthd_onTabChanged</variablePath>
+                  </variablePathList>
+                </tabChangedMethod>
+                <elementList>
+                  <element name="default_mainInformationTab" type="eltab">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.details_serviceParameters/ui_UserInterface/frmui_Forms/vform_default_mainInformation</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <label>Service Parameters: Main Information</label>
+                    <validationDisplay>Static Icons</validationDisplay>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/vform_Menu</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/vform_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="eldel"/>
+              <override name="hl1" type="elext">
+                <elementList>
+                  <element name="validate" type="elmnu">
+                    <menuAccel type="mAccelP">
+                      <keyName>V</keyName>
+                      <keys enum-type="menuAccelFlag">ALT_KEY</keys>
+                    </menuAccel>
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.details_serviceParameters/ui_UserInterface/usrActionMethod_validateMeth_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/complete.gif</icon>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.details_serviceParameters/ui_UserInterface/permMethod_validateMethView</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+      <method name="validateMeth" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <script>return 1;</script>
+      </method>
+      <method name="validateMeth_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>doc_ds_ws.details_serviceParameters/ui_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.validateMeth();
+          Global.runContentDisplayScript(this, "displayScript");
+          return result;
+        ]]></script>
+      </method>
+      <method name="cwAutosaveConfirmation" type="action">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if (!this.isValid && Global.isAutosaveEnabled() && !this.model.readonly && this.model.isSavable()) {
+            return "UU0256:YN";
+          }
+          return null;
+        ]]></script>
+      </method>
+      <method name="validateMethView" type="permMethod">
+        <script><![CDATA[
+          // SCRIPT MIGRATION: if null, return false
+          var $v=
+          !this.model._isSearch() && this.model._getNoDBOperations();
+          if ($v == null)
+             return false;
+          else return $v;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

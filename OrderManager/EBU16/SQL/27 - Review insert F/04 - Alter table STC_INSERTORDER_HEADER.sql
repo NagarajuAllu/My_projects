@@ -1,0 +1,1 @@
+alter table STC_INSERTORDER_HEADER rename column CIRCUITTYPE to SERVICETYPE;

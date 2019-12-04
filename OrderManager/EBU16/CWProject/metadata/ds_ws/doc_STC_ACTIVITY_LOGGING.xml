@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.STC_ACTIVITY_LOGGING">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{c59bd719-4b5e-4e71-b7e2-98a84fe6f5b9}</guid>
+  <label>Activity Logging</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_ACTIVITY_LOGGING</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="activityName" type="leaf">
+      <column>ACTIVITY</column>
+      <propertyElement type="elfld">
+        <label>Activity Name</label>
+      </propertyElement>
+      <table>STC_ACTIVITY_LOGGING</table>
+      <valueType>dtype_ds_ws.string200</valueType>
+    </variable>
+    <variable name="when" type="leaf">
+      <column>WHEN</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>MM/dd/yyyy HH:mm:ss</displayFormat>
+        <label>When</label>
+      </propertyElement>
+      <table>STC_ACTIVITY_LOGGING</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="userId" type="leaf">
+      <column>USER_ID</column>
+      <propertyElement type="elfld">
+        <label>User ID </label>
+      </propertyElement>
+      <table>STC_ACTIVITY_LOGGING</table>
+      <valueType>dtype_cwf.userId</valueType>
+    </variable>
+    <variable name="orderNumber" type="leaf">
+      <column>ORDER_NUMBER</column>
+      <propertyElement type="elfld">
+        <label>Order Number</label>
+      </propertyElement>
+      <table>STC_ACTIVITY_LOGGING</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.STC_ACTIVITY_LOGGING</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STC_ACTIVITY_LOGGINGGrid" type="elgrd">
+                    <colWidths>80px,160px,80px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="STC_ACTIVITY_LOGGINGHeader" type="elhdr">
+                        <label>Activity Logging</label>
+                      </element>
+                      <element name="activityName" type="elfld">
+                        <label>Activity Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_ACTIVITY_LOGGING/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.STC_ACTIVITY_LOGGING/leaf_activityName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="when" type="eldate">
+                        <label>When</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_ACTIVITY_LOGGING/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.STC_ACTIVITY_LOGGING/leaf_when</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="userId" type="elfld">
+                        <label>User ID </label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_ACTIVITY_LOGGING/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.STC_ACTIVITY_LOGGING/leaf_userId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderNumber" type="elfld">
+                        <label>Order Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_ACTIVITY_LOGGING/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.STC_ACTIVITY_LOGGING/leaf_orderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

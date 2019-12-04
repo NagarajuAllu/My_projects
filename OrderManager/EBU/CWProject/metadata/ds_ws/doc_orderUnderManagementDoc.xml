@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="26f00c92f58e1d19f8e2a4f6c8664c13" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.orderUnderManagementDoc">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{b54bde28-138e-42b9-a466-3f37e93aae3e}</guid>
+  <label>Order Under Management</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="orderNumber" type="leaf">
+      <column>ORDERNUMBER</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>Order #</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_ORDER_UNDER_MGMT</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.orderUnderManagementDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

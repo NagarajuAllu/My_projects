@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.mobileManagingOperation2SubFlow">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>66.0</x>
+    <y>66.0</y>
+    <childList>
+      <child name="startOperation2ForCompensate" type="seqActivity">
+        <label>Start Operation 2 For Compensate</label>
+        <x>185.0</x>
+        <y>65.0</y>
+        <childList>
+          <child name="executeOperation2" type="scriptActivity">
+            <label>Execute Operation 2</label>
+            <x>329.0</x>
+            <y>56.0</y>
+            <childList>
+              <child name="compensateOperation2" type="compensateActivity">
+                <compensatesList>
+                  <compensates>2</compensates>
+                </compensatesList>
+                <label>Compensate Operation 2</label>
+                <x>760.0</x>
+                <y>434.0</y>
+                <childList>
+                  <child name="compensationForOperation2" type="subflowActivity">
+                    <element>proc_stcw.mobileProcessCompensate</element>
+                    <label>Compensation For Operation 2</label>
+                    <x>624.0</x>
+                    <y>52.0</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[
+                  // reset error flag
+                  this.process.processDocument.errorType = null;
+
+                  // loading order and orderItem
+                  var bundleOrder = this.process.processOrder;
+                  var orderItem = this.process.processOrderItem;
+
+                  var operationName = this.process.processDocument.operationName;
+                  var interfaceName = this.process.processDocument.interfaceName;
+
+                  try {
+                      var inputData = stcw.mapOrderItemToMobileInputData(bundleOrder, orderItem, this.process.processDocument);
+
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - inputData = " + inputData.toXML());
+
+                      // stcc.sendDataToInterfaceWithLogging(inputData, interfaceName, operationName, existResult, processId, operationDescription, logUserData1, logUserData2)
+                      var resultMsg = stcc.sendDataToInterfaceWithLogging(inputData,
+                                                                          interfaceName,
+                                                                          operationName,
+                                                                          true,
+                                                                          this.process.id,
+                                                                          "Operation 2: " + operationName,
+                                                                          bundleOrder.orderHeader.orderNumber,
+                                                                          orderItem.workOrderNumber);
+
+                      if(resultMsg == null) {
+                          this.process.processDocument.errorType = "Interface";
+                      }
+                      else {
+                          stcw.writeMsgForProcessIntoDB(this.process.id, resultMsg, "OP_2");
+                      }
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - invoked Operation 2; result " + (resultMsg == null ? "NULL" : resultMsg.toXML()));
+
+                  }
+                  catch(exc) {
+                      if(exc.message.indexOf("XE0023") >= 0 || exc.message.indexOf("XE0002")) {
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - I/F " + interfaceName + "/" + operationName + " error: " + exc.message);
+                          this.process.processDocument.errorType = "Interface";
+                      }
+                      else {
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Application Error while invoking " + interfaceName + "/" + operationName + "; error: " + exc.message);
+                          this.process.processDocument.errorType = "Application";
+                      }
+                  }
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="anyError" type="switchActivity">
+            <label>Any Error?</label>
+            <x>332.0</x>
+            <y>189.0</y>
+            <childList>
+              <child name="interfaceError" type="caseActivity">
+                <label>Interface Error</label>
+                <x>758.0</x>
+                <y>577.0</y>
+                <childList>
+                  <child name="interfaceExcp" type="exceptActivity">
+                    <element>excp_cwf.interfaceExcp</element>
+                    <label>External interface error</label>
+                    <x>580.0</x>
+                    <y>305.0</y>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActCond" type="action">
+                    <category>cond</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var isInterfaceError = (this.process.processDocument.errorType == "Interface");
+                      if(isInterfaceError) {
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Interface error while invoking Operation 2");
+                      }
+
+                      return isInterfaceError;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="applicationError" type="caseActivity">
+                <label>Application Error</label>
+                <x>651.0</x>
+                <y>574.0</y>
+                <childList>
+                  <child name="genericApplicationError" type="exceptActivity">
+                    <element>excp_stcw.applicationError</element>
+                    <label>Generic Application Error</label>
+                    <x>436.0</x>
+                    <y>309.0</y>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActCond" type="action">
+                    <category>cond</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var isApplicationError = (this.process.processDocument.errorType == "Application");
+                      if(isApplicationError) {
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Application error while invoking Operation 2");
+                      }
+
+                      return isApplicationError;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="noError" type="caseActivity">
+                <label>No Error</label>
+                <x>758.0</x>
+                <y>577.0</y>
+                <childList>
+                  <child name="processOperation2Response" type="scriptActivity">
+                    <label>Process Response For Operation 2</label>
+                    <x>313.0</x>
+                    <y>304.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          // read responseForOp1 in DB
+                          var resultMsg = stcw.readMsgForProcessFromDB(this.process.id, this.process.processDocument.outputDocumentName, "OP_2", null);
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - receivedResponse for OP_2 = " + resultMsg.toXML());
+
+                          var acceptedByOp2 = false;
+
+                          var statusInResult = stcw.extractResultFromLTEResponse(resultMsg, this.process.processDocument.outputDocumentName);
+                          if(statusInResult != null) {
+                              acceptedByOp2 = statusInResult.result.equalsIgnoreCase("SUCCESS");
+                          }
+                          this.process.processDocument.acceptedByOp2 = acceptedByOp2;
+
+                          this.process.processOrderItem.lineItemStatus = ((acceptedByOp2) ? "IN-PROCESS" : "FAILED");
+                          this.process.processOrderItem.alreadySentToGranite = acceptedByOp2;
+                          this.process.processOrderItem.sentAnytimeToGranite = (acceptedByOp2 || this.process.processOrderItem.sentAnytimeToGranite);
+                          this.process.processOrderItem.save();
+
+                          // updates bundle and orderHeader status
+                          stcw.updateBundleAndOrderHeaderStatus(this.process.processOrder, this.process.processOrderItem);
+
+                          // update orchestrationRecord to know if Granite accepted the WorkOrder
+                          var recordInOrchestrationTable = stcw.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+                          if(acceptedByOp2) {
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - submitOrder 'OP_2' for element = " + this.process.processOrderItem.id + " processed SUCCESSFULLY");
+                              // saving result of provisioning process
+                              recordInOrchestrationTable.provisioningProcessResult = "OK";
+                          }
+                          else {
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - submitOrder 'OP_2' for element = " + this.process.processOrderItem.id + " REJECTED!!!!");
+                              // saving result of provisioning process; KO ==> block all provisioning processes for such order
+                              recordInOrchestrationTable.provisioningProcessResult = "KO";
+                          }
+                          recordInOrchestrationTable.save();
+
+                          if(!acceptedByOp2) {
+                              // 2015-09-07: dummy WOSU management for failed order
+                              var supportDummyWOSU = Global.getConfigVariable("DUMMY_WOSU_FOR_FAILED_ORDER", "FALSE");
+                              if(supportDummyWOSU == "TRUE") {
+                                  this.process.processDocument.latestWOSUId = stcw.generateDummyWOSUForFailedOrderForMobile(this.process.processOrder.orderHeader.orderNumber, this.process.processOrderItem, "Wholesale", this.process.id);
+                              }
+                          }
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+          <child name="sendOrderAckToCRM" type="subflowActivity">
+            <element>proc_stcw.mobileSendOrderAckToCOM</element>
+            <label>Send OrderAck To CRM (Mobile)</label>
+            <x>319.0</x>
+            <y>472.0</y>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[this.process.processDocument.firstPassOrderAck = "Y";]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="checkOperationResult" type="switchActivity">
+            <label>Has Operation Success?</label>
+            <x>458.0</x>
+            <y>473.0</y>
+            <childList>
+              <child name="yes" type="caseActivity">
+                <label>Yes</label>
+                <x>185.0</x>
+                <y>264.0</y>
+                <childList>
+                  <child name="sendWOSU" type="seqActivity">
+                    <label>Send WOSU</label>
+                    <x>577.0</x>
+                    <y>490.0</y>
+                    <childList>
+                      <child name="createAndStoreWOSU" type="scriptActivity">
+                        <label>Create And Store WOSU</label>
+                        <x>693.0</x>
+                        <y>471.0</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var wosuUnifiedModel = new DataStructure("stcw.wosuUnifiedModel");
+                              wosuUnifiedModel.comOrderNumber = this.process.processOrder.orderHeader.orderNumber;
+                              wosuUnifiedModel.orderStatus = this.process.processOrder.orderHeader.orderStatus;
+                              wosuUnifiedModel.businessUnit = "Wholesale";
+                              wosuUnifiedModel.reservationNumber = null;
+                              wosuUnifiedModel.feasibilityStatus = null;
+                              wosuUnifiedModel.reservationDays = null;
+                              wosuUnifiedModel.actualImplementationDays = null;
+                              wosuUnifiedModel.plannedFeasibleDays = null;
+                              wosuUnifiedModel.lineItemIdentifier = this.process.processOrderItem.lineItemIdentifier;
+                              wosuUnifiedModel.lineItemStatus = this.process.processOrderItem.lineItemStatus;
+                              wosuUnifiedModel.assetNumber = this.process.processOrderItem.serviceNumber;
+                              wosuUnifiedModel.niNumber = null;
+                              wosuUnifiedModel.systemDesignation = null;
+                              wosuUnifiedModel.workOrderName = this.process.processOrderItem.workOrderNumber;
+                              wosuUnifiedModel.workOrderStatus = this.process.processOrderItem.lineItemStatus;
+                              wosuUnifiedModel.workOrderRemarks = "SUCCESS in invoking operation " + this.process.processDocument.interfaceName + "/" + this.process.processDocument.operationName;
+                              wosuUnifiedModel.workOrderProblemDescription = null;
+                              wosuUnifiedModel.taskNumber = "-1";
+                              wosuUnifiedModel.taskName = "no-info";
+                              wosuUnifiedModel.taskAllocatedTime = null;
+                              wosuUnifiedModel.taskDescription = null;
+                              wosuUnifiedModel.taskOperation = this.process.processDocument.operationName;
+                              wosuUnifiedModel.taskPriority = null;
+                              wosuUnifiedModel.taskServiceStatus = null;
+                              wosuUnifiedModel.taskStatusCode = "IN-PROCESS";
+                              wosuUnifiedModel.taskRemarks = null;
+                              wosuUnifiedModel.workOrderStage = null;
+
+                              /***
+                               * To verify if there are NV pairs in the response to propagate to NB system in this case
+                               *
+                              if(inputEBUWOSU.parameters != null && inputEBUWOSU.parameters.length > 0) {
+                                  for(var i=0; i<inputEBUWOSU.parameters.length; i++) {
+                                      var nvPairDS = new DataStructure("stcw.wosuNVPair");
+                                      nvPairDS.name = inputEBUWOSU.parameters[i].name; // do i have to convert name?
+                                      nvPairDS.value = inputEBUWOSU.parameters[i].value; // do i have to convert value?
+                                      wosuUnifiedModel.nvPairs[i] = nvPairDS;
+                                  }
+                              }
+                              */
+
+                              this.process.processDocument.latestWOSUId = stcw.writeMsgForProcessIntoDB(this.process.id, wosuUnifiedModel, "WOSU");
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="sendWorkOrderStatusUpdateToCOM" type="spawnActivity">
+                        <element>proc_stcw.mobileSendWOSUToCOM</element>
+                        <label>Send WOSU To COM</label>
+                        <schedule type="sched">
+                          <duration type="dur">
+                            <methodList>
+                              <method name="cwOnDuration" type="action">
+                                <system>true</system>
+                                <script><![CDATA[
+                                  var orderStatus = this.processOrder.orderHeader.orderStatus.toUpperCase();
+
+                                  var sleepTime = 0;
+
+                                  if(orderStatus == "COMPLETED" || orderStatus == "CANCELLED") {
+                                     sleepTime = 30;
+                                  }
+
+                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - Sleeping Time for WOSU when orderStatus = '" + orderStatus + "' = " + sleepTime);
+
+                                  return sleepTime;
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </duration>
+                        </schedule>
+                        <x>846.87244</x>
+                        <y>471.0</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var childProcessDocument = this.activityData;
+                              childProcessDocument.latestWOSUId = this.process.processDocument.latestWOSUId;
+                              childProcessDocument.firstPassWOSU = "Y";
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="waitOnComUpdateprocesses" type="joinActivity">
+                        <element>proc_stcw.mobileSendWOSUToCOM</element>
+                        <label>Wait On COM Update processes</label>
+                        <x>989.87244</x>
+                        <y>467.0</y>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActCond" type="action">
+                    <category>cond</category>
+                    <system>true</system>
+                    <script>return (this.process.processDocument.acceptedByOp2);</script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="no" type="caseActivity">
+                <label>No</label>
+                <x>468.0</x>
+                <y>614.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var orderItem = this.process.processOrderItem;
+              var workOrderType = null;
+
+              if(orderItem.workOrderNumber == null) {
+                  workOrderType = stcw.getWorkOrderType(this.process.processOrder.orderHeader.orderType, orderItem.action);
+                  if(workOrderType == null) {
+                      Global.throwException("Error in generating workOrderType");
+                  }
+                  orderItem.workOrderType = workOrderType;
+
+                  var workOrderNumber = stcw.generateWONumber(orderItem, workOrderType, this.process.processOrder);
+                  if(workOrderNumber == null) {
+                      Global.throwException("Error in generating workOrderNumber");
+                  }
+                  orderItem.workOrderNumber = workOrderNumber;
+                  orderItem.save();
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Start performing operation 2 [" + this.process.processDocument.operationName + "] for element: " + this.process.processOrderItem.id);
+
+          this.process.processDocument.rollbackNumber = "2";
+          this.process.processDocument.ifErrorCount = 0;
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>MOBILE - Managing Operation 2 SubFlow</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <subflowReferenceList>
+    <subflowReference type="sref">
+      <subflow>proc_stcw.mobileSendOrderAckToCOM</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_stcw.mobileProcessCompensate</subflow>
+    </subflowReference>
+  </subflowReferenceList>
+  <type>Sub-flow</type>
+</process>

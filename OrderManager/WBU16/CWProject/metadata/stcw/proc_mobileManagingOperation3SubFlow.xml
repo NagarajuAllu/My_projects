@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.mobileManagingOperation3SubFlow">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>66.0</x>
+    <y>67.0</y>
+    <childList>
+      <child name="startOperation3ForCompensate" type="seqActivity">
+        <label>Start Operation 3 For Compensate</label>
+        <x>185.0</x>
+        <y>65.0</y>
+        <childList>
+          <child name="executeOperation3" type="scriptActivity">
+            <label>Execute Operation 3</label>
+            <x>329.0</x>
+            <y>56.0</y>
+            <childList>
+              <child name="compensateOperation3" type="compensateActivity">
+                <compensatesList>
+                  <compensates>3</compensates>
+                </compensatesList>
+                <label>Compensate Operation 3</label>
+                <x>760.0</x>
+                <y>434.0</y>
+                <childList>
+                  <child name="compensationForOperation3" type="subflowActivity">
+                    <element>proc_stcw.mobileProcessCompensate</element>
+                    <label>Compensation For Operation 3</label>
+                    <x>624.0</x>
+                    <y>52.0</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[
+                  // reset error flag
+                  this.process.processDocument.errorType = null;
+
+                  // loading order and orderItem
+                  var bundleOrder = this.process.processOrder;
+                  var orderItem = this.process.processOrderItem;
+
+                  var operationName = this.process.processDocument.operationName;
+                  var interfaceName = this.process.processDocument.interfaceName;
+
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - procDoc = " + this.process.processDocument.toXML());
+
+                  try {
+                      var inputData = stcw.mapOrderItemToMobileInputData(bundleOrder, orderItem, this.process.processDocument);
+
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - inputData = " + inputData.toXML());
+
+                      // stcc.sendDataToInterfaceWithLogging(inputData, interfaceName, operationName, existResult, processId, operationDescription, logUserData1, logUserData2)
+                      var resultMsg = stcc.sendDataToInterfaceWithLogging(inputData,
+                                                                          interfaceName,
+                                                                          operationName,
+                                                                          true,
+                                                                          this.process.id,
+                                                                          "Operation 3: " + operationName,
+                                                                          bundleOrder.orderHeader.orderNumber,
+                                                                          orderItem.workOrderNumber);
+
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - invoked Operation 3; result " + (resultMsg == null ? "NULL" : resultMsg.toXML()));
+
+                      if(resultMsg == null) {
+                          this.process.processDocument.errorType = "Interface";
+                      }
+                      else {
+                          stcw.writeMsgForProcessIntoDB(this.process.id, resultMsg, "OP_3");
+
+                          // extracting the reult of the invocation; if negative, convert the error to Application Error
+                          var acceptedByOp3 = false;
+                          var statusInResult = stcw.extractResultFromLTEResponse(resultMsg, this.process.processDocument.outputDocumentName);
+                          if(statusInResult != null) {
+                              acceptedByOp3 = statusInResult.result.equalsIgnoreCase("SUCCESS");
+                          }
+
+                          if(!acceptedByOp3) {
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Rejected by Operation 3; setting it to 'Application' Error so asigned to user worklist");
+                              this.process.processDocument.errorType = "Application";
+                              this.process.processOrderItem.lineItemStatus = "FAILED";
+                              this.process.processOrderItem.save();
+                          }
+                      }
+                  }
+                  catch(exc) {
+                      if(exc.message.indexOf("XE0023") >= 0 || exc.message.indexOf("XE0002")) {
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - I/F " + interfaceName + "/" + operationName + " error: " + exc.message);
+                          this.process.processDocument.errorType = "Interface";
+                      }
+                      else {
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Application Error while invoking " + interfaceName + "/" + operationName + "; error: " + exc.message);
+                          this.process.processDocument.errorType = "Application";
+                      }
+                  }
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="anyError" type="switchActivity">
+            <label>Any Error?</label>
+            <x>332.0</x>
+            <y>189.0</y>
+            <childList>
+              <child name="interfaceError" type="caseActivity">
+                <label>Interface Error</label>
+                <x>758.0</x>
+                <y>577.0</y>
+                <childList>
+                  <child name="interfaceExcp" type="exceptActivity">
+                    <element>excp_cwf.interfaceExcp</element>
+                    <label>External interface error</label>
+                    <x>580.0</x>
+                    <y>305.0</y>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActCond" type="action">
+                    <category>cond</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var isInterfaceError = (this.process.processDocument.errorType == "Interface");
+                      if(isInterfaceError) {
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Interface error while invoking Operation 3");
+                      }
+
+                      return isInterfaceError;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="applicationError" type="caseActivity">
+                <label>Application Error</label>
+                <x>651.0</x>
+                <y>574.0</y>
+                <childList>
+                  <child name="genericApplicationError" type="exceptActivity">
+                    <element>excp_stcw.applicationError</element>
+                    <label>Generic Application Error</label>
+                    <x>436.0</x>
+                    <y>309.0</y>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActCond" type="action">
+                    <category>cond</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var isApplicationError = (this.process.processDocument.errorType == "Application");
+                      if(isApplicationError) {
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Application error while invoking Operation 3");
+                      }
+
+                      return isApplicationError;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="noError" type="caseActivity">
+                <label>No Error</label>
+                <x>758.0</x>
+                <y>577.0</y>
+                <childList>
+                  <child name="processOperation3Response" type="scriptActivity">
+                    <label>Process Response For Operation 3</label>
+                    <x>313.0</x>
+                    <y>304.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          this.process.processOrderItem.lineItemStatus = "COMPLETED";
+                          if(this.process.processOrderItem.isCancel) {
+                              this.process.processOrderItem.lineItemStatus = "CANCELLED";
+                          }
+                          this.process.processOrderItem.completionDate = new Date();
+                          this.process.processOrderItem.save();
+
+                          // updates bundle and orderHeader status
+                          stcw.updateBundleAndOrderHeaderStatus(this.process.processOrder, this.process.processOrderItem);
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var orderItem = this.process.processOrderItem;
+              var workOrderType = null;
+
+              if(orderItem.workOrderNumber == null) {
+                  workOrderType = stcw.getWorkOrderType(this.process.processOrder.orderHeader.orderType, orderItem.action);
+                  if(workOrderType == null) {
+                      Global.throwException("Error in generating workOrderType");
+                  }
+                  orderItem.workOrderType = workOrderType;
+
+                  var workOrderNumber = stcw.generateWONumber(orderItem, workOrderType, this.process.processOrder);
+                  if(workOrderNumber == null) {
+                      Global.throwException("Error in generating workOrderNumber");
+                  }
+                  orderItem.workOrderNumber = workOrderNumber;
+                  orderItem.save();
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Start performing operation 3 [" + this.process.processDocument.operationName + "] for element: " + this.process.processOrderItem.id);
+
+          this.process.processDocument.rollbackNumber = "3";
+          this.process.processDocument.ifErrorCount = 0;
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>MOBILE - Managing Operation 3 SubFlow</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <subflowReferenceList>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_stcw.mobileProcessCompensate</subflow>
+    </subflowReference>
+  </subflowReferenceList>
+  <type>Sub-flow</type>
+</process>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event__handler name="stcw.storeWorklistToModelComplete">
+  <flags enum-type="metadataFlag">FINAL</flags>
+  <event>evt_cwl_worklist.event.storeWorklistToModelComplete</event>
+  <eventID>CW</eventID>
+  <eventType>WORKLIST_IMP_TASK_STORE_COMPLETE</eventType>
+  <label>WorkList Document Store</label>
+  <metaVersion>25</metaVersion>
+  <script><![CDATA[
+    var worklistRecord = target;
+
+    debugPrintln("Worklist.OrderId = " + worklistRecord.OrderId);
+
+    if(worklistRecord.OrderId != null && worklistRecord.OrderId > 0) {
+        try {
+            var order = Order.getOrderById(worklistRecord.OrderId);
+
+            if (order.metadataType == "stcw:wholesaleOrder") {
+                worklistRecord.orderNumber = order.header.orderNumber;
+            }
+            else if(order.metadataType == "stcw:wholesaleQuote") {
+                worklistRecord.orderNumber = order.header.quoteNumber;
+            }
+            else if(order.metadataType == "stcw:wholesaleBundleOrderSTC") {
+                worklistRecord.orderNumber = order.orderHeader.orderNumber;
+                var processDocument = Process.getProcessDocument(target.senderId);
+                worklistRecord.errorType = processDocument.errorType;
+                worklistRecord.operationFailed = processDocument.interfaceName + "/" + processDocument.operationName;
+            }
+            else {
+                worklistRecord.orderNumber = "N.A";
+            }
+        }
+        catch(exc) {
+            // do nothing
+        }
+    }
+  ]]></script>
+</event__handler>

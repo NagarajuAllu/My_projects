@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="failedOrders.findFTTHOrders">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_failedOrders.search_woForFTTHOrders</input>
+  <label>Find FTTH Orders</label>
+  <maxRowsLimit>500</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_failedOrders.STCW_FTTH_ORDERS</output>
+  <type>document</type>
+  <vDetailForm>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface/frmui_Forms/vform_Detailed</vDetailForm>
+  <volatility>0</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_failedOrders.search_woForFTTHOrders</document>
+      <mappedDocument>doc_failedOrders.STCW_FTTH_ORDERS</mappedDocument>
+      <mappedPath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_CIRC_PATH_HUM_ID</mappedPath>
+      <operation>like</operation>
+      <path>doc_failedOrders.search_woForFTTHOrders/leaf_pathName</path>
+    </search>
+    <search type="sitem">
+      <document>doc_failedOrders.search_woForFTTHOrders</document>
+      <mappedDocument>doc_failedOrders.STCW_FTTH_ORDERS</mappedDocument>
+      <mappedPath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_NAME</mappedPath>
+      <operation>like</operation>
+      <path>doc_failedOrders.search_woForFTTHOrders/leaf_phoneNumber</path>
+    </search>
+    <search type="sitem">
+      <document>doc_failedOrders.search_woForFTTHOrders</document>
+      <mappedDocument>doc_failedOrders.STCW_FTTH_ORDERS</mappedDocument>
+      <mappedPath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_SITE_HUM_ID</mappedPath>
+      <operation>like</operation>
+      <path>doc_failedOrders.search_woForFTTHOrders/leaf_plateId</path>
+    </search>
+    <search type="sitem">
+      <document>doc_failedOrders.search_woForFTTHOrders</document>
+      <mappedDocument>doc_failedOrders.STCW_FTTH_ORDERS</mappedDocument>
+      <mappedPath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_WO_STATUS</mappedPath>
+      <operation>equal</operation>
+      <path>doc_failedOrders.search_woForFTTHOrders/leaf_woStatus</path>
+    </search>
+    <search type="sitem">
+      <document>doc_failedOrders.search_woForFTTHOrders</document>
+      <mappedDocument>doc_failedOrders.STCW_FTTH_ORDERS</mappedDocument>
+      <mappedPath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_WO_NAME</mappedPath>
+      <operation>like</operation>
+      <path>doc_failedOrders.search_woForFTTHOrders/leaf_workOrderNumber</path>
+    </search>
+  </searchList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_failedOrders.STCW_FTTH_ORDERS</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_failedOrders.search_woForFTTHOrders/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_failedOrders.STCW_FTTH_ORDERS/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findFTTHOrdersResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="WO_NAME" type="elfld">
+                        <label>WorkOrder Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_WO_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>120px</width>
+                      </element>
+                      <element name="WO_STATUS" type="elfld">
+                        <label>WO Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_WO_STATUS</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="START_AFTER" type="eldatetime">
+                        <label>WO Start After</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_START_AFTER</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="COMPLETE_BY" type="eldatetime">
+                        <label>WO Completed By</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_COMPLETE_BY</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="ACTUAL_START" type="eldatetime">
+                        <label>WO Actual Start</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_ACTUAL_START</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="ACTUAL_COMPL" type="eldatetime">
+                        <label>WO Actual Compl</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_ACTUAL_COMPL</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="CHANGE_REQUEST_TYPE" type="elfld">
+                        <label>Change Request Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_CHANGE_REQUEST_TYPE</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="CIRC_PATH_HUM_ID" type="elfld">
+                        <label>Path Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_CIRC_PATH_HUM_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>300px</width>
+                      </element>
+                      <element name="STATUS" type="elfld">
+                        <label>Path Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_STATUS</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="SITE_HUM_ID" type="elfld">
+                        <label>Plate ID</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_SITE_HUM_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="STATE_PROV" type="elfld">
+                        <label>PlateID Region</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_STATE_PROV</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="COUNTY" type="elfld">
+                        <label>Plate ID District</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_COUNTY</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="COUNTRY" type="elfld">
+                        <label>Plate ID Country</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_COUNTRY</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="TARGET_SUBTYPE" type="elfld">
+                        <label>Parent Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_TARGET_SUBTYPE</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="NAME" type="elfld">
+                        <label>Parent Service Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="RI_STATUS" type="elfld">
+                        <label>Parent Service Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_RI_STATUS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CATEGORY" type="elfld">
+                        <label>Parent Service Category</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.STCW_FTTH_ORDERS/leaf_CATEGORY</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findFTTHOrdersView" type="findVView">
+      <inputOverlay>doc_failedOrders.search_woForFTTHOrders/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find FTTH Orders</label>
+      <outputOverlay>findDoc_failedOrders.findFTTHOrders/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+      <sortListList>
+        <sortList type="stitem">
+          <path>doc_failedOrders.STCW_FTTH_ORDERS/leaf_WO_INST_ID</path>
+        </sortList>
+        <sortList type="stitem">
+          <path>doc_failedOrders.STCW_FTTH_ORDERS/leaf_CIRC_PATH_INST_ID</path>
+        </sortList>
+        <sortList type="stitem">
+          <path>doc_failedOrders.STCW_FTTH_ORDERS/leaf_RESOURCE_INST_ID</path>
+        </sortList>
+      </sortListList>
+    </view>
+  </viewList>
+</findDoc>

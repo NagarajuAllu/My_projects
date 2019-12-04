@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="processSTC.generateGraniteWOSUForCompletedWO">
+  <label>Generate Granite WOSU For Completed WO</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="infoForCompletedWO" type="rifp">
+      <type>doc_processSTC.infoForCompletedWO</type>
+    </parameter>
+    <parameter name="isQuote" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var jmsWOSU = new DataStructure("ds_jms.workOrderStatusUpdate_el");
+    jmsWOSU.workOrderNumber = infoForCompletedWO.workOrderNumber;
+    jmsWOSU.crmOrderNumber = infoForCompletedWO.orderNumber;
+    jmsWOSU.serviceNumber = infoForCompletedWO.serviceNumber;
+    jmsWOSU.businessUnit = "Enterprise";
+    jmsWOSU.workOrderStatus = infoForCompletedWO.STATUS_NAME;
+
+    var woInGranite = granite.getWOInGranite(infoForCompletedWO.workOrderNumber);
+    if(woInGranite != null) {
+        jmsWOSU.workOrderRemarks = woInGranite.COMMENTS;
+        jmsWOSU.workOrderServiceCompletionStatus = woInGranite.ELM_COMPL_STATUS;
+        jmsWOSU.serviceStatus = woInGranite.ELM_COMPL_STATUS;
+        jmsWOSU.reservationNumber = (isQuote ? getReservationNumber_(infoForCompletedWO.serviceNumber) : null);
+    }
+    jmsWOSU.taskName = "no-value";
+    jmsWOSU.taskNumber = 0;
+    jmsWOSU.taskOperation = "no-value";
+    jmsWOSU.taskStatusCode = "no-value";
+
+    ///jmsWOSU.parameters
+    var fieldMappingsForWO = cime.findFieldMappingsByObjectType("WORKORDER");
+    var createdParameters = 0;
+    if(fieldMappingsForWO != null && fieldMappingsForWO.length > 0) {
+        for(var i=0; i<fieldMappingsForWO.length; i++) {
+
+            var value = getValueFrom_(infoForCompletedWO.workOrderNumber, infoForCompletedWO.serviceNumber, "WORKORDER", fieldMappingsForWO[i].source, fieldMappingsForWO[i].datatype);
+
+            var parameter = new DataStructure("ds_jms.nameValue");
+            parameter.name = fieldMappingsForWO[i].target;
+            parameter.value = value;
+
+            jmsWOSU.parameters[createdParameters] = parameter;
+
+            createdParameters++;
+        }
+    }
+
+    var element = ((infoForCompletedWO.elementTypeInOrderTree == "S") ? "PATH" : "SERVICE");
+    var fieldMappingsForElement = cime.findFieldMappingsByObjectType(element);
+    if(fieldMappingsForElement != null && fieldMappingsForElement.length > 0) {
+        for(var i=0; i<fieldMappingsForElement.length; i++) {
+
+            var value = getValueFrom_(infoForCompletedWO.workOrderNumber, infoForCompletedWO.serviceNumber, element, fieldMappingsForElement[i].source, fieldMappingsForElement[i].datatype);
+
+            var parameter = new DataStructure("ds_jms.nameValue");
+            parameter.name = fieldMappingsForElement[i].target;
+            parameter.value = value;
+
+            jmsWOSU.parameters[createdParameters] = parameter;
+            createdParameters++;
+        }
+    }
+
+    return jmsWOSU;
+
+
+
+    function getValueFrom_(woName, serviceNumber, elementType, source, datatype) {
+        var value = null;
+        var indexSeparator = source.indexOf("|");
+        if(indexSeparator >= 0) {
+            var udaGroupName = source.substring(0, indexSeparator);
+            var udaName = source.substring(indexSeparator + 1);
+            if(elementType == "WORKORDER") {
+                value = granite.getUDAValueForWorkOrder(woName, udaName, udaGroupName);
+            }
+            else if(elementType == "PATH") {
+                value = granite.getUDAValueForPath(serviceNumber, udaName, udaGroupName);
+            }
+            else if(elementType == "SERVICE") {
+                value = granite.getUDAValueForResource(serviceNumber, udaName, udaGroupName);
+            }
+        }
+        else {
+            // source doesn't contain the "|" (pipe) char
+            var objectUnderMgmt = null;
+
+            if(elementType == "WORKORDER") {
+                objectUnderMgmt = granite.getWOInGranite(woName);
+            }
+            else if(elementType == "PATH") {
+                objectUnderMgmt = granite.getPathInGranite(serviceNumber);
+            }
+            else if(elementType == "SERVICE") {
+                objectUnderMgmt = granite.getResourceInGranite(serviceNumber);
+            }
+
+            if(objectUnderMgmt != null) {
+                var fieldName = processSTC.getInternalAttributeNameForObject(elementType, source);
+                if(fieldName != null) {
+                    value = objectUnderMgmt[fieldName];
+                }
+            }
+        }
+
+        if(value != null) {
+            if(datatype == "DATE") {
+                value = Calendar.formatDate(value, "yyyy-MM-dd'T'HH:mm:ss");
+            }
+        }
+
+        return value;
+    }
+
+    function getReservationNumber_(pathName) {
+        var value = granite.getUDAValueForPath(pathName, "Reservation Number", "Feasibility");
+        return value;
+    }
+  ]]></script>
+</script>

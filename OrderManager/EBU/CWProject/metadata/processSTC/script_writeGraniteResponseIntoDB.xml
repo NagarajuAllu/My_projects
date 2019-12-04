@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="757eca6655daf1b824e55505b2513295" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.writeGraniteResponseIntoDB">
+  <label>Write Granite Response Into DB</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_cwf.processId</type>
+    </parameter>
+    <parameter name="graniteResponseDS" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("processSTC.STC_GRANITE_EVENT_STORAGE");
+    inputDoc.processId = processId;
+    inputDoc.msgType = "OCUA";
+    inputDoc.graniteMsg = graniteResponseDS.toXML();
+    inputDoc.save();
+  ]]></script>
+</script>

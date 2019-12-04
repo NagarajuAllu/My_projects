@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="crmToSOMMigration.createFlatOrdersFromBundleForVPN">
+  <label>Create Flat Orders From Bundle For VPN</label>
+  <metaVersion>25</metaVersion>
+  <script><![CDATA[
+    var debug = " createFlatOrdersFromBundleForVPN - ";
+
+    var createdFlatOrders = 0;
+
+    var vpnOrdersToMigrateSearchDoc = new Document("crmToSOMMigration.STCW_VPNORDER_TO_MIGRATE");
+    vpnOrdersToMigrateSearchDoc.isBundle = true;
+    vpnOrdersToMigrateSearchDoc.elementTypeInOrderTree = 'C';
+    vpnOrdersToMigrateSearchDoc.resultProcess = 0;
+
+    var foundVPNOrdersToMigrateList = Finder.runFinder("crmToSOMMigration.findVPNOrderToMigrate", "select", vpnOrdersToMigrateSearchDoc);
+    if(foundVPNOrdersToMigrateList != null && foundVPNOrdersToMigrateList.length > 0) {
+
+        var orderToMigrate = null;
+        var currentOrderNumber = null;
+        var countOrdersFromCurrentOrder = 0;
+        var resultMigration = null;
+
+        for (var i=0; i<foundVPNOrdersToMigrateList.length; i++) {
+    debugPrintln(stcc.getSysdateForLog() + debug + "Found Bundle VPN Order <" + foundVPNOrdersToMigrateList[i].orderNumber + "," + foundVPNOrdersToMigrateList[i].cwOrderId + ">");
+
+            if(currentOrderNumber == null || currentOrderNumber != foundVPNOrdersToMigrateList[i].orderNumber) {
+                // the orderNumber is different from the one already under management so resetting all the info
+                try {
+                    orderToMigrate = Order.getOrderById(foundVPNOrdersToMigrateList[i].cwOrderId);
+                    currentOrderNumber = foundVPNOrdersToMigrateList[i].orderNumber;
+                    countOrdersFromCurrentOrder = 1;
+                }
+                catch(exc) {
+                    // unable to load the order
+    debugPrintln(stcc.getSysdateForLog() + debug + "ERR ===> Unable to load the order <" + foundVPNOrdersToMigrateList[i].orderNumber + "," + foundVPNOrdersToMigrateList[i].cwOrderId + ">: " + exc.message);
+                    orderToMigrate = null;
+                    resultMigration = 2;
+                }
+            }
+            else {
+                // another lineItem of the same order; just increase the counter of the order
+                countOrdersFromCurrentOrder++;
+            }
+
+            if(orderToMigrate != null) {
+                // creating the new VPN flat Order
+                var flatOrderMigrated = new Order("stcw.wholesaleBundleOrderSTC");
+
+                // 1. cloning the orderHeader
+                orderToMigrate.orderHeader.mapTo(flatOrderMigrated.orderHeader);
+                // 2. setting the new orderNumber
+                flatOrderMigrated.orderHeader.orderNumber = foundVPNOrdersToMigrateList[i].orderNumber + "_" + countOrdersFromCurrentOrder;
+                // 3. cloning the NV pairs of the orderHeader
+                if(orderToMigrate.orderHeaderParameters != null && orderToMigrate.orderHeaderParameters.length > 0) {
+                    for (var nv=0; nv<orderToMigrate.orderHeaderParameters.length; nv++) {
+                        var nvDoc = flatOrderMigrated.createOrderItemByPath("orderHeaderParameters." + (nv+1) + ".orderHeaderParameter");
+                        orderToMigrate.orderHeaderParameters[nv].orderHeaderParameter.mapTo(nvDoc);
+                        // orderToMigrate.orderHeaderParameters[nv].orderHeaderParameter.copyToDocument(nvDoc, false, true);
+                        nvDoc.parentElementId = flatOrderMigrated.orderHeader.id;
+                    }
+                }
+
+                // 4. cloning the service under management
+                var foundLineItem = false;
+                var serviceLineItemMigrated = null;
+
+                for(var s=0; s<orderToMigrate.parentLineItems[0].services.length && !foundLineItem; s++) {
+                    if(orderToMigrate.parentLineItems[0].services[s].serviceLineItem.lineItemIdentifier == foundVPNOrdersToMigrateList[i].lineItemIdentifier) {
+                        // 4.1 lineItem identified
+                        foundLineItem = true;
+                        var serviceContainerToMigrate = orderToMigrate.parentLineItems[0].services[s];
+
+                        // 4.2 cloning lineItem
+                        serviceLineItemMigrated = flatOrderMigrated.createOrderItemByPath("parentLineItems.1.parentLineItem");
+                        serviceContainerToMigrate.serviceLineItem.mapTo(serviceLineItemMigrated);
+                        // originally they were "C"
+                        serviceLineItemMigrated.elementTypeInOrderTree = 'B';
+
+
+                        // 4.3 cloning the nv pairs
+                        if(serviceContainerToMigrate.serviceLineItemNameValueParameters != null && serviceContainerToMigrate.serviceLineItemNameValueParameters.length > 0) {
+                            for (var nv = 0; nv < serviceContainerToMigrate.serviceLineItemNameValueParameters.length; nv++) {
+                                var nvDoc = flatOrderMigrated.createOrderItemByPath("parentLineItems.1.parentLineItemNameValueParameters." + (nv+1) + ".parentLineItemNameValueParameter");
+                                serviceContainerToMigrate.serviceLineItemNameValueParameters[nv].serviceLineItemNameValueParameter.mapTo(nvDoc);
+                                nvDoc.parentElementId = serviceLineItemMigrated.id;
+                            }
+                        }
+
+                        // 4.4 cloning the VAS nv pairs
+                        if(serviceContainerToMigrate.serviceLineItemVASNVParameters != null && serviceContainerToMigrate.serviceLineItemVASNVParameters.length > 0) {
+                            for (var nv = 0; nv < serviceContainerToMigrate.serviceLineItemVASNVParameters.length; nv++) {
+                                var nvDoc = flatOrderMigrated.createOrderItemByPath("parentLineItems.1.parentLineItemVASNVParameters." + (nv+1) + ".parentLineItemVASNVParameter");
+                                serviceContainerToMigrate.serviceLineItemVASNVParameters[nv].serviceLineItemVASNVParameter.mapTo(nvDoc);
+                                nvDoc.parentElementId = serviceLineItemMigrated.id;
+                            }
+                        }
+
+                        // 4.5 cloning the Block nv pairs
+                        if(serviceContainerToMigrate.serviceLineItemBlockParameters != null && serviceContainerToMigrate.serviceLineItemBlockParameters.length > 0) {
+                            for (var nv = 0; nv < serviceContainerToMigrate.serviceLineItemBlockParameters.length; nv++) {
+                                var blockNVDoc = flatOrderMigrated.createOrderItemByPath("parentLineItems.1.parentLineItemBlockParameters." + (nv+1) + ".parentLineItemBlockParameter");
+                                blockNVDoc.name = serviceContainerToMigrate.serviceLineItemBlockParameters[nv].serviceLineItemBlockParameter.name;
+                                blockNVDoc.parentElementId = serviceLineItemMigrated.id;
+
+                                // 4.5.1 cloning the values of the block nv pair
+                                var blockValuesList = stcw.getBlockValuesAsArray(serviceContainerToMigrate.serviceLineItemBlockParameters[nv].serviceLineItemBlockParameter.id);
+                                if(blockValuesList != null && blockValuesList.length > 0) {
+                                    for(var bv=0; bv < blockValuesList.length; bv++) {
+                                        var blockValueDoc = new Document("stcw.blockValue");
+                                        blockValueDoc.blockValue = blockValuesList[bv].blockValue;
+                                        blockValueDoc.parentDocId = blockNVDoc.id;
+                                        blockValueDoc.cwOrderId = flatOrderMigrated.id;
+                                        blockValueDoc.save();
+                                    }
+                                } // end if(blockValuesList != null && blockValuesList.length > 0)
+                            }
+                        }
+
+                    }  // end if(service.lineItemIdentifier == foundVPNOrdersToMigrateList[i].lineItemIdentifier)
+                } // end for(orderToMigrate.parentLineItems[0].services)
+
+                if(foundLineItem) {
+
+                    // 4.3 setting the provisioningFlag, the orderStatus and the orderCompletionDate
+                    if(flatOrderMigrated.orderHeader.orderType == "F") {
+                        if(serviceLineItemMigrated.lineItemStatus == "Hold") {
+                            // lineItem not processing. Resetting the orderStatus
+                            flatOrderMigrated.orderHeader.orderStatus = "New";
+                            serviceLineItemMigrated.provisioningFlag = "PROVISIONING";
+                        }
+                        else {
+                            stcw.updateBundleAndOrderHeaderStatusForFeasibility(flatOrderMigrated, serviceLineItemMigrated);
+                            if(serviceLineItemMigrated.lineItemStatus == "FEASIBLE") {
+                                serviceLineItemMigrated.provisioningFlag = "ACTIVE";
+                            }
+                            else {
+                                serviceLineItemMigrated.provisioningFlag = "PROVISIONING";
+                            }
+                        }
+                    }
+                    else {
+                        if(serviceLineItemMigrated.lineItemStatus == "Hold") {
+                            // lineItem not processing. Resetting the orderStatus
+                            flatOrderMigrated.orderHeader.orderStatus = "New";
+                            serviceLineItemMigrated.provisioningFlag = "PROVISIONING";
+                        }
+                        else {
+                            stcw.updateBundleAndOrderHeaderStatus(flatOrderMigrated, serviceLineItemMigrated);
+                            if(serviceLineItemMigrated.lineItemStatus == "COMPLETED") {
+                                serviceLineItemMigrated.provisioningFlag = "ACTIVE";
+                            }
+                            else {
+                                serviceLineItemMigrated.provisioningFlag = "PROVISIONING";
+                            }
+                        }
+                    }
+
+                    // 4.5 create the orchestration table
+                    var orchestrationError = stcw.writeSequenceForOrder(flatOrderMigrated);
+                    if(orchestrationError != null) {
+    debugPrintln(stcc.getSysdateForLog() + debug + "ERR ===> Error in computing orchestration for migrated order: ");
+                        for(var oe=0; oe<orchestrationError.length; oe++) {
+    debugPrintln(stcc.getSysdateForLog() + debug + "         Error[" + oe + "] = <" + orchestrationError[oe].ErrorCode + "," + orchestrationError[oe].ErrorDescription + ">");
+                        }
+
+                        resultMigration = 4;
+                    }
+                    else {
+                        resultMigration = 1;
+
+                        // 4.6 saving the new order
+                        createdFlatOrders++;
+                        flatOrderMigrated.save();
+
+                        // 4.7 changing the provisioning flag of the new order;
+                        orderToMigrate.parentLineItems[0].parentLineItem.provisioningFlag = "OLD";
+                        orderToMigrate.save();
+
+                        // 4.8 saving the orderNumber into migrated
+                        var orderMigrated = new Document("crmToSOMMigration.STCW_VPNORDER_MIGRATED");
+                        orderMigrated.orderNumber = flatOrderMigrated.orderHeader.orderNumber;
+                        orderMigrated.save();
+                    }
+                }
+                else {
+    debugPrintln(stcc.getSysdateForLog() + debug + "ERR ===> Unable to find the lineItem with identifier " + foundVPNOrdersToMigrateList[i].lineItemIdentifier + " in the order!");
+                    resultMigration = 3;
+                } // end if(foundLineItem)
+
+            } // if(orderToMigrate != null)
+
+            foundVPNOrdersToMigrateList[i].resultProcess = resultMigration;
+            foundVPNOrdersToMigrateList[i].save();
+
+        } // end for foundVPNOrdersToMigrateList
+    }
+    else {
+    debugPrintln(stcc.getSysdateForLog() + debug + "No Bundle VPN Orders found");
+    }
+
+    return createdFlatOrders;
+  ]]></script>
+</script>

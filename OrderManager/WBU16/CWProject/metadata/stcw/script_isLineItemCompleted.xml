@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.isLineItemCompleted">
+  <label>Is LineItem Completed</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="lineItemStatus" type="rifp"/>
+  </parameterList>
+  <script><![CDATA[
+    var result = false;
+
+    if(lineItemStatus != null) {
+        result = (lineItemStatus.toUpperCase() == "COMPLETED" || lineItemStatus.toUpperCase() == "CANCELLED");
+    }
+
+    return result;
+  ]]></script>
+</script>

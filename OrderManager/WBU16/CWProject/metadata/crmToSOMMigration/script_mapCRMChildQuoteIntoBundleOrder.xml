@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="crmToSOMMigration.mapCRMChildQuoteIntoBundleOrder">
+  <label>Map CRM Child Quote Into Bundle Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="crmQuote" type="rifp">
+      <type>order_stcw.wholesaleQuote</type>
+    </parameter>
+    <parameter name="orderCreationDate" type="rifp">
+      <type>dtype_com.conceptwave.system.DateTime</type>
+    </parameter>
+    <parameter name="versionName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="versionNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+    <parameter name="childQuoteHeader" type="rifp">
+      <type>doc_stcw.quoteHeader</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var bundleOrder = null;
+
+    if(crmQuote != null) {
+
+        var serviceIndex = getServiceIndexByRowId_(childQuoteHeader.orderRowItemId);
+        if(serviceIndex >= 0) {
+            bundleOrder = new Order("stcw.wholesaleBundleOrderSTC");
+            bundleOrder.orderHeader.customerIdNumber = crmQuote.accountNumber;
+            bundleOrder.orderHeader.accountNumber    = crmQuote.accountNumber;
+            bundleOrder.orderHeader.orderNumber      = childQuoteHeader.quoteNumber;
+            bundleOrder.orderHeader.orderType        = "F";
+            bundleOrder.orderHeader.orderStatus      = crmQuote.quoteStatus;
+            bundleOrder.orderHeader.creationDate     = crmQuote.creationDate;
+            bundleOrder.orderHeader.createdBy        = "N.A.";
+            bundleOrder.orderHeader.createdByName    = "N.A.";
+            bundleOrder.orderHeader.serviceDate      = crmQuote.lineItems[serviceIndex].serviceDate;
+            bundleOrder.orderHeader.feasibilityFor   = (crmQuote.quoteType == "I" ? "INSTALL" : "CHANGE");
+            bundleOrder.orderHeader.reservation      = (crmQuote.quoteStatus.toUpperCase() == "FEASIBILITY" ? "N" : "Y");
+            bundleOrder.orderHeader.businessUnit     = crmQuote.businessUnit;
+            bundleOrder.orderHeader.salesRepresentative = crmQuote.salesRepresentative;
+            bundleOrder.orderHeader.receiveDate      = orderCreationDate;
+            bundleOrder.orderHeader.isMigrated       = true;
+
+            var orderItemPathForBundle = "parentLineItems.1";
+            var bundleDoc = bundleOrder.createOrderItemByPath(orderItemPathForBundle + ".parentLineItem");
+
+
+            bundleDoc.lineItemIdentifier          = childQuoteHeader.quoteNumber;
+            bundleDoc.lineItemStatus              = "READY";
+            bundleDoc.lineItemType                = "Root";
+            bundleDoc.priority                    = 1;
+            bundleDoc.action                      = decodeActionByQuoteAction_(crmQuote.lineItems[serviceIndex].serviceStatus);
+            bundleDoc.workOrderNumber             = childQuoteHeader.quoteNumber;
+            bundleDoc.workOrderType               = bundleDoc.action;
+            bundleDoc.serviceType                 = crmQuote.lineItems[serviceIndex].productCode;
+            bundleDoc.serviceNumber               = crmQuote.lineItems[serviceIndex].assetNumber;
+            bundleDoc.reservationNumber           = childQuoteHeader.reservationNumber;
+            bundleDoc.reservationDays             = crmQuote.lineItems[serviceIndex].reservationDays;
+            bundleDoc.segmentFlag                 = crmQuote.lineItems[serviceIndex].segmentFlag;
+            bundleDoc.productCode                 = crmQuote.lineItems[serviceIndex].productCode;
+            bundleDoc.restoration                 = crmQuote.lineItems[serviceIndex].restoration;
+            bundleDoc.remarks                     = crmQuote.comments;
+            bundleDoc.numberOfChannels            = crmQuote.lineItems[serviceIndex].numberOfChannels;
+            bundleDoc.primaryAssetNumber          = crmQuote.lineItems[serviceIndex].primaryAssetNumber;
+            bundleDoc.quantity                    = 1;
+            bundleDoc.bandwidth                   = crmQuote.lineItems[serviceIndex].bandwidth;
+            bundleDoc.locationACCLICode           = getNVPairValue_("LOCATIONA");
+            bundleDoc.locationAAccessType         = getNVPairValue_("AccessType");
+            bundleDoc.locationBCCLICode           = getNVPairValue_("LOCATIONZ");
+            bundleDoc.locationBAccessType         = getNVPairValue_("AccessType");
+            bundleDoc.serviceDate                 = crmQuote.lineItems[serviceIndex].serviceDate;
+            bundleDoc.creationDate                = crmQuote.lineItems[serviceIndex].creationDate;
+            bundleDoc.elementTypeInOrderTree      = "B";
+            bundleDoc.isSubmit                    = (versionName == "INITIAL");
+            bundleDoc.isCancel                    = (versionName == "CANCEL");
+            bundleDoc.alreadySentToGranite        = true;
+            bundleDoc.alreadyReceivedCancel       = (versionName == "CANCEL");
+            bundleDoc.sentAnytimeToGranite        = true;
+            bundleDoc.requestedActionIsA          = (crmQuote.lineItems[serviceIndex].serviceStatus == "Add");
+            bundleDoc.provisioningFlag            = "PROVISIONING";
+            bundleDoc.provisioningBU              = "W";
+            bundleDoc.versionNumber               = (versionNumber > 0 ? versionNumber : null);
+            bundleDoc.receivedAction              = bundleDoc.action;
+            bundleDoc.receivedServiceType         = bundleDoc.serviceType;
+
+            if(crmQuote.lineItems[serviceIndex].nameValue != null) {
+                for (var i=0; i<crmQuote.lineItems[serviceIndex].nameValue.length; i++) {
+                    var nvDoc   = bundleOrder.createOrderItemByPath(orderItemPathForBundle + ".parentLineItemNameValueParameters." + (i+1) + ".parentLineItemNameValueParameter");
+                    nvDoc.name  = crmQuote.lineItems[serviceIndex].nameValue[i].name;
+                    nvDoc.value = crmQuote.lineItems[serviceIndex].nameValue[i].value;
+                    nvDoc.isVAS = "N";
+                    nvDoc.parentElementId = bundleDoc.id;
+                }
+            }
+        }
+        else {
+    debugPrintln(stcc.getSysdateForLog() + " mapCRMChildQuoteIntoBundleOrder - Unable to find service with OrderRowItemId " + childQuoteHeader.orderRowItemId + " in the received crmQuote");
+        }
+    }
+    return bundleOrder;
+
+
+    function getServiceIndexByRowId_(rowId) {
+        var index = -1;
+        for (var i=0; i<crmQuote.lineItems.length; i++) {
+            if(crmQuote.lineItems[i].orderRowItemId == rowId) {
+                index = i;
+            }
+        }
+
+        return index;
+    }
+
+    function decodeActionByQuoteAction_(serviceStatus) {
+        var action = null;
+        if(serviceStatus == "Add") {
+            action = "A";
+        }
+        else if(serviceStatus == "Cancel") {
+            action = "C";
+        }
+        else if(serviceStatus == "Revise") {
+            action = "M";
+        }
+        else {
+            action = "N";
+        }
+
+        return action;
+    }
+
+
+
+
+    function getNVPairValue_(nvPairName) {
+        var value = null;
+        var found = false;
+        if(crmQuote.lineItems[serviceIndex].nameValue != null) {
+            for (var i=0; i<crmQuote.lineItems[serviceIndex].nameValue.length && !found; i++) {
+                if(crmQuote.lineItems[serviceIndex].nameValue[i].name == nvPairName) {
+                    found = true;
+                    value = crmQuote.lineItems[serviceIndex].nameValue[i].value;
+                }
+            }
+        }
+
+        return value;
+    }
+  ]]></script>
+</script>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.checkIfAtLeastOneProcessInOrchestrTableIsComplOK">
+  <label>Check If At Least One Provisioning Process In Orchestration Table Is Completed OK</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="cwOrderId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("stcw.STCW_ORDER_ORCHESTRATION");
+    inputDoc.cwOrderId = cwOrderId;
+
+    var atLeastOneCompleted = false;
+    var orchestrationRecordList = Finder.runFinder("stcw.findSTCW_ORDER_ORCHESTRATION", "select", inputDoc);
+    if(orchestrationRecordList != null && orchestrationRecordList.length > 0) {
+        for(var i=0; i<orchestrationRecordList.length; i++) {
+            var provisioningProcessId = orchestrationRecordList[i].provisioningProcessId;
+            if(orchestrationRecordList[i].provisioningProcessResult != null && orchestrationRecordList[i].provisioningProcessResult == "OK") {
+                if(provisioningProcessId != null) {
+                    if(stcw.checkIfProcessIsCompleted(provisioningProcessId)) {
+                        atLeastOneCompleted = true;
+                        debugPrintln(stcc.getSysdateForLog() + " checkIfAtLeastOneProcessInOrchestrTableIsCompleted for Order " + cwOrderId + " - Provisioning process " + provisioningProcessId + " is completed");
+                    }
+                }
+            }
+            else {
+                debugPrintln(stcc.getSysdateForLog() + " checkIfAtLeastOneProcessInOrchestrTableIsCompleted for Order " + cwOrderId + " - Provisioning process " + provisioningProcessId + " is KO or not pushed");
+            }
+        }
+    }
+
+
+    debugPrintln(stcc.getSysdateForLog() + " checkIfAtLeastOneProcessInOrchestrTableIsCompleted for Order " + cwOrderId + " = " + atLeastOneCompleted);
+    return atLeastOneCompleted;
+  ]]></script>
+</script>

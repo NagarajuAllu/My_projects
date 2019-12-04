@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="5e80adb54e83a410cf01875e95b0ec45" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.pathChannelUtilization">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{fa342e99-8324-460e-a02a-54bd2278c92e}</guid>
+  <label>Details: Path Channel Utilization</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="CHAN_INST_ID" type="leaf">
+      <key>1</key>
+      <valueType>dtype_granite.INST_ID</valueType>
+    </variable>
+    <variable name="PARENT_PATH_HUM_ID" type="leaf">
+      <valueType>dtype_granite.CIRC_PATH_HUM_ID</valueType>
+    </variable>
+    <variable name="PARENT_PATH_REV_NBR" type="leaf">
+      <valueType>dtype_granite.CIRC_PATH_REV_NBR</valueType>
+    </variable>
+    <variable name="MEMBER_PATH_HUM_ID" type="leaf">
+      <valueType>dtype_granite.CIRC_PATH_HUM_ID</valueType>
+    </variable>
+    <variable name="MEMBER_PATH_STATUS" type="leaf">
+      <valueType>dtype_granite.CIRC_STATUS</valueType>
+    </variable>
+    <variable name="NEXT_PATH_HUM_ID" type="leaf">
+      <valueType>dtype_granite.CIRC_PATH_HUM_ID</valueType>
+    </variable>
+    <variable name="NEXT_PATH_STATUS" type="leaf">
+      <valueType>dtype_granite.CIRC_STATUS</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_granite.pathChannelUtilization</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

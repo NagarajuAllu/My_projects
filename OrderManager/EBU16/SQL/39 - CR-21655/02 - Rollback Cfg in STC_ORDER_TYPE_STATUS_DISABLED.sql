@@ -1,0 +1,2 @@
+insert into STC_ORDER_TYPE_STATUS_DISABLED(ORDERTYPE, ORDERSTATUS) values ('E', 'CANCEL');
+commit;

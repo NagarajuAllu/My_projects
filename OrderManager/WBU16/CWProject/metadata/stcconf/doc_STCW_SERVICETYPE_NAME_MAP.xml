@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcconf.STCW_SERVICETYPE_NAME_MAP">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{c8e3904c-a85c-432e-b972-2048826445eb}</guid>
+  <label>Map COM ServiceType  To Granite Name</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="comServiceType" type="leaf">
+      <column>COM_SERVICETYPE</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>COM Service Type</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_SERVICETYPE_NAME_MAP</table>
+      <valueType>dtype_stcw.string25</valueType>
+    </variable>
+    <variable name="giServiceType" type="leaf">
+      <column>GI_SERVICETYPE</column>
+      <propertyElement type="elfld">
+        <label>Granite Service Type</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_SERVICETYPE_NAME_MAP</table>
+      <valueType>dtype_stcw.string25</valueType>
+    </variable>
+    <variable name="somInternalName" type="leaf">
+      <column>SOM_INTERNALNAME</column>
+      <propertyElement type="elfld">
+        <label>SOM Internal Name</label>
+      </propertyElement>
+      <table>STCW_SERVICETYPE_NAME_MAP</table>
+      <valueType>dtype_stcw.string25</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        // validating data
+        var serviceTypeMapFinder = new Finder ("stcconf.mapCOMToGraniteServiceTypeFinder");
+        serviceTypeMapFinder.searchDocument.serviceType  = this.comServiceType;
+        var resultList = serviceTypeMapFinder.search();
+
+        if(resultList != null && resultList.length > 0) {
+            if(! this.isStored) {
+                Global.throwException("AE0085");
+            }
+        }
+
+        if(this.isStored) {
+            Global.showUserMessage(Global.translateText("AI0002"));
+        }
+        else {
+            Global.showUserMessage(Global.translateText("AI0001"));
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcconf.STCW_SERVICETYPE_NAME_MAP</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STCW_SERVICETYPE_NAME_MAPGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="STCW_SERVICETYPE_NAME_MAPHeader" type="elhdr">
+                        <label>Map ServiceType COM To Granite Name</label>
+                      </element>
+                      <element name="comServiceType" type="elfld">
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_SERVICETYPE_NAME_MAP/ui_UserInterface/permMethod_comServiceTypeEditablePerm</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <label>COM Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_SERVICETYPE_NAME_MAP/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_SERVICETYPE_NAME_MAP/leaf_comServiceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="giServiceType" type="elfld">
+                        <label>Granite Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_SERVICETYPE_NAME_MAP/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_SERVICETYPE_NAME_MAP/leaf_giServiceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="somInternalName" type="elfld">
+                        <label>SOM Internal Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_SERVICETYPE_NAME_MAP/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_SERVICETYPE_NAME_MAP/leaf_somInternalName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <confirmation>doc_stcconf.STCW_SERVICETYPE_NAME_MAP/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+      <method name="comServiceTypeEditablePerm" type="permMethod">
+        <script>return (this.model.comServiceType == null);</script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

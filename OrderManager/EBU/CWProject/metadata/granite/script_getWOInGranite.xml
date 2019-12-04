@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="4a792a98cf1664269663ed48928f005b" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.getWOInGranite">
+  <label>Get WorkOrder In Granite</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="woName" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_granite.WO_NAME</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = null;
+
+    if (woName != null) {
+
+       var input = new Document("granite:search_WOName");
+       input.WO_NAME = woName;
+
+       var output = Finder.runFinder("granite:findWOinGraniteByWOName", "select", input);
+
+       if (output != null && output.size > 0) {
+          result = output[0];
+       }
+    }
+
+    return result;
+  ]]></script>
+</script>

@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="c1b22d7b8662c273ed6f9bf3f9073519" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.syncRejectedQuoteBetweenExpdAndGranite_cwr1">
+  <activity name="start" type="seqActivity">
+    <guid>{003587e9-ec4b-ede9-e878-be1caf90d693}</guid>
+    <label>Start</label>
+    <x>60.0</x>
+    <y>60.0</y>
+    <childList>
+      <child name="checkIfExistQuoteNOTRejected" type="switchActivity">
+        <guid>{00f2105c-6aae-e053-8a68-16a01797f8a8}</guid>
+        <label>Check If Exist Quote NOT Rejected</label>
+        <x>185.0</x>
+        <y>36.0</y>
+        <childList>
+          <child name="existQuoteNOTRejected" type="caseActivity">
+            <guid>{0d8aafe1-fb9d-4ef2-80c8-8007156998f7}</guid>
+            <label>Exist Quote NOT Rejected</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="logTheError" type="scriptActivity">
+                <guid>{05cc2950-0520-764e-5b3a-c7a9564f00d0}</guid>
+                <label>Log The Error</label>
+                <x>194.0</x>
+                <y>214.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{0768b8d5-6315-4dbd-c537-d595a593e4ea}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var msg = "ERROR: for Expediter Rejected Quote with id: " + this.process.processDocument.currentRejectedOrderId + " exists a quote with the same quoteNumber " +
+                                    this.process.processDocument.originalOrderNumber + " and same orderRowItemId " + this.process.processDocument.originalOrderRowItemId + " (I'm position 3.a.i.1) !!!!!!";
+                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - " + msg);
+                            Global.logDebug(msg);
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+          <child name="noQuoteFound" type="caseActivity">
+            <guid>{0fbd3e3c-22b0-81ea-2b4d-230fdbcf0be9}</guid>
+            <label>No Quote Found</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="checkQuoteInGranite" type="switchActivity">
+                <guid>{077ea5cd-824e-f274-c0d2-059fbbf5317f}</guid>
+                <label>Check Quote Is In Granite</label>
+                <x>392.0</x>
+                <y>46.0</y>
+                <childList>
+                  <child name="orderIsInGranite" type="caseActivity">
+                    <guid>{09efd613-c693-6bba-f1b2-8997f831c452}</guid>
+                    <label>Order IS in Granite</label>
+                    <x>0.0</x>
+                    <y>0.0</y>
+                    <childList>
+                      <child name="checkIfWOIsCompleted_Cancelled" type="switchActivity">
+                        <guid>{00c4fac4-cb4a-4bde-a041-2ab5ab05bc15}</guid>
+                        <label>Check If WO Is Completed or Cancelled</label>
+                        <x>591.0</x>
+                        <y>27.0</y>
+                        <childList>
+                          <child name="woNOTCompleted_Cancelled" type="caseActivity">
+                            <guid>{0609e463-7e8e-2fb8-ef5a-a6a2b39e2ce7}</guid>
+                            <label>WO NOT Completed or Cancelled</label>
+                            <x>0.0</x>
+                            <y>0.0</y>
+                            <childList>
+                              <child name="nothingToDo" type="scriptActivity">
+                                <guid>{0fb8eb1c-80b8-54ed-fa65-a89d0534ea2f}</guid>
+                                <label>Nothing To Do</label>
+                                <x>591.0</x>
+                                <y>210.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <guid>{02d453e0-0f61-630a-f1c4-14b8c7fc9c95}</guid>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Nothing to do (I'm position 3.a.ii.2.b) ...");
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                          </child>
+                          <child name="woISCompleted_Cancelled" type="caseActivity">
+                            <guid>{02d94507-dd18-4df3-3fa0-2f079a767f2c}</guid>
+                            <label>WO IS Completed or Cancelled</label>
+                            <x>0.0</x>
+                            <y>0.0</y>
+                            <childList>
+                              <child name="convertRejectedQuoteIntoCompletedOne" type="scriptActivity">
+                                <guid>{04fc26a2-f2c7-6696-639c-04eda3c07baa}</guid>
+                                <label>Converted Rejected Quote Into Completed One</label>
+                                <x>763.0</x>
+                                <y>26.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <guid>{0f1b73e5-7a84-2ab2-f843-8cce5121d88d}</guid>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Converting Completed/Cancelled the quote with id: " + this.process.processDocument.currentRejectedOrderId);
+
+                                            var order = Order.getOrderById(this.process.processDocument.currentRejectedOrderId);
+                                            // a.ii.2.a.i - renaming the quoteNumber and the orderRowItemId ...
+                                            var rejectedOrderNumber     = order.header.orderNumber;
+                                            var rejectedOrderRowItemId  = order.header.orderRowItemId;
+                                            order.header.orderNumber    = this.process.processDocument.originalOrderNumber;
+                                            order.header.orderRowItemId = this.process.processDocument.originalOrderRowItemId;
+                                            order.save();
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Renamed Rejected Quote with Parentid: " + rejectedOrderNumber + " to " + this.process.processDocument.originalOrderNumber);
+
+                                            // a.ii.2.a.ii - generate quote acknowledgement ...
+                                            var graniteResponse = new DataStructure("grws:validateQuoteResponse");
+                                            graniteResponse.result.QuoteNumber     = order.header.orderNumber;
+                                            graniteResponse.result.WorkOrderStatus = "New";
+                                            graniteResponse.result.BusinessUnit    = "Wholesale";
+                                            graniteResponse.result.Status.Status   = "SUCCESS";
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Generated Quote ACK for " + order.header.quoteNumber);
+
+                                            // a.ii.2.a.ii - ... store into order ...
+                                            var interfaceName = "GR_VALIDATE_QUOTE";
+                                            stcw.storeInterfaceMessage (stcw.findLastInterfaceFolder (order, interfaceName), graniteResponse);
+                                            order.save();
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Saved Quote ACK for " + order.header.quoteNumber);
+
+                                            // a.ii.2.a.ii - ... send ACK to EAI
+                                            var request = new DataStructure("siquoAck:processRequest_el");
+                                            stcw.map_quoteValidationResp_quoteAck(request, graniteResponse, order.header.orderNumber, order.header.orderRowItemId);
+                                            var crm_ACKIF_Folder = stcw.ensureInterfaceFolder (order, "CRM_QUOTE_ACK");
+                                            order.save();
+
+                                            // check payload size
+                                            stcc.checkPayloadToCRMSize(request, "siquoAck:processRequest_PortType/processRequest");
+
+                                            var crmResponse = stcw.sendQuoteAckToEAI(request, this.process.id);
+                                            rpts.updateHistoryEvent (this);
+                                            stcw.storeInterfaceMessage(crm_ACKIF_Folder, crmResponse);
+                                            order.save();
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Sent Quote ACK to EAI for " + order.header.quoteNumber);
+
+                                            // a.ii.2.a.iv - check if the quote is a revise
+                                            var lastVersionFolder = order.versions[order.versions.length - 1];
+                                            var isRevise = (lastVersionFolder.header.versionName == "REVISE");
+
+                                            if(isRevise) {
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Quote " + order.header.quoteNumber + " is a Revise so no wait Quote Status Update");
+                                                  order.header.quoteStatus = "COMPLETED";
+                                                  order.save();
+                                            }
+                                            else {
+                                                  // a.ii.2.a.iv - ... is not a Revise, so generate OSU event ...
+                                                  var qsuFinder = new Finder("granite:findQuoteInfoByQuoteNumber");
+                                                  qsuFinder.searchDocument.WO_NAME = order.header.quoteNumber;
+                                                  qsuFinder.search();
+
+                                                  var completedQSUList = qsuFinder.list;
+                                                  if(completedQSUList != null && completedQSUList.size > 0) {
+                                                        var completedQSU = completedQSUList.start;
+
+                                                        // a.ii.2.a.iii - Update order status to completed or cancelled
+                                                        order.header.quoteStatus = ((completedQSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED");
+                                                        order.save();
+
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Updated Quote Status to " +
+                                                         ((completedQSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED") + " for " + order.header.quoteNumber);
+
+                                                        var qsuMessage = new DataStructure("wgws:updateQuoteStatus");
+                                                        qsuMessage.actualImplementationDays = completedQSU.ACTUAL_IMPLEMENTATION_DAYS;
+                                                        qsuMessage.businessUnit             = "Wholesale";
+                                                        qsuMessage.comments                 = completedQSU.WO_COMMENTS;
+                                                        qsuMessage.feasibilityStatus        = completedQSU.FEASIBILITY_STATUS;
+                                                        qsuMessage.orderRowItemId           = order.header.orderRowItemId;
+                                                        qsuMessage.plannedFeasibleDays      = completedQSU.PLANNED_FEASIBLE_DAYS;
+                                                        qsuMessage.quoteNumber              = order.header.quoteNumber;
+                                                        qsuMessage.reservationDays          = completedQSU.RESERVATION_DAYS;
+                                                        qsuMessage.reservationNumber        = order.header.reservationNumber;
+                                                        qsuMessage.workOrderStatus          = ((completedQSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED");
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Generated " + ((completedQSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED") +
+                                                         " Quote QSU for " + order.header.quoteNumber);
+
+                                                        // a.ii.2.a.iv - ... store into order ...
+                                                        stcw.storeInterfaceMessage (stcw.createInterfaceFolder (order, "GR_STATUS_UPD"),  qsuMessage);
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Saved Quote QSU for " + order.header.quoteNumber);
+
+                                                        // a.ii.2.a.iv - ... send QSU to EAI
+                                                        var request = new DataStructure("siqsu:processRequest_el");
+                                                        stcw.map_updateQuoteStatus_quoteUpdate (request, qsuMessage, order.header.orderNumber);
+                                                        var crm_QSUIF_Folder = stcw.ensureInterfaceFolder (order, "CRM_QUOTE_STATUS_UPDATE");
+                                                        order.save ();
+
+                                                        // check payload size
+                                                        stcc.checkPayloadToCRMSize(request, "siqsu:processRequest_PortType/processRequest");
+
+                                                        var eaiResponse = stcw.sendQuoteUpdateToEAI(request, this.process.id);
+                                                        rpts.updateHistoryEvent (this);
+                                                        stcw.storeInterfaceMessage(crm_QSUIF_Folder, eaiResponse);
+                                                        order.save ();
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Sent Quote QSU to EAI for " + order.header.quoteNumber);
+
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Converted Rejected Quote with id: " + this.process.processDocument.currentRejectedOrderId +
+                                                         " to " + ((completedQSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED") +
+                                                         " Quote with number : " + order.header.quoteNumber);
+                                                  }
+                                                  else {
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Unable to find assetInfo for quote " + order.header.quoteNumber);
+                                                  }
+                                            }
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                            <methodList>
+                              <method name="cwOnProcActCond" type="action">
+                                <category>cond</category>
+                                <guid>{01847f54-7a7b-bebe-ac1d-d5fcad4e3cdd}</guid>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  var order = Order.getOrderById(this.process.processDocument.currentRejectedOrderId);
+
+                                  var woStatus = stcw.getWOStatusInGranite(order.header.quoteNumber);
+
+                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Is (woStatus in ('7','8')) for quote " + order.header.quoteNumber +
+                                                     " in Granite => " + (woStatus == '7' || woStatus == '8'));
+
+                                        return (woStatus == '7' || woStatus == '8');
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                    <methodList>
+                      <method name="cwOnProcActCond" type="action">
+                        <category>cond</category>
+                        <guid>{0f75f52c-5520-647f-1877-a3a1a9d9d010}</guid>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var order = Order.getOrderById(this.process.processDocument.currentRejectedOrderId);
+
+                          var found = stcw.checkQuoteExistInGranite(order.header.quoteNumber);
+
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Quote '" + order.header.quoteNumber + "' is in Granite => " + found);
+
+                                return found;
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="quoteIsNotInGranite" type="caseActivity">
+                    <guid>{0994d4ce-ace6-ea53-2cc6-83000df8bc2f}</guid>
+                    <label>Quote IS NOT in Granite</label>
+                    <x>0.0</x>
+                    <y>0.0</y>
+                    <childList>
+                      <child name="nothingToDo" type="scriptActivity">
+                        <guid>{0f24233e-6530-51bc-77b2-fdc0a0cd4bf0}</guid>
+                        <label>Nothing To Do</label>
+                        <x>392.0</x>
+                        <y>211.0</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <guid>{05472930-0363-f3dd-a34d-c1f1e4491d53}</guid>
+                            <system>true</system>
+                            <script><![CDATA[
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Nothing to do (I'm position 3.a.ii.1) ...");
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{0909cd4a-b72b-f1c0-3bae-f1e1976d955b}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  var quoteFinder = new Finder("stcw:quoteFinder");
+                  quoteFinder.searchDocument.parentQuoteNumber = this.process.processDocument.originalOrderNumber;
+                  quoteFinder.searchDocument.orderRowItemId    = this.process.processDocument.originalOrderRowItemId;
+                  quoteFinder.search();
+
+                  var quoteList = quoteFinder.list;
+                  return (quoteList == null || quoteList.size == 0);
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{06f9d94e-a15f-8f63-905b-904a17281940}</guid>
+        <label>End</label>
+        <x>764.0</x>
+        <y>404.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{068f63ce-a509-3b96-8365-535a045d01eb}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Completed 'SyncRejectedQuoteBetweenExpdAndGranite' for Quote " +
+                                 this.process.processDocument.originalOrderNumber + " and OrderRowItemId " + this.process.processDocument.originalOrderRowItemId);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0c3eddf0-4afc-5837-60a0-35f3f1828988}</guid>
+        <system>true</system>
+        <script><![CDATA[
+          if(this.process.parent != null) {
+                this.process.processDocument.currentRejectedOrderId = this.process.parent.processDocument.currentRejectedOrderId;
+                this.process.processDocument.originalOrderNumber    = this.process.parent.processDocument.originalOrderNumber;
+                this.process.processDocument.originalOrderRowItemId = this.process.parent.processDocument.originalOrderRowItemId;
+          }
+
+          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Starting with processDocument: " + this.process.processDocument.toXML());
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_stcw.syncRejectedQuoteProcessDocument</document>
+  <label>Sync Rejected Quote Between Expediter And Granite</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_stcw.syncRejectedQuoteBetweenExpdAndGranite</process>
+  <type>User</type>
+</process__revision>

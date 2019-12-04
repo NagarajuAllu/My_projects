@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="457cbea4b0942373b55135c1bdc1f17a" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.storeNVPair4GUI">
+  <label>Store NVPair For InsertOrder From GUI</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="docId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="name" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="value" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="headerId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var nvPair4GUIFinder = new Finder("ds_ws.findNVPair4GUI");
+    nvPair4GUIFinder.searchDocument.cwDocID = docId;
+
+    var resultList = nvPair4GUIFinder.search();
+    if(resultList != null && resultList.length > 0) {
+        resultList[0].value = value;
+        resultList[0].save();
+    }
+    else {
+        var newNVPair4GUI = new Document("ds_ws.STC_INSERTORDER_NVPAIR");
+        newNVPair4GUI.cwDocId = docId;
+        newNVPair4GUI.name = name;
+        newNVPair4GUI.value = value;
+        newNVPair4GUI.headerId = headerId;
+        newNVPair4GUI.save();
+    }
+  ]]></script>
+</script>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.updateBundleAndOrderHeaderStatusForFeasAtProcCompl">
+  <label>Update Bundle And OrderHeader Status For Feasibility At Process Completion</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // checking the correctness of the status of the ParentLineItem for quote
+    var isCompleted = false;
+    var isCancelled = false;
+
+    var feasibilityApproach = stcw.getFeasibilityApproachByProductCode(bundleOrder.parentLineItems[0].parentLineItem.productCode);
+
+    for(var i=0; i<bundleOrder.parentLineItems.length; i++) {
+        var parentLineItem = bundleOrder.parentLineItems[i].parentLineItem;
+        var parentLineItemStatusUpperCase = parentLineItem.lineItemStatus.toUpperCase();
+        var isLegacy = stcw.isLegacyService(bundleOrder.parentLineItems[i], false);
+        var isLegacyForVAS = stcw.isLegacyService(bundleOrder.parentLineItems[i], true);
+
+        if(isLegacyForVAS) {
+            if(isLegacy) {
+                // it's a legacy, so possible status for lineItem are "CANCELLED", "FEASIBLE", "NOT FEASIBLE", "PLANNED FEASIBLE"
+                if(stcw.checkIfLineItemIsNotFeasibleForQuote(parentLineItemStatusUpperCase, bundleOrder.orderHeader.orderType)) {
+                    // it's not feasible ... so not completed.
+                }
+                else if(parentLineItemStatusUpperCase == "CANCELLED") {
+                    // it's CANCELLED or FEASIBLE (so completed). Setting the completion date
+                    isCancelled = true;
+                }
+                else {
+                    parentLineItem.lineItemStatus = "FEASIBLE";
+                    isCompleted = true;
+                }
+
+                if((isCompleted || isCancelled) && parentLineItem.completionDate == null) {
+                    parentLineItem.completionDate = new Date();
+                }
+            }
+            else {
+                // it means it's a legacy with VAS attributes
+                if(stcw.checkIfLineItemIsNotFeasibleForQuote(parentLineItemStatusUpperCase, bundleOrder.orderHeader.orderType)) {
+                    // it's not feasible ... so not completed.
+                }
+                else if(parentLineItemStatusUpperCase == "CANCELLED") {
+                    // it's CANCELLED or FEASIBLE (so completed). Setting the completion date
+                    isCancelled = true;
+                }
+                else {
+                    var existNotFeasible  = stcw.checkIfExistALineItemInBundleWithThisStatus("NOT FEASIBLE", parentLineItem, false);
+
+                    if(! existNotFeasible) {
+                        isCompleted = true;
+                    }
+                }
+
+                // not setting the completionDate of the parentLineItem because already completed at the completion of the provisioning process!
+            }
+        }
+        else {
+            // it's a bundle, so possible status should be: "CANCELLED", "COMPLETED", "NOT_FEASIBLE", "PARTIALLY_FEASIBLE"
+            if(parentLineItemStatusUpperCase == "NOT_FEASIBLE" || parentLineItemStatusUpperCase == "PARTIALLY_FEASIBLE") {
+                // nothing to do
+            }
+            else if(parentLineItemStatusUpperCase != "CANCELLED" && parentLineItemStatusUpperCase != "COMPLETED") {
+                var existFeasible = (stcw.checkIfExistALineItemInBundleWithThisStatus("FEASIBLE", parentLineItem, false) || stcw.checkIfExistALineItemInBundleWithThisStatus("PARTIALLY FEASIBLE", parentLineItem, false));
+                var existNotFeasible  = stcw.checkIfExistALineItemInBundleWithThisStatus("NOT FEASIBLE", parentLineItem, false);
+                var existCancelled = stcw.checkIfExistALineItemInBundleWithThisStatus("CANCELLED", parentLineItem, false);
+
+                if(existFeasible) {
+                    if(existNotFeasible) {
+                        parentLineItem.lineItemStatus = ((feasibilityApproach == "ALL_OR_NOTHING") ? "NOT_FEASIBLE" : "PARTIALLY_FEASIBLE");
+                    }
+                    else {
+                        parentLineItem.lineItemStatus = "COMPLETED";
+                        isCompleted = true;
+                    }
+                }
+                else if(existNotFeasible) {
+                    parentLineItem.lineItemStatus = "NOT_FEASIBLE";
+                }
+                else {
+                    parentLineItem.lineItemStatus = "CANCELLED";
+                    isCancelled = true;
+                }
+            }
+            else {
+                // it's completed or cancelled
+                isCancelled = (parentLineItemStatusUpperCase == "CANCELLED");
+                isCompleted = !isCancelled;
+            }
+
+            if(isCompleted || isCancelled) {
+                parentLineItem.completionDate = new Date();
+            }
+        }
+
+        if((parentLineItem.isCancel || parentLineItem.lineItemStatus == "CANCELLED" || isCancelled) && !isCompleted) {
+            parentLineItem.provisioningFlag = "CANCELLED";
+
+            if(parentLineItem.previousActiveDocId != null && parentLineItem.provisioningBU == "H") {
+                var ancestorParentLineItem = Document.readDoc("stcw.lineItemDocument", parentLineItem.previousActiveDocId);
+                if(ancestorParentLineItem != null) {
+                    ancestorParentLineItem.provisioningFlag = "ACTIVE";
+                    ancestorParentLineItem.save();
+                }
+            }
+        }
+        else if(isCompleted) {
+            var orderNumber = bundleOrder.orderHeader.orderNumber;
+            if((orderNumber.indexOf("_CANC_") >= 0) || (orderNumber.indexOf("_REVI_") >= 0)) {
+                // do nothing because it's an old version of the order
+                debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - ProvisioningFlag not changed because orderNumber (" + orderNumber + ") contains '_CANC_' or _REVI_'");
+            }
+            else {
+                var activeLineItems = stcw.getAllLineItemsByIdentifierAndProvisioningFlag(parentLineItem.lineItemIdentifier, "B", "ACTIVE");
+                for(var j=0; j<activeLineItems.length; j++) {
+                    activeLineItems[j].provisioningFlag = "OLD";
+                    activeLineItems[j].save();
+
+                    parentLineItem.previousActiveDocId = activeLineItems[j].id;
+                }
+
+                parentLineItem.provisioningFlag = "ACTIVE";
+            }
+        }
+        parentLineItem.save();
+    }
+
+    var orderStatusUpperCase = bundleOrder.orderHeader.orderStatus.toUpperCase();
+    if(orderStatusUpperCase == "NOT_FEASIBLE" || orderStatusUpperCase == "PARTIALLY_FEASIBLE" || orderStatusUpperCase == "CANCELLED" || orderStatusUpperCase == "COMPLETED") {
+        // nothing to do
+    }
+    else {
+        // possible valid status for order are: "CANCELLED", "COMPLETED", "NOT_FEASIBLE", "PARTIALLY_FEASIBLE", "PLANNED FEASIBLE", "FEASIBLE"
+        var existFeasible = (stcw.checkIfExistABundleWithThisStatus("COMPLETED", bundleOrder, false) ||             // case for bundle
+                             stcw.checkIfExistABundleWithThisStatus("FEASIBLE", bundleOrder, false)  ||             // case for legacy service
+                             stcw.checkIfExistABundleWithThisStatus("PLANNED FEASIBLE", bundleOrder, false));       // case for legacy service
+
+        var existNotFeasible  = (stcw.checkIfExistABundleWithThisStatus("NOT_FEASIBLE", bundleOrder, false) ||      // case for bundle
+                                 stcw.checkIfExistABundleWithThisStatus("NOT FEASIBLE", bundleOrder, false));       // case for legacy service
+
+        var existPartiallyFeasible  = stcw.checkIfExistABundleWithThisStatus("PARTIALLY_FEASIBLE", bundleOrder, false);
+
+        var existCancelled = stcw.checkIfExistABundleWithThisStatus("CANCELLED", bundleOrder, false);
+
+        if(existFeasible) {
+            if(existNotFeasible || existPartiallyFeasible) {
+                bundleOrder.orderHeader.orderStatus = ((feasibilityApproach == "ALL_OR_NOTHING") ? "NOT_FEASIBLE" : "PARTIALLY_FEASIBLE");
+            }
+            else {
+                bundleOrder.orderHeader.orderStatus = "COMPLETED";
+                isCompleted = true;
+            }
+        }
+        else if(existPartiallyFeasible) {
+            bundleOrder.orderHeader.orderStatus = ((feasibilityApproach == "ALL_OR_NOTHING") ? "NOT_FEASIBLE" : "PARTIALLY_FEASIBLE");
+        }
+        else if(existNotFeasible) {
+            bundleOrder.orderHeader.orderStatus = "NOT_FEASIBLE";
+        }
+        else {
+            bundleOrder.orderHeader.orderStatus = "CANCELLED";
+            isCancelled = true;
+        }
+    }
+
+    if((isCompleted || isCancelled) && bundleOrder.orderHeader.completionDate == null)  {
+        bundleOrder.orderHeader.completionDate = new Date();
+    }
+    bundleOrder.save();
+  ]]></script>
+</script>

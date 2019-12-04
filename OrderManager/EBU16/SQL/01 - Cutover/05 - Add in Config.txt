@@ -1,0 +1,13 @@
+Add the following Configuration variables:
+  DUMMY_WOSU_FOR_FAILED_ORDER  ==> TRUE
+  SYNCH_ENABLED                ==> NO
+  WD_HOSTNAME                  ==> 172.21.14.167 (the IP address of the EBU server)
+  SUPPORT_FOR_SIP              ==> TRUE
+  SUPPORT_FOR_MATM             ==> TRUE
+
+Change configuration for USER.PROCESSES to 200,000 (200K)
+
+Configure the following endpoints:
+  - toEAI Order Create/Update Acknowledgement
+  - toEAI Work Order Status Update
+  - CIM-E WS Interface (the URL should be http://rmsp.stc.com.sa:8280/tgs-STCRMSEBU-4.0-webservices/ValidationService)

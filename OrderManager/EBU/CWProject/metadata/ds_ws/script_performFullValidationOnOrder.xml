@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="956bfcd06678b78d0ec4297b36d20527" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.performFullValidationOnOrder">
+  <label>Perform Full Validation On Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // header
+    failureArray = ds_ws.validateElementOfOrder(bundleOrder.orderHeader, bundleOrder.orderHeader.orderNumber, isSubmit, failureArray);
+
+    var validationErrors = null;
+
+    var attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("F"), bundleOrder.orderHeader.orderType, bundleOrder.orderHeader.feasibilityFor);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "FeasibilityFor");
+
+    attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("F"), bundleOrder.orderHeader.orderType, bundleOrder.orderHeader.reservation);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "Reservation");
+
+    if(validationErrors != null) {
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleOrder.orderHeader.orderNumber, failureArray, isSubmit);
+    }
+
+    // headers NV pair
+    if(bundleOrder.orderHeaderParameters != null) {
+        for(var i=0; i<bundleOrder.orderHeaderParameters.length; i++) {
+            failureArray = ds_ws.validateElementOfOrder(bundleOrder.orderHeaderParameters[i], bundleOrder.orderHeader.orderNumber, isSubmit, failureArray);
+        }
+
+        failureArray  = ds_ws.performValidationOfMandatoryAttributesInOrdHeader(bundleOrder.orderHeader, isSubmit, failureArray);
+    }
+
+    // bundles
+    for(var i=0; i<bundleOrder.bundles.length; i++) {
+        var bundleContainer = bundleOrder.bundles[i];
+        failureArray = ds_ws.performFullValidationOnBundle(bundleContainer, failureArray, bundleOrder.orderHeader, isSubmit);
+    }
+
+    // check if there are lineItemIdentifier or serviceNumber repeated in the order
+    failureArray = ds_ws.checkIfIdentifierOrServiceNumRepeatedInOrder(bundleOrder, isSubmit, failureArray);
+
+    return failureArray;
+
+
+
+    function checkIfNullAndAppendToValidationErrors_(attributeIsNull, fieldName) {
+        if(attributeIsNull) {
+            validationErrors = ds_ws.appendToValidationErrors("DE0030", "No value in mandatory field \"" + fieldName + "\"", validationErrors, "performFullValidationOnOrder (" + bundleOrder.orderHeader.orderNumber + ")");
+        }
+    }
+  ]]></script>
+</script>

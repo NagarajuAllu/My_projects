@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="tfs.findAllTasks">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <getOutput>doc_tfs.STC_TFR_TASK</getOutput>
+  <input>doc_tfs.tfrTaskSearchDoc</input>
+  <label>Find All Tasks</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_tfs.STC_TFR_TASK</output>
+  <type>SQL</type>
+  <vDetailForm>doc_tfs.STC_TFR_TASK/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>10</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select {+*+}
+          from stc_tfr_task
+         where 1=1
+        {[1] and task_name like ?}
+        {[2] and tfr_id in (select tfr_id
+                              from stc_tfr
+                             where tfr_number like ?)}
+        {[3] and task_status = ?}
+        {[4] and creation_date >= ?}
+        {[5] and creation_date <= ?}
+      ]]></script>
+    </method>
+    <method name="cwOnFinderSQLGet" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select {+*+}
+          from stc_tfr_task
+         where tfr_task_id = ?
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_tfs.tfrTaskSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_tfs.STC_TFR_TASK/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_tfs.STC_TFR_TASK</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findAllTasksResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="tfrTaskId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_tfrTaskId</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <visible type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </visible>
+                      </element>
+                      <element name="taskName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_taskName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="status" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_status</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_siteName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteIF" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_siteIF</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteJVC" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_siteJVC</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteTermination" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_siteTermination</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteExchangeType" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_siteExchangeType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteSwitchType" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_siteSwitchType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDate" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_creationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="acceptDate" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_acceptDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="assignSiteTeamDate" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_assignSiteTeamDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="acceptSiteTeamDate" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_acceptSiteTeamDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="assignQualityTeamDate" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_assignQualityTeamDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="acceptQualityTeamDate" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_acceptQualityTeamDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="description" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_description</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteTeamMemberAcc" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_siteTeamMemberAcc</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="qualityTeamMemberAcc" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findAllTasks/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_TFR_TASK/leaf_qualityTeamMemberAcc</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findAllTasksView" type="findVView">
+      <inputOverlay>doc_tfs.tfrTaskSearchDoc/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find TFR Tasks</label>
+      <outputOverlay>findSql_tfs.findAllTasks/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findSql>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getProvisioningBU">
+  <label>Get Provisioning BU</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleProductCode" type="rifp">
+      <type>dtype_stcw.string255</type>
+    </parameter>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_stcw.string25</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = "W"; // default value is "Wholesale"
+
+    var buProvisioningFinder = new Finder ("stcconf.findBUProvisioningForServiceTypeAndProductCode");
+    buProvisioningFinder.searchDocument.productCode = bundleProductCode;
+    buProvisioningFinder.searchDocument.serviceType = serviceType;
+    buProvisioningFinder.search();
+
+    var resultList = buProvisioningFinder.list;
+
+    if (resultList != null && resultList.size > 0) {
+        result = resultList.start.cimType;
+    }
+
+    return result;
+  ]]></script>
+</script>

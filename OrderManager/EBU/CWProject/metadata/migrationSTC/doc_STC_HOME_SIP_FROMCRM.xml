@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="91e9c3c6636258c35670e9d65e4bc217" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="migrationSTC.STC_HOME_SIP_FROMCRM">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{0d659133-4fe6-4aa9-8991-3a87e91fe1ef}</guid>
+  <label>STC_HOME_SIP_FROMCRM</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_HOME_SIP_FROMCRM</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="parentOrderNumber" type="leaf">
+      <column>PARENT_ORDER_NUMBER</column>
+      <label>ORDER_NUMBER</label>
+      <table>STC_HOME_SIP_FROMCRM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="operation" type="leaf">
+      <column>OPERATION</column>
+      <label>OPERATION</label>
+      <table>STC_HOME_SIP_FROMCRM</table>
+      <valueType>dtype_ds_ws.string256</valueType>
+    </variable>
+    <variable name="receivedOrderStatus" type="leaf">
+      <column>REC_ORDER_STATUS</column>
+      <label>SENT_ORDER_STATUS</label>
+      <table>STC_HOME_SIP_FROMCRM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="creationTime" type="leaf">
+      <column>CREATION_TIME</column>
+      <label>CREATION_TIME</label>
+      <table>STC_HOME_SIP_FROMCRM</table>
+      <valueType>dtype_com.conceptwave.system.DateTime</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_migrationSTC.STC_HOME_SIP_FROMCRM</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

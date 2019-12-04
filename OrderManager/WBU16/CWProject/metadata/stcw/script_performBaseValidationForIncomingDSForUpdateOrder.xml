@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.performBaseValidationForIncomingDSForUpdateOrder">
+  <label>Perform Base Validation For Incoming DS For UpdateOrder</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="inputDS" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+
+    var orderStatus = inputDS.OrderStatus;
+    var orderType = inputDS.OrderType;
+    if(orderStatus == null) {
+        validationErrors = stcw.appendToValidationErrors("AE0008", Global.translateText("AE0008", null, ["Bundle Order STC", "'NULL'", "Submit Order"]), validationErrors);
+    }
+    else {
+        var orderStatusUpperCase = orderStatus.toUpperCase();
+        var isValid = (orderStatusUpperCase == "CANCEL" || orderStatusUpperCase == "REVISE");
+
+        if(!isValid) {
+    debugPrintln(stcc.getSysdateForLog() + " performBaseValidationForIncomingDSForUpdateOrder (" + inputDS.OrderNumber + ") - Invalid OrderStatus for UpdateOrder: " + orderStatusUpperCase);
+            validationErrors = stcw.appendToValidationErrors("AE0008", Global.translateText("AE0008", null, ["Bundle Order STC", inputDS.OrderStatus, "Update Order"]), validationErrors);
+        }
+    }
+
+    if(inputDS.OrderNumber == null) {
+        validationErrors = stcw.appendToValidationErrors("AE0006", Global.translateText("AE0006", null, ["OrderNumber", inputDS.OrderNumber]), validationErrors);
+    }
+    else if(orderType == null) {
+         validationErrors = stcw.appendToValidationErrors("AE0006", Global.translateText("AE0006", null, ["OrderType", inputDS.OrderNumber]), validationErrors);
+    }
+
+    var orderFound = null;
+
+    // checking that the order exists
+    var searchDoc = new Document("stcw.search_bundleOrder");
+    searchDoc.orderNumber = inputDS.OrderNumber;
+    var orderListFound = Finder.runFinder("stcw.findAllSTCBundleOrders_Script", "select", searchDoc);
+    if(orderListFound == null || orderListFound.length == 0) {
+    debugPrintln(stcc.getSysdateForLog() + " performBaseValidationForIncomingDSForUpdateOrder (" + inputDS.OrderNumber + ") - Unable to find existing order with Order#: " + inputDS.OrderNumber);
+        validationErrors = stcw.appendToValidationErrors("AE0004", Global.translateText("AE0004", null, ["Wholesale Bundle Order STC", inputDS.OrderNumber]), validationErrors);
+    }
+    else if(orderListFound.length > 1) {
+    debugPrintln(stcc.getSysdateForLog() + " performBaseValidationForIncomingDSForUpdateOrder (" + inputDS.OrderNumber + ") - Found too many existing instances ( " +
+                 orderListFound.length + ") for Order#: " + inputDS.OrderNumber);
+        validationErrors = stcw.appendToValidationErrors("AE0002", Global.translateText("AE0002", null, ["Wholesale Bundle Order STC", inputDS.OrderNumber]), validationErrors);
+    }
+    else {
+        orderFound = Order.getOrderById(orderListFound[0].id);
+    }
+
+    if(orderType != null && orderType.toUpperCase() == 'O') {
+        if(orderFound != null) {
+            var parentLineItem = orderFound.parentLineItems[0].parentLineItem;
+            if(parentLineItem.provisioningBU == "H") {
+                // do nothing
+            }
+            else {
+                validationErrors = stcw.appendToValidationErrors("AE0074", Global.translateText("AE0074", null, [orderStatus, orderType]), validationErrors);
+            }
+        }
+        else {
+            validationErrors = stcw.appendToValidationErrors("AE0074", Global.translateText("AE0074", null, [orderStatus, orderType]), validationErrors);
+        }
+    }
+
+
+
+    // 2015-12-03: adding check to reject the update if it has been received before the MIN_TIME configured. It uses the MIN_TIME_FOR_UPDATE configu variable
+    var configMIN_TIME_FOR_UPDATE = parseInt(Global.getConfigVariable("MIN_TIME_FOR_UPDATE", "60"));
+    if(isNaN(configMIN_TIME_FOR_UPDATE)) {
+        validationErrors = stcw.appendToValidationErrors("AE0110", Global.translateText("AE0110", null, ["MIN_TIME_FOR_UPDATE", 'The configuration parameter is not a valid number']), validationErrors);
+    }
+    else if(configMIN_TIME_FOR_UPDATE < 10) {
+        validationErrors = stcw.appendToValidationErrors("AE0110", Global.translateText("AE0110", null, ["MIN_TIME_FOR_UPDATE", 'The configuration parameter value '+ configMIN_TIME_FOR_UPDATE + ' is not valid; min value is 10']), validationErrors);
+    }
+    else {
+        if(orderListFound.length == 1) {
+            var previousReceivedDateTime = (orderListFound[0].receiveDate != null ? orderListFound[0].receiveDate : new Date(2017, 5, 3)).getTime();
+            var currentDateTime = new Date().getTime();
+            var difference = (currentDateTime - previousReceivedDateTime)/1000;
+            if(difference < configMIN_TIME_FOR_UPDATE) {
+                validationErrors = stcw.appendToValidationErrors("AE0111", Global.translateText("AE0111", null, ["" + difference, "" + configMIN_TIME_FOR_UPDATE]), validationErrors);
+            }
+        }
+    }
+
+
+    if(inputDS.ParentLineItem == null || inputDS.ParentLineItem.length == 0) {
+        validationErrors = stcw.appendToValidationErrors("DE0292", Global.translateText("DE0292", null, "ParentLineItem"), validationErrors);
+    }
+    else {
+        if(inputDS.ParentLineItem.length > 1) {
+            validationErrors = stcw.appendToValidationErrors("AE0137", Global.translateText("AE0137", null, ["ParentLineItem", inputDS.ParentLineItem.length]), validationErrors);
+        }
+        else {
+            // checking numeric attributes in DS
+            for(var i=0; i<inputDS.ParentLineItem.length; i++) {
+                var bundleDS = inputDS.ParentLineItem[i];
+                if(bundleDS.Quantity != null && isNaN(parseInt(bundleDS.Quantity))) {
+                     validationErrors = stcw.appendToValidationErrors("AE0136", Global.translateText("AE0136", null, ["Quantity", bundleDS.ParentLineItemIdentifer, bundleDS.Quantity]), validationErrors);
+                }
+                if(bundleDS.OrderRowItemId != null && isNaN(parseInt(bundleDS.OrderRowItemId))) {
+                     validationErrors = stcw.appendToValidationErrors("AE0136", Global.translateText("AE0136", null, ["OrderRowItemId", bundleDS.ParentLineItemIdentifer, bundleDS.OrderRowItemId]), validationErrors);
+                }
+                if(bundleDS.ReservationDays != null && isNaN(parseInt(bundleDS.ReservationDays))) {
+                     validationErrors = stcw.appendToValidationErrors("AE0136", Global.translateText("AE0136", null, ["ReservationDays", bundleDS.ParentLineItemIdentifer, bundleDS.ReservationDays]), validationErrors);
+                }
+
+                // checking services
+                if(bundleDS.SVCLineItems != null) {
+                    for(var j=0; j<bundleDS.SVCLineItems.length; j++) {
+                        var serviceDS = bundleDS.SVCLineItems[j];
+                        if(serviceDS.Quantity != null && isNaN(parseInt(serviceDS.Quantity))) {
+                             validationErrors = stcw.appendToValidationErrors("AE0136", Global.translateText("AE0136", null, ["Quantity", serviceDS.SvcLineItemInstanceIdentifier, serviceDS.Quantity]), validationErrors);
+                        }
+                        if(serviceDS.OrderRowItemId != null && isNaN(parseInt(serviceDS.OrderRowItemId))) {
+                             validationErrors = stcw.appendToValidationErrors("AE0136", Global.translateText("AE0136", null, ["OrderRowItemId", serviceDS.SvcLineItemInstanceIdentifier, serviceDS.OrderRowItemId]), validationErrors);
+                        }
+                        if(serviceDS.ReservationDays != null && isNaN(parseInt(serviceDS.ReservationDays))) {
+                             validationErrors = stcw.appendToValidationErrors("AE0136", Global.translateText("AE0136", null, ["ReservationDays", serviceDS.SvcLineItemInstanceIdentifier, serviceDS.ReservationDays]), validationErrors);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    return validationErrors;
+  ]]></script>
+</script>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.writeSequenceForSubSubServicesInOrder">
+  <label>Write Sequence For SubSubServices In Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="subServiceContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var sequence                = 1;
+    var priority                = 1;
+    var child_processed         = 0;
+    var count_processed_in_loop = 0;
+    var errorFound              = null;
+    var exceptionFound          = null;
+    var found_record_with_higher_priority = false;
+
+    if(subServiceContainer.subSubServices == null) {
+        return errorFound;
+    }
+
+    try {
+        while(child_processed < subServiceContainer.subSubServices.length && errorFound == null) {
+            count_processed_in_loop = 0;
+            found_record_with_higher_priority = false;
+
+            for(var i=0; i<subServiceContainer.subSubServices.length && errorFound == null; i++) {
+                var isProvisionable = (!stcw.isLineItemCompleted(subServiceContainer.subSubServices[i].subSubServiceLineItem.lineItemStatus) &&
+                                       subServiceContainer.subSubServices[i].subSubServiceLineItem.action != 'N' &&
+                                       !stcw.checkIfLineItemIsFeasibleForQuote(subServiceContainer.subSubServices[i].subSubServiceLineItem.lineItemStatus, bundleOrder.orderHeader.orderType) &&
+                                       stcw.getIsProvisionableByProductCode(subServiceContainer.subSubServices[i].subSubServiceLineItem.productCode));
+
+                if(subServiceContainer.subSubServices[i].subSubServiceLineItem.priority == priority) {
+                    // priority is good; checking if already processed
+                    if(! stcw.existRecordInOrchestrationTable(subServiceContainer.subSubServices[i].subSubServiceLineItem.id)) {
+                        // to be processed ==> add record to table
+                        stcw.writeRecordForLineItemInOrchestrationTable(bundleOrder.orderHeader.orderNumber,
+                                                                        bundleOrder.id,
+                                                                        subServiceContainer.parentLineItem.id,
+                                                                        sequence,
+                                                                        isProvisionable,
+                                                                        subServiceContainer.subSubServices[i].subSubServiceLineItem,
+                                                                        'T');
+                        child_processed++;
+                        count_processed_in_loop++;
+                    }
+                    else {
+                        // already processed, so skipped
+                    }
+                }
+                else {
+                    // priority is different
+                    if(!found_record_with_higher_priority) {
+                        found_record_with_higher_priority = (subServiceContainer.subSubServices[i].subSubServiceLineItem.priority > priority);
+                    }
+                }
+            } // end for
+
+            if(count_processed_in_loop == 0) {
+                // found no processable record in the for
+                if(found_record_with_higher_priority) {
+                    // but found a child with higher priority, so increase the priority
+                    priority++
+                }
+                else {
+                    errorFound = new DataStructure("wsws.Failure");
+                    errorFound.ErrorCode = "AE0031";
+                    errorFound.ErrorDescription = Global.translateText("AE0031", null,  [subServiceContainer.parentLineItem.lineItemIdentifier, bundleOrder.orderHeader.orderNumber]);
+                    errorFound.ErrorTime = stcc.getSysdateInYYYYMMDD_HH24MMSS();
+                    errorFound.ErrorType = "VALIDATION ERROR";
+                    errorFound.FunctionName = "SUBMIT ORDER";
+                    errorFound.ObjectId = bundleOrder.orderHeader.orderNumber;
+                    errorFound.SystemName = "EOC";
+                }
+            }
+            else {
+                // increasing the sequence because a new loop has to start
+                sequence++;
+            }
+        }  // end while
+    }
+    catch(exc) {
+        errorFound = new DataStructure("wsws.Failure");
+        errorFound.ErrorCode = exceptionFound;
+        errorFound.ErrorDescription = exc.message;
+        errorFound.ErrorTime = stcc.getSysdateInYYYYMMDD_HH24MMSS();
+        errorFound.ErrorType = "VALIDATION ERROR";
+        errorFound.FunctionName = "SUBMIT ORDER";
+        errorFound.ObjectId = bundleOrder.orderHeader.orderNumber;
+        errorFound.SystemName = "EOC";
+    }
+
+    return errorFound;
+  ]]></script>
+</script>

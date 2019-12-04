@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="granite.getUDAValueFor">
+  <label>Get UDA Value For</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="objectType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="instId" type="rifp">
+      <type>dtype_granite.INST_ID_16</type>
+    </parameter>
+    <parameter name="udaGroupName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="udaName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var udaValue = null;
+
+    var finder = null;
+    if(objectType == "PATH") {
+        finder = new Finder("granite.findUDAValueForPath");
+    }
+    else if(objectType == "AMO") {
+        finder = new Finder("granite.findUDAValueForAMO");
+    }
+    else if(objectType == "WO") {
+        finder = new Finder("granite.findUDAValueForWorkOrder");
+    }
+    else if(objectType == "TASK") {
+        finder = new Finder("granite.findUDAValueForTask");
+    }
+
+    if(finder != null && instId != null && udaGroupName != null && udaName != null) {
+        finder.searchDocument.INST_ID = instId;
+        finder.searchDocument.GROUP_NAME = udaGroupName;
+        finder.searchDocument.ATTR_NAME = udaName;
+
+        var udaValueList = finder.search();
+        if(udaValueList != null && udaValueList.length > 0) {
+            udaValue = udaValueList[0].ATTR_VALUE;
+        }
+    }
+
+    return udaValue;
+  ]]></script>
+</script>

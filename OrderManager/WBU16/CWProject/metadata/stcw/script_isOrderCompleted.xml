@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.isOrderCompleted">
+  <label>Is Order Completed</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderStatus" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = false;
+
+    if(orderStatus != null) {
+        result = (orderStatus.toUpperCase() == "COMPLETED" || orderStatus.toUpperCase() == "CANCELLED");
+    }
+
+    return result;
+  ]]></script>
+</script>

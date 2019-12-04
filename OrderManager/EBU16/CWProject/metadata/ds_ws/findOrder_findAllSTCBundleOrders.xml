@@ -1,0 +1,741 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findOrder name="ds_ws.findAllSTCBundleOrders">
+  <allDocuments>true</allDocuments>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_ds_ws.search_bundleOrder</input>
+  <itemTypeList>
+    <itemType>order_ds_ws.bundleOrderSTC</itemType>
+  </itemTypeList>
+  <label>Find All STC BundleOrders</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>21</metaVersion>
+  <output>doc_ds_ws.bundleOrderHeaderDocument</output>
+  <type>order</type>
+  <vDetailForm>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>1</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedOrder>order_ds_ws.bundleOrderSTC/order_orderHeader</mappedOrder>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderNumber</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_orderNumber</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_orderType</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderStatus</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_orderStatus</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_accountNumber</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_accountNumber</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerIdNumber</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_customerIdNumber</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_reservationNumber</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_reservationNumber</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_receivedDate</mappedPath>
+      <operation>greater equal</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_receivedDateMin</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_receivedDate</mappedPath>
+      <operation>less equal</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_receivedDateMax</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_creationDate</mappedPath>
+      <operation>greater equal</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_creationDateMin</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_creationDate</mappedPath>
+      <operation>less equal</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_creationDateMax</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_internalOrder</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_internalOrder</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_isMigrated</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_isMigrated</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.lineItemDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.lineItemDocument/leaf_serviceType</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_serviceType</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.lineItemDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.lineItemDocument/leaf_serviceNumber</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_serviceNumber</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_bundleOrder</document>
+      <mappedDocument>doc_ds_ws.lineItemDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.lineItemDocument/leaf_workOrderNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_bundleOrder/leaf_workOrderNumber</path>
+    </search>
+  </searchList>
+  <selectResultList>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerIdNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerIdNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_accountNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_accountNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerIDType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerIDType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerContact</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerContact</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerContactName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerContactName</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerName</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderStatus</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderStatus</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_creationDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_creationDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdBy</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdBy</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdByName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdByName</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdByContactName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdByContactName</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_serviceDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_serviceDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_priority</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_priority</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_remarks</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_remarks</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_referenceTelNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_referenceTelNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_version</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_version</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerSegmentation</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerSegmentation</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_feasibilityFor</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_feasibilityFor</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_reservation</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_reservation</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_reservationNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_reservationNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_icmsSalesOrderNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_icmsSalesOrderNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_businessUnit</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_businessUnit</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_completionDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_completionDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_receivedDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_receivedDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_isMigrated</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_isMigrated</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_primaryOrderNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_internalOrder</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_internalOrder</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_cwDocStamp</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_cwDocStamp</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_cwOrderCreationDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_cwOrderCreationDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_cwOrderId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_cwOrderId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_cwParentId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_cwParentId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_lastUpdatedDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_lastUpdatedDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_updatedBy</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_updatedBy</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.bundleOrderHeaderDocument</document>
+      <mappedDocument>doc_ds_ws.bundleOrderHeaderDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.bundleOrderHeaderDocument/leaf_cwDocId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_cwDocId</path>
+    </selectResult>
+  </selectResultList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.OrderFinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.bundleOrderHeaderDocument</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_ds_ws.search_bundleOrder/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.OrderFinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findAllSTCBundleOrdersResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.OrderFinderUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="customerIdNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerIdNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="accountNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_accountNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerIDType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerIDType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerContact" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerContact</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerContactName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerContactName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderType" type="elslct">
+                        <label>Order Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderStatus" type="elfld">
+                        <label>Order Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDate" type="eldate">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_creationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="createdBy" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdBy</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="createdByName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdByName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="createdByContactName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdByContactName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceDate" type="eldate">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_serviceDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="priority" type="elfld">
+                        <label>Priority</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_priority</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="remarks" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_remarks</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="referenceTelNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_referenceTelNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="version" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_version</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerSegmentation" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerSegmentation</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="feasibilityFor" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_feasibilityFor</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="reservation" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_reservation</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="reservationNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_reservationNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="icmsSalesOrderNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_icmsSalesOrderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="businessUnit" type="elfld">
+                        <label>Business Unit</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_businessUnit</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="receivedDate" type="eldate">
+                        <label>Received Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_receivedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="completionDate" type="eldate">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_completionDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="internalOrder" type="elfld">
+                        <label>Internal Order</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_internalOrder</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="isMigrated" type="elchk">
+                        <label>Is Migrated</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_isMigrated</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.OrderFinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.OrderFinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findAllSTCBundleOrdersView" type="findVView">
+      <inputOverlay>doc_ds_ws.search_bundleOrder/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find All STC Bundle Orders</label>
+      <outputOverlay>findOrder_ds_ws.findAllSTCBundleOrders/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findOrder>

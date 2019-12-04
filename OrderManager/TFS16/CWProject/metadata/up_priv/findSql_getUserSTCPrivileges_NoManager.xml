@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="up_priv.getUserSTCPrivileges_NoManager">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_common.docString</input>
+  <label>Get User STC Privileges (No Manager)</label>
+  <metaVersion>25</metaVersion>
+  <output>doc_cwf_up.userGroupPrivilege</output>
+  <type>SQL</type>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select distinct gp.privilege, gp.usergroup
+          from cwuserrole g, cwusergroupprivilege gp
+         where g.roleid = gp.usergroup
+           and gp.privilege like 'STC_%'
+           and gp.privilege <> 'STC_GroupMgrPriv'
+        {[0] and g.userid = ?}
+      ]]></script>
+    </method>
+  </methodList>
+</findSql>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="d23bc5f33732230b8a175b22d4059d62" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.orderByReservationSearch">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{05dfa7ed-e496-4c51-e9af-c6328f889ca8}</guid>
+  <label>Order By Reservation Search</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="reservationNumber" type="leaf">
+      <guid>{0017305d-810c-1a2e-446a-612df41ad87c}</guid>
+      <label>Reservation Number</label>
+      <propertyElement type="elfld">
+        <label>Reservation Number</label>
+      </propertyElement>
+      <valueType>dtype_stcw.reservationNumber</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.orderByReservationSearch</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="searchFormGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="orderByReservationSearchHeader" type="elhdr">
+                    <label>Search</label>
+                    <showValidation>true</showValidation>
+                    <style>CwFOT</style>
+                  </element>
+                  <element name="searchFormGrid" type="elgrd">
+                    <colWidths>195,195</colWidths>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>390px</width>
+                    <elementList>
+                      <element name="reservationNumber1" type="eltxtArea">
+                        <columnSpan>2</columnSpan>
+                        <height>20px</height>
+                        <removeLabelLine>true</removeLabelLine>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.orderByReservationSearch/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.orderByReservationSearch/leaf_reservationNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>100%</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

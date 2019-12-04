@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="cdb9ab181dec21bfbe618be75a0d9595" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.syncOrderBetweenExpdAndGranite_cwr4">
+  <activity name="start" type="seqActivity">
+    <guid>{030627d5-3172-0fb1-af0b-e85326366350}</guid>
+    <label>Start</label>
+    <x>61.0</x>
+    <y>45.0</y>
+    <childList>
+      <child name="checkIfOrderHasBeenSentToGranite" type="switchActivity">
+        <guid>{0617f4b8-bd99-7d29-2a1e-7490234ad421}</guid>
+        <label>Check If Order Has Been Sent To Granite</label>
+        <x>215.0</x>
+        <y>31.0</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <guid>{00aac05a-1b7e-209e-b59d-ff1cd42b5790}</guid>
+            <label>Order NOT sent to Granite</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="startOrderNotSent" type="seqActivity">
+                <guid>{012d85c4-70b2-e0f9-c9eb-fd48efb5a2f8}</guid>
+                <label>Start Order NOT SENT</label>
+                <x>370.0</x>
+                <y>49.0</y>
+                <childList>
+                  <child name="checkOrderInGranite" type="switchActivity">
+                    <guid>{0af69b9c-b2db-c196-9feb-81c0848526aa}</guid>
+                    <label>Check Order Is In Granite</label>
+                    <x>509.0</x>
+                    <y>30.0</y>
+                    <childList>
+                      <child name="orderIsInGraniteAndIsNOTUpdate" type="caseActivity">
+                        <guid>{02fb73f1-0e81-1bec-b0b8-3f2be6253c7e}</guid>
+                        <label>Order IS in Granite And Is NOT Update</label>
+                        <x>0.0</x>
+                        <y>0.0</y>
+                        <childList>
+                          <child name="consumeWorklistRecordAndNotSendToGranite" type="scriptActivity">
+                            <guid>{080c5ee2-c858-39fd-11f4-39e04e367362}</guid>
+                            <label>Consume Worklist Record And Not Send To Granite</label>
+                            <x>791.0</x>
+                            <y>21.0</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <guid>{05472930-0363-f3dd-a34d-c1f1e4491d53}</guid>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Consume Worklist Record (I'm position 3.a.i.1.a) ...");
+
+                                        var order = stcw.getOrderInstanceByProcessId(this.process.processDocument.currentProcessId);
+
+                                        stcw.sendSyncIssueMessageToProcess(order, this.process.processDocument.currentProcessId);
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <guid>{0f75f52c-5520-647f-1877-a3a1a9d9d010}</guid>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var order = stcw.getOrderInstanceByProcessId(this.process.processDocument.currentProcessId);
+
+                              var found = false;
+                              if(stcw.existUpdateVersion(order)) {
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Order '" + order.header.orderNumber + "' is Update so worklist action has to be performed ... ");
+                                    }
+                                    else {
+                                          found = stcw.checkOrderExistInGranite(order.header.orderNumber);
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Order '" + order.header.orderNumber + "' is in Granite => " + found);
+                                    }
+
+                                    return found;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="orderIsNotInGraniteOrISUpdate" type="caseActivity">
+                        <guid>{065081fa-25bc-4f20-4105-19226c1d3858}</guid>
+                        <label>Order IS NOT in Granite Or IS Update</label>
+                        <x>0.0</x>
+                        <y>0.0</y>
+                        <childList>
+                          <child name="consumeWorklistRecord" type="scriptActivity">
+                            <guid>{065afdcc-245b-938e-75c3-43a6bab56252}</guid>
+                            <label>Consume Worklist Record</label>
+                            <x>512.0</x>
+                            <y>158.0</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <guid>{051f0ef0-9dfa-a624-251b-881238c4f7a1}</guid>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - consuming worklist record for process " + this.process.processDocument.currentProcessId + " and not sending order to Granite");
+
+                                        var order = stcw.getOrderInstanceByProcessId(this.process.processDocument.currentProcessId);
+
+                                        var worklistDocumentFinder = new Finder("stcw:OrderItemWorklist");
+                                        worklistDocumentFinder.searchDocument.SenderId = this.process.processDocument.currentProcessId;
+                                        worklistDocumentFinder.searchDocument.OrderId  = order.id;
+                                        worklistDocumentFinder.search();
+
+                                        var worklistDocList = worklistDocumentFinder.list;
+                                        if (worklistDocList != null && worklistDocList.size >= 1) {
+                                              var worklistDocument = worklistDocList[0];
+                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Found worklist " + worklistDocument.toXML());
+
+                                              Process.performWorklistAction(worklistDocument,
+                                                                                          null,
+                                                                                          "errorResolved",
+                                                                                          null,
+                                                                                          order,
+                                                                                          null);
+                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Performed worklist action ...");
+                                        }
+                                        else {
+                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Found " + worklistDocList == null ? "0" : worklistDocList.size +
+                                               " worklist records for process " + this.process.processDocument.currentProcessId);
+                                        }
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+          <child name="orderSentToGranite" type="caseActivity">
+            <guid>{0b0a3df9-d750-ac6a-18cf-ec984604ed77}</guid>
+            <label>Order SENT to Granite</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="startOrderSent" type="seqActivity">
+                <guid>{0c919cbf-d1fd-eb15-488f-ad7c093b7cc9}</guid>
+                <label>Start Order SENT</label>
+                <x>210.0</x>
+                <y>173.0</y>
+                <childList>
+                  <child name="checkOrderInGranite" type="switchActivity">
+                    <guid>{0b5cec35-b8db-3654-fce4-de2f81d49af5}</guid>
+                    <label>Check Order Is In Granite</label>
+                    <x>215.0</x>
+                    <y>301.0</y>
+                    <childList>
+                      <child name="orderIsInGranite" type="caseActivity">
+                        <guid>{03d92de0-1321-dec9-8f85-f58c6dd872d7}</guid>
+                        <label>Order IS in Granite</label>
+                        <x>0.0</x>
+                        <y>0.0</y>
+                        <childList>
+                          <child name="nothingToDo" type="scriptActivity">
+                            <guid>{04b653cf-9827-624a-bcb2-aa1091fa5102}</guid>
+                            <label>Nothing To Do</label>
+                            <x>382.0</x>
+                            <y>303.0</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <guid>{05472930-0363-f3dd-a34d-c1f1e4491d53}</guid>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Nothing to do (I'm position 3.a.i.2.b) ...");
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <guid>{0f75f52c-5520-647f-1877-a3a1a9d9d010}</guid>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var order = stcw.getOrderInstanceByProcessId(this.process.processDocument.currentProcessId);
+
+                              var found = stcw.checkOrderExistInGranite(order.header.orderNumber);
+
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Order '" + order.header.orderNumber + "' is in Granite => " + found);
+
+                                    return found;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="orderIsNotInGranite" type="caseActivity">
+                        <guid>{0a169daf-78fc-99d7-224d-2fb77a9262a4}</guid>
+                        <label>Order IS NOT in Granite</label>
+                        <x>860.0</x>
+                        <y>560.0</y>
+                        <childList>
+                          <child name="logTheError" type="scriptActivity">
+                            <guid>{0e8d743d-a9c0-9228-78c4-d7796004d37c}</guid>
+                            <label>Log The Error</label>
+                            <x>221.0</x>
+                            <y>493.0</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <guid>{09643f70-c3ad-8268-122a-be03776fdc67}</guid>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  var msg = "ERROR: for Expediter Order linked to process " + this.process.processDocument.currentProcessId + " was sent to Granite but unable to find WO in Granite (I'm position 3.a.i.2.a) !!!!!!";
+                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - " + msg);
+                                        Global.logDebug(msg);
+                                        this.process.processDocument.errorFound = true;
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{0c1bf15e-c59a-815d-d65b-794bc50cbca0}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  var order = stcw.getOrderInstanceByProcessId(this.process.processDocument.currentProcessId);
+
+                  var interfaceName = "GR_SUB_ORDER";
+                  if(stcw.existUpdateVersion(order)) {
+                        interfaceName = "GR_UPD_ORDER";
+                  }
+
+                  var orderSentToGranite = false;
+                  var interfaceFolder = stcw.findLastInterfaceFolder(order, interfaceName);
+                  if(interfaceFolder != null) {
+                        var msg = interfaceFolder.interfaceData.responseData;
+                        orderSentToGranite = (msg != null);
+                  }
+
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Order was sent to Granite => " + orderSentToGranite);
+
+                        return orderSentToGranite;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="foundError" type="switchActivity">
+        <guid>{0e84b30a-4ac1-65c8-7407-b87e5e40b5bc}</guid>
+        <label>Found Error</label>
+        <x>409.0</x>
+        <y>493.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <guid>{0a78c510-f50a-09e4-f4fd-440e3cfa8a73}</guid>
+            <label>Yes</label>
+            <x>417.0</x>
+            <y>714.0</y>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{0d31fe0f-f9e6-c63a-b831-abd83fdf61a7}</guid>
+                <system>true</system>
+                <script>return (this.process.processDocument.errorFound);</script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{0885b5c9-4b93-cd8e-49f9-24d608e2c5a0}</guid>
+            <label>No</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="checkIfWOIsCompletedOrCancelled" type="switchActivity">
+                <guid>{0c29be31-7698-4d7e-e41b-bf569c7ed1a3}</guid>
+                <label>Check If WO Is Completed Or Cancelled</label>
+                <x>599.0</x>
+                <y>480.0</y>
+                <childList>
+                  <child name="woNOTCompleted_Cancelled" type="caseActivity">
+                    <guid>{08c96533-7111-dd33-6f9a-874b86bcbebf}</guid>
+                    <label>WO NOT Completed Or Cancelled</label>
+                    <x>0.0</x>
+                    <y>0.0</y>
+                    <childList>
+                      <child name="nothingToDo" type="scriptActivity">
+                        <guid>{0638d0ce-0f37-427d-bce2-4bd6ea338248}</guid>
+                        <label>Nothing To Do</label>
+                        <x>599.0</x>
+                        <y>618.0</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <guid>{02d453e0-0f61-630a-f1c4-14b8c7fc9c95}</guid>
+                            <system>true</system>
+                            <script><![CDATA[
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Nothing to do (I'm position 3.a.ii.2) ...");
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="woISCompleted_CancelledOrQuoteRevise" type="caseActivity">
+                    <guid>{00550360-c0e3-099b-db64-83f423a40e38}</guid>
+                    <label>WO IS Completed Or Cancelled or Quote is a Revise</label>
+                    <x>0.0</x>
+                    <y>0.0</y>
+                    <childList>
+                      <child name="generateCompleted_CancelledOSU" type="scriptActivity">
+                        <guid>{054235f0-0af6-9284-2145-36ffa3bb1599}</guid>
+                        <label>Generate Completed Or Cancelled OSU</label>
+                        <x>809.0</x>
+                        <y>480.0</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <guid>{0f1b73e5-7a84-2ab2-f843-8cce5121d88d}</guid>
+                            <system>true</system>
+                            <script><![CDATA[
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Generating COMPLETED or CANCELLED OSU event for process " + this.process.processDocument.currentProcessId);
+
+                                    var order = stcw.getOrderInstanceByProcessId(this.process.processDocument.currentProcessId);
+
+                                    var osuFinder = new Finder("granite:findAssetInfoByOrderNumber");
+                                    osuFinder.searchDocument.WO_NAME = order.header.orderNumber;
+                                    osuFinder.search();
+
+                                    var completedOSUList = osuFinder.list;
+                                    if(completedOSUList != null && completedOSUList.size > 0) {
+                                          var completedOSU = completedOSUList[0];
+
+                                          var osuEvent = new DataStructure("wgws:updateOrderStatus");
+                                          osuEvent.assetNumber       = completedOSU.ASSETNAME;
+                                          osuEvent.assetStatus       = completedOSU.ASSETSTATUS;
+                                          osuEvent.businessUnit      = "Wholesale";
+                                          osuEvent.comments          = completedOSU.WO_COMMENTS;
+                                          osuEvent.NINumber          = completedOSU.NINUMBER;
+                                          osuEvent.orderNumber       = order.header.orderNumber;
+                                          osuEvent.systemDesignation = "";
+                                          osuEvent.workOrderStatus   = ((completedOSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED");
+
+                                          var patchResults = rpts.patchAsynchMessageLog (this.process.processDocument.currentProcessId, "graniteStatusUpdate");
+                                          Process.sendMessageToProcess (this.process.processDocument.currentProcessId, null, "wgws:ifExpediter_GRANITE/operation_OrderStatusUpdate", osuEvent);
+
+                                          if(completedOSU.WO_STATUS == '8') {
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Sent CANCELLED OSU event to process " + this.process.processDocument.currentProcessId);
+                                          }
+                                          else {
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Sent COMPLETED OSU event to process " + this.process.processDocument.currentProcessId);
+                                          }
+                                    }
+                                    else {
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Unable to find COMPLETED or CANCELLED AssetInfo for order " + order.header.orderNumber);
+                                    }
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                    <methodList>
+                      <method name="cwOnProcActCond" type="action">
+                        <category>cond</category>
+                        <guid>{01847f54-7a7b-bebe-ac1d-d5fcad4e3cdd}</guid>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var order = stcw.getOrderInstanceByProcessId(this.process.processDocument.currentProcessId);
+
+                          var woStatus = stcw.getWOStatusInGranite(order.header.orderNumber);
+
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - (woStatus in ('7', '8')) for order " + order.header.orderNumber + " in Granite => " + (woStatus == '7' || woStatus == '8'));
+
+                                return (woStatus == '7' || woStatus == '8');
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{0080dcd8-98db-8d4d-6922-32d08be5966e}</guid>
+        <label>End</label>
+        <x>822.0</x>
+        <y>626.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{068f63ce-a509-3b96-8365-535a045d01eb}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Completed 'SyncOrderBetweenExpediterAndGranite' for process " + this.process.processDocument.currentProcessId);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0c3eddf0-4afc-5837-60a0-35f3f1828988}</guid>
+        <system>true</system>
+        <script><![CDATA[
+          if(this.process.parent != null) {
+                this.process.processDocument.currentProcessId = this.process.parent.processDocument.currentProcessId;
+                this.process.processDocument.errorFound       = false;
+          }
+
+          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Starting with processDocument: " + this.process.processDocument.toXML());
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <document>doc_stcw.syncOrderQuoteProcessDocument</document>
+  <label>Sync Order Between Expediter And Granite</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_stcw.syncOrderBetweenExpdAndGranite</process>
+  <revision>4</revision>
+  <type>User</type>
+</process__revision>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="processSTC.Global_reprocessAllFailedOrdersDueToLock">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <schedule type="sched">
+      <day>-1</day>
+      <instance>Daily</instance>
+      <time>01:30:00</time>
+    </schedule>
+    <x>62.0</x>
+    <y>40.0</y>
+    <childList>
+      <child name="executeReprocessing" type="switchActivity">
+        <label>Execute Reprocessing?</label>
+        <x>170.0</x>
+        <y>40.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>60.0</x>
+            <y>240.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>188.0</x>
+                <y>196.0</y>
+                <childList>
+                  <child name="findAllOrderNumbersToReprocess" type="scriptActivity">
+                    <label>Find All OrderNumbers To Reprocess</label>
+                    <x>171.0</x>
+                    <y>329.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var resultList = Finder.runFinder("processSTC.findOrdersRejectedForLock", "select", null);
+                          if(resultList != null && resultList.length > 0) {
+
+                              for(var i=0; i<resultList.length; i++) {
+                                  if(i == 0) {
+                                      this.process.processDocument.orderNumberList = resultList[i].orderNumber;
+                                  }
+                                  else {
+                                      this.process.processDocument.orderNumberList = this.process.processDocument.orderNumberList + ";" + resultList[i].orderNumber;
+                                  }
+                              }
+
+                          }
+                          else {
+                              this.process.processDocument.orderNumberList = null;
+                          }
+
+
+                          this.process.processDocument.index = 0;
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="anotherRecordToProcess" type="switchActivity">
+                    <label>Another Record To Process?</label>
+                    <x>413.0</x>
+                    <y>338.0</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>513.0</x>
+                        <y>126.0</y>
+                        <childList>
+                          <child name="start" type="seqActivity">
+                            <label>Start</label>
+                            <x>658.0</x>
+                            <y>357.0</y>
+                            <childList>
+                              <child name="restartProvisioningProcessForOrder" type="scriptActivity">
+                                <label>Restart Provisioning Process For the Order</label>
+                                <x>648.0</x>
+                                <y>479.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      var orderNumberToProcess = this.process.processDocument.orderNumberList.split(";")[this.process.processDocument.index];
+
+                                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Starting Processing record with orderNumberToProcess " + orderNumberToProcess);
+
+                                      var orderHeader = ds_ws.getBundleOrderByOrderNumber(orderNumberToProcess);
+                                      if(orderHeader == null) {
+                                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Unable to find orderHeader for orderNumber '" + orderNumberToProcess + "'");
+                                      }
+                                      else {
+                                          try {
+                                              processSTC.restartProvisioningProcessForOrder(orderHeader);
+                                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Restarted Provisioning Process for order with orderNumber '" + orderNumberToProcess + "'");
+                                          }
+                                          catch(exc) {
+                                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Error while restarting process for order with orderNumber'" + orderNumberToProcess + "' - Exc: " + exc.message);
+                                          }
+                                      }
+
+                                      // removing the orderNumber from the list
+                                      processSTC.removeOrderToFailedOrdersForLockList(orderNumberToProcess);
+
+                                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Completed processing record with orderNumberToProcess " + orderNumberToProcess);
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="repeat" type="repeatActivity">
+                                <element>proc_processSTC.Global_reprocessAllFailedOrdersDueToLock/seqActivity_start/switchActivity_executeReprocessing/caseActivity_yes/seqActivity_start/switchActivity_anotherRecordToProcess</element>
+                                <label>Repeat</label>
+                                <schedule type="sched">
+                                  <duration type="dur">
+                                    <methodList>
+                                      <method name="cwOnDuration" type="action">
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          // sleep for 180 secs, so 3 minutes
+                                          var sleepTime = 180;
+
+                                          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.id + "] - Sleeping for " + sleepTime + " before processing the next record");
+
+                                          return sleepTime;
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </duration>
+                                </schedule>
+                                <x>422.0</x>
+                                <y>504.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script>this.process.processDocument.index++;</script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var existAnotherRecord = (this.process.processDocument.orderNumberList != null &&
+                                                        this.process.processDocument.orderNumberList.split(";").length > this.process.processDocument.index);
+
+                              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Another record found? " + existAnotherRecord);
+                              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - OrderNumberList: " + this.process.processDocument.orderNumberList);
+                              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Index: " + this.process.processDocument.index);
+
+                              // existAnotherRecord = false;
+                              return existAnotherRecord;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>425.0</x>
+                        <y>171.0</y>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var configExecuteGlobalReprocessFailed = Global.getConfigVariable("EXECUTE_GLOBAL_REPROCESS_FOR_LOCK", "FALSE").toUpperCase();
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - EXECUTE_GLOBAL_REPROCESS_FOR_LOCK = " + configExecuteGlobalReprocessFailed);
+
+                  return (configExecuteGlobalReprocessFailed == "TRUE");
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>322.0</x>
+            <y>45.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>425.0</x>
+        <y>45.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Global Process 'Reprocess All Failed Orders Due To Lock' completed");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Start Global process 'Reprocess All Failed Orders Due To Lock'");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_processSTC.reprocessFailedOrdersProcessDocument</document>
+  <label>Global: Reprocess All Failed Orders Due To Lock</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>Global</type>
+</process>

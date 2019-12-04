@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="65da76e495097002329c69248a6ee0b4" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.getAllBlockNameValuesByParentElementId">
+  <label>Get All Block NameValues By ParentElementId</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="parentElementId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputSearchDoc = new Document("cwt_common.docID");
+    inputSearchDoc.cwDocID = parentElementId;
+
+    var resultList = Finder.runFinder("ds_ws.findBlockNameValuesByParentElementId", "select", inputSearchDoc);
+
+    return resultList;
+  ]]></script>
+</script>

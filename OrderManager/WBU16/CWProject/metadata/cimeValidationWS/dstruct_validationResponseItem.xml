@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure name="cimeValidationWS.validationResponseItem">
+  <container>true</container>
+  <label>validationResponseItem</label>
+  <metaVersion>25</metaVersion>
+  <xmlMap type="xmap">
+    <includeXsiType>true</includeXsiType>
+  </xmlMap>
+  <childList>
+    <child name="result" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_cimeValidationWS.resultValue</element>
+      <label>result</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="lineItemIdentifier" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>lineItemIdentifier</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="failure" type="dstruct">
+      <array>true</array>
+      <element>dstruct_cimeValidationWS.failure</element>
+      <label>failure</label>
+      <maxInstance>-1</maxInstance>
+    </child>
+  </childList>
+</dataStructure>

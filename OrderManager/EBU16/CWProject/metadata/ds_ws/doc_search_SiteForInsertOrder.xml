@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.search_SiteForInsertOrder">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{c7c74ecb-fe55-48f1-9092-0d5b38686efe}</guid>
+  <label>Search Element: Site for InsertOrder</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="SITE_HUM_ID" type="leaf">
+      <label>Name</label>
+      <propertyElement type="elfld">
+        <label>Site Name [%]</label>
+      </propertyElement>
+      <valueType>dtype_granite.SITE_HUM_ID</valueType>
+    </variable>
+    <variable name="CLLI" type="leaf">
+      <label>CLLI</label>
+      <propertyElement type="elfld">
+        <label>CLLI [%]</label>
+      </propertyElement>
+      <valueType>dtype_granite.CLLI</valueType>
+    </variable>
+    <variable name="NUM" type="leaf">
+      <label>NUM</label>
+      <propertyElement type="elfld">
+        <label>Site Type [%]</label>
+      </propertyElement>
+      <valueType>dtype_granite.SITE_NUM</valueType>
+    </variable>
+    <variable name="SITE_INST_ID" type="leaf">
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>SITE_INST_ID</label>
+      </propertyElement>
+      <valueType>dtype_granite.INST_ID</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.search_SiteForInsertOrder</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="search_SITE_INSTGrid" type="elgrd">
+                    <colWidths>90px,160px,90px,160px,90px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>100%</width>
+                    <elementList>
+                      <element name="search_SITE_INSTHeader" type="elhdr">
+                        <label>Search Element: Site For InsertOrder</label>
+                      </element>
+                      <element name="SITE_HUM_ID" type="elfld">
+                        <label>Site Name [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_SiteForInsertOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_SiteForInsertOrder/leaf_SITE_HUM_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CLLI" type="elfld">
+                        <label>CLLI [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_SiteForInsertOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_SiteForInsertOrder/leaf_CLLI</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="NUM" type="elfld">
+                        <label>Site Type [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_SiteForInsertOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_SiteForInsertOrder/leaf_NUM</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>10px</height>
+                        <rowSpan>10px</rowSpan>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

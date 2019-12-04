@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="wDashboards.inputForDashboards">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0d28470e-56df-cacf-4138-e35b7c85f3d5}</guid>
+  <label>Input For Dashboards</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="startDateTime" type="leaf">
+      <label>Start Date Time</label>
+      <propertyElement type="eldatetime">
+        <displayFormat>MM/dd/yyyy HH:mm:ss</displayFormat>
+        <label>Start Date Time</label>
+      </propertyElement>
+      <valueType>dtype_stcc.formattedDateTime</valueType>
+    </variable>
+    <variable name="endDateTime" type="leaf">
+      <label>End Date Time</label>
+      <propertyElement type="eldatetime">
+        <displayFormat>MM/dd/yyyy HH:mm:ss</displayFormat>
+        <label>End Date Time</label>
+      </propertyElement>
+      <valueType>dtype_stcc.formattedDateTime</valueType>
+    </variable>
+    <variable name="refreshTime" type="leaf">
+      <propertyElement type="elfld">
+        <label>Refresh Time</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <valueType>dtype_wDashboards.integer3</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$refreshTime" type="laction">
+      <path>doc_wDashboards.inputForDashboards/leaf_refreshTime</path>
+      <type>initializer</type>
+      <script>1</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_wDashboards.inputForDashboards</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="setValueGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="inputForDashboardsHeader" type="elhdr">
+                    <label>Set Dashboard Input Values</label>
+                    <showValidation>true</showValidation>
+                    <style>CwFOT</style>
+                  </element>
+                  <element name="setValueGrid" type="elgrd">
+                    <colWidths>100px,160px,100px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>390px</width>
+                    <elementList>
+                      <element name="startDateTime3" type="eldatetime">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.inputForDashboards/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.inputForDashboards/leaf_startDateTime</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="endDateTime3" type="eldatetime">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.inputForDashboards/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.inputForDashboards/leaf_endDateTime</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="refreshTime" type="elfld">
+                        <label>Refresh Time</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.inputForDashboards/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.inputForDashboards/leaf_refreshTime</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="rowSpacer2" type="elrsp">
+                        <columnSpan>02</columnSpan>
+                        <startRow>true</startRow>
+                      </element>
+                      <element name="columnSpacer" type="elcsp">
+                        <columnSpan>2</columnSpan>
+                      </element>
+                      <element name="Set_Parameters" type="elbtn">
+                        <clickMethod type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.inputForDashboards/ui_UserInterface/usrActionMethod_setParameters</variablePath>
+                          </variablePathList>
+                        </clickMethod>
+                        <columnSpan>1</columnSpan>
+                        <label>Set Parameters</label>
+                        <width>140px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="setParameters_confirm" type="action">
+        <script><![CDATA[return "AW0014";]]></script>
+      </method>
+      <method name="setParameters" type="usrActionMethod">
+        <confirmation>doc_wDashboards.inputForDashboards/ui_UserInterface/action_setParameters_confirm</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          Global.setSessionParameter("Dashboard_StartTime", this.model.startDateTime);
+          Global.setSessionParameter("Dashboard_EndTime", this.model.endDateTime);
+          Global.setSessionParameter("Dashboard_RefreshTime", this.model.refreshTime);
+          return Global.STOP_UI;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

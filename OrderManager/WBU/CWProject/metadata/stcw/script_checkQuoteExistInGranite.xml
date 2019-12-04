@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="cc490a6182489971604ede3f18c476bf" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.checkQuoteExistInGranite">
+  <guid>{0dce6c20-b3c4-578d-8349-394c96852703}</guid>
+  <label>Check Quote Exist In Granite</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="quoteNumber" type="rifp">
+      <type>dtype_stcw.quoteNumber</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var woStatus = stcw.getWOStatusInGranite(quoteNumber);
+    return (woStatus != null);
+  ]]></script>
+</script>

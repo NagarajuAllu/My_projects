@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<definitions name="ifEAI_QA_17122008" targetNamespace="http://172.20.236.152/GraniteGW_Quote/Inbound/SOAP/Ack/WSDL/QuoteAck" xmlns:tns="http://172.20.236.152/GraniteGW_Quote/Inbound/SOAP/Ack/WSDL/QuoteAck" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:ifEAI_QA_17122008="http://172.20.236.152/GraniteGW_Quote/Inbound/SOAP/Ack/WSDL/QuoteAck">
+
+	<types>
+		<schema targetNamespace="http://172.20.236.152/GraniteGW_Quote/Inbound/SOAP/Ack/WSDL/QuoteAck"
+				xmlns="http://www.w3.org/2001/XMLSchema"
+			xmlns:ifEAI_QA_17122008="http://172.20.236.152/GraniteGW_Quote/Inbound/SOAP/Ack/WSDL/QuoteAck"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+
+			<annotation>
+				<documentation>&#091;17.12.2008&#093; Interface vs. &#34;EAI&#34;: via SOAP &#091;Quote Acknowledgement&#093;</documentation>
+				<appinfo>
+					<metadata>STC Project</metadata>
+					<created>Mon Sep 08 11:04:21 CEST 2008</created>
+					<updated>Tue Sep 17 18:52:10 EDT 2013</updated>
+				</appinfo>
+			</annotation>
+
+			<!-- Data types and elements -->
+
+			<!-- Structures -->
+
+			<complexType name="receiveRequest">
+				<annotation>
+					<documentation>receiveRequest</documentation>
+				</annotation>
+					<sequence>
+						<element name="QuoteAck" minOccurs="1" maxOccurs="1" type="ifEAI_QA_17122008:Request"/>
+					</sequence>
+				</complexType>
+
+			<element name="receiveRequest" type="ifEAI_QA_17122008:receiveRequest"/>
+
+			<complexType name="receiveRequestResponse">
+				<annotation>
+					<documentation>receiveRequestResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="Status" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<element name="receiveRequestResponse" type="ifEAI_QA_17122008:receiveRequestResponse"/>
+
+			<complexType name="Request">
+				<annotation>
+					<documentation>Request</documentation>
+				</annotation>
+					<sequence>
+						<element name="QuoteNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ValidationResponse" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CircuitRemarks" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="BusinessUnit" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+		</schema>
+	</types>
+
+	<message name="receiveRequest_el">
+		<part name="receiveRequest_el" element="ifEAI_QA_17122008:receiveRequest_el"/>
+	</message>
+
+	<message name="receiveRequestResponse_el">
+		<part name="receiveRequestResponse_el" element="ifEAI_QA_17122008:receiveRequestResponse_el"/>
+	</message>
+
+	<portType name="QA">
+		<operation name="QuoteAck">
+			<input message="tns:receiveRequest_el"/>
+			<output message="tns:receiveRequestResponse_el"/>
+		</operation>
+	</portType>
+
+	<binding name="GraniteGW_Quote_Inbound_SOAP_Ack_WSDL_QuoteAck_Binder" type="tns:QA">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"/>
+		<operation name="QuoteAck">
+			<soap:operation soapAction="GraniteGW_Quote_Inbound_SOAP_Ack_WSDL_QuoteAck_Binder_QuoteAck"/>
+			<input>
+				<soap:body parts="QuoteAck" use="literal" namespace="http://172.20.236.152/GraniteGW_Quote/Inbound/SOAP/Ack/WSDL/QuoteAck"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="http://172.20.236.152/GraniteGW_Quote/Inbound/SOAP/Ack/WSDL/QuoteAck"/>
+			</output>
+		</operation>
+	</binding>
+
+	<service name="ifEAI_QA_17122008">
+		<port name="GraniteGW_Quote_Inbound_SOAP_Ack_WSDL_QuoteAck_Port" binding="tns:GraniteGW_Quote_Inbound_SOAP_Ack_WSDL_QuoteAck_Binder">
+			<soap:address location="http://172.20.66.16:24004/ws/GraniteGW_Quote.Inbound.SOAP.Ack.WSDL:QuoteAck"/>
+		</port>
+	</service>
+
+</definitions>

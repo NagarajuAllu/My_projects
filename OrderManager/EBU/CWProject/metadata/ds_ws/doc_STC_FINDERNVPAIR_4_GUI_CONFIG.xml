@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="af1c4806d26bc965dc09d1d4b4a51965" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.STC_FINDERNVPAIR_4_GUI_CONFIG">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{bd7db3b6-f9c1-4724-9e55-6507967ba124}</guid>
+  <label>Finder For NVPair For Insert Order From GUI Configuration</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="finderLabel" type="leaf">
+      <column>FINDERLABEL</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_ds_ws.STC_FINDERNVPAIR_4_GUI_CONFIG/permMethod_editableFinderLabel</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Finder Label</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_FINDERNVPAIR_4_GUI_CONFIG</table>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="querySQL" type="leaf">
+      <column>QUERYSQL</column>
+      <propertyElement type="eltxtArea">
+        <label>SQL Query</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_FINDERNVPAIR_4_GUI_CONFIG</table>
+      <valueType>dtype_ds_ws.string4000</valueType>
+    </variable>
+    <variable name="dbLogicalConnection" type="leaf">
+      <column>DBLOGICALCONNECTION</column>
+      <propertyElement type="elslct">
+        <label>DB Logical Connection</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_FINDERNVPAIR_4_GUI_CONFIG</table>
+      <valueType>dtype_ds_ws.dbLogicalConnections</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="validationRule_finderLabelUniqueness" type="crule">
+      <code>AE0124</code>
+      <path>doc_ds_ws.STC_FINDERNVPAIR_4_GUI_CONFIG/leaf_finderLabel</path>
+      <severity>error</severity>
+      <type>validator</type>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+      <script><![CDATA[
+        var error = false;
+
+        if(!document.isStored) {
+             var finderFound = ds_ws.getFinderForNVPairForGUI(document.finderLabel);
+             error = (finderFound != null);
+        }
+
+        return error;
+      ]]></script>
+    </method>
+    <method name="cwOnDocVisualKey" type="action">
+      <system>true</system>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+      <script><![CDATA[
+        var superResult = this.cw$super_cwOnDocVisualKey();
+
+        return this.finderLabel;
+      ]]></script>
+    </method>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        if(this.isStored) {
+            Global.showUserMessage(Global.translateText("AI0002"));
+        }
+        else {
+            Global.showUserMessage(Global.translateText("AI0001"));
+        }
+      ]]></script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editableFinderLabel" type="permMethod">
+      <script>return (!this.isStored)</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.STC_FINDERNVPAIR_4_GUI_CONFIG</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="finderForNVPair4GUIGrid" type="elgrd">
+                    <colWidths>120px,160px,120px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>640px</width>
+                    <elementList>
+                      <element name="finderForNVPair4GUIHeader" type="elhdr">
+                        <label>Configuration Finders For NVPair For Insert Order From GUI</label>
+                      </element>
+                      <element name="finderLabel" type="elfld">
+                        <label>Finder Label</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_FINDERNVPAIR_4_GUI_CONFIG/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.STC_FINDERNVPAIR_4_GUI_CONFIG/leaf_finderLabel</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="dbLogicalConnections" type="elslct">
+                        <label>DB Logical Connection</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_FINDERNVPAIR_4_GUI_CONFIG/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.STC_FINDERNVPAIR_4_GUI_CONFIG/leaf_dbLogicalConnection</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="querySQL" type="eltxtArea">
+                        <columnSpan>5</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_FINDERNVPAIR_4_GUI_CONFIG/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.STC_FINDERNVPAIR_4_GUI_CONFIG/leaf_querySQL</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

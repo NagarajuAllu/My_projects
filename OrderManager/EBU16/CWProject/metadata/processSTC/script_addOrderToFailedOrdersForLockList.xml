@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="processSTC.addOrderToFailedOrdersForLockList">
+  <label>Add Order To Failed Orders For Lock List</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderNumberRejected" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(orderNumberRejected != null) {
+        var searchDoc = new Document("ds_ws.search_orderNumber");
+        searchDoc.orderNumber = orderNumberRejected;
+
+        var resultList = Finder.runFinder("processSTC.findOrdersRejectedForLock", "select", searchDoc);
+
+        if(resultList != null && resultList.length == 0) {
+            // it means that the order is not in the list; adding it
+            var newDoc = new Document("processSTC.STC_ORDER_REJECTED_FOR_LOCK");
+            newDoc.orderNumber = orderNumberRejected;
+            newDoc.save();
+
+            debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] - addOrderToFailedOrdersForLockList - Added order '" + orderNumberRejected + "' to the list");
+
+        }
+        else {
+            debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] - addOrderToFailedOrdersForLockList - Order '" + orderNumberRejected + "' already in the list");
+        }
+    }
+  ]]></script>
+</script>

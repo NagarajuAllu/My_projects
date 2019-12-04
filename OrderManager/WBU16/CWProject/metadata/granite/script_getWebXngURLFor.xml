@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="granite.getWebXngURLFor">
+  <label>Get WebXng URL For</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="type" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="instId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var hyperLink = Global.getConfigVariable("WebXng_URL");
+
+    if(type == "WO") {
+        hyperLink =  hyperLink + "xweb_works.xperworks_show_wo?woinstid=" + instId;
+    }
+    else if(type == "PATH") {
+        hyperLink = hyperLink + "xperweb.path_def?iPathInstId=" + instId;
+    }
+    else if(type == "EQUIP") {
+        hyperLink = hyperLink + "xweb_equip.equip_def?iEqInstId=" + instId;
+    }
+    else {
+        hyperLink = null;
+    }
+
+    return hyperLink;
+  ]]></script>
+</script>

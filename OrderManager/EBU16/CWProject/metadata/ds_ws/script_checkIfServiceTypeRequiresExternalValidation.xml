@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="b20d389c6b096fb10e593a59582f80d7" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.checkIfServiceTypeRequiresExternalValidation">
+  <label>Check If ServiceType Requires External Validation</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_ds_ws.serviceType</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("ds_ws.search_ServiceTypeBehaviorConfigurationDoc");
+    inputDoc.serviceType = serviceType;
+
+    var resultList = Finder.runFinder("ds_ws.findBehaviorConfigurationForServiceType", "select", inputDoc);
+
+    var requireExternalValidation = true;
+
+    if(resultList != null && resultList.length > 0) {
+        requireExternalValidation = resultList[0].externalValidationRequired;
+    }
+
+    return requireExternalValidation;
+  ]]></script>
+</script>

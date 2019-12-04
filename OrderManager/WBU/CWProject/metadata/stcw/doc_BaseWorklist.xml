@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="dcda05a99d33aef8ea58d66dc1c16e5e" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.BaseWorklist">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_cwf_pm.BaseWorklist</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{0629fe0e-25a3-591a-7a55-0b04f232a327}</guid>
+  <highlight>32</highlight>
+  <label>Worklist Document</label>
+  <metaVersion>3</metaVersion>
+  <overrides>doc_cwf_pm.BaseWorklist</overrides>
+  <variableList>
+    <variable name="orderNumber" type="leaf">
+      <column>ORDER_NUMBER</column>
+      <guid>{0e408350-fd7f-7010-6795-5807b49526f2}</guid>
+      <label>Order Number</label>
+      <propertyElement type="elfld">
+        <label>Order Number</label>
+      </propertyElement>
+      <table>CWPWORKLIST</table>
+      <valueType>dtype_stcw.quoteNumber</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocInit" type="action">
+      <guid>{0e8920e5-ec19-22b1-4e36-06526ae7b593}</guid>
+      <system>true</system>
+      <script>this.cw$super();</script>
+    </method>
+    <method name="cwOnDocLoad" type="action">
+      <guid>{03a63ae6-0087-c6a0-6b03-4a33a67118aa}</guid>
+      <system>true</system>
+      <script>this.cw$super();</script>
+    </method>
+    <method name="cwOnDocStore" type="action">
+      <guid>{06cef963-6e61-aa9c-0135-5c8552a58937}</guid>
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super();
+
+        debugPrintln("Worklist.OrderId = " + this.OrderId);
+
+              if(this.OrderId != null && this.OrderId > 0) {
+                    try {
+                          var order = Order.getOrderById(this.OrderId);
+
+                          if (order.metadataType == "stcw:wholesaleOrder") {
+                                this.orderNumber = order.header.orderNumber;
+                          }
+                          else if(order.metadataType == "stcw:wholesaleQuote") {
+                                this.orderNumber = order.header.quoteNumber;
+                          }
+                    }
+                    catch(exc) {
+                          // do nothing
+                    }
+              }
+      ]]></script>
+    </method>
+    <method name="cwOnDocVisualKey" type="action">
+      <guid>{026296ca-663c-a634-16b0-ad3c4efcb005}</guid>
+      <system>true</system>
+      <script>return this.cw$super();</script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        // SCRIPT MIGRATION: if null, return false
+        function functionToReturnFalseWhenNull(scriptToReturnFalseWhenNullThis) {
+        return scriptToReturnFalseWhenNullThis.cwIsEditable(true) && $psCondition;
+        }
+
+        var functionToReturnFalseWhenNullRes = functionToReturnFalseWhenNull(this);
+        if(functionToReturnFalseWhenNullRes == null)
+          return false;
+        else
+          return functionToReturnFalseWhenNullRes;
+      ]]></script>
+    </method>
+    <method name="attachPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_cwf_pm.BaseWorklist/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.BaseWorklist</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_cwf_pm.BaseWorklist/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>doc_cwf_pm.BaseWorklist/ui_UserInterface/frmui_Forms/vform_Default</base>
+            <extends>doc_cwf_pm.BaseWorklist/ui_UserInterface/frmui_Forms/vform_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="customWorklistGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="BaseWorklistHeader" type="elhdr">
+                    <label>Worklist</label>
+                    <showValidation>true</showValidation>
+                    <style>CwFOT</style>
+                  </element>
+                  <element name="customWorklistGrid" type="elgrd">
+                    <colWidths>117,195,117,195</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>624px</width>
+                    <elementList>
+                      <element name="image" type="elimg">
+                        <columnSpan>4</columnSpan>
+                        <height>1px</height>
+                        <imageType>normal</imageType>
+                        <label>!</label>
+                        <removeLabelLine>true</removeLabelLine>
+                        <showLabel>false</showLabel>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/action_cwCalculate_customWorklist$_</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>1px</width>
+                      </element>
+                      <element name="Operation1" type="elslct">
+                        <columnSpan>1</columnSpan>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_cwf_pm.BaseWorklist/leaf_Operation</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="Details" type="eltxtArea">
+                        <autoFitText>true</autoFitText>
+                        <cellAlignment>left,center</cellAlignment>
+                        <columnSpan>3</columnSpan>
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <height>22px</height>
+                        <labeAlign>center</labeAlign>
+                        <label>Details</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/action_customWorklist$cwCalculate_Details</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="AssignedDate1" type="eldatetime">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_cwf_pm.BaseWorklist/leaf_AssignedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="StartDate1" type="eldatetime">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_cwf_pm.BaseWorklist/leaf_StartDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="DueDate1" type="eldatetime">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_cwf_pm.BaseWorklist/leaf_DueDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="OrderId1" type="elref">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_cwf_pm.BaseWorklist/leaf_OrderId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="SenderId1" type="elref">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_cwf_pm.BaseWorklist/leaf_SenderId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="Process_Type" type="eltxtArea">
+                        <autoFitText>true</autoFitText>
+                        <cellAlignment>left,center</cellAlignment>
+                        <columnSpan>3</columnSpan>
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <height>22px</height>
+                        <labeAlign>center</labeAlign>
+                        <label>Process Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/action_customWorklist$cwCalculate_Process_Type</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderNumber1" type="elfld">
+                        <columnSpan>3</columnSpan>
+                        <removeLabelLine>true</removeLabelLine>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.BaseWorklist/leaf_orderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="customSharedSelect" type="vform">
+            <label>customSharedSelect</label>
+            <root name="customSharedSelectGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="BaseWorklistHeader" type="elhdr">
+                  <label>Custom Shared Select</label>
+                  <showValidation>true</showValidation>
+                  <style>CwFOT</style>
+                </element>
+                <element name="customSharedSelectGrid" type="elgrd">
+                  <colWidths>117,195,117,195</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>4</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>624px</width>
+                  <elementList>
+                    <element name="image1" type="elimg">
+                      <columnSpan>4</columnSpan>
+                      <height>1px</height>
+                      <imageType>normal</imageType>
+                      <label>!</label>
+                      <removeLabelLine>true</removeLabelLine>
+                      <showLabel>false</showLabel>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/action_cwCalculate_customSharedSelect$_</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <width>1px</width>
+                    </element>
+                    <element name="DueDate3" type="eldatetime">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_cwf_pm.BaseWorklist/leaf_DueDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Operation3" type="elslct">
+                      <columnSpan>1</columnSpan>
+                      <sorted>false</sorted>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_cwf_pm.BaseWorklist/leaf_Operation</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="orderNumber3" type="elfld">
+                      <columnSpan>3</columnSpan>
+                      <removeLabelLine>true</removeLabelLine>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.BaseWorklist/leaf_orderNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Details1" type="eltxtArea">
+                      <autoFitText>true</autoFitText>
+                      <cellAlignment>left,center</cellAlignment>
+                      <columnSpan>3</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <height>22px</height>
+                      <labeAlign>center</labeAlign>
+                      <label>Details</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.BaseWorklist/ui_UserInterface/action_customSharedSelect$cwCalculate_Details</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+      <method name="cwCalculate_customWorklist$_" type="action">
+        <system>true</system>
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script>return (cwf_pm.worklistIcon (this.model));</script>
+      </method>
+      <method name="customWorklist$cwCalculate_Details" type="action">
+        <system>true</system>
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if(this.model.OrderId == null || this.model.OrderId == "0") {
+                // process and worklist are not related to Orders, so it could be related to
+                // - CustomerInformationUpdate
+                // - SiteInformationUpdate
+                // - Restoration
+                // Decode it from process type
+                var details = "";
+                if(this.model.SenderType != null) {
+                      var sender = Global.getMetadataNameByIndex(this.model.SenderType);
+
+                      if(sender.indexOf("customer") != -1) {
+                            details = "Customer Information Update";
+                      }
+                      else if(sender.indexOf("site") != -1) {
+                            details = "Site Information Update";
+                      }
+                      else if(sender.indexOf("restoration") != -1) {
+                            details = "Restoration";
+                      }
+                }
+                return (details);
+          }
+
+          var order = Order.getOrderById (this.model.OrderId);
+          if (order == undefined || order == null)
+                return ("");
+
+          var orderItem = order.findItemById (this.model.orderItemId);
+          if (orderItem == undefined || orderItem == null)
+                return ("unknwon");
+
+          return (Global.getCodeDescription ("stcw:InterfaceName", orderItem.interfaceName, null));
+        ]]></script>
+      </method>
+      <method name="customWorklist$cwCalculate_Process_Type" type="action">
+        <system>true</system>
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          var sender = "";
+          if(this.model.SenderType != null)
+                sender = Global.getMetadataNameByIndex(this.model.SenderType);
+
+          return sender;
+        ]]></script>
+      </method>
+      <method name="cwCalculate_customSharedSelect$_" type="action">
+        <system>true</system>
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script>return (cwf_pm.worklistIcon (this.model));</script>
+      </method>
+      <method name="customSharedSelect$cwCalculate_Details" type="action">
+        <system>true</system>
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          var order = Order.getOrderById (this.model.OrderId);
+          if (order == undefined || order == null)
+                return ("unknown");
+
+          var orderItem = order.findItemById (this.model.orderItemId);
+          if (orderItem == undefined || orderItem == null)
+                return ("unknwon");
+
+          return (Global.getCodeDescription ("stcw:InterfaceName", orderItem.interfaceName, null));
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

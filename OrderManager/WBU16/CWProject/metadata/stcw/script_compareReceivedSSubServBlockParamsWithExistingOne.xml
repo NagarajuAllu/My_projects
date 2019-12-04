@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.compareReceivedSSubServBlockParamsWithExistingOne">
+  <label>Compare Received SubSubService Block Parameters With Existing One</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="existingLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="receivedLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="validationErrors" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="lineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debugMsg = "compareReceivedSSubervBlockParamsWithExistingOne (" + lineItemIdentifier + ")";
+
+    // nv check; it loops in existing NV pair and verifies if it exists also in received one
+    if(existingLineItemContainer.subSubServiceLineItemBlockParameters != null) {
+        var missingReceived = 0;
+        for(var i=0; i<existingLineItemContainer.subSubServiceLineItemBlockParameters.length; i++) {
+            var existingNVName = existingLineItemContainer.subSubServiceLineItemBlockParameters[i].subSubServiceLineItemBlockParameter.name;
+            var found = false;
+            var foundWithError = false;
+            var lastErrorFound = null;
+            // search nv in received
+            if(receivedLineItemContainer.subSubServiceLineItemBlockParameters != null) {
+                for(var j=0; j<receivedLineItemContainer.subSubServiceLineItemBlockParameters.length && !found; j++) {
+                    if(existingNVName == receivedLineItemContainer.subSubServiceLineItemBlockParameters[j].subSubServiceLineItemBlockParameter.name) {
+                        // found; comparing the values
+                        found = true;
+                        var receivedValues = stcw.getBlockValuesAsString(receivedLineItemContainer.subSubServiceLineItemBlockParameters[j].subSubServiceLineItemBlockParameter.id, ";");
+                        var existingValues = stcw.getBlockValuesAsString(existingLineItemContainer.subSubServiceLineItemBlockParameters[i].subSubServiceLineItemBlockParameter.id, ";");
+                        var resultArray = compareValues_(receivedValues, existingValues, existingNVName, "BlockParameter");
+                        if(resultArray != null) {
+                            found = false;
+                            foundWithError = true;
+                            lastErrorFound = resultArray;
+                        }
+                        else {
+                            foundWithError = false;
+                            lastErrorFound = null;
+                        }
+                    }
+                }
+            }
+
+            if(!found) {
+                if(foundWithError) {
+                    // found but it was wrong! adding error
+                    validationErrors = stcw.appendToValidationErrors(lastErrorFound[0], lastErrorFound[1], validationErrors, debugMsg);
+                }
+                else {
+                    // not found NV; adding error
+                    validationErrors = stcw.appendToValidationErrors("AE0065", Global.translateText("AE0065", null, ["BlockParameter", existingNVName, "SubSubServiceLineItem", lineItemIdentifier, "received", "existing"]), validationErrors);
+                    missingReceived++;
+                }
+            }
+        }
+
+        if(receivedLineItemContainer.subSubServiceLineItemBlockParameters != null) {
+            if((receivedLineItemContainer.subSubServiceLineItemBlockParameters.length + missingReceived) != existingLineItemContainer.subSubServiceLineItemBlockParameters.length) {
+                // it means that there are additional attributes in received that are not in existing! ERROR!
+                validationErrors = stcw.appendToValidationErrors("AE0066", Global.translateText("AE0066", null, ["SubSubServiceLineItem", lineItemIdentifier, "BlockParameters"]), validationErrors);
+            }
+        }
+    }
+    else {
+        if(receivedLineItemContainer.subSubServiceLineItemBlockParameters != null) {
+            // it means that there are additional attributes in received that are not in existing! ERROR!
+            validationErrors = stcw.appendToValidationErrors("AE0066", Global.translateText("AE0066", null, ["SubSubServiceLineItem", lineItemIdentifier, "BlockParameters"]), validationErrors);
+        }
+    }
+
+    return validationErrors;
+
+    function compareValues_(receivedAttribute, existingAttribute, attributeName, category) {
+        var resultArray = null;
+
+        if(receivedAttribute == null) {
+            if(existingAttribute != null) {
+                resultArray = ["AE0055", Global.translateText("AE0055", null, [category, attributeName, "existing"])];
+            }
+        }
+        else {
+            if(existingAttribute == null) {
+                resultArray = ["AE0057", Global.translateText("AE0057", null, [category, attributeName, "existing"])];
+            }
+            else {
+                if(! receivedAttribute.toString().equals(existingAttribute.toString())) {
+                    resultArray = ["AE0056", Global.translateText("AE0056", null, [category, attributeName, receivedAttribute, existingAttribute, "existing"])];
+                }
+            }
+        }
+
+        return resultArray;
+    }
+  ]]></script>
+</script>

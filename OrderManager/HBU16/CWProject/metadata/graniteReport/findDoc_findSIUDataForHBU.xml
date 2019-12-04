@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="graniteReport.findSIUDataForHBU">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_graniteReport.searchSIUDataForHBU</input>
+  <label>Find SIU Data For HBU</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_graniteReport.stc_siu_hbu_msg</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_graniteReport.stc_siu_hbu_msg/leaf_msgId</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <volatility>2</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_graniteReport.searchSIUDataForHBU</document>
+      <mappedDocument>doc_graniteReport.stc_siu_hbu_msg</mappedDocument>
+      <mappedPath>doc_graniteReport.stc_siu_hbu_msg/leaf_msgId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_graniteReport.searchSIUDataForHBU/leaf_msgId</path>
+    </search>
+  </searchList>
+</findDoc>

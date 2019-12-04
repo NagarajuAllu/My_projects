@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="tfsReport.departmentProductivityReportFinder">
+  <dbSchema>INTERFACE</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_tfsReport.departmentProductivityReportSearchDoc</input>
+  <label>Department Productivity Report Finder</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_tfsReport.departmentProductivityReportResultDoc</output>
+  <rtConfigurable>true</rtConfigurable>
+  <type>SQL</type>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select v.user_id,
+               v.roleid,
+               v.cwdocid,
+               v.operation_name,
+               v.performed_task_name,
+               v.assign_to_user_date,
+               v.completion_date,
+               v.duration_in_hours,
+               v.duration_in_days,
+               v.tfr_id,
+               v.tfr_number,
+               v.tfr_status,
+               v.ni_number,
+               v.project,
+               v.requirement_type,
+               v.required,
+               v.current_userid current_userid,
+               v.current_department
+          from stc_dept_productivity_report_v v
+         where 1 = 1
+           {[0] and v.roleid = ?}
+           {[1] and v.assign_to_user_date >= ?}
+           {[2] and v.assign_to_user_date <= ?}
+           {[3] and v.completion_date >= ?}
+           {[4] and v.completion_date <= ?}
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_tfsReport.departmentProductivityReportSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_tfsReport.departmentProductivityReportResultDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_tfsReport.departmentProductivityReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="departmentProductivityReportFinderResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="userId" type="elref">
+                        <label>User Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_userId</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="department" type="elref">
+                        <label>Department Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_department</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>250px</width>
+                      </element>
+                      <element name="interOper" type="elfld">
+                        <label>Task Assigned</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_interOper</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>300px</width>
+                      </element>
+                      <element name="actionPerformed" type="elfld">
+                        <label>Activity Executed</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_actionPerformed</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="assignToUserDateTime" type="eldate">
+                        <label>When Received</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_assignToUserDateTime</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="completionDateTime" type="eldate">
+                        <label>When Completed</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_completionDateTime</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="durationInHours" type="elfld">
+                        <label>Duration in hours</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_durationInHours</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="durationInDays" type="elfld">
+                        <label>Duration in days</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_durationInDays</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="tfrNumber" type="elfld">
+                        <label>TFR Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_tfrNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>250px</width>
+                      </element>
+                      <element name="tfrStatus" type="elfld">
+                        <label>TFR Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_tfrStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="niNumber" type="elfld">
+                        <label>NI Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_niNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="tfrProject" type="elfld">
+                        <label>TFR Project</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_tfrProject</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="requirementType" type="elfld">
+                        <label>Requirement Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_requirementType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="required" type="elfld">
+                        <label>Required</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_required</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="currentUserId" type="elref">
+                        <label>Current User</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_currentUserId</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="currentDepartment" type="elref">
+                        <label>Current Department</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportResultDoc/leaf_currentDepartment</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>250px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfDetail" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="showTFRMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/usrActionMethod_showTFR</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show TFR</label>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="showTFR" type="usrActionMethod">
+        <dialogHeight>768</dialogHeight>
+        <dialogWidth>1024</dialogWidth>
+        <parameterList>
+          <parameter name="dialog" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          if(this.model.selected == null || this.model.selected.length == 0) {
+              Global.throwException("UU0115");
+          }
+
+          if(this.model.selected.length > 1) {
+              Global.throwException("UU0116");
+          }
+
+          var tfrFinder = new Finder("tfs.findTFR");
+          tfrFinder.searchDocument.tfrId = this.model.selected[0].tfrId;
+          var resultList = tfrFinder.search();
+
+          var tfrFound = null;
+
+          if(resultList != null && resultList.length > 0) {
+              tfrFound = resultList[0];
+          }
+          else {
+              Global.throwException("AE0008", ["TFR", "Department Productivity Report"]);
+          }
+
+          return tfrFound;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="departmentProductivityReportFinderView" type="findVView">
+      <inputOverlay>doc_tfsReport.departmentProductivityReportSearchDoc/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Department Productivity Report</label>
+      <outputOverlay>findSql_tfsReport.departmentProductivityReportFinder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findSql>

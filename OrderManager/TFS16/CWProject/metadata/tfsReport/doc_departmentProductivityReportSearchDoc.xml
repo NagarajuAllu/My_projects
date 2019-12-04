@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.departmentProductivityReportSearchDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{7799a95c-ad21-4aa3-9ac6-fe79a6dae4dd}</guid>
+  <label>Department Productivity Report Search Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="department" type="leaf">
+      <valueType>dtype_up_priv.department</valueType>
+    </variable>
+    <variable name="assignmentDateFrom" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Assignment Date &gt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="assignmentDateTo" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Assignment Date &lt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="completionDateFrom" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Completion Date &gt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="completionDateTo" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>Completion Date &lt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.departmentProductivityReportSearchDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultVerticalLayout" type="elvlt">
+                <width>1200px</width>
+                <elementList>
+                  <element name="inputDataLabel" type="elhdr">
+                    <cellAlignment>left,center</cellAlignment>
+                    <height>40px</height>
+                    <label>Department Productivity Report Input Data</label>
+                    <width>1200px</width>
+                  </element>
+                  <element name="workProductivityReportSearchDocGrid" type="elgrd">
+                    <colWidths>120px,150px,120px,150px,120px,150px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="department" type="elslct">
+                        <multiselect>false</multiselect>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.departmentProductivityReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportSearchDoc/leaf_department</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="assignmentDateFrom" type="eldatetime">
+                        <label>Assignment Date &gt;=</label>
+                        <labelOrientation>left</labelOrientation>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.departmentProductivityReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportSearchDoc/leaf_assignmentDateFrom</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="assignmentDateTo" type="eldatetime">
+                        <label>Assignment Date &lt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.departmentProductivityReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportSearchDoc/leaf_assignmentDateTo</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>15px</height>
+                        <rowSpan>15px</rowSpan>
+                      </element>
+                      <element name="CellSpacer" type="elcsp">
+                        <columnSpan>2</columnSpan>
+                      </element>
+                      <element name="completionDateFrom" type="eldatetime">
+                        <label>Completion Date &gt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.departmentProductivityReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportSearchDoc/leaf_completionDateFrom</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="completionDateTo" type="eldatetime">
+                        <label>Completion Date &lt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.departmentProductivityReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.departmentProductivityReportSearchDoc/leaf_completionDateTo</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="LayoutSpacer" type="ellsp">
+                    <height>20px</height>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

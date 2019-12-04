@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.compareReceivedNV_OHParamsWithExistingOne">
+  <label>Compare Received NV Pair For OrderHeader With Existing One</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="existingOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="receivedOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="validationErrors" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // nv check; it loops in existing NV pair and verifies if it exists also in received one
+    var debugMsg = "compareReceivedNV_OHParamsWithExistingOne (" + orderNumber + ")";
+
+
+    // 2016-05-30: adding management for STORE & FORWARD List
+    // checking received attribute:
+    //     is in SKIP_LIST ?
+    //        YES: Then, remove the attribute from WD
+    //        NO: is in STORE_FORWARD_LIST ?
+    //                YES: do nothing
+    //                NO:  is in existing order ?
+    //                        YES: it must have the same value, otherwise, reject
+    //                        NO:  is in NEW_ATTR_LIST ?
+    //                                YES: add because it's a new attribute
+    //                                NO:  reject
+    //
+    // checking existing attribute:
+    //     is in SKIP_LIST ?
+    //        YES: do nothing
+    //        NO: is in received order ?
+    //                YES: does it have the same value?
+    //                    YES: do nothing
+    //                    NO:  is in STORE_FORWARD_LIST ?
+    //                            YES: do nothing
+    //                            NO:  reject
+    //                NO: is in NEW_ATTR_LIST ?
+    //                    YES: do nothing
+    //                    NO:  reject
+
+    if(receivedOrder.orderHeaderParameters != null) {
+        var toBeRemoved = new Array();
+
+        for(var i=0; i<receivedOrder.orderHeaderParameters.length; i++) {
+            var receivedNVName = receivedOrder.orderHeaderParameters[i].orderHeaderParameter.name;
+            var found = false;
+            var foundWithError = false;
+            var lastErrorFound = null;
+
+            // check if the NV pair is in the SKIP_LIST
+            var isInSKIPList = stcw.isNameInSkipNVPairList(receivedNVName, "OH");
+            // check if the NV pair is in the STORE_FORWARD_LIST
+            var isInStoreAndForwardList = stcw.isNameInStoreAndForwardNVPairList(receivedNVName, "OH");
+            // check if the NV pair is in the NEW_ATTR_LIST
+            var isInNewAttrList = stcw.isNameInNewAttrNVPairList(receivedNVName, "OH");
+
+            if(isInSKIPList) {
+    debugPrintln(stcc.getSysdateForLog() + " "  + debugMsg + " Removing NV pair: " + receivedNVName + "#" + i + "#" + receivedOrder.orderHeaderParameters[i].orderHeaderParameter.orderDataPath);
+                toBeRemoved.push(i);
+            }
+            else {
+                if(isInStoreAndForwardList) {
+                   // do nothing
+                }
+                else {
+                    // search nv in existing
+                    if(existingOrder.orderHeaderParameters != null) {
+                        for(var j=0; j<existingOrder.orderHeaderParameters.length && !found; j++) {
+                            if(receivedNVName == existingOrder.orderHeaderParameters[j].orderHeaderParameter.name) {
+                                // found; comparing the values
+                                found = true;
+                                var resultArray = compareValues_(receivedOrder.orderHeaderParameters[i].orderHeaderParameter.value,
+                                                                 existingOrder.orderHeaderParameters[j].orderHeaderParameter.value,
+                                                                 receivedNVName, "NV Pair");
+                                if(resultArray != null) {
+                                    found = false;
+                                    foundWithError = true;
+                                    lastErrorFound = resultArray;
+                                }
+                                else {
+                                    foundWithError = false;
+                                    lastErrorFound = null;
+                                }
+                            }
+                        }
+                    }
+
+                    if(found) {
+                        // it means that it was found with the same value so, nothing to do
+                    }
+                    else {
+                        if(foundWithError) {
+                            // found but it was wrong! adding error
+                            validationErrors = stcw.appendToValidationErrors(lastErrorFound[0], lastErrorFound[1], validationErrors, debugMsg);
+                        }
+                        else {
+                            if(isInNewAttrList) {
+                                // not an issue; it's a new attribute!
+                            }
+                            else {
+                                // not found NV; adding error
+                                validationErrors = stcw.appendToValidationErrors("AE0065", Global.translateText("AE0065", null, ["NV Pair", receivedNVName, "Order Header", orderNumber, "existing", "received"]), validationErrors);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for(var k=toBeRemoved.length-1; k>=0; k--) {
+            var index = toBeRemoved[k];
+    debugPrintln(stcc.getSysdateForLog() + " "  + debugMsg + " Removing NV pair: " + index + "#" +
+                 receivedOrder.orderHeaderParameters[index].orderHeaderParameter.name + "#" +
+                 receivedOrder.orderHeaderParameters[index].orderHeaderParameter.orderDataPath);
+            receivedOrder.orderHeaderParameters[index].orderHeaderParameter.deleteItem();
+        }
+    }
+
+
+    if(existingOrder.orderHeaderParameters != null) {
+
+        for(var i=0; i<existingOrder.orderHeaderParameters.length; i++) {
+            var existingNVName = existingOrder.orderHeaderParameters[i].orderHeaderParameter.name;
+            var found = false;
+            var foundWithError = false;
+            var lastErrorFound = null;
+
+            // check if the NV pair is in the SKIP_LIST
+            var isInSKIPList = stcw.isNameInSkipNVPairList(existingNVName, "OH");
+            // check if the NV pair is in the STORE_FORWARD_LIST
+            var isInStoreAndForwardList = stcw.isNameInStoreAndForwardNVPairList(existingNVName, "OH");
+            // check if the NV pair is in the NEW_ATTR_LIST
+            var isInNewAttrList = stcw.isNameInNewAttrNVPairList(existingNVName, "OH");
+
+            if(isInSKIPList) {
+                // do nothing
+            }
+            else {
+                // search nv in received
+                if(receivedOrder.orderHeaderParameters != null) {
+                    for(var j=0; j<receivedOrder.orderHeaderParameters.length && !found; j++) {
+                        if(existingNVName == receivedOrder.orderHeaderParameters[j].orderHeaderParameter.name) {
+                            // found; comparing the values
+                            found = true;
+                            var resultArray = compareValues_(receivedOrder.orderHeaderParameters[j].orderHeaderParameter.value,
+                                                             existingOrder.orderHeaderParameters[i].orderHeaderParameter.value,
+                                                             existingNVName, "NV Pair");
+                            if(resultArray != null) {
+                                found = false;
+                                foundWithError = true;
+                                lastErrorFound = resultArray;
+                            }
+                            else {
+                                foundWithError = false;
+                                lastErrorFound = null;
+                            }
+                        }
+                    }
+                }
+
+                if(found) {
+                    // it means that it was found with the same value so, nothing to do
+                }
+                else {
+                    if(foundWithError) {
+                        if(isInStoreAndForwardList) {
+                            // do nothing
+                        }
+                        else {
+                            // found but it was wrong and not in Store & Forward list! adding error
+                            validationErrors = stcw.appendToValidationErrors(lastErrorFound[0], lastErrorFound[1], validationErrors, debugMsg);
+                        }
+                    }
+                    else {
+                        if(isInNewAttrList) {
+                            // not an issue; it's a new attribute!
+                        }
+                        else {
+                           // not found NV; adding error
+                           validationErrors = stcw.appendToValidationErrors("AE0065", Global.translateText("AE0065", null, ["NV Pair", existingNVName, "Order Header", orderNumber, "received", "existing"]), validationErrors);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+    return validationErrors;
+
+    function compareValues_(receivedAttribute, existingAttribute, attributeName, category) {
+        var resultArray = null;
+
+        if(receivedAttribute == null) {
+            if(existingAttribute != null) {
+                resultArray = ["AE0055", Global.translateText("AE0055", null, [category, attributeName, "existing"])];
+            }
+        }
+        else {
+            if(existingAttribute == null) {
+                resultArray = ["AE0057", Global.translateText("AE0057", null, [category, attributeName, "existing"])];
+            }
+            else {
+                if(! receivedAttribute.toString().equals(existingAttribute.toString())) {
+                    resultArray = ["AE0056", Global.translateText("AE0056", null, [category, attributeName, receivedAttribute, existingAttribute, "existing"])];
+                }
+            }
+        }
+
+        return resultArray;
+    }
+  ]]></script>
+</script>

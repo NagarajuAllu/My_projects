@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="94d3f90c6ad71e13f514038d7ffed939" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.performValidationForNVPairs_InsertedOrder">
+  <label>Perform Validation For NVPairs For Inserted Feasibility Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="nvPairs" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="errorsFound" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="checkValueInLoVs" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(nvPairs != null) {
+        for(var i=0; i<nvPairs.length; i++) {
+            var nvPairForInsertOrder = nvPairs[i];
+            if(nvPairForInsertOrder.mandatory) {
+                // the NV pair is marked as mandatory
+                if(nvPairForInsertOrder.value == null) {
+                    var text = Global.translateText("AE0121", null, nvPairForInsertOrder.name);
+                    ((errorsFound != null) ? errorsFound.push(text) : Global.throwException(text));
+                }
+            }
+            else if(nvPairForInsertOrder.mandatoryOn != null) {
+                // the NV pair is marked as mandatory only if another NV pair has a proper value;
+                var mandatoryOn = nvPairForInsertOrder.mandatoryOn;
+                var mandatoryOnValue = nvPairForInsertOrder.mandatoryOnValue;
+
+                for(var j=0; j<nvPairs.length; j++) {
+                    if(nvPairs[j].name == mandatoryOn && nvPairs[j].value == mandatoryOnValue) {
+                        // check if the rule has been applied
+                        if(nvPairForInsertOrder.value == null) {
+                            var text = Global.translateText("AE0122", null, [nvPairForInsertOrder.name, mandatoryOn, mandatoryOnValue]);
+                            ((errorsFound != null) ? errorsFound.push(text) : Global.throwException(text));
+                        }
+                    }
+                }
+            }
+
+            if(checkValueInLoVs) {
+                if(nvPairForInsertOrder.value != null) {
+                    if(nvPairForInsertOrder.valueTypeForNVPair4GUI == "LoV") {
+                        var valuesInLoV = nvPairForInsertOrder.valuesForLoV.split(";");
+                        var found = false;
+                        for(var j=0; j<valuesInLoV.length; j++) {
+                            if(valuesInLoV[j] == nvPairForInsertOrder.value) {
+                                found = true;
+                            }
+                        }
+                        if(!found) {
+                            var text = Global.translateText("AE0130", null, [nvPairForInsertOrder.name, nvPairForInsertOrder.value]);
+                            ((errorsFound != null) ? errorsFound.push(text) : Global.throwException(text));
+                        }
+                    }
+                    else if(nvPairForInsertOrder.valueTypeForNVPair4GUI == "Finder") {
+                        var finderCustomQueryForNVPair = new Finder("ds_ws.findCustomQueryForNVPair4GUI");
+                        finderCustomQueryForNVPair.searchDocument.inputData = nvPairForInsertOrder.finderName;
+                        var resultFinder = finderCustomQueryForNVPair.search();
+
+                        var found = false;
+                        for(var j=0; j<resultFinder.length; j++) {
+                            if(resultFinder[j].result == nvPairForInsertOrder.value) {
+                                found = true;
+                            }
+                        }
+                        if(!found) {
+                            var text = Global.translateText("AE0130", null, [nvPairForInsertOrder.name, nvPairForInsertOrder.value]);
+                            ((errorsFound != null) ? errorsFound.push(text) : Global.throwException(text));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return errorsFound;
+  ]]></script>
+</script>

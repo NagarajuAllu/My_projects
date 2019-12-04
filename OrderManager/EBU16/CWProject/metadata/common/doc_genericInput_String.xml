@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="common.genericInput_String">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{32b8931d-dbd6-474e-be6f-e8d773f8954f}</guid>
+  <label>Generic Input: String [SQL query]</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="inputData" type="leaf">
+      <label>result</label>
+      <propertyElement type="elfld">
+        <label>result</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_common.genericInput_String</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

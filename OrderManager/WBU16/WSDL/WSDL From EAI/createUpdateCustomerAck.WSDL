@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="createUpdateCustomerAck" targetNamespace="createUpdateCustomerAck" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapjms="http://www.w3.org/2010/soapjms/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="createUpdateCustomerAck" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="createUpdateCustomerAck" xmlns:tns="createUpdateCustomerAck" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <xsd:element name="receiveCreateUpdateCustomerAck" type="tns:receiveCreateUpdateCustomerAck"/>
+          <xsd:element name="receiveCreateUpdateCustomerAckResponse" type="tns:receiveCreateUpdateCustomerAckResponse"/>
+          <xsd:complexType name="receiveCreateUpdateCustomerAck">
+            <xsd:sequence>
+              <xsd:element name="createUpdateCustomerAckRequest" nillable="true" type="tns:CreateUpdateCustomerAckRequest"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="CreateUpdateCustomerAckRequest">
+            <xsd:sequence>
+              <xsd:element name="header" type="tns:RequestHeader"/>
+              <xsd:element name="body" type="tns:body"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="RequestHeader">
+            <xsd:sequence>
+              <xsd:element name="systemId" type="xsd:string"/>
+              <xsd:element name="serverInfo" type="xsd:string"/>
+              <xsd:element name="messageId" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="conversationId" nillable="true" type="xsd:string"/>
+              <xsd:element name="timestamp" type="xsd:dateTime"/>
+              <xsd:element name="domainId" type="xsd:string"/>
+              <xsd:element name="serviceId" type="xsd:string"/>
+              <xsd:element name="operationType" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="userId" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="body">
+            <xsd:sequence>
+              <xsd:element name="accountNumber" type="xsd:string"/>
+              <xsd:element name="status" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorCode" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorDescription" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorType" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="sourceErrorCode" nillable="true" type="xsd:string"/>
+              <xsd:element name="businessUnit" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="receiveCreateUpdateCustomerAckResponse">
+            <xsd:sequence>
+              <xsd:element name="createUpdateCustomerAckResponse" nillable="true" type="tns:CreateUpdateCustomerAckResponse"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="CreateUpdateCustomerAckResponse">
+            <xsd:sequence>
+              <xsd:element name="header" type="tns:ResponseHeader"/>
+              <xsd:element name="status" type="tns:status2"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="ResponseHeader">
+            <xsd:sequence>
+              <xsd:element name="systemId" type="xsd:string"/>
+              <xsd:element name="serverInfo" type="xsd:string"/>
+              <xsd:element name="messageId" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="conversationId" nillable="true" type="xsd:string"/>
+              <xsd:element name="timestamp" type="xsd:string"/>
+              <xsd:element name="domainId" type="xsd:string"/>
+              <xsd:element name="serviceId" type="xsd:string"/>
+              <xsd:element name="operationType" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="userId" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="status2">
+            <xsd:sequence>
+              <xsd:element name="result" type="xsd:string"/>
+              <xsd:element maxOccurs="unbounded" minOccurs="0" name="error" nillable="true" type="tns:error"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="error">
+            <xsd:sequence>
+              <xsd:element name="errorCode" type="xsd:string"/>
+              <xsd:element name="errorSystem" type="xsd:string"/>
+              <xsd:element name="errorType" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorDescription" nillable="true" type="xsd:string"/>
+              <xsd:element minOccurs="0" name="errorReference" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        	</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="createUpdateCustomerAck_PortType_receiveCreateUpdateCustomerAck">
+    <wsdl:part name="parameters" element="tns:receiveCreateUpdateCustomerAck">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createUpdateCustomerAck_PortType_receiveCreateUpdateCustomerAckResponse">
+    <wsdl:part name="parameters" element="tns:receiveCreateUpdateCustomerAckResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="createUpdateCustomerAck_PortType">
+    <wsdl:operation name="receiveCreateUpdateCustomerAck">
+      <wsdl:input message="tns:createUpdateCustomerAck_PortType_receiveCreateUpdateCustomerAck">
+    </wsdl:input>
+      <wsdl:output message="tns:createUpdateCustomerAck_PortType_receiveCreateUpdateCustomerAckResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GraniteGW_Wholesale_customer_createUpdateCustomerAck_ws_provider_createUpdateCustomerAck_Binder" type="tns:createUpdateCustomerAck_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="receiveCreateUpdateCustomerAck">
+      <soap:operation soapAction="GraniteGW_Wholesale_customer_createUpdateCustomerAck_ws_provider_createUpdateCustomerAck_Binder_receiveCreateUpdateCustomerAck" style="document"/>
+      <wsdl:input>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GraniteGW_Wholesale.customer.createUpdateCustomerAck.ws.provider.createUpdateCustomerAck">
+    <wsdl:port name="GraniteGW_Wholesale_customer_createUpdateCustomerAck_ws_provider_createUpdateCustomerAck_Port" binding="tns:GraniteGW_Wholesale_customer_createUpdateCustomerAck_ws_provider_createUpdateCustomerAck_Binder">
+      <soap:address location="http://STC.com.sa:8080/ws/GraniteGW_Wholesale.customer.createUpdateCustomerAck.ws.provider:createUpdateCustomerAck/GraniteGW_Wholesale_customer_createUpdateCustomerAck_ws_provider_createUpdateCustomerAck_Port"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

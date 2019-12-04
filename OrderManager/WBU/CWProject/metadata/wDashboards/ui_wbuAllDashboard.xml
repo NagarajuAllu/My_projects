@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<userInterface filenameHash="7ac33e8a0e7303141f4540e0d5c779b2" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="wDashboards.wbuAllDashboard">
+  <label>WBU All Dashboard</label>
+  <metaVersion>4</metaVersion>
+  <timerDuration>1</timerDuration>
+  <variableList>
+    <variable name="countOrderGroupByOrderType" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countOrderGroupByOrderType/ui_UserInterface</valueType>
+    </variable>
+    <variable name="countOrderGroupByOrderStatus" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface</valueType>
+    </variable>
+    <variable name="countOrderGroupByServiceType" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countOrderGroupByServiceType/ui_UserInterface</valueType>
+    </variable>
+    <variable name="averageOrderCompletionTime" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.averageOrderCompletionTime/ui_UserInterface</valueType>
+    </variable>
+    <variable name="countRejectedOrdersForMissingInfo" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countRejectedOrdersForMissingInfo/ui_UserInterface</valueType>
+    </variable>
+    <variable name="countQuoteGroupByQuoteType" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countQuoteGroupByQuoteType/ui_UserInterface</valueType>
+    </variable>
+    <variable name="countQuoteGroupByQuoteStatus" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countQuoteGroupByQuoteStatus/ui_UserInterface</valueType>
+    </variable>
+    <variable name="countQuoteGroupByServiceType" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countQuoteGroupByServiceType/ui_UserInterface</valueType>
+    </variable>
+    <variable name="averageQuoteCompletionTime" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.averageQuoteCompletionTime/ui_UserInterface</valueType>
+    </variable>
+    <variable name="countRejectedQuotesForMissingInfo" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countRejectedQuotesForMissingInfo/ui_UserInterface</valueType>
+    </variable>
+  </variableList>
+  <vformList>
+    <vform name="Forms" type="frmui">
+      <extends>ui_com.conceptwave.system.UserInterface/frmui_Forms</extends>
+      <overlayList>
+        <overlay name="Default" type="exov">
+          <base>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Default</base>
+          <extends>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Default</extends>
+          <label>Default</label>
+          <overrideList>
+            <override name="dashItemLayout" type="elvlt">
+              <height>100%</height>
+              <width>100%</width>
+              <elementList>
+                <element name="rowForOrders" type="elhlt">
+                  <height>50%</height>
+                  <width>100%</width>
+                  <elementList>
+                    <element name="firstColumnOrders" type="elvlt">
+                      <height>100%</height>
+                      <width>33%</width>
+                      <elementList>
+                        <element name="countOrderGroupByOrderTypeFrame" type="elovf">
+                          <formReference type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countOrderGroupByOrderType</variablePath>
+                              <variablePath>findSql_wDashboards.countOrderGroupByOrderType/ui_UserInterface/frmui_Forms</variablePath>
+                              <variablePath>findSql_wDashboards.countOrderGroupByOrderType/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                            </variablePathList>
+                          </formReference>
+                          <height>50%</height>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countOrderGroupByOrderType</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>100%</width>
+                        </element>
+                        <element name="averageOrderCompletionTimeFrame" type="elovf">
+                          <formReference type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_averageOrderCompletionTime</variablePath>
+                              <variablePath>findSql_wDashboards.averageOrderCompletionTime/ui_UserInterface/frmui_Forms</variablePath>
+                              <variablePath>findSql_wDashboards.averageOrderCompletionTime/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                            </variablePathList>
+                          </formReference>
+                          <height>50%</height>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_averageOrderCompletionTime</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>100%</width>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="secondColumnOrders" type="elvlt">
+                      <height>100%</height>
+                      <width>33%</width>
+                      <elementList>
+                        <element name="countOrderGroupByOrderStatusFrame" type="elovf">
+                          <formReference type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countOrderGroupByOrderStatus</variablePath>
+                              <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/frmui_Forms</variablePath>
+                              <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                            </variablePathList>
+                          </formReference>
+                          <height>50%</height>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countOrderGroupByOrderStatus</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>100%</width>
+                        </element>
+                        <element name="countRejectedOrdersForMissingInfoFrame" type="elovf">
+                          <formReference type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countRejectedOrdersForMissingInfo</variablePath>
+                              <variablePath>findSql_wDashboards.countRejectedOrdersForMissingInfo/ui_UserInterface/frmui_Forms</variablePath>
+                              <variablePath>findSql_wDashboards.countRejectedOrdersForMissingInfo/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                            </variablePathList>
+                          </formReference>
+                          <height>50%</height>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countRejectedOrdersForMissingInfo</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>100%</width>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="countOrderGroupByServiceTypeFrame" type="elovf">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countOrderGroupByServiceType</variablePath>
+                          <variablePath>findSql_wDashboards.countOrderGroupByServiceType/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findSql_wDashboards.countOrderGroupByServiceType/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <height>100%</height>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countOrderGroupByServiceType</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <width>33%</width>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="rowForQuotes" type="elhlt">
+                  <height>50%</height>
+                  <width>100%</width>
+                  <elementList>
+                    <element name="firstColumnQuotes" type="elvlt">
+                      <height>100%</height>
+                      <width>33%</width>
+                      <elementList>
+                        <element name="countQuoteGroupByQuoteTypeFrame" type="elovf">
+                          <formReference type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countQuoteGroupByQuoteType</variablePath>
+                              <variablePath>findSql_wDashboards.countQuoteGroupByQuoteType/ui_UserInterface/frmui_Forms</variablePath>
+                              <variablePath>findSql_wDashboards.countQuoteGroupByQuoteType/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                            </variablePathList>
+                          </formReference>
+                          <height>50%</height>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countQuoteGroupByQuoteType</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>100%</width>
+                        </element>
+                        <element name="averageQuoteCompletionTimeFrame" type="elovf">
+                          <formReference type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_averageQuoteCompletionTime</variablePath>
+                              <variablePath>findSql_wDashboards.averageQuoteCompletionTime/ui_UserInterface/frmui_Forms</variablePath>
+                              <variablePath>findSql_wDashboards.averageQuoteCompletionTime/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                            </variablePathList>
+                          </formReference>
+                          <height>50%</height>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_averageQuoteCompletionTime</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>100%</width>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="secondColumnQuotes" type="elvlt">
+                      <height>100%</height>
+                      <width>33%</width>
+                      <elementList>
+                        <element name="countQuoteGroupByQuoteStatusFrame" type="elovf">
+                          <formReference type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countQuoteGroupByQuoteStatus</variablePath>
+                              <variablePath>findSql_wDashboards.countQuoteGroupByQuoteStatus/ui_UserInterface/frmui_Forms</variablePath>
+                              <variablePath>findSql_wDashboards.countQuoteGroupByQuoteStatus/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                            </variablePathList>
+                          </formReference>
+                          <height>50%</height>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countQuoteGroupByQuoteStatus</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>100%</width>
+                        </element>
+                        <element name="countRejectedQuotesForMissingInfoFrame" type="elovf">
+                          <formReference type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countRejectedQuotesForMissingInfo</variablePath>
+                              <variablePath>findSql_wDashboards.countRejectedQuotesForMissingInfo/ui_UserInterface/frmui_Forms</variablePath>
+                              <variablePath>findSql_wDashboards.countRejectedQuotesForMissingInfo/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                            </variablePathList>
+                          </formReference>
+                          <height>50%</height>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countRejectedQuotesForMissingInfo</variablePath>
+                            </variablePathList>
+                          </variable>
+                          <width>100%</width>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="countQuoteGroupByServiceTypeFrame" type="elovf">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countQuoteGroupByServiceType</variablePath>
+                          <variablePath>findSql_wDashboards.countQuoteGroupByServiceType/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findSql_wDashboards.countQuoteGroupByServiceType/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <height>100%</height>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuAllDashboard/leaf_countQuoteGroupByServiceType</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <width>33%</width>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </override>
+          </overrideList>
+        </overlay>
+      </overlayList>
+    </vform>
+  </vformList>
+  <methodList>
+    <method name="dynamicTimerDuration" type="uimthd">
+      <script><![CDATA[
+        this.cw$super_dynamicTimerDuration();
+        return 1;
+      ]]></script>
+    </method>
+    <method name="onTimer" type="action">
+      <script><![CDATA[
+        this.cw$super_onTimer();
+
+        // ORDERS
+        this.countOrderGroupByOrderType.model.performOperation('select', this.countOrderGroupByOrderType.model.searchDocument);
+        this.countOrderGroupByOrderType.model.updateUI();
+
+        this.countOrderGroupByOrderStatus.model.performOperation('select', this.countOrderGroupByOrderStatus.model.searchDocument);
+        this.countOrderGroupByOrderStatus.model.updateUI();
+
+        this.countOrderGroupByServiceType.model.performOperation('select', this.countOrderGroupByServiceType.model.searchDocument);
+        this.countOrderGroupByServiceType.model.updateUI();
+
+        this.countRejectedOrdersForMissingInfo.model.performOperation('select', this.countRejectedOrdersForMissingInfo.model.searchDocument);
+        this.countRejectedOrdersForMissingInfo.model.updateUI();
+
+        this.averageOrderCompletionTime.model.performOperation('select', this.averageOrderCompletionTime.model.searchDocument);
+        this.averageOrderCompletionTime.model.updateUI();
+
+        // QUOTES
+        this.countQuoteGroupByQuoteType.model.performOperation('select', this.countQuoteGroupByQuoteType.model.searchDocument);
+        this.countQuoteGroupByQuoteType.model.updateUI();
+
+        this.countQuoteGroupByQuoteStatus.model.performOperation('select', this.countQuoteGroupByQuoteStatus.model.searchDocument);
+        this.countQuoteGroupByQuoteStatus.model.updateUI();
+
+        this.countQuoteGroupByServiceType.model.performOperation('select', this.countQuoteGroupByServiceType.model.searchDocument);
+        this.countQuoteGroupByServiceType.model.updateUI();
+
+        this.countRejectedQuotesForMissingInfo.model.performOperation('select', this.countRejectedQuotesForMissingInfo.model.searchDocument);
+        this.countRejectedQuotesForMissingInfo.model.updateUI();
+
+        this.averageQuoteCompletionTime.model.performOperation('select', this.averageQuoteCompletionTime.model.searchDocument);
+        this.averageQuoteCompletionTime.model.updateUI();
+      ]]></script>
+    </method>
+  </methodList>
+</userInterface>

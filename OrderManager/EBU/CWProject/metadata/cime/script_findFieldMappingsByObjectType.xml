@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="e1012106d3e630fd53ba5e4d0f1a2af" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="cime.findFieldMappingsByObjectType">
+  <label>find FIELD_MAPPINGS By Object_Type</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="objectType" type="rifp">
+      <type>dtype_ds_ws.string20</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("cime.FIELD_MAPPINGS");
+    inputDoc.object_type = objectType;
+
+    var fieldMappingsList = Finder.runFinder("cime.findFIELD_MAPPINGS", "select", inputDoc);
+
+    return fieldMappingsList;
+  ]]></script>
+</script>

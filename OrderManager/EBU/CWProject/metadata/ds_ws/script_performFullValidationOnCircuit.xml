@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="6f47927e201d2cecf0d4a9ab7bde1667" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.performFullValidationOnCircuit">
+  <label>Perform Full Validation On Circuit</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="circuitContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_ds_ws.orderType</type>
+    </parameter>
+    <parameter name="orderStatus" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="parentLineItemAction" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="parentLineItemStatus" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="bundleLineItemActive" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // circuit
+    failureArray = ds_ws.validateElementOfOrder(circuitContainer.circuit, circuitContainer.circuit.lineItemIdentifier, isSubmit, failureArray);
+
+    // mandatory attributes according to OrderType and ServiceType
+    failureArray  = ds_ws.performValidationOfMandatoryAttributesInLineItem(circuitContainer.circuit, orderType, circuitContainer.circuit.serviceType, circuitContainer.circuit.lineItemIdentifier, isSubmit, failureArray);
+
+    if(!ds_ws.checkIfActionIsOKWithOrderTypeAndParentAction(orderType, orderStatus, parentLineItemAction, parentLineItemStatus, circuitContainer.circuit.action, circuitContainer.circuit.serviceType, circuitContainer.circuit.lineItemStatus)) {
+        var validationError = ["AE0043", Global.translateText("AE0043", null, [orderType, parentLineItemAction, circuitContainer.circuit.action, orderStatus])];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performFullValidationOnCircuit (" + circuitContainer.circuit.lineItemIdentifier + "): Found error [" + validationError + "]");
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, circuitContainer.circuit.lineItemIdentifier, failureArray, isSubmit);
+    }
+
+    if(isSubmit) {
+        // check lineItemIdentifier existance ds_ws.checkIfActionIsCorrectForLineItemIdentifier(bundleLineItemActive, lineItemToCheck)
+        var validationError = ds_ws.checkIfActionIsCorrectForLineItemIdentifier(bundleLineItemActive, circuitContainer.circuit);
+        if(validationError != null) {
+            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, circuitContainer.circuit.lineItemIdentifier, failureArray, isSubmit);
+        }
+    }
+
+
+
+    // circuit NV pair
+    if(circuitContainer.circuitParameters != null) {
+        for(var i=0; i<circuitContainer.circuitParameters.length; i++) {
+            failureArray = ds_ws.validateElementOfOrder(circuitContainer.circuitParameters[i], circuitContainer.circuit.lineItemIdentifier, isSubmit, failureArray);
+            failureArray = ds_ws.validateNVPairValueForServiceTypeInPickList(circuitContainer.circuit.serviceType, circuitContainer.circuit.lineItemIdentifier,
+                                                                             circuitContainer.circuitParameters[i].circuitParameter.name, circuitContainer.circuitParameters[i].circuitParameter.value,
+                                                                             isSubmit, failureArray);
+        }
+
+        failureArray = ds_ws.performValidationOfMandatoryNVPairs(circuitContainer.circuitParameters, orderType, circuitContainer.circuit.serviceType, circuitContainer.circuit.lineItemIdentifier, isSubmit, failureArray);
+    }
+
+    // circuit Block NV pair
+    if(circuitContainer.circuitBlockParameters != null) {
+        for(var i=0; i<circuitContainer.circuitBlockParameters.length; i++) {
+            failureArray = ds_ws.validateElementOfOrder(circuitContainer.circuitBlockParameters[i], circuitContainer.circuit.lineItemIdentifier, isSubmit, failureArray);
+        }
+    }
+
+
+    // services
+    if(circuitContainer.services != null) {
+        for(var i=0; i<circuitContainer.services.length; i++) {
+            var serviceContainer = circuitContainer.services[i];
+            failureArray = ds_ws.performFullValidationOnService(serviceContainer, failureArray, orderType, orderStatus, circuitContainer.circuit.action, circuitContainer.circuit.lineItemStatus, bundleLineItemActive, isSubmit);
+        }
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

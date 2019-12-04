@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql filenameHash="57b359c89fb77a2edbc32a5bdcbe647c" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="wDashboards.countOrderGroupByOrderStatus">
+  <dbSchema>ORDER</dbSchema>
+  <display>dashboard</display>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <guid>{0df178ee-70cd-6562-dc2d-67afbf7db230}</guid>
+  <input>doc_wDashboards.inputForDashboards</input>
+  <label>Count Order Group By OrderStatus</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>3</metaVersion>
+  <output>doc_wDashboards.countForOrderStatus</output>
+  <type>SQL</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <volatility>1</volatility>
+  <methodList>
+    <method name="cwOnInitSearch" type="action">
+      <guid>{0cb4a22e-b135-59e4-3e45-205e89786af7}</guid>
+      <system>true</system>
+      <script>wDashboards.setInputParametersInDashboard(this);</script>
+    </method>
+    <method name="cwOnFinderSQLSel" type="action">
+      <guid>{0e559cc1-70b2-5e98-0274-c26e47401f34}</guid>
+      <system>true</system>
+      <script><![CDATA[
+        SELECT COUNT(*),
+               COUNT(CASE WHEN decoded_status = 'COMPLETED' THEN 1 ELSE NULL END) AS "COMPLETED",
+               COUNT(CASE WHEN decoded_status = 'OPEN' THEN 1 ELSE NULL END) AS "OPEN",
+               COUNT(CASE WHEN decoded_status = 'REJECTED' THEN 1 ELSE NULL END) AS "REJECTED"
+          FROM (SELECT DECODE(UPPER(NVL(order_status, 'X')), 'CANCELLED', 'COMPLETED',
+                                                            'ARCHIVED',  'COMPLETED',
+                                                            'COMPLETED', 'COMPLETED',
+                                                            'OPEN') decoded_status,
+                       s.cwdocid
+                  FROM stcw_order_header s, orb_order_header o
+                 WHERE s.cwdocid = o.cwdocid
+                   AND NVL(order_status, 'X') <> 'REJECTED'
+              {[0] AND o.cwordercreationdate >= ?}
+              {[1] AND o.cwordercreationdate <= ?}
+                 UNION
+                SELECT 'REJECTED',
+                       cwdocid
+                  FROM stcw_rejected_order
+                 WHERE 1=1
+              {[0] AND rejecteddatetime >= ?}
+              {[1] AND rejecteddatetime <= ?})
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script>return this.enabled;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <timerDuration>1</timerDuration>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findSql_wDashboards.countOrderGroupByOrderStatus</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_wDashboards.inputForDashboards/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_wDashboards.countForOrderStatus</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_wDashboards.countForOrderStatus/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext">
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="default" type="vform">
+            <label>default</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Tot__Orders" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_totOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>90px</width>
+                </element>
+                <element name="Completed_Orders" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_completedOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>126px</width>
+                </element>
+                <element name="Open_Orders" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_openOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>90px</width>
+                </element>
+                <element name="Rejected_Orders" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_rejectedOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>120px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_addAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <icon>/cwf/MenuIconAdd.gif</icon>
+                <tooltip>Add</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfAddView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfCopy" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_copyAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <enable type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfCopyEnabled</variablePath>
+                  </variablePathList>
+                </enable>
+                <icon>/cwf/MenuIconCopy.gif</icon>
+                <tooltip>Copy</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfCopyView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfDelete" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_deleteAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <enable type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfDeleteEnabled</variablePath>
+                  </variablePathList>
+                </enable>
+                <icon>/cwf/MenuIconDelete.gif</icon>
+                <tooltip>Delete</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfDeleteView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfSearch" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/usrActionMethod_cwfSearch_menu</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <icon>/cwf/MenuIconSearch.gif</icon>
+                <label>Order By OrderStatus</label>
+                <menuType>5</menuType>
+                <showDown>true</showDown>
+                <showRollOver>true</showRollOver>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_searchVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfUpdate" type="elmnu">
+                <menuAccel type="mAccelP"/>
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_updateAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <icon>/cwf/MenuIconEdit.gif</icon>
+                <tooltip>Edit</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfUpdateView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="detailMenu" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="detailMenuEx" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Menu</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <overflow>visible</overflow>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <width>1px</width>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="chartOrderByOrderStatus" type="vform">
+            <label>chartOrderByOrderStatus</label>
+            <root name="chartOrderByOrderStatus" type="elchart">
+              <height>400px</height>
+              <is3D>true</is3D>
+              <type>Column</type>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <width>400px</width>
+              <elementList>
+                <element name="totOrders1" type="elchartf">
+                  <label>totOrders</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_totOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="completedOrders1" type="elchartf">
+                  <color>#00FF00</color>
+                  <label>completedOrders</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_completedOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="openOrders1" type="elchartf">
+                  <color>#00FFFF</color>
+                  <label>openOrders</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_openOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="rejectedOrders1" type="elchartf">
+                  <color>#FF0000</color>
+                  <label>rejectedOrders</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_rejectedOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Chart" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Chart</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Chart</extends>
+            <label>Chart</label>
+            <overrideList>
+              <override name="FormFrame" type="elovf">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/frmui_Forms</variablePath>
+                    <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/frmui_Forms/vform_chartOrderByOrderStatus</variablePath>
+                  </variablePathList>
+                </formReference>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="ReferenceForm" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_ReferenceForm</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_ReferenceForm</extends>
+            <label>ReferenceForm</label>
+            <overrideList>
+              <override name="topStack" type="elsectnstck">
+                <height>100%</height>
+                <visibilityMode>multiple</visibilityMode>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.UserInterface/uivar_model</variablePath>
+                    <variablePath>mdl_com.conceptwave.system.Model/permMethod_visiblePerm</variablePath>
+                  </variablePathList>
+                </visible>
+                <width>100%</width>
+                <elementList>
+                  <element name="topSection" type="elsect">
+                    <header type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_header</variablePath>
+                      </variablePathList>
+                    </header>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                      </variablePathList>
+                    </visible>
+                    <elementList>
+                      <element name="finderHeader" type="elsecth">
+                        <label>Finder</label>
+                        <elementList>
+                          <element name="back" type="elmnu">
+                            <clickMethod type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_hideDetailAction</variablePath>
+                              </variablePathList>
+                            </clickMethod>
+                            <icon>/cwfv/nav_left_blue.png</icon>
+                            <tooltip>Back to results</tooltip>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                          <element name="pref" type="elmnu">
+                            <icon>/cwt/images/16/preferences.png</icon>
+                            <showMenuDropDown>true</showMenuDropDown>
+                            <elementList>
+                              <element name="toggleMenu" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_toggleSearchAction</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwfv/funnel.png</icon>
+                                <label>Show/hide search</label>
+                                <tooltip>Show/hide search</tooltip>
+                                <visible type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_toggleVisible</variablePath>
+                                  </variablePathList>
+                                </visible>
+                              </element>
+                              <element name="openView" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_findCustomView</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwf/user_view.gif</icon>
+                                <label>Open Custom View</label>
+                              </element>
+                              <element name="addView" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_addCustomView</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwf/table_add.gif</icon>
+                                <label>Add Custom View</label>
+                              </element>
+                              <element name="Separator" type="elsep"/>
+                              <element name="Iterator" type="eliter">
+                                <variable type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_views</variablePath>
+                                  </variablePathList>
+                                </variable>
+                                <elementList>
+                                  <element name="viewItem" type="elmnu">
+                                    <clickMethod type="varPath">
+                                      <variablePathList>
+                                        <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_views</variablePath>
+                                        <variablePath>ui_com.conceptwave.system.FinderViewIteratedItem/uimthd_changeView</variablePath>
+                                      </variablePathList>
+                                    </clickMethod>
+                                    <label>a</label>
+                                    <variable type="varPath">
+                                      <variablePathList>
+                                        <variablePath>ui_com.conceptwave.system.FinderViewIteratedItem/leaf_view</variablePath>
+                                      </variablePathList>
+                                    </variable>
+                                  </element>
+                                </elementList>
+                              </element>
+                            </elementList>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="sStack" type="elsectnstck">
+                        <visible type="varPath">
+                          <variablePathList>
+                            <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_topSectionVisible</variablePath>
+                          </variablePathList>
+                        </visible>
+                        <width>100%</width>
+                        <elementList>
+                          <element name="detailSection" type="elsect">
+                            <formReference type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                                <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms</variablePath>
+                                <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Default</variablePath>
+                              </variablePathList>
+                            </formReference>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                              </variablePathList>
+                            </variable>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                          <element name="searchFormSection" type="elsect">
+                            <formReference type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                              </variablePathList>
+                            </formReference>
+                            <onEnter type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_searchAction</variablePath>
+                              </variablePathList>
+                            </onEnter>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_search</variablePath>
+                              </variablePathList>
+                            </variable>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="resStack" type="elsectnstck">
+                        <height>100%</height>
+                        <visible type="varPath">
+                          <variablePathList>
+                            <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_resultVisible</variablePath>
+                          </variablePathList>
+                        </visible>
+                        <elementList>
+                          <element name="resSection" type="elsect">
+                            <onEnter type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_searchAction</variablePath>
+                              </variablePathList>
+                            </onEnter>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_resultVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                            <elementList>
+                              <element name="resultFrame" type="elovf">
+                                <formReference type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_resultForm</variablePath>
+                                  </variablePathList>
+                                </formReference>
+                              </element>
+                            </elementList>
+                          </element>
+                        </elementList>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="chartOrderByOrderStatus_HalfHeight" type="vform">
+            <label>chartOrderByOrderStatus_HalfHeight</label>
+            <root name="chartOrderByOrderStatus" type="elchart">
+              <height>200px</height>
+              <is3D>true</is3D>
+              <type>Column</type>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <width>400px</width>
+              <elementList>
+                <element name="totOrders1" type="elchartf">
+                  <label>totOrders</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_totOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="completedOrders1" type="elchartf">
+                  <color>#00FF00</color>
+                  <label>completedOrders</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_completedOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="openOrders1" type="elchartf">
+                  <color>#00FFFF</color>
+                  <label>openOrders</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_openOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="rejectedOrders1" type="elchartf">
+                  <color>#FF0000</color>
+                  <label>rejectedOrders</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_wDashboards.countForOrderStatus/leaf_rejectedOrders</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="cwfSearch" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <script>return;</script>
+      </method>
+      <method name="cwfSearch_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.cwfSearch();
+          if(result instanceof Finder) {
+            Global.runContentDisplayScript(result.searchDocument, "displayScript");
+          } else {
+            Global.runContentDisplayScript(this, "displayScript");
+          }
+
+          {
+          this.searchAction();
+          return result;
+          }
+        ]]></script>
+      </method>
+      <method name="cwAutosaveConfirmation" type="action">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if (!this.isValid && Global.isAutosaveEnabled()) {
+            return "UU0256:YN";
+          }
+          return null;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="default" type="findVView">
+      <inputOverlay>doc_wDashboards.inputForDashboards/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Count Order Group By OrderStatus</label>
+      <outputOverlay>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/frmui_Forms/vform_default</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+    </view>
+  </viewList>
+</findSql>

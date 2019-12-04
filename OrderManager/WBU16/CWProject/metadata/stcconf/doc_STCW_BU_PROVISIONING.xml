@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcconf.STCW_BU_PROVISIONING">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0b03b9b3-6ab7-4d96-aa10-56da80380062}</guid>
+  <label>BU Provisioning for ServiceType and ProductCode</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="productCode" type="leaf">
+      <column>PRODUCTCODE</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>Product Code</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_BU_PROVISIONING</table>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="serviceType" type="leaf">
+      <column>SERVICETYPE</column>
+      <key>2</key>
+      <propertyElement type="elfld">
+        <label>Service Type</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_BU_PROVISIONING</table>
+      <valueType>dtype_stcw.string25</valueType>
+    </variable>
+    <variable name="cimType" type="leaf">
+      <column>CIM</column>
+      <key>3</key>
+      <propertyElement type="elslct">
+        <label>CIM Type</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STCW_BU_PROVISIONING</table>
+      <valueType>dtype_stcw.cimType</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return false;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcconf.STCW_BU_PROVISIONING</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STCW_BU_PROVISIONINGGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="STCW_BU_PROVISIONINGHeader" type="elhdr">
+                        <label>BU Provisioning for ServiceType and ProductType</label>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <label>Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_BU_PROVISIONING/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_BU_PROVISIONING/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="productCode" type="elfld">
+                        <label>Product Code</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_BU_PROVISIONING/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_BU_PROVISIONING/leaf_productCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cimType" type="elslct">
+                        <label>CIM</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_BU_PROVISIONING/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_BU_PROVISIONING/leaf_cimType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp"/>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <confirmation>doc_stcconf.STCW_BU_PROVISIONING/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

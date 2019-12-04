@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="crmToSOMMigration.mapCRMOrderIntoBundleOrder">
+  <label>Map CRM Order Into Bundle Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="crmOrder" type="rifp">
+      <type>order_stcw.wholesaleOrder</type>
+    </parameter>
+    <parameter name="orderCreationDate" type="rifp">
+      <type>dtype_com.conceptwave.system.DateTime</type>
+    </parameter>
+    <parameter name="versionName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="versionNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var bundleOrder = null;
+
+    if(crmOrder != null) {
+
+        bundleOrder = new Order("stcw.wholesaleBundleOrderSTC");
+        bundleOrder.orderHeader.customerIdNumber = crmOrder.accountNumber;
+        bundleOrder.orderHeader.accountNumber    = crmOrder.accountNumber;
+        bundleOrder.orderHeader.orderNumber      = crmOrder.orderNumber;
+        bundleOrder.orderHeader.orderType        = crmOrder.orderType;
+        bundleOrder.orderHeader.orderStatus      = crmOrder.orderStatus;
+        bundleOrder.orderHeader.creationDate     = crmOrder.creationDate;
+        bundleOrder.orderHeader.createdBy        = crmOrder.createdBy;
+        bundleOrder.orderHeader.createdByName    = crmOrder.createdBy;
+        bundleOrder.orderHeader.serviceDate      = crmOrder.expectedDate;
+        bundleOrder.orderHeader.businessUnit     = crmOrder.businessUnit;
+        bundleOrder.orderHeader.receiveDate      = orderCreationDate;
+        bundleOrder.orderHeader.isMigrated       = true;
+
+        var orderItemPathForBundle = "parentLineItems.1";
+        var bundleDoc = bundleOrder.createOrderItemByPath(orderItemPathForBundle + ".parentLineItem");
+
+        bundleDoc.lineItemIdentifier          = crmOrder.orderNumber;
+        bundleDoc.lineItemStatus              = "READY";
+        bundleDoc.lineItemType                = "Root";
+        bundleDoc.priority                    = 1;
+        bundleDoc.action                      = crmToSOMMigration.getActionByOrderType(crmOrder.orderType, versionName);
+        bundleDoc.workOrderNumber             = crmOrder.orderNumber;
+        bundleDoc.workOrderType               = bundleDoc.action;
+        bundleDoc.serviceType                 = crmOrder.service.productCode;
+        bundleDoc.serviceNumber               = crmOrder.service.assetNumber;
+        bundleDoc.reservationNumber           = crmOrder.reservationNumber;
+        bundleDoc.description                 = crmOrder.description;
+        bundleDoc.changeRequestType           = crmOrder.changeRequestType;
+        bundleDoc.disconnectionReason         = crmOrder.disconnectionReason;
+        bundleDoc.segmentFlag                 = crmOrder.segmentFlag;
+        bundleDoc.productCode                 = crmOrder.service.productCode;
+        bundleDoc.restoration                 = crmOrder.restoration;
+        bundleDoc.remarks                     = crmOrder.comments;
+        bundleDoc.numberOfChannels            = crmOrder.service.numberOfChannels;
+        bundleDoc.primaryAssetNumber          = crmOrder.service.primaryAssetNumber;
+        bundleDoc.quantity                    = 1;
+        bundleDoc.bandwidth                   = crmOrder.service.bandwidth;
+        bundleDoc.locationACCLICode           = getNVPairValue_("LOCATIONA");
+        bundleDoc.locationAAccessType         = getNVPairValue_("AccessType");
+        bundleDoc.locationBCCLICode           = getNVPairValue_("LOCATIONZ");
+        bundleDoc.locationBAccessType         = getNVPairValue_("AccessType");
+        bundleDoc.serviceDate                 = crmOrder.service.serviceDate;
+        bundleDoc.creationDate                = crmOrder.service.creationDate;
+        bundleDoc.elementTypeInOrderTree      = "B";
+        bundleDoc.isSubmit                    = (versionName == "INITIAL");
+        bundleDoc.isCancel                    = (versionName == "CANCEL");
+        bundleDoc.alreadySentToGranite        = true;
+        bundleDoc.alreadyReceivedCancel       = (versionName == "CANCEL");
+        bundleDoc.sentAnytimeToGranite        = true;
+        bundleDoc.requestedActionIsA          = (crmOrder.orderType == "I");
+        bundleDoc.provisioningFlag            = "PROVISIONING";
+        bundleDoc.provisioningBU              = "W";
+        bundleDoc.versionNumber               = (versionNumber > 0 ? versionNumber : null);
+        bundleDoc.receivedAction              = bundleDoc.action;
+        bundleDoc.receivedServiceType         = bundleDoc.serviceType;
+
+        if(crmOrder.service.nameValue != null) {
+            for (var i=0; i<crmOrder.service.nameValue.length; i++) {
+                var nvDoc   = bundleOrder.createOrderItemByPath(orderItemPathForBundle + ".parentLineItemNameValueParameters." + (i+1) + ".parentLineItemNameValueParameter");
+                nvDoc.name  = crmOrder.service.nameValue[i].name;
+                nvDoc.value = crmOrder.service.nameValue[i].value;
+                nvDoc.isVAS = "N";
+                nvDoc.parentElementId = bundleDoc.id;
+            }
+        }
+    }
+
+    return bundleOrder;
+
+
+    function getNVPairValue_(nvPairName) {
+        var value = null;
+        var found = false;
+        if(crmOrder.service.nameValue != null) {
+            for (var i=0; i<crmOrder.service.nameValue.length && !found; i++) {
+                if(crmOrder.service.nameValue[i].name == nvPairName) {
+                    found = true;
+                    value = crmOrder.service.nameValue[i].value;
+                }
+            }
+        }
+
+        return value;
+    }
+  ]]></script>
+</script>

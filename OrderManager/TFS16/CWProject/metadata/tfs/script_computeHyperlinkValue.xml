@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="tfs.computeHyperlinkValue">
+  <label>Compute Hyperlink Value</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="objectType" type="rifp">
+      <type>dtype_configuration.objectTypeForCustomAttributes</type>
+    </parameter>
+    <parameter name="objectId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="customAttributeId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var customAttribute = Document.readDoc("configuration.customAttribute", customAttributeId);
+
+    var sql = "SELECT computeHyperlink(?, ?, ?) FROM DUAL";
+    var output = Global.runSQLQuery("ORDER", "common.docString", 1, [objectType, objectId, customAttribute.hyperlinkAttributeName], sql);
+
+    var hyperLink = null;
+
+    if (output != null && output.size == 1) {
+        hyperLink = output[0].value;
+    }
+
+    return hyperLink;
+  ]]></script>
+</script>

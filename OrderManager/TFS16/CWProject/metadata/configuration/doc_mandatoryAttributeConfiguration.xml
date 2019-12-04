@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="configuration.mandatoryAttributeConfiguration">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{8db8a28b-0cb0-4d66-a8ac-fe690f076655}</guid>
+  <label>Mandatory Attribute Configuration</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>MANDATORY_ID</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>ID</label>
+      </propertyElement>
+      <table>stc_mandatory_attr</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="objectType" type="leaf">
+      <column>OBJECT_TYPE</column>
+      <table>stc_mandatory_attr</table>
+      <valueType>dtype_common.objectType</valueType>
+    </variable>
+    <variable name="fieldName" type="leaf">
+      <column>FIELD_NAME</column>
+      <propertyElement type="elfld">
+        <label>Field Name</label>
+      </propertyElement>
+      <table>stc_mandatory_attr</table>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocVisualKey" type="action">
+      <system>true</system>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+      <script>return this.fieldName;</script>
+    </method>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        if(this.isStored) {
+            Global.showUserMessage(Global.translateText("AI0002"));
+        }
+        else {
+            Global.showUserMessage(Global.translateText("AI0001"));
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_configuration.mandatoryAttributeConfiguration</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="mandatoryAttributeConfigurationGrid" type="elgrd">
+                    <colWidths>90px,160px,90px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>524px</width>
+                    <elementList>
+                      <element name="mandatoryAttributeConfigurationHeader" type="elhdr">
+                        <label>Mandatory Attribute Configuration</label>
+                      </element>
+                      <element name="objectType" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_configuration.mandatoryAttributeConfiguration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_configuration.mandatoryAttributeConfiguration/leaf_objectType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="fieldName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_configuration.mandatoryAttributeConfiguration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_configuration.mandatoryAttributeConfiguration/leaf_fieldName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

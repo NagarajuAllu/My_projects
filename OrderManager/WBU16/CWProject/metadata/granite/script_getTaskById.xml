@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="granite.getTaskById">
+  <label>Get Task By Id</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="taskInstId" type="rifp">
+      <type>dtype_granite.INST_ID_10</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var task = null;
+
+    if(taskInstId != null) {
+        var taskFinder = new Finder("granite.taskFinder");
+        taskFinder.searchDocument.INST_ID = taskInstId;
+
+        var taskList = taskFinder.search();
+        if(taskList != null && taskList.size > 0) {
+            task = taskList[0];
+        }
+    }
+
+    return task;
+  ]]></script>
+</script>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<externalService name="ifGranite_jms.XngCustomerService">
+  <label>Granite Customer Services</label>
+  <metaVersion>3</metaVersion>
+  <portList>
+    <port name="XngCustomerServiceRPort_CIUA" type="port">
+      <binding>bind_ifGranite_jms.XngCustomerServiceRBinding_CIUA</binding>
+      <label>CustomerInformationUpdateAcknowledgement_Port (Reader)</label>
+      <listener>true</listener>
+      <recover>5</recover>
+      <script>script_ifGranite_jms.manageGraniteMsg_CustomerInformationUpdateAcknowledgement</script>
+    </port>
+    <port name="XngCustomerServiceRPort_QA" type="port">
+      <binding>bind_ifGranite_jms.XngCustomerServiceRBinding_QA</binding>
+      <label>QuoteAcknowledgement_Port (Reader)</label>
+      <listener>true</listener>
+      <recover>5</recover>
+      <script>script_ifGranite_jms.manageGraniteMsg_QuoteAcknowledgement</script>
+    </port>
+    <port name="XngCustomerServiceRPort_SIU" type="port">
+      <binding>bind_ifGranite_jms.XngCustomerServiceRBinding_SIU</binding>
+      <label>SiteInformationUpdate_Port (Reader)</label>
+      <listener>true</listener>
+      <recover>5</recover>
+      <script>script_ifGranite_jms.manageGraniteMsg_SiteInformationUpdate_NoPropagate</script>
+    </port>
+    <port name="XngCustomerServiceSubmitOrderRPort" type="port">
+      <binding>bind_ifGranite_jms.XngCustomerServiceSubmitOrderRBinding</binding>
+      <label>SubmitOrderResult_Port (Reader)</label>
+      <listener>true</listener>
+      <recover>5</recover>
+      <script>script_ifGranite_jms.manageGraniteMsg_SubmitUpdateOrderResponse</script>
+    </port>
+    <port name="XngCustomerServiceUpdateOrderRPort" type="port">
+      <binding>bind_ifGranite_jms.XngCustomerServiceUpdateOrderRBinding</binding>
+      <label>UpdateOrderResult_Port (Reader)</label>
+      <listener>true</listener>
+      <recover>5</recover>
+      <script>script_ifGranite_jms.manageGraniteMsg_SubmitUpdateOrderResponse</script>
+    </port>
+    <port name="XngCustomerServiceRPort_WOSU" type="port">
+      <binding>bind_ifGranite_jms.XngCustomerServiceRBinding_WOSU</binding>
+      <label>WorkOrderStatusUpdate_Port (Reader)</label>
+      <listener>true</listener>
+      <recover>5</recover>
+      <script>script_ifGranite_jms.manageGraniteMsg_WorkOrderStatusUpdate</script>
+    </port>
+    <port name="XngCustomerServiceWRPort" type="port">
+      <binding>bind_ifGranite_jms.XngCustomerServiceWRBinding</binding>
+      <label>GraniteServices_Port (Writer-Reader)</label>
+      <recover>5</recover>
+    </port>
+  </portList>
+</externalService>

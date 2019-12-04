@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.updateExistingNV_VASSubSubSerParamsForResubmit">
+  <label>Update Existing NV Pair and VAS Parameters For SubSubServiceLineItem For Resubmit</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="existingLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="receivedLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="validationErrors" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="lineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="existingOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // nv check; it loops in existing NV pair and verifies if it exists also in received one
+    if(receivedLineItemContainer.subSubServiceLineItemNameValueParameters != null) {
+        for(var i=0; i<receivedLineItemContainer.subSubServiceLineItemNameValueParameters.length; i++) {
+            var receivedNVName = receivedLineItemContainer.subSubServiceLineItemNameValueParameters[i].subSubServiceLineItemNameValueParameter.name;
+            var found = false;
+
+            if(existingLineItemContainer.subSubServiceLineItemNameValueParameters != null) {
+                for(var j=0; j<existingLineItemContainer.subSubServiceLineItemNameValueParameters.length && !found; j++) {
+                    if(receivedNVName == existingLineItemContainer.subSubServiceLineItemNameValueParameters[j].subSubServiceLineItemNameValueParameter.name) {
+                        // found; comparing the values
+                        found = true;
+                        existingLineItemContainer.subSubServiceLineItemNameValueParameters[j].subSubServiceLineItemNameValueParameter.value = receivedLineItemContainer.subSubServiceLineItemNameValueParameters[i].subSubServiceLineItemNameValueParameter.value;
+                        existingLineItemContainer.subSubServiceLineItemNameValueParameters[j].subSubServiceLineItemNameValueParameter.nvAction = receivedLineItemContainer.subSubServiceLineItemNameValueParameters[i].subSubServiceLineItemNameValueParameter.nvAction;
+                    }
+                }
+            }
+
+            if(!found) {
+                var position = (existingLineItemContainer.subSubServiceLineItemNameValueParameters != null ? existingLineItemContainer.subSubServiceLineItemNameValueParameters.length : 0);
+                var containerItemPath = (existingLineItemContainer.subSubServiceLineItemNameValueParameters != null ? existingLineItemContainer.subSubServiceLineItemNameValueParameters.orderDataPath : (existingLineItemContainer.orderDataPath + ".subSubServiceLineItemNameValueParameters"));
+                var nvDoc = existingOrder.createOrderItemByPath(containerItemPath + "." + (position+1) + ".subSubServiceLineItemNameValueParameter");
+                nvDoc.name = receivedLineItemContainer.subSubServiceLineItemNameValueParameters[i].subSubServiceLineItemNameValueParameter.name;
+                nvDoc.value = receivedLineItemContainer.subSubServiceLineItemNameValueParameters[i].subSubServiceLineItemNameValueParameter.value;
+                nvDoc.nvAction = receivedLineItemContainer.subSubServiceLineItemNameValueParameters[i].subSubServiceLineItemNameValueParameter.nvAction;
+                nvDoc.parentElementId = existingLineItemContainer.subSubServiceLineItem.id;
+            }
+        }
+    }
+
+    // vas check; it loops in existing VAS pairs and verifies if it exists also in received one
+    if(receivedLineItemContainer.subSubServiceLineItemVASNVParameters != null) {
+        for(var i=0; i<receivedLineItemContainer.subSubServiceLineItemVASNVParameters.length; i++) {
+            var receivedNVName = receivedLineItemContainer.subSubServiceLineItemVASNVParameters[i].subSubServiceLineItemVASNVParameter.name;
+            var found = false;
+
+            if(existingLineItemContainer.subSubServiceLineItemVASNVParameters != null) {
+                for(var j=0; j<existingLineItemContainer.subSubServiceLineItemVASNVParameters.length && !found; j++) {
+                    if(receivedNVName == existingLineItemContainer.subSubServiceLineItemVASNVParameters[j].subSubServiceLineItemVASNVParameter.name) {
+                        // found; comparing the values
+                        found = true;
+                        existingLineItemContainer.subSubServiceLineItemVASNVParameters[j].subSubServiceLineItemVASNVParameter.value = receivedLineItemContainer.subSubServiceLineItemVASNVParameters[i].subSubServiceLineItemVASNVParameter.value;
+                        existingLineItemContainer.subSubServiceLineItemVASNVParameters[j].subSubServiceLineItemVASNVParameter.nvAction = receivedLineItemContainer.subSubServiceLineItemVASNVParameters[i].subSubServiceLineItemVASNVParameter.nvAction;
+                    }
+                }
+            }
+
+            if(!found) {
+                var position = (existingLineItemContainer.subSubServiceLineItemVASNVParameters != null ? existingLineItemContainer.subSubServiceLineItemVASNVParameters.length : 0);
+                var containerItemPath = (existingLineItemContainer.subSubServiceLineItemVASNVParameters != null ? existingLineItemContainer.subSubServiceLineItemVASNVParameters.orderDataPath : (existingLineItemContainer.orderDataPath + ".subSubServiceLineItemVASNVParameters"));
+                var vasDoc = existingOrder.createOrderItemByPath(containerItemPath + "." + (position+1) + ".subSubServiceLineItemVASNVParameter");
+                vasDoc.name = receivedLineItemContainer.subSubServiceLineItemVASNVParameters[i].subSubServiceLineItemVASNVParameter.name;
+                vasDoc.value = receivedLineItemContainer.subSubServiceLineItemVASNVParameters[i].subSubServiceLineItemVASNVParameter.value;
+                vasDoc.nvAction = receivedLineItemContainer.subSubServiceLineItemVASNVParameters[i].subSubServiceLineItemVASNVParameter.nvAction;
+                vasDoc.isVAS = "Y";
+                vasDoc.parentElementId = existingLineItemContainer.subSubServiceLineItem.id;
+            }
+        }
+    }
+
+    return validationErrors;
+  ]]></script>
+</script>

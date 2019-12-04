@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="3b5481e4bc21412e35a9a10dcd8688b3" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.readStoredEventData">
+  <guid>{0ce5808b-aa25-6cf0-64c1-9444d6ed33c9}</guid>
+  <highlight>10</highlight>
+  <label>Read Stored Event Data</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="eventId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="structureName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = " - readStoredEventData - ";
+
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "Searching event with id " + eventId);
+          var receivedEventData = null;
+          if(eventId != null && structureName != null) {
+                var event = ds_ws.searchStoredGraniteEventById(eventId);
+                if(event != null) {
+                      try {
+                            var convertedList = Global.getItemsFromXML (event.eventData, structureName);
+                            if (convertedList != null && convertedList.length > 0) {
+                                  receivedEventData = convertedList[0];
+                            }
+                      }
+                      catch (ex) {
+
+                      }
+                }
+          }
+
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "EventData found: " + (receivedEventData == null ? "NULL" : receivedEventData.toXML()));
+          return       receivedEventData;
+  ]]></script>
+</script>

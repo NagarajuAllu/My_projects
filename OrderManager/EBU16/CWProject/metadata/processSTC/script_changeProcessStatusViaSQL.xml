@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="processSTC.changeProcessStatusViaSQL">
+  <label>Change ProcessStatus via SQL</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_cwa_admin.processId</type>
+    </parameter>
+    <parameter name="bucketNo" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+    <parameter name="processStatus" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    Global.beginTransaction("PE_ORDER");
+
+    var sqlStatement = "update cwprocess_active" + bucketNo + " set status = ? where process_id = ?";
+
+    var rowsUpdated = Global.runDBUpdate("PE_ORDER", sqlStatement, [processStatus, processId], true);
+
+    Global.commitTransaction("PE_ORDER");
+  ]]></script>
+</script>

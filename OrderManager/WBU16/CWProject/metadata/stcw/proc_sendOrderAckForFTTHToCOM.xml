@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.sendOrderAckForFTTHToCOM">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>155.0</x>
+    <y>28.0</y>
+    <childList>
+      <child name="sendOrderAckToCOM" type="scriptActivity">
+        <label>Send OrderAck To COM</label>
+        <x>457.0</x>
+        <y>132.0</y>
+        <childList>
+          <child name="retry" type="compensateActivity">
+            <compensatesList>
+              <compensates>5</compensates>
+            </compensatesList>
+            <label>Retry</label>
+            <x>411.0</x>
+            <y>230.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>808.0</x>
+                <y>155.0</y>
+                <childList>
+                  <child name="firstPassSw" type="switchActivity">
+                    <label>First Pass Switch</label>
+                    <x>804.0</x>
+                    <y>262.0</y>
+                    <childList>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>897.0</x>
+                        <y>411.0</y>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              if (this.process.processDocument.firstPassOrderAck == "N")
+                                    return true;
+
+                              return false;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>804.0</x>
+                        <y>362.0</y>
+                        <childList>
+                          <child name="alert" type="scriptActivity">
+                            <label>Alert</label>
+                            <x>728.0</x>
+                            <y>412.0</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  stcc.sendMailForError("Caught error in sendOrderAckToCOM process " + this.process.id, Global.getConfigVariable("MAIL_RECEIVER_FOR_ALERTS"));
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="waitTimeforRetry" type="scriptActivity">
+                    <label>Wait Time for Retry</label>
+                    <schedule type="sched">
+                      <duration type="dur">
+                        <methodList>
+                          <method name="cwOnDuration" type="action">
+                            <system>true</system>
+                            <script><![CDATA[
+                              // configured time for sleeping
+                              var submitSleep = Global.getConfigVariable("SUBMITSLEEP", "10");
+
+                              // if downtime
+                              var ifDelay = Global.getInterfaceDelay("comOrdAck.orderAcknowledgement_PortType");
+                              ifDelay = ((ifDelay != null) ? ifDelay : "10") ;
+
+                              // sleepTime of the process = max(submitSleep, ifDelay);
+                              var sleepTime = ((submitSleep > ifDelay) ? submitSleep : ifDelay);
+
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - sleep for : " + sleepTime + " secs -- {" + submitSleep + ";" + ifDelay + "}");
+
+                              return sleepTime;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </duration>
+                    </schedule>
+                    <x>814.0</x>
+                    <y>520.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[this.process.processDocument.firstPassOrderAck = "N";]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              this.process.processDocument.errorType = null;
+
+              try {
+
+                  var graniteResponse = stcw.readGraniteResponseFromDB(this.process.processDocument.orderAckProcessId, "cimhJMS.orderAcknowledgementWithFailure_el");
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - submit/updateOrder Granite response = '" + graniteResponse.toXML() + "'");
+
+                  // map graniteResponse into data sent to CRM
+                  var request = new DataStructure("comOrdAck.receiveOrderAcknowledgement_el");
+                  stcw.fillHeaderForOrderACK_WOSU(request.orderAcknowledgementRequest.header, "OrderAck");
+
+                  var orderAcceptedByGranite = (graniteResponse.failure.status == "SUCCESS");
+
+                  var serviceLineItem = Document.readDoc("stcw.lineItemDocument", this.process.processDocument.lineItemId);
+
+                  request.orderAcknowledgementRequest.body.masterOrderNumber = this.process.processOrder.orderHeader.orderNumber;
+                  request.orderAcknowledgementRequest.body.serviceOrderNumber = serviceLineItem.workOrderNumber;
+                  request.orderAcknowledgementRequest.body.serviceOrderStatus = (orderAcceptedByGranite ? "SUBMITTED" : "FAILED");
+                  request.orderAcknowledgementRequest.body.masterOrderStatus = this.process.processOrder.orderHeader.orderStatus;
+                  request.orderAcknowledgementRequest.body.lineItemIdentifier = serviceLineItem.lineItemIdentifier;
+                  request.orderAcknowledgementRequest.body.serviceNumber = serviceLineItem.serviceNumber;
+
+                  if(!orderAcceptedByGranite) {
+                      var failure = new DataStructure("comOrdAck.failure");
+                      failure.errorCode = graniteResponse.failure.errorCode;
+                      failure.errorDescription = graniteResponse.failure.errorDescription;
+                      failure.errorTime = graniteResponse.failure.errorTime;
+                      failure.errorType = graniteResponse.failure.errorType;
+                      failure.functionName = graniteResponse.failure.functionName
+                      failure.objectId = serviceLineItem.lineItemIdentifier;
+                      failure.processInstanceId = null;
+                      failure.sourceCodeError = graniteResponse.failure.sourceErrorCode;
+                      failure.systemName = graniteResponse.failure.systemName;
+                      failure.targetRecord = null;
+                      failure.userId = null;
+                      request.orderAcknowledgementRequest.body.failure[0] = failure;
+                  }
+
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - orderAck to CRM = '" + request.toXML() + "'");
+
+                  // sending data to EAI
+                  var response = stcc.sendDataToInterfaceWithLogging(request,
+                                                                     "comOrdAck.orderAcknowledgement_PortType",
+                                                                     "receiveOrderAcknowledgement",
+                                                                     true,
+                                                                     this.process.id,
+                                                                     "SendOrderAckToCOM",
+                                                                     this.process.processOrder.orderHeader.orderNumber,
+                                                                     serviceLineItem.workOrderNumber);
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - COM orderAck response = '" + response.toXML() + "'");
+              }
+              catch(exc) {
+                  if(exc.message.indexOf("XE0023") >= 0 || exc.message.indexOf("XE0002")) {
+                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - I/F comOrdAck.orderAcknowledgement_PortType/receiveOrderAcknowledgement error: " + exc.message);
+                      this.process.processDocument.errorType = "Interface";
+                  }
+                  else {
+                      this.process.processDocument.errorType = "Application";
+                  }
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="interfaceError" type="onExceptionActivity">
+        <element>excp_cwf.interfaceExcp</element>
+        <label>External Interface Error</label>
+        <x>144.0</x>
+        <y>128.0</y>
+        <childList>
+          <child name="start" type="seqActivity">
+            <label>Start Handle I/F Error</label>
+            <x>148.0</x>
+            <y>128.0</y>
+            <childList>
+              <child name="rollbackIFError" type="rollbackActivity">
+                <label>Rollback I/F Error</label>
+                <x>146.0</x>
+                <y>278.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeIFError" type="resumeActivity">
+                <label>Resume I/F Error</label>
+                <x>146.0</x>
+                <y>410.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="applicationError" type="onExceptionActivity">
+        <element>excp_stcw.applicationError</element>
+        <label>Application Error</label>
+        <x>144.0</x>
+        <y>128.0</y>
+        <childList>
+          <child name="start" type="seqActivity">
+            <label>Start Handle Application Error</label>
+            <x>47.0</x>
+            <y>126.0</y>
+            <childList>
+              <child name="rollbackApplicationError" type="rollbackActivity">
+                <label>Rollback Application Error</label>
+                <x>49.0</x>
+                <y>276.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeApplicationError" type="resumeActivity">
+                <label>Resume Application Error</label>
+                <x>49.0</x>
+                <y>398.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="anyError" type="switchActivity">
+        <label>Any Error?</label>
+        <x>454.0</x>
+        <y>285.0</y>
+        <childList>
+          <child name="interfaceError" type="caseActivity">
+            <label>Interface Error</label>
+            <x>411.0</x>
+            <y>380.0</y>
+            <childList>
+              <child name="interfaceError" type="exceptActivity">
+                <element>excp_cwf.interfaceExcp</element>
+                <label>External Interface Error</label>
+                <x>580.0</x>
+                <y>382.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var isInterfaceError = (this.process.processDocument.errorType == "Interface");
+                  if(isInterfaceError) {
+                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Interface error while sending orderAck to EAI");
+                  }
+
+                  return isInterfaceError;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="applicationError" type="caseActivity">
+            <label>Application Error</label>
+            <x>411.0</x>
+            <y>380.0</y>
+            <childList>
+              <child name="applicationError" type="exceptActivity">
+                <element>excp_stcw.applicationError</element>
+                <label>Application Error</label>
+                <x>446.0</x>
+                <y>397.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var isApplicationError = (this.process.processDocument.errorType == "Application");
+                  if(isApplicationError) {
+                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Application error while sending orderAck to EAI");
+                  }
+
+                  return isApplicationError;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="noError" type="caseActivity">
+            <label>No Error</label>
+            <x>454.0</x>
+            <y>385.0</y>
+            <childList>
+              <child name="done" type="scriptActivity">
+                <label>Done</label>
+                <x>342.0</x>
+                <y>417.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          this.process.processDocument.rollbackNumber = "5";
+          this.process.processDocument.firstPassOrderAck = "Y";
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_stcw.STCW_PROCESS_DOCUMENT_ORDERACK_WOSU_FTTH</document>
+  <label>FTTH - Send OrderAck To COM</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>User</type>
+</process>

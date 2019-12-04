@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="25b8f828c919300c097471b326b80e4f" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="processSTC.startUpdComp_cwr2">
+  <activity name="start" type="seqActivity">
+    <guid>{0821c8d0-016d-5405-1bc8-86222d8b53fd}</guid>
+    <label>start</label>
+    <x>66.0</x>
+    <y>30.0</y>
+    <childList>
+      <child name="firstPassSw" type="switchActivity">
+        <guid>{067f7e61-e2b5-3259-51dd-23fa0a87955b}</guid>
+        <label>First Pass Switch</label>
+        <x>61.331055</x>
+        <y>122.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <guid>{0ca3497f-8a6f-abf8-b09e-e2cba90fa363}</guid>
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>200.0</y>
+            <childList>
+              <child name="alert" type="scriptActivity">
+                <guid>{01db035e-1adf-e986-526a-d0483818ec00}</guid>
+                <label>Alert</label>
+                <x>114.0</x>
+                <y>231.92578</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{069eec7c-c10e-ac79-3e60-44363c7b810d}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      processSTC.sendMailForError("Caught error in update process " + this.process.id, Global.getConfigVariable("MAIL_RECEIVER_FOR_ALERTS"));
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{0ca6ce36-d320-0d29-52eb-1226363f1234}</guid>
+            <label>No</label>
+            <x>30.0</x>
+            <y>231.92578</y>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{01cd37be-93bb-d7da-17e4-bb165f524830}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  if (this.process.processDocument.firstPassSub == "N")
+                        return true;
+
+                  return false;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="waitTimeforSubmit" type="scriptActivity">
+        <guid>{018e9e8d-a45b-ad97-9ad9-6fef1990e1e5}</guid>
+        <label>Wait Time for Submit</label>
+        <x>60.657227</x>
+        <y>327.88867</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{01375471-7207-77e3-5d48-ce32de37d2d0}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              this.process.processDocument.firstPassSub = "N";
+              var submitSleep = Global.getConfigVariable("SUBMITSLEEP");
+
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - sleep for : " + submitSleep);
+
+              processSTC.timeDelay("SUBMITSLEEP");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+  </activity>
+  <label>Start Update Compensate</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_processSTC.startUpdComp</process>
+  <revision>2</revision>
+  <type>Sub-flow</type>
+</process__revision>

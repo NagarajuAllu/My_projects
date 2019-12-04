@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process filenameHash="2f8355000de48b6ed2c7a214c7e1eb2c" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="processSTC.startSubReadComp">
+  <activity name="start" type="seqActivity">
+    <guid>{024381f3-21b1-70fe-4e1b-ad0aa040c9d3}</guid>
+    <label>start</label>
+    <x>66.0</x>
+    <y>30.0</y>
+    <childList>
+      <child name="firstPassSw" type="switchActivity">
+        <guid>{0ca1386d-25e2-fe2b-fc55-1bf790597733}</guid>
+        <label>First Pass Switch</label>
+        <x>61.331055</x>
+        <y>122.0</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <guid>{035f8cd1-8454-0269-7fe2-2c39d8f05c5d}</guid>
+            <label>No</label>
+            <x>114.0</x>
+            <y>231.92578</y>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{03cbf811-e246-7175-6653-4774bb75b47b}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  if (this.process.processDocument.firstPassSubRead == "N") {
+                      return true;
+                  }
+                  return false;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="yes" type="caseActivity">
+            <guid>{08bb19a9-fb54-5517-00fc-3ed4f4702046}</guid>
+            <label>Yes</label>
+            <x>68.84033</x>
+            <y>222.0</y>
+            <childList>
+              <child name="alert" type="scriptActivity">
+                <guid>{04134d4c-68fb-eef8-8458-099a22c57a71}</guid>
+                <label>Alert</label>
+                <x>30.0</x>
+                <y>231.92578</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{0a25f0f0-4fa7-c0cc-d8d6-75b93a14a3ab}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      if(this.process.processDocument.isSubmit == "Y") {
+                          processSTC.sendMailForError("Caught error in submit read process " + this.process.id, Global.getConfigVariable("MAIL_RECEIVER_FOR_ALERTS"));
+                      }
+                      else {
+                          processSTC.sendMailForError("Caught error in update read process " + this.process.id, Global.getConfigVariable("MAIL_RECEIVER_FOR_ALERTS"));
+                      }
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="waitTimeforSubmit" type="scriptActivity">
+        <guid>{05c52bcb-6ef2-9893-c3e5-12547dcc2329}</guid>
+        <label>Wait Time for Submit</label>
+        <schedule type="sched">
+          <duration type="dur">
+            <methodList>
+              <method name="cwOnDuration" type="action">
+                <system>true</system>
+                <script><![CDATA[
+                  var submitSleep = Global.getConfigVariable("SUBMITSLEEP", "10");
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.id + "] - sleep for : " + submitSleep + " secs");
+
+                  return submitSleep;
+                ]]></script>
+              </method>
+            </methodList>
+          </duration>
+        </schedule>
+        <x>60.657227</x>
+        <y>327.88867</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{09e0745f-8c7c-8d6c-c7a1-513a3f59b34a}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              this.process.processDocument.firstPassSubRead  = "N";
+
+              this.process.processDocument.countSubRead++;
+
+              //if(this.process.processDocument.countSubRead > 300) {
+              //    processSTC.generateJMSErrorMsgForNoResponse(this.process.processOrder.orderHeader.orderNumber, this.process.processOrderItem, this.process.processDocument.isSubmit, this.process.id);
+              //}
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <guid>{0347da02-14a2-76b2-b8ad-4c23183c20ab}</guid>
+  <label>Start Submit/Update  Read Compensate</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <revision>12</revision>
+  <type>Sub-flow</type>
+</process>

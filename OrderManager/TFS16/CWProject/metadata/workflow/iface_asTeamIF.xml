@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<interface name="workflow.asTeamIF">
+  <label>Access Solution Team I/F</label>
+  <metaVersion>4</metaVersion>
+  <operationList>
+    <operation name="issueSoW" type="oper">
+      <label>Issue SoW</label>
+      <type>One-Way</type>
+    </operation>
+    <operation name="reviewSoW" type="oper">
+      <label>Review SoW</label>
+      <type>One-Way</type>
+    </operation>
+    <operation name="acceptSoW" type="oper">
+      <label>Accept SoW</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="rejectSoW" type="oper">
+      <label>Reject SoW</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="sowIssued" type="oper">
+      <label>SoW Issued</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="reviewMoP" type="oper">
+      <label>Review MoP</label>
+      <privilegeList>
+        <privilege>STC_ASPriv</privilege>
+      </privilegeList>
+      <type>One-Way</type>
+    </operation>
+    <operation name="acceptMoP" type="oper">
+      <label>Accept MoP</label>
+      <privilegeList>
+        <privilege>STC_ASPriv</privilege>
+      </privilegeList>
+      <type>Notification</type>
+    </operation>
+    <operation name="rejectMoP" type="oper">
+      <label>Reject MoP</label>
+      <privilegeList>
+        <privilege>STC_ASPriv</privilege>
+      </privilegeList>
+      <type>Notification</type>
+    </operation>
+  </operationList>
+  <privilegeList>
+    <privilege>STC_ASPriv</privilege>
+  </privilegeList>
+  <revision>9</revision>
+</interface>

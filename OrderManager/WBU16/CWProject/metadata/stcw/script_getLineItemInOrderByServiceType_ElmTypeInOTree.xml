@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getLineItemInOrderByServiceType_ElmTypeInOTree">
+  <label>Get LineItem In Order By ServiceType And ElementTypeInOrderTree</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="elementTypeInOrderTree" type="rifp">
+      <type>dtype_stcw.string1</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("stcw.search_LineItemByServiceTypeAndPosition");
+    inputDoc.orderId = orderId;
+    inputDoc.serviceType = serviceType;
+    inputDoc.elementTypeInOrderTree = elementTypeInOrderTree;
+
+    var resultList = Finder.runFinder("stcw.findLineItemInOrderByServiceTypeAndPosition", "select", inputDoc);
+
+    var lineItem = null;
+
+    if(resultList != null && resultList.length > 0) {
+        lineItem = resultList[0];
+    }
+    return lineItem;
+  ]]></script>
+</script>

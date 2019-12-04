@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="30a8501ba99b652655ab2c6377f14739" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.serviceTypeBehaviorConfiguration">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{93e4fa60-6a36-4180-85a4-2a26e09dbdc9}</guid>
+  <label>ServiceType Behavior Configuration</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="serviceType" type="leaf">
+      <column>SERVICETYPE</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_SERVICETYPE_BEHAVIORCONFIG</table>
+      <valueType>dtype_ds_ws.serviceType</valueType>
+    </variable>
+    <variable name="externalValidationRequired" type="leaf">
+      <column>EXTERNAL_VALIDATION_REQUIRED</column>
+      <propertyElement type="elchk">
+        <label>Requires External Validation?</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_SERVICETYPE_BEHAVIORCONFIG</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="sendDisconnectForCancel" type="leaf">
+      <column>SEND_DISCONNECT_FOR_CANCEL</column>
+      <propertyElement type="elchk">
+        <label>Send Disconnect for Cancel when COMPLETED?</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_SERVICETYPE_BEHAVIORCONFIG</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="supportProvisioning" type="leaf">
+      <column>SUPPORT_PROVISIONING</column>
+      <propertyElement type="elchk">
+        <label>Support Provisioning?</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_SERVICETYPE_BEHAVIORCONFIG</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="supportPartialCancel" type="leaf">
+      <column>SUPPORT_PARTIAL_CANCEL</column>
+      <propertyElement type="elchk">
+        <label>Support Partial Cancel?</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_SERVICETYPE_BEHAVIORCONFIG</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="disconnectForNVPair_ExistingCircuit" type="leaf">
+      <column>DISCONNECT_4_NVP_EXISTCIRCUIT</column>
+      <propertyElement type="elchk">
+        <label>Disconnect For NVPair &apos;Existing Circuit&apos;</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_SERVICETYPE_BEHAVIORCONFIG</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$externalValidationRequired" type="laction">
+      <path>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_externalValidationRequired</path>
+      <type>initializer</type>
+      <valueType>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_externalValidationRequired</valueType>
+      <script>return true;</script>
+    </method>
+    <method name="cwLeafInitAction$disconnectForNVPair_ExistingCircuit" type="laction">
+      <path>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_disconnectForNVPair_ExistingCircuit</path>
+      <type>initializer</type>
+      <script>return false;</script>
+    </method>
+    <method name="cwLeafInitAction$supportPartialCancel" type="laction">
+      <path>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_supportPartialCancel</path>
+      <type>initializer</type>
+      <valueType>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_supportPartialCancel</valueType>
+      <script>return true;</script>
+    </method>
+    <method name="cwLeafInitAction$sendDisconnectForCancel" type="laction">
+      <path>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_sendDisconnectForCancel</path>
+      <type>initializer</type>
+      <script>return false;</script>
+    </method>
+    <method name="cwLeafInitAction$supportProvisioning" type="laction">
+      <path>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_supportProvisioning</path>
+      <type>initializer</type>
+      <valueType>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_supportProvisioning</valueType>
+      <script>return true;</script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        if(this.isStored) {
+            Global.showUserMessage(Global.translateText("AI0002"));
+        }
+        else {
+            Global.showUserMessage(Global.translateText("AI0001"));
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.serviceTypeBehaviorConfiguration</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="serviceTypeGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="serviceTypeBehaviorConfigurationGrid" type="elgrd">
+                    <colWidths>160px,200px,160px,200px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>640px</width>
+                    <elementList>
+                      <element name="serviceTypeBehaviorConfigurationHeader" type="elhdr">
+                        <label>ServiceType Behavior Configuration</label>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/ui_UserInterface/permMethod_serviceTypeEditablePerm</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <label>Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>5px</height>
+                        <rowSpan>5px</rowSpan>
+                      </element>
+                      <element name="sendDisconnectForCancel" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_sendDisconnectForCancel</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="externalValidationRequired" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_externalValidationRequired</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="supportProvisioning" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_supportProvisioning</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="supportPartialCancel" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_supportPartialCancel</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="disconnectForNVPair_ExistingCircuit" type="elchk">
+                        <label>Disconnect For NVPair &apos;Existing Circuit&apos;</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_disconnectForNVPair_ExistingCircuit</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Search" type="vform">
+            <label>Search</label>
+            <root name="serviceTypeGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="serviceTypeBehaviorConfigurationGrid" type="elgrd">
+                  <colWidths>160px,200px,160px,200px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>4</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>640px</width>
+                  <elementList>
+                    <element name="serviceTypeBehaviorConfigurationHeader" type="elhdr">
+                      <label>Search Element: ServiceType Behavior Configuration</label>
+                    </element>
+                    <element name="serviceType" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.serviceTypeBehaviorConfiguration/leaf_serviceType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="serviceTypeEditablePerm" type="permMethod">
+        <script>return (this.model.serviceType == null);</script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>doc_ds_ws.serviceTypeBehaviorConfiguration/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

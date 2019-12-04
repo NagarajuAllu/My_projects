@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="41377bf28b2b527a9c56d438330e4d5c" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.getBundleOrderByOrderNumber">
+  <label>Get BundleOrder By OrderNumber</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var searchDoc = new Document("ds_ws.search_bundleOrder");
+    searchDoc.orderNumber = orderNumber;
+
+    var orderListFound = Finder.runFinder("ds_ws.findAllSTCBundleOrders", "select", searchDoc);
+
+    var bundleOrder = null;
+    if(orderListFound != null && orderListFound.length > 0) {
+        bundleOrder = orderListFound[0];
+    }
+
+    return bundleOrder;
+  ]]></script>
+</script>

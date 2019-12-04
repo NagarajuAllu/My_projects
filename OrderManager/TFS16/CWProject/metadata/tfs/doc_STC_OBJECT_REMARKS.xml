@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfs.STC_OBJECT_REMARKS">
+  <audit>true</audit>
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{ed13bee1-f6d6-47d2-a1e1-070abd566960}</guid>
+  <label>Object Remarks</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_OBJECT_REMARKS</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="objectId" type="leaf">
+      <column>OBJECT_ID</column>
+      <table>STC_OBJECT_REMARKS</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="objectName" type="leaf">
+      <dontMap>true</dontMap>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+    <variable name="objectType" type="leaf">
+      <column>OBJECT_TYPE</column>
+      <table>STC_OBJECT_REMARKS</table>
+      <valueType>dtype_common.objectType</valueType>
+    </variable>
+    <variable name="orderId" type="leaf">
+      <column>ORDER_ID</column>
+      <table>STC_OBJECT_REMARKS</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="creationDate" type="leaf">
+      <column>CREATION_DATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Creation Date</label>
+      </propertyElement>
+      <table>STC_OBJECT_REMARKS</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="userId" type="leaf">
+      <column>USERID</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+      </propertyElement>
+      <table>STC_OBJECT_REMARKS</table>
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="remarks" type="leaf">
+      <column>REMARK_TEXT</column>
+      <table>STC_OBJECT_REMARKS</table>
+      <valueType>dtype_common.string4000</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocLoad" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocLoad();
+
+        this.objectName = tfs.getObjectNameByIdAndType(this.objectId, this.objectType);
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfs.STC_OBJECT_REMARKS</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="STC_TFR_REMARKSGrid" type="elgrd">
+                <colWidths>115px,185px,115px,185px</colWidths>
+                <labelOrientation>left</labelOrientation>
+                <numOfCols>4</numOfCols>
+                <useDefaultHeight>true</useDefaultHeight>
+                <elementList>
+                  <element name="STC_TFR_REMARKSHeader" type="elhdr">
+                    <label>Remarks</label>
+                  </element>
+                  <element name="objectType" type="elfld">
+                    <editable type="varPath">
+                      <variablePathList>
+                        <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                      </variablePathList>
+                    </editable>
+                    <label>Object Type</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.STC_OBJECT_REMARKS/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_tfs.STC_OBJECT_REMARKS/leaf_objectType</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="objectName" type="elfld">
+                    <editable type="varPath">
+                      <variablePathList>
+                        <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                      </variablePathList>
+                    </editable>
+                    <label>Object Name</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.STC_OBJECT_REMARKS/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_tfs.STC_OBJECT_REMARKS/leaf_objectName</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="creationDate" type="eldatetime">
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.STC_OBJECT_REMARKS/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_tfs.STC_OBJECT_REMARKS/leaf_creationDate</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="userId" type="elref">
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.STC_OBJECT_REMARKS/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_tfs.STC_OBJECT_REMARKS/leaf_userId</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="remarks" type="eltxtArea">
+                    <columnSpan>3</columnSpan>
+                    <label>Remarks</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.STC_OBJECT_REMARKS/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_tfs.STC_OBJECT_REMARKS/leaf_remarks</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="save" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <validate>true</validate>
+        <script><![CDATA[
+          this.cw$super_save();
+
+          this.parent.owner.findOrderRemarksUI.model.search();
+
+          Global.closeDialog(this.parent);
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

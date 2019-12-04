@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="c7a74158bd0ad7e92db6bb966d687067" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.validateQuote_cwr11">
+  <activity name="start" type="seqActivity">
+    <guid>{01d58c81-cd19-c770-1b1b-839aeaf383d3}</guid>
+    <label>Start</label>
+    <x>191.74596</x>
+    <y>30.0</y>
+    <childList>
+      <child name="receiveValidateQuote" type="subflowActivity">
+        <element>prrev_stcw.receiveValidateQuote_cwr1</element>
+        <guid>{00bbc64d-2a03-dfea-3c80-65c2470c7d23}</guid>
+        <label>Receive Validate Quote</label>
+        <x>331.15875</x>
+        <y>137.0</y>
+      </child>
+      <child name="enterQuoteInGranite" type="subflowActivity">
+        <element>prrev_stcw.enterQuoteInGranite_cwr3</element>
+        <guid>{0da2022d-2b06-97a2-1872-c3080d35dafb}</guid>
+        <label>Enter Quote In Granite</label>
+        <x>329.82574</x>
+        <y>263.10352</y>
+      </child>
+      <child name="terminateOldProcesses" type="scriptActivity">
+        <guid>{026ff7a1-7575-6641-96cf-db9f56ce2fa1}</guid>
+        <label>Terminate Old Processes</label>
+        <x>324.83063</x>
+        <y>389.20703</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0edecd48-1148-3ca0-5265-5447fbd457f8}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              if(this.process.processDocument.ackResult == "SUCCESS") {
+                    // check if it's an Add or not ...
+                    var quoteOrder = this.process.processOrder;
+                    if(quoteOrder.versions.length > 1) {
+                          // it's an update install quote
+                          var processCount = stcc.terminateAllProcesses (this.process.processOrder.header.cwOrderId, "stcw:validateQuote", this.process.id);
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - ValidateQuote - terminated " + processCount + " processes");
+
+                          quoteOrder.header.quoteStatus = quoteOrder.header.orderAction;
+
+                          // resetting Completed Date
+                          quoteOrder.header.completedDate = null;
+                          quoteOrder.save();
+                    }
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="forwardQuoteAckToCrm" type="subflowActivity">
+        <element>prrev_stcw.forwardQuoteAckToCrm_cwr3</element>
+        <guid>{054b43ee-a2e5-debc-3840-5341af334268}</guid>
+        <label>Forward Quote Ack To CRM</label>
+        <x>324.8277</x>
+        <y>515.31055</y>
+      </child>
+      <child name="hasAckSuccess" type="switchActivity">
+        <guid>{092b8c1b-20bb-8e60-0a89-a639b3de234f}</guid>
+        <label>Has Ack Success?</label>
+        <x>326.82867</x>
+        <y>641.41406</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <guid>{0e979786-db22-dc6a-feaa-53b52d6c44ed}</guid>
+            <label>Yes</label>
+            <x>240.34473</x>
+            <y>464.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <guid>{0ececdf0-74c8-12c9-9aef-fe8a7a467633}</guid>
+                <label>Start</label>
+                <x>340.84564</x>
+                <y>752.8164</y>
+                <childList>
+                  <child name="isReviseQuote" type="switchActivity">
+                    <guid>{0ee04225-ef7d-d9e4-4562-8408062ea02b}</guid>
+                    <label>Is Revise Quote</label>
+                    <x>402.1883</x>
+                    <y>844.8164</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <guid>{0403a1f3-e017-9cb0-bbcf-a0c281fda1d2}</guid>
+                        <label>Yes</label>
+                        <x>0.0</x>
+                        <y>0.0</y>
+                        <childList>
+                          <child name="start" type="seqActivity">
+                            <guid>{01dba5df-5f33-f6ad-17af-123a3ef53058}</guid>
+                            <label>Start</label>
+                            <x>459.54825</x>
+                            <y>956.21875</y>
+                            <childList>
+                              <child name="completeReviseQuote" type="scriptActivity">
+                                <guid>{038accbf-3e2d-cdf7-5819-9505a3d9ac36}</guid>
+                                <label>Complete Revise Quote</label>
+                                <x>455.86957</x>
+                                <y>1062.9199</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <guid>{0efad637-f7cf-504c-db0c-b275ef3c2d79}</guid>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Validate Quote: Revise Quote - Completing");
+
+                                            var quoteOrder = this.process.processOrder;
+                                            quoteOrder.header.quoteStatus = "COMPLETED";
+                                            quoteOrder.save();
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <guid>{02a84b2d-bf07-8997-3a71-80171cca500b}</guid>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var processOrder = this.process.processOrder;
+                              var lastVersionFolder = processOrder.versions[processOrder.versions.length - 1];
+                              var isRevise = (lastVersionFolder.header.versionName == "REVISE");
+
+                              if(isRevise) {
+                                    debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Validate Quote: Revise so no wait Quote Status Update");
+                              }
+
+                              return isRevise;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <guid>{0c14807e-8b7a-dacf-9b0e-fa24dfa69d36}</guid>
+                        <label>No</label>
+                        <x>349.34473</x>
+                        <y>356.0</y>
+                        <childList>
+                          <child name="start" type="seqActivity">
+                            <guid>{04ab11e4-4457-97d8-9091-2ffc63b96019}</guid>
+                            <label>Start</label>
+                            <x>363.5219</x>
+                            <y>956.21875</y>
+                            <childList>
+                              <child name="handleGraniteQuoteStatusUpdates" type="subflowActivity">
+                                <element>prrev_stcw.handleGraniteQuoteStatusUpdates_cwr1</element>
+                                <guid>{0f5055f8-6365-708c-be46-6ed252f99f6a}</guid>
+                                <label>Handle Granite Quote Status Updates</label>
+                                <x>363.17426</x>
+                                <y>1048.2188</y>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{0a9614bd-9f17-b52a-e2f1-44ce79657b40}</guid>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.ackResult == "SUCCESS");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{037dd3d9-fbda-08b5-4497-150df3a2f3e0}</guid>
+            <label>No</label>
+            <x>737.3447</x>
+            <y>42.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <guid>{0119d46a-8c50-5139-436c-3cfdb5d6a9a8}</guid>
+                <label>Start</label>
+                <x>269.4936</x>
+                <y>854.5176</y>
+                <childList>
+                  <child name="manageRejectedQuote" type="scriptActivity">
+                    <guid>{04c20220-8398-de7d-76a5-890549559632}</guid>
+                    <label>Manage Rejected Quote</label>
+                    <x>267.81293</x>
+                    <y>1062.9199</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{011b56de-2f81-3b34-50a8-91d0edf53b14}</guid>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var debugHeader = "[" + this.process.id + "] - ValidateQuote - ";
+                          debugPrintln(stcc.getSysdateForLog() + debugHeader + "Start Quote Archiving...");
+
+                          var quoteOrder = this.process.processOrder;
+
+                          stcw.createRejectedQuote(quoteOrder.header.orderNumber,
+                                                               quoteOrder.header.orderRowItemId,
+                                                               quoteOrder.header.quoteNumber,
+                                                               "Granite",
+                                                               this.process.processDocument.errorText);
+
+                          if(quoteOrder.versions.length > 1) {
+                                debugPrintln(stcc.getSysdateForLog() + debugHeader + "UpdateQuote ... so Removing last version");
+                                stcw.deleteLastVersionFolder(quoteOrder);
+                          }
+                          else {
+                                debugPrintln(stcc.getSysdateForLog() + debugHeader + "Install/Change Quote ... so archiving");
+                                stcw.archiveQuote(quoteOrder, true);
+                          }
+                          quoteOrder.save();
+                          debugPrintln(stcc.getSysdateForLog() + debugHeader + "Quote Archived...");
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="closeQuote" type="scriptActivity">
+        <guid>{0fcb9cf4-f100-9c32-1098-6db54e2a55f5}</guid>
+        <label>Close Quote</label>
+        <x>369.1772</x>
+        <y>1203.7246</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0e10c43c-18db-cf6f-7415-d99da63e6a42}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - ValidateQuote - Setting Complete Date");
+
+              var order = this.process.processOrder;
+              order.header.completedDate = new Date();
+              order.save();
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0f9d4696-9763-9f28-f474-9f1dcf7cb157}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{0561c6e1-22bf-f499-d543-f0a0af24b66a}</guid>
+        <label>End</label>
+        <x>369.5219</x>
+        <y>1315.127</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0785bbb0-564b-ceb2-b1b7-dfe771d129c1}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.updateHistoryEvent (this);
+
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - ValidateQuote - COMPLETED!!!");
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0c53ceb3-f476-eb7f-6722-78e4ad73c0df}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="interfaceExcp" type="onExceptionActivity">
+        <element>excp_cwf_pm.interfaceExcp</element>
+        <guid>{2b24b761-a9fb-4c04-95a7-a76af0a29701}</guid>
+        <label>External interface error</label>
+        <x>0.0</x>
+        <y>0.0</y>
+        <childList>
+          <child name="handleError" type="seqActivity">
+            <guid>{0290f573-c2e0-998f-1834-f3ff13ba573a}</guid>
+            <label>Handle Error</label>
+            <x>190.50197</x>
+            <y>154.05176</y>
+            <childList>
+              <child name="handleInterfaceError" type="subflowActivity">
+                <element>prrev_stcw.handleInterfaceError_cwr4</element>
+                <guid>{07222466-b106-4743-af4b-e1a0e28a2739}</guid>
+                <label>Handle Interface Error</label>
+                <x>190.36623</x>
+                <y>263.10352</y>
+              </child>
+              <child name="rollbackIntfError" type="rollbackActivity">
+                <element>prrev_stcw.validateQuote_cwr11/seqActivity_start/subflowActivity_forwardQuoteAckToCrm</element>
+                <guid>{77d6ca0d-a508-49d1-b90a-303ef368bfa1}</guid>
+                <label>rollbackIntfError</label>
+                <x>172.3672</x>
+                <y>403.9082</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      debugPrintln("Value read from the processDocument for compensate = " + rb);
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeIntfError" type="resumeActivity">
+                <guid>{71d2f2b5-2fac-497d-b48a-eec99e69353b}</guid>
+                <label>resumeIntfError</label>
+                <x>172.03517</x>
+                <y>530.0117</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0909992a-5f5c-2630-8ebf-91c13098ee31}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="unexpectedError" type="onExceptionActivity">
+        <element>excp_stcw.applicationError</element>
+        <guid>{490b3208-c47d-41f8-b162-e46697270167}</guid>
+        <label>Unexpected Error</label>
+        <x>0.0</x>
+        <y>0.0</y>
+        <childList>
+          <child name="handleError" type="seqActivity">
+            <guid>{057bb1f6-4ad3-4ee0-b21a-e279885c693b}</guid>
+            <label>Handle Error</label>
+            <x>51.472656</x>
+            <y>154.05176</y>
+            <childList>
+              <child name="handleApplicationError" type="subflowActivity">
+                <element>prrev_stcw.handleApplicationError_cwr2</element>
+                <guid>{07fe3d2a-2bb8-d1cd-c572-a717daad8a77}</guid>
+                <label>Handle Application Error</label>
+                <x>45.323242</x>
+                <y>263.10352</y>
+              </child>
+              <child name="rollbackAppError" type="rollbackActivity">
+                <element>prrev_stcw.validateQuote_cwr11/seqActivity_start/subflowActivity_forwardQuoteAckToCrm</element>
+                <guid>{3e5ce050-0da3-4e60-9ece-cd2055968ee4}</guid>
+                <label>rollbackAppError</label>
+                <x>30.0</x>
+                <y>403.9082</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      debugPrintln("Value read from the processDocument for compensate = " + rb);
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeAppError" type="resumeActivity">
+                <guid>{88f27924-282e-4f96-b68a-4dd8bc212144}</guid>
+                <label>resumeAppError</label>
+                <x>30.667969</x>
+                <y>530.0117</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0b1a98e9-dbe3-e050-4dfa-8f0f10aa6301}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0712a3ae-5e62-49ee-ce3b-5c29f2c590c2}</guid>
+        <system>true</system>
+        <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - ValidateQuote - Start...");]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <document>doc_stcw.orderProcess</document>
+  <label>Validate Quote</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_stcw.validateQuote</process>
+  <revision>11</revision>
+  <type>User</type>
+</process__revision>

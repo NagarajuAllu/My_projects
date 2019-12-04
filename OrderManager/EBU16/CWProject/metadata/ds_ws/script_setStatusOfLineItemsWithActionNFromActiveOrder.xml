@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.setStatusOfLineItemsWithActionNFromActiveOrder">
+  <label>Set Status Of LineItems With Action &apos;N&apos; From Active Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="activeBundleOrderId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(bundleContainer != null && activeBundleOrderId != null) {
+        if(bundleContainer.circuits != null) {
+            for(var i=0; i<bundleContainer.circuits.length; i++) {
+                var circuitContainer = bundleContainer.circuits[i];
+                if(circuitContainer.circuit.action == 'N' || !ds_ws.checkIfServiceTypeAllowsProvisioning(circuitContainer.circuit.serviceType)) {
+                    // this is to bypass a lot of possible errors - the default value is set to "COMPLETED"
+                    var finalStatus = "COMPLETED";
+                    var workOrderNumber = null;
+                    var completionDate = null;
+                    var orchestrationRecordForLineItemInActiveBundle = processSTC.getRecordInOrchTabByItemIdentifier_OrdNum_CwOrdId(null, activeBundleOrderId, circuitContainer.circuit.lineItemIdentifier);
+                    if(orchestrationRecordForLineItemInActiveBundle != null) {
+                        var activeLineItem = Document.readDoc("ds_ws.lineItemDocument", orchestrationRecordForLineItemInActiveBundle.cwDocId);
+                        if(activeLineItem != null) {
+                            finalStatus = activeLineItem.lineItemStatus;
+                            workOrderNumber = activeLineItem.workOrderNumber;
+                            completionDate = activeLineItem.completionDate;
+                        }
+                    }
+                    circuitContainer.circuit.lineItemStatus = finalStatus;
+                    circuitContainer.circuit.workOrderNumber = (workOrderNumber != null ? workOrderNumber : circuitContainer.circuit.workOrderNumber);
+                    circuitContainer.circuit.completionDate = (completionDate != null ? completionDate : circuitContainer.circuit.completionDate);
+                }
+
+                if(circuitContainer.services != null) {
+                    for(var j=0; j<circuitContainer.services.length; j++) {
+                        var serviceContainer = circuitContainer.services[j];
+                        if(serviceContainer.service.action == 'N' || !ds_ws.checkIfServiceTypeAllowsProvisioning(serviceContainer.service.serviceType)) {
+                            // this is to bypass a lot of possible errors - the default value is set to "COMPLETED"
+                            var finalStatus = "COMPLETED";
+                            var workOrderNumber = null;
+                            var completionDate = null;
+                            var orchestrationRecordForLineItemInActiveBundle = processSTC.getRecordInOrchTabByItemIdentifier_OrdNum_CwOrdId(null, activeBundleOrderId, serviceContainer.service.lineItemIdentifier);
+                            if(orchestrationRecordForLineItemInActiveBundle != null) {
+                                var activeLineItem = Document.readDoc("ds_ws.lineItemDocument", orchestrationRecordForLineItemInActiveBundle.cwDocId);
+                                if(activeLineItem != null) {
+                                    finalStatus = activeLineItem.lineItemStatus;
+                                    workOrderNumber = activeLineItem.workOrderNumber;
+                                    completionDate = activeLineItem.completionDate;
+                                }
+                            }
+                            serviceContainer.service.lineItemStatus = finalStatus;
+                            serviceContainer.service.workOrderNumber = (workOrderNumber != null ? workOrderNumber : serviceContainer.service.workOrderNumber);
+                            serviceContainer.service.completionDate = (completionDate != null ? completionDate : serviceContainer.service.completionDate);
+                        }
+
+                        if(serviceContainer.subServices != null) {
+                            for(var k=0; k<serviceContainer.subServices.length; k++) {
+                                var subServiceContainer = serviceContainer.subServices[i];
+                                if(subServiceContainer.subService.action == 'N' || !ds_ws.checkIfServiceTypeAllowsProvisioning(subServiceContainer.subService.serviceType)) {
+                                    // this is to bypass a lot of possible errors - the default value is set to "COMPLETED"
+                                    var finalStatus = "COMPLETED";
+                                    var workOrderNumber = null;
+                                    var completionDate = null;
+                                    var orchestrationRecordForLineItemInActiveBundle = processSTC.getRecordInOrchTabByItemIdentifier_OrdNum_CwOrdId(null, activeBundleOrderId, subServiceContainer.subService.lineItemIdentifier);
+                                    if(orchestrationRecordForLineItemInActiveBundle != null) {
+                                        var activeLineItem = Document.readDoc("ds_ws.lineItemDocument", orchestrationRecordForLineItemInActiveBundle.cwDocId);
+                                        if(activeLineItem != null) {
+                                            finalStatus = activeLineItem.lineItemStatus;
+                                            workOrderNumber = activeLineItem.workOrderNumber;
+                                            completionDate = activeLineItem.completionDate;
+                                        }
+                                    }
+                                    subServiceContainer.subService.lineItemStatus = finalStatus;
+                                    subServiceContainer.subService.workOrderNumber = (workOrderNumber != null ? workOrderNumber : subServiceContainer.subService.workOrderNumber);
+                                    subServiceContainer.subService.completionDate = (completionDate != null ? completionDate : subServiceContainer.subService.completionDate);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+  ]]></script>
+</script>

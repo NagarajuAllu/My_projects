@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<interface name="workflow.biTeamIF">
+  <label>BI Team I/F</label>
+  <metaVersion>25</metaVersion>
+  <operationList>
+    <operation name="validateRequest" type="oper">
+      <label>Validate Request</label>
+      <type>One-Way</type>
+    </operation>
+    <operation name="validBIRequest" type="oper">
+      <label>Valid BI Request</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="rejectBIRequest" type="oper">
+      <label>Reject BI Request</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="prepareToCompleteBIMgmt" type="oper">
+      <label>Prepare To Complete BI Management</label>
+      <type>One-Way</type>
+    </operation>
+    <operation name="biMgmtCompleted" type="oper">
+      <label>BI Management Completed</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="prepareToCloseBITicket" type="oper">
+      <label>Prepare To Close BI Ticket</label>
+      <type>One-Way</type>
+    </operation>
+    <operation name="closeBITicket" type="oper">
+      <label>Close BI Ticket</label>
+      <type>Notification</type>
+    </operation>
+  </operationList>
+  <privilegeList>
+    <privilege>STC_BIPriv</privilege>
+  </privilegeList>
+  <revision>3</revision>
+</interface>

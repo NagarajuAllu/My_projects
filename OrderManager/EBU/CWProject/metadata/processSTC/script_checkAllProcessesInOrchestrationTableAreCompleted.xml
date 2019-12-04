@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="95f8a63fb3f861c48906bc414ee520bd" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.checkAllProcessesInOrchestrationTableAreCompleted">
+  <label>Check If All the Processes In Orchestration Table Are Completed</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="cwOrderId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("processSTC.STC_ORDER_ORCHESTRATION");
+    inputDoc.cwOrderId = cwOrderId;
+
+    var allProcessesCompleted = true;
+    var orchestrationRecordList = Finder.runFinder("processSTC.findSTC_ORDER_ORCHESTRATION", "select", inputDoc);
+    if(orchestrationRecordList != null && orchestrationRecordList.length > 0) {
+        for(var i=0; i<orchestrationRecordList.length && allProcessesCompleted; i++) {
+            var orchestrationProcessId = orchestrationRecordList[i].orchestrationProcessId;
+            if(orchestrationProcessId != null) {
+                allProcessesCompleted = processSTC.checkIfProcessIsCompleted(orchestrationProcessId);
+                if(!allProcessesCompleted) {
+    debugPrintln("checkAllProcessesInOrchestrationTableAreCompleted for Order " + cwOrderId + " - Orchestration process " + orchestrationProcessId + " not completed");
+                }
+            }
+
+            if(allProcessesCompleted) {
+                var provisioningProcessId = orchestrationRecordList[i].provisioningProcessId;
+                if(provisioningProcessId != null) {
+                    allProcessesCompleted = processSTC.checkIfProcessIsCompleted(provisioningProcessId);
+                    if(!allProcessesCompleted) {
+                        debugPrintln("checkAllProcessesInOrchestrationTableAreCompleted for Order " + cwOrderId + " - Provisioning process " + provisioningProcessId + " not completed");
+                    }
+                }
+            }
+        }
+    }
+
+
+    debugPrintln("checkAllProcessesInOrchestrationTableAreCompleted for Order " + cwOrderId + " = " + allProcessesCompleted);
+    return allProcessesCompleted;
+  ]]></script>
+</script>

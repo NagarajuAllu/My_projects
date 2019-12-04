@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="c4fff3d1437836cb3bdd9d458c47f683" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.STC_PROCESS_DOCUMENT">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{f7f66f9c-d0ce-497a-9bb6-2a53423d75fa}</guid>
+  <label>STC_PROCESS_DOCUMENT</label>
+  <metaVersion>4</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="firstPassSub" type="leaf">
+      <valueType>dtype_processSTC.firstPass</valueType>
+    </variable>
+    <variable name="firstPassSubRead" type="leaf">
+      <valueType>dtype_processSTC.firstPass</valueType>
+    </variable>
+    <variable name="countSubRead" type="leaf">
+      <valueType>dtype_ds_ws.integer3</valueType>
+    </variable>
+    <variable name="firstPassOrderAck" type="leaf">
+      <valueType>dtype_processSTC.firstPass</valueType>
+    </variable>
+    <variable name="firstPassWOSU" type="leaf">
+      <valueType>dtype_processSTC.firstPass</valueType>
+    </variable>
+    <variable name="errorType" type="leaf">
+      <valueType>dtype_processSTC.errorType</valueType>
+    </variable>
+    <variable name="rollbackNumber" type="leaf">
+      <valueType>dtype_processSTC.rollbackNumber</valueType>
+    </variable>
+    <variable name="isSubmit" type="leaf">
+      <valueType>dtype_processSTC.isSubmit</valueType>
+    </variable>
+    <variable name="acceptedByGranite" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="latestWOSUId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$firstPassSub" type="laction">
+      <path>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_firstPassSub</path>
+      <type>initializer</type>
+      <valueType>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_firstPassSub</valueType>
+      <script><![CDATA[document.firstPassSub = "Y";]]></script>
+    </method>
+    <method name="cwLeafInitAction$firstPassOrderAck" type="laction">
+      <path>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_firstPassOrderAck</path>
+      <type>initializer</type>
+      <valueType>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_firstPassOrderAck</valueType>
+      <script><![CDATA[document.firstPassOrderAck = "Y";]]></script>
+    </method>
+    <method name="cwLeafInitAction$firstPassSubRead" type="laction">
+      <path>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_firstPassSubRead</path>
+      <type>initializer</type>
+      <valueType>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_firstPassSubRead</valueType>
+      <script><![CDATA[document.firstPassSubRead = "Y";]]></script>
+    </method>
+    <method name="cwLeafInitAction$firstPassWOSU" type="laction">
+      <path>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_firstPassWOSU</path>
+      <type>initializer</type>
+      <script><![CDATA[document.firstPassWOSU = "Y";]]></script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="attachPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.DocumentUserInterface</extends>
+    <label>Process</label>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_processSTC.STC_PROCESS_DOCUMENT</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="STC_PROCESS_DOCUMENTGrid" type="elgrd">
+                <colWidths>160</colWidths>
+                <numOfCols>4</numOfCols>
+                <useDefaultHeight>true</useDefaultHeight>
+                <width>160px</width>
+                <elementList>
+                  <element name="STC_PROCESS_DOCUMENTHeader" type="elhdr">
+                    <label>STC_PROCESS_DOCUMENT</label>
+                  </element>
+                  <element name="firstPassSub" type="elslct">
+                    <label>First Pass Write in Granite?</label>
+                    <sorted>false</sorted>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_firstPassSub</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="firstPassSubRead" type="elslct">
+                    <label>First Pass Read for Granite?</label>
+                    <sorted>false</sorted>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_firstPassSubRead</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="countSubRead" type="elfld">
+                    <label>Count Read from Granite</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_countSubRead</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="firstPassOrderAck" type="elslct">
+                    <label>First Pass Order Ack?</label>
+                    <sorted>false</sorted>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_firstPassOrderAck</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="firstPassWOSU" type="elslct">
+                    <label>First Pass Send WOSU to EAI?</label>
+                    <sorted>false</sorted>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_firstPassWOSU</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="errorType" type="elslct">
+                    <sorted>false</sorted>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_errorType</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="rollbackNumber" type="elfld">
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_rollbackNumber</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="isSubmit" type="elfld">
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_isSubmit</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="acceptedByGranite" type="elrgrp">
+                    <defaultEnum>yes/no</defaultEnum>
+                    <label>Accepted By Granite?</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_acceptedByGranite</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="latestWOSUId" type="elfld">
+                    <label>Latest WOSU ID</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_processSTC.STC_PROCESS_DOCUMENT/leaf_latestWOSUId</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/vform_Menu</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/vform_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

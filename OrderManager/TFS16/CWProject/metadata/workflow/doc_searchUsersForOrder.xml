@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="workflow.searchUsersForOrder">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{1b9493da-0a5e-4aba-96ed-7012c4c3f74f}</guid>
+  <label>Search Users For Order</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="orderId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="orderItemId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="orderInitiator" type="leaf">
+        <valueType>dtype_up_priv.orderInitiatorUserReference</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_workflow.searchUsersForOrder</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

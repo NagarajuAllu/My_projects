@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="84a98354666ca23b2a28819ee43e0685" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.getFinderForNVPairForGUI">
+  <label>Get Finder For NVPair For Insert Order From GUI</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="inputFinderLabel" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("ds_ws.search_finderNameForConfiguration");
+    inputDoc.finderLabel = inputFinderLabel;
+
+    var resultList = Finder.runFinder("ds_ws.findConfigFinderForNVPairForGUI", "select", inputDoc);
+
+    var resultDoc = null;
+    if(resultList != null && resultList.length > 0) {
+        resultDoc = resultList[0];
+    }
+
+    return resultDoc;
+  ]]></script>
+</script>

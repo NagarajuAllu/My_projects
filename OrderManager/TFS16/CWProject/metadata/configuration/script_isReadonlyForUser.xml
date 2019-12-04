@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="configuration.isReadonlyForUser">
+  <description><![CDATA[
+    Returns true or false if any of assigned permission to the user is present in readonly table for that particular object
+  ]]></description>
+  <label>Is Object Readonly For User</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="objectType" type="rifp"/>
+    <parameter name="attributeName" type="rifp"/>
+    <parameter name="userId" type="rifp"/>
+  </parameterList>
+  <script><![CDATA[
+    var finder = new Finder("configuration.readonlyAttributeFinder");
+    finder.searchDocument.objectType = objectType;
+    finder.searchDocument.attributeName = attributeName;
+    var result = finder.search();
+
+    //Search for user's privs
+    var profile = security.getUserProfile(userId);
+    var privMap = {};
+    var privs = security.getUserPrivileges().privilege;
+    for (var i=0; i< privs.length; i++){
+        privMap[privs[i].id] = true;
+    }
+
+    for( var i=0; i<result.length; i++){
+        if(privMap[result[i].privilegeName]){
+            return true;
+        }
+    }
+    return false;
+  ]]></script>
+</script>

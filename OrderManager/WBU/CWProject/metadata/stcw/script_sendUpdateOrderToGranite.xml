@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="f0b5fa192b506afdbcc85a069606092d" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.sendUpdateOrderToGranite">
+  <guid>{03284be5-7c1e-6955-ce3a-5e0801916eb2}</guid>
+  <label>Send UpdateOrder To Granite</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="request" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // it uses the common method:
+    // sendDataToInterface( request, processId, operationDescription, interfaceName, operationName )
+    var response = stcc.sendDataToInterface(request, processId, "sendUpdateOrderToGranite", "grws:XngOrderService", "updateOrder" );
+    return response;
+  ]]></script>
+</script>

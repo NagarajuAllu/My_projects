@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="ds_ws.findServiceTypeForInsertOrder">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_ds_ws.search_ServiceTypeForInsertOrder</input>
+  <label>Find ServiceType For InsertOrder</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_ds_ws.STC_INSERTORDER_SERVICETYPE</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_ds_ws.STC_INSERTORDER_SERVICETYPE/leaf_serviceType</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <vDetailForm>doc_ds_ws.STC_INSERTORDER_SERVICETYPE/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_ds_ws.search_ServiceTypeForInsertOrder</document>
+      <mappedDocument>doc_ds_ws.STC_INSERTORDER_SERVICETYPE</mappedDocument>
+      <mappedPath>doc_ds_ws.STC_INSERTORDER_SERVICETYPE/leaf_serviceType</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_ServiceTypeForInsertOrder/leaf_serviceType</path>
+    </search>
+  </searchList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="cwOnInitSearch" type="uimthd">
+      <script><![CDATA[
+        this.cw$super_cwOnInitSearch();
+
+        var inputServiceType = this.searchDocument.serviceType;
+
+        if(inputServiceType != null) {
+            while(inputServiceType.charAt(0) == "%") {
+                inputServiceType = inputServiceType.substring(1);
+            }
+
+            while(inputServiceType.endsWith("%")) {
+                inputServiceType = inputServiceType.substring(0, inputServiceType.length -1);
+            }
+        }
+
+
+        if(inputServiceType != null && inputServiceType.trim().length > 0 && inputServiceType != "%") {
+            this.searchDocument.serviceType = "%" + inputServiceType + "%";
+        }
+        else {
+            this.searchDocument.serviceType = "%";
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.STC_INSERTORDER_SERVICETYPE</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_ds_ws.search_ServiceTypeForInsertOrder/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_ds_ws.STC_INSERTORDER_SERVICETYPE/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findServiceTypeForInsertOrderResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_ds_ws.findServiceTypeForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="serviceType" type="elfld">
+                        <label>ServiceType</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findServiceTypeForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SERVICETYPE/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="description" type="elfld">
+                        <label>Description</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findServiceTypeForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SERVICETYPE/leaf_description</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="additionalInfo" type="elfld">
+                        <label>Additional Info</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findServiceTypeForInsertOrder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_SERVICETYPE/leaf_additionalInfo</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>400px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_ds_ws.findServiceTypeForInsertOrder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_ds_ws.findServiceTypeForInsertOrder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfCopy" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findServiceTypeForInsertOrderView" type="findVView">
+      <inputOverlay>doc_ds_ws.search_ServiceTypeForInsertOrder/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find ServiceType For InsertOrder</label>
+      <outputOverlay>findDoc_ds_ws.findServiceTypeForInsertOrder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findDoc>

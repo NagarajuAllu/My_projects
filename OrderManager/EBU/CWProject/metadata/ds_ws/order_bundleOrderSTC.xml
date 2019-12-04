@@ -1,0 +1,1585 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<order filenameHash="fb58a48bae1d10d7f0814d1076b4d82a" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.bundleOrderSTC">
+  <extends>mdl_com.conceptwave.system.Model</extends>
+  <guid>{7a16c203-5ced-4039-aeed-18023cc3b0fa}</guid>
+  <label>Bundle Order STC</label>
+  <metaVersion>4</metaVersion>
+  <childList>
+    <child name="orderHeader" type="order">
+      <extends>mdl_com.conceptwave.system.Model</extends>
+      <guid>{a08895aa-5b54-4e0b-a62b-ef0cc1e901c0}</guid>
+      <label>Order Header</label>
+      <mandatory>true</mandatory>
+      <orderItem>doc_ds_ws.bundleOrderHeaderDocument</orderItem>
+      <orderType>document</orderType>
+      <xmlMap type="xmap">
+        <path>order_ds_ws.bundleOrderSTC/order_orderHeader</path>
+        <xmlName>orderHeader</xmlName>
+      </xmlMap>
+      <UserInterface name="UserInterface" type="tree">
+        <autoExpand>true</autoExpand>
+        <defaultFolderImage>undefined</defaultFolderImage>
+        <defaultLeafImage>undefined</defaultLeafImage>
+        <element>order_ds_ws.bundleOrderSTC/order_orderHeader</element>
+        <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+        <variableList>
+          <variable name="model" type="uivar">
+            <label>model</label>
+            <valueType>order_ds_ws.bundleOrderSTC/order_orderHeader</valueType>
+          </variable>
+        </variableList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </UserInterface>
+    </child>
+    <child name="orderHeaderParameters" type="order">
+      <extends>mdl_com.conceptwave.system.Model</extends>
+      <guid>{99f0ec70-c44f-4c99-b7b2-9fc0bd33e02d}</guid>
+      <label>Order Header Parameters</label>
+      <maxInstances>999</maxInstances>
+      <orderType>collection</orderType>
+      <childList>
+        <child name="orderHeaderParameter" type="order">
+          <extends>mdl_com.conceptwave.system.Model</extends>
+          <guid>{ffeeeca4-7136-4aaa-ba44-b8e853e26642}</guid>
+          <label>Order Header Parameter</label>
+          <mandatory>true</mandatory>
+          <orderItem>doc_ds_ws.nameValueDocument</orderItem>
+          <orderType>document</orderType>
+          <xmlMap type="xmap">
+            <path>order_ds_ws.bundleOrderSTC/order_orderHeaderParameters/order_orderHeaderParameter</path>
+            <xmlName>orderHeaderParameter</xmlName>
+          </xmlMap>
+          <UserInterface name="UserInterface" type="tree">
+            <autoExpand>true</autoExpand>
+            <defaultFolderImage>undefined</defaultFolderImage>
+            <defaultLeafImage>undefined</defaultLeafImage>
+            <element>order_ds_ws.bundleOrderSTC/order_orderHeaderParameters/order_orderHeaderParameter</element>
+            <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+            <variableList>
+              <variable name="model" type="uivar">
+                <label>model</label>
+                <valueType>order_ds_ws.bundleOrderSTC/order_orderHeaderParameters/order_orderHeaderParameter</valueType>
+              </variable>
+            </variableList>
+            <vformList>
+              <vform name="Forms" type="frmui">
+                <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+              </vform>
+            </vformList>
+          </UserInterface>
+        </child>
+      </childList>
+      <UserInterface name="UserInterface" type="tree">
+        <autoExpand>true</autoExpand>
+        <defaultFolderImage>undefined</defaultFolderImage>
+        <defaultLeafImage>undefined</defaultLeafImage>
+        <element>order_ds_ws.bundleOrderSTC/order_orderHeaderParameters</element>
+        <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+        <variableList>
+          <variable name="model" type="uivar">
+            <label>model</label>
+            <valueType>order_ds_ws.bundleOrderSTC/order_orderHeaderParameters</valueType>
+          </variable>
+        </variableList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </UserInterface>
+    </child>
+    <child name="bundles" type="order">
+      <extends>mdl_com.conceptwave.system.Model</extends>
+      <guid>{9f6d632d-48a9-4251-833b-1525920538d0}</guid>
+      <label>ParentLineItems</label>
+      <maxInstances>999</maxInstances>
+      <minInstances>1</minInstances>
+      <orderType>collection</orderType>
+      <childList>
+        <child name="bundle" type="order">
+          <extends>mdl_com.conceptwave.system.Model</extends>
+          <guid>{1c22f8c6-d1c2-41e8-8ff4-85d1a1b3f12e}</guid>
+          <label>ParentLineItem</label>
+          <mandatory>true</mandatory>
+          <orderItem>doc_ds_ws.lineItemDocument</orderItem>
+          <orderType>document</orderType>
+          <xmlMap type="xmap">
+            <path>order_ds_ws.bundleOrderSTC/order_bundles/order_bundle</path>
+            <xmlName>bundle</xmlName>
+          </xmlMap>
+          <UserInterface name="UserInterface" type="tree">
+            <autoExpand>true</autoExpand>
+            <defaultFolderImage>undefined</defaultFolderImage>
+            <defaultLeafImage>undefined</defaultLeafImage>
+            <element>order_ds_ws.bundleOrderSTC/order_bundles/order_bundle</element>
+            <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+            <variableList>
+              <variable name="model" type="uivar">
+                <label>model</label>
+                <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_bundle</valueType>
+              </variable>
+            </variableList>
+            <vformList>
+              <vform name="Forms" type="frmui">
+                <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+              </vform>
+            </vformList>
+          </UserInterface>
+        </child>
+        <child name="bundleParameters" type="order">
+          <extends>mdl_com.conceptwave.system.Model</extends>
+          <guid>{f6ba4688-aeb3-4712-8f1c-12f5486659d3}</guid>
+          <label>ParentLineItem Parameters</label>
+          <maxInstances>999</maxInstances>
+          <orderType>collection</orderType>
+          <childList>
+            <child name="bundleParameter" type="order">
+              <extends>mdl_com.conceptwave.system.Model</extends>
+              <guid>{4f3dbe7b-d3cc-4692-a9a9-c3ccaf6b61d0}</guid>
+              <label>Bundle Parameter</label>
+              <mandatory>true</mandatory>
+              <orderItem>doc_ds_ws.nameValueDocument</orderItem>
+              <orderType>document</orderType>
+              <xmlMap type="xmap">
+                <path>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleParameters/order_bundleParameter</path>
+                <xmlName>bundleParameter</xmlName>
+              </xmlMap>
+              <UserInterface name="UserInterface" type="tree">
+                <autoExpand>true</autoExpand>
+                <defaultFolderImage>undefined</defaultFolderImage>
+                <defaultLeafImage>undefined</defaultLeafImage>
+                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleParameters/order_bundleParameter</element>
+                <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                <variableList>
+                  <variable name="model" type="uivar">
+                    <label>model</label>
+                    <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleParameters/order_bundleParameter</valueType>
+                  </variable>
+                </variableList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </UserInterface>
+            </child>
+          </childList>
+          <UserInterface name="UserInterface" type="tree">
+            <autoExpand>true</autoExpand>
+            <defaultFolderImage>undefined</defaultFolderImage>
+            <defaultLeafImage>undefined</defaultLeafImage>
+            <element>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleParameters</element>
+            <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+            <variableList>
+              <variable name="model" type="uivar">
+                <label>model</label>
+                <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleParameters</valueType>
+              </variable>
+            </variableList>
+            <vformList>
+              <vform name="Forms" type="frmui">
+                <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+              </vform>
+            </vformList>
+          </UserInterface>
+        </child>
+        <child name="bundleBlockParameters" type="order">
+          <extends>mdl_com.conceptwave.system.Model</extends>
+          <guid>{97c02265-d8af-475d-9753-ed21ec1b6132}</guid>
+          <label>ParentLineItem BlockParameters</label>
+          <maxInstances>999</maxInstances>
+          <orderType>collection</orderType>
+          <childList>
+            <child name="bundleBlockParameter" type="order">
+              <extends>mdl_com.conceptwave.system.Model</extends>
+              <guid>{8ca896a2-f994-4e91-a78f-7bf9f16ce206}</guid>
+              <label>Bundle BlockParameter</label>
+              <mandatory>true</mandatory>
+              <orderItem>doc_ds_ws.blockNameValueDocument</orderItem>
+              <orderType>document</orderType>
+              <xmlMap type="xmap">
+                <path>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleBlockParameters/order_bundleBlockParameter</path>
+                <xmlName>bundleBlockParameter</xmlName>
+              </xmlMap>
+              <UserInterface name="UserInterface" type="tree">
+                <autoExpand>true</autoExpand>
+                <defaultFolderImage>undefined</defaultFolderImage>
+                <defaultLeafImage>undefined</defaultLeafImage>
+                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleBlockParameters/order_bundleBlockParameter</element>
+                <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                <variableList>
+                  <variable name="model" type="uivar">
+                    <label>model</label>
+                    <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleBlockParameters/order_bundleBlockParameter</valueType>
+                  </variable>
+                </variableList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </UserInterface>
+            </child>
+          </childList>
+          <UserInterface name="UserInterface" type="tree">
+            <autoExpand>true</autoExpand>
+            <defaultFolderImage>undefined</defaultFolderImage>
+            <defaultLeafImage>undefined</defaultLeafImage>
+            <element>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleBlockParameters</element>
+            <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+            <variableList>
+              <variable name="model" type="uivar">
+                <label>model</label>
+                <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleBlockParameters</valueType>
+              </variable>
+            </variableList>
+            <vformList>
+              <vform name="Forms" type="frmui">
+                <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+              </vform>
+            </vformList>
+          </UserInterface>
+        </child>
+        <child name="circuits" type="order">
+          <extends>mdl_com.conceptwave.system.Model</extends>
+          <guid>{e460abd6-69c5-48fe-805b-c85390c6020f}</guid>
+          <label>Services</label>
+          <maxInstances>999</maxInstances>
+          <orderType>collection</orderType>
+          <childList>
+            <child name="circuit" type="order">
+              <extends>mdl_com.conceptwave.system.Model</extends>
+              <guid>{e264ae00-462b-4a6e-8692-e38bcb18b317}</guid>
+              <label>Service</label>
+              <mandatory>true</mandatory>
+              <orderItem>doc_ds_ws.lineItemDocument</orderItem>
+              <orderType>document</orderType>
+              <xmlMap type="xmap">
+                <path>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuit</path>
+                <xmlName>circuit</xmlName>
+              </xmlMap>
+              <UserInterface name="UserInterface" type="tree">
+                <autoExpand>true</autoExpand>
+                <defaultFolderImage>undefined</defaultFolderImage>
+                <defaultLeafImage>undefined</defaultLeafImage>
+                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuit</element>
+                <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                <variableList>
+                  <variable name="model" type="uivar">
+                    <label>model</label>
+                    <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuit</valueType>
+                  </variable>
+                </variableList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </UserInterface>
+            </child>
+            <child name="circuitParameters" type="order">
+              <extends>mdl_com.conceptwave.system.Model</extends>
+              <guid>{1871a336-1863-491d-8756-c2e1eb8b55a5}</guid>
+              <label>Service Parameters</label>
+              <maxInstances>999</maxInstances>
+              <orderType>collection</orderType>
+              <childList>
+                <child name="circuitParameter" type="order">
+                  <extends>mdl_com.conceptwave.system.Model</extends>
+                  <guid>{2cb6cf6a-ce6e-4678-89c0-8fbdc831f7a8}</guid>
+                  <label>Circuit Parameter</label>
+                  <mandatory>true</mandatory>
+                  <orderItem>doc_ds_ws.nameValueDocument</orderItem>
+                  <orderType>document</orderType>
+                  <xmlMap type="xmap">
+                    <path>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters/order_circuitParameter</path>
+                    <xmlName>circuitParameter</xmlName>
+                  </xmlMap>
+                  <UserInterface name="UserInterface" type="tree">
+                    <autoExpand>true</autoExpand>
+                    <defaultFolderImage>undefined</defaultFolderImage>
+                    <defaultLeafImage>undefined</defaultLeafImage>
+                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters/order_circuitParameter</element>
+                    <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                    <variableList>
+                      <variable name="model" type="uivar">
+                        <label>model</label>
+                        <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters/order_circuitParameter</valueType>
+                      </variable>
+                    </variableList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </UserInterface>
+                </child>
+              </childList>
+              <UserInterface name="UserInterface" type="tree">
+                <autoExpand>true</autoExpand>
+                <defaultFolderImage>undefined</defaultFolderImage>
+                <defaultLeafImage>undefined</defaultLeafImage>
+                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters</element>
+                <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                <variableList>
+                  <variable name="model" type="uivar">
+                    <label>model</label>
+                    <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters</valueType>
+                  </variable>
+                </variableList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </UserInterface>
+            </child>
+            <child name="circuitBlockParameters" type="order">
+              <extends>mdl_com.conceptwave.system.Model</extends>
+              <guid>{5bd0957e-1884-4867-bc7e-0019f8ce14ae}</guid>
+              <label>Service BlockParameters</label>
+              <maxInstances>999</maxInstances>
+              <orderType>collection</orderType>
+              <childList>
+                <child name="circuitBlockParameter" type="order">
+                  <extends>mdl_com.conceptwave.system.Model</extends>
+                  <guid>{2a002b1c-05e8-45f2-818f-c6912b740ee2}</guid>
+                  <label>Circuit BlockParameter</label>
+                  <mandatory>true</mandatory>
+                  <orderItem>doc_ds_ws.blockNameValueDocument</orderItem>
+                  <orderType>document</orderType>
+                  <xmlMap type="xmap">
+                    <path>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters/order_circuitBlockParameter</path>
+                    <xmlName>circuitBlockParameter</xmlName>
+                  </xmlMap>
+                  <UserInterface name="UserInterface" type="tree">
+                    <autoExpand>true</autoExpand>
+                    <defaultFolderImage>undefined</defaultFolderImage>
+                    <defaultLeafImage>undefined</defaultLeafImage>
+                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters/order_circuitBlockParameter</element>
+                    <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                    <variableList>
+                      <variable name="model" type="uivar">
+                        <label>model</label>
+                        <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters/order_circuitBlockParameter</valueType>
+                      </variable>
+                    </variableList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </UserInterface>
+                </child>
+              </childList>
+              <UserInterface name="UserInterface" type="tree">
+                <autoExpand>true</autoExpand>
+                <defaultFolderImage>undefined</defaultFolderImage>
+                <defaultLeafImage>undefined</defaultLeafImage>
+                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters</element>
+                <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                <variableList>
+                  <variable name="model" type="uivar">
+                    <label>model</label>
+                    <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters</valueType>
+                  </variable>
+                </variableList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </UserInterface>
+            </child>
+            <child name="services" type="order">
+              <extends>mdl_com.conceptwave.system.Model</extends>
+              <guid>{ae000cab-354b-4912-ba8e-a49d04ab68ad}</guid>
+              <label>SubServices</label>
+              <maxInstances>999</maxInstances>
+              <minInstances>1</minInstances>
+              <orderType>collection</orderType>
+              <childList>
+                <child name="service" type="order">
+                  <extends>mdl_com.conceptwave.system.Model</extends>
+                  <guid>{15fc58b7-5c56-42ea-b044-103e3cd30efa}</guid>
+                  <label>SubService</label>
+                  <mandatory>true</mandatory>
+                  <orderItem>doc_ds_ws.lineItemDocument</orderItem>
+                  <orderType>document</orderType>
+                  <xmlMap type="xmap">
+                    <path>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_service</path>
+                    <xmlName>service</xmlName>
+                  </xmlMap>
+                  <UserInterface name="UserInterface" type="tree">
+                    <autoExpand>true</autoExpand>
+                    <defaultFolderImage>undefined</defaultFolderImage>
+                    <defaultLeafImage>undefined</defaultLeafImage>
+                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_service</element>
+                    <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                    <variableList>
+                      <variable name="model" type="uivar">
+                        <label>model</label>
+                        <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_service</valueType>
+                      </variable>
+                    </variableList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </UserInterface>
+                </child>
+                <child name="serviceParameters" type="order">
+                  <extends>mdl_com.conceptwave.system.Model</extends>
+                  <guid>{1d23707c-ccdf-4217-9733-bf3974e3b2a6}</guid>
+                  <label>SubService Parameters</label>
+                  <maxInstances>999</maxInstances>
+                  <orderType>collection</orderType>
+                  <childList>
+                    <child name="serviceParameter" type="order">
+                      <extends>mdl_com.conceptwave.system.Model</extends>
+                      <guid>{fe5f5194-c17c-4897-b15e-0885024c20cf}</guid>
+                      <label>Service Parameter</label>
+                      <mandatory>true</mandatory>
+                      <orderItem>doc_ds_ws.nameValueDocument</orderItem>
+                      <orderType>document</orderType>
+                      <xmlMap type="xmap">
+                        <path>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters/order_serviceParameter</path>
+                        <xmlName>serviceParameter</xmlName>
+                      </xmlMap>
+                      <UserInterface name="UserInterface" type="tree">
+                        <autoExpand>true</autoExpand>
+                        <defaultFolderImage>undefined</defaultFolderImage>
+                        <defaultLeafImage>undefined</defaultLeafImage>
+                        <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters/order_serviceParameter</element>
+                        <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                        <variableList>
+                          <variable name="model" type="uivar">
+                            <label>model</label>
+                            <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters/order_serviceParameter</valueType>
+                          </variable>
+                        </variableList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </UserInterface>
+                    </child>
+                  </childList>
+                  <UserInterface name="UserInterface" type="tree">
+                    <autoExpand>true</autoExpand>
+                    <defaultFolderImage>undefined</defaultFolderImage>
+                    <defaultLeafImage>undefined</defaultLeafImage>
+                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters</element>
+                    <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                    <variableList>
+                      <variable name="model" type="uivar">
+                        <label>model</label>
+                        <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters</valueType>
+                      </variable>
+                    </variableList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </UserInterface>
+                </child>
+                <child name="serviceBlockParameters" type="order">
+                  <extends>mdl_com.conceptwave.system.Model</extends>
+                  <guid>{2bf74165-5f2c-44b3-b59a-73957a7487f8}</guid>
+                  <label>SubService BlockParameters</label>
+                  <maxInstances>999</maxInstances>
+                  <orderType>collection</orderType>
+                  <childList>
+                    <child name="serviceBlockParameter" type="order">
+                      <extends>mdl_com.conceptwave.system.Model</extends>
+                      <guid>{b7a39cb4-76a3-4a89-9ec9-46df3eb53be1}</guid>
+                      <label>Service BlockParameter</label>
+                      <mandatory>true</mandatory>
+                      <orderItem>doc_ds_ws.blockNameValueDocument</orderItem>
+                      <orderType>document</orderType>
+                      <xmlMap type="xmap">
+                        <path>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters/order_serviceBlockParameter</path>
+                        <xmlName>serviceBlockParameters</xmlName>
+                      </xmlMap>
+                      <UserInterface name="UserInterface" type="tree">
+                        <autoExpand>true</autoExpand>
+                        <defaultFolderImage>undefined</defaultFolderImage>
+                        <defaultLeafImage>undefined</defaultLeafImage>
+                        <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters/order_serviceBlockParameter</element>
+                        <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                        <variableList>
+                          <variable name="model" type="uivar">
+                            <label>model</label>
+                            <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters/order_serviceBlockParameter</valueType>
+                          </variable>
+                        </variableList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </UserInterface>
+                    </child>
+                  </childList>
+                  <UserInterface name="UserInterface" type="tree">
+                    <autoExpand>true</autoExpand>
+                    <defaultFolderImage>undefined</defaultFolderImage>
+                    <defaultLeafImage>undefined</defaultLeafImage>
+                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</element>
+                    <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                    <variableList>
+                      <variable name="model" type="uivar">
+                        <label>model</label>
+                        <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</valueType>
+                      </variable>
+                    </variableList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </UserInterface>
+                </child>
+                <child name="subServices" type="order">
+                  <extends>mdl_com.conceptwave.system.Model</extends>
+                  <guid>{dbb3a2b1-347d-4f5c-99c0-c51e2b8d6a88}</guid>
+                  <label>Sub-SubServices</label>
+                  <maxInstances>999</maxInstances>
+                  <minInstances>1</minInstances>
+                  <orderType>collection</orderType>
+                  <childList>
+                    <child name="subService" type="order">
+                      <extends>mdl_com.conceptwave.system.Model</extends>
+                      <guid>{19a6a5ab-1fdc-4ab4-a3a6-6d4d1843cda3}</guid>
+                      <label>Sub-SubService</label>
+                      <mandatory>true</mandatory>
+                      <orderItem>doc_ds_ws.lineItemDocument</orderItem>
+                      <orderType>document</orderType>
+                      <xmlMap type="xmap">
+                        <path>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subService</path>
+                        <xmlName>subService</xmlName>
+                      </xmlMap>
+                      <UserInterface name="UserInterface" type="tree">
+                        <autoExpand>true</autoExpand>
+                        <defaultFolderImage>undefined</defaultFolderImage>
+                        <defaultLeafImage>undefined</defaultLeafImage>
+                        <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subService</element>
+                        <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                        <variableList>
+                          <variable name="model" type="uivar">
+                            <label>model</label>
+                            <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subService</valueType>
+                          </variable>
+                        </variableList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </UserInterface>
+                    </child>
+                    <child name="subServiceParameters" type="order">
+                      <extends>mdl_com.conceptwave.system.Model</extends>
+                      <guid>{3df5518c-18e0-439a-8947-3efeca587980}</guid>
+                      <label>Sub-SubService Parameters</label>
+                      <maxInstances>999</maxInstances>
+                      <orderType>collection</orderType>
+                      <childList>
+                        <child name="subServiceParameter" type="order">
+                          <extends>mdl_com.conceptwave.system.Model</extends>
+                          <guid>{5cc00d67-6126-43d5-831a-d5eb6a5f9361}</guid>
+                          <label>SubService Parameter</label>
+                          <mandatory>true</mandatory>
+                          <orderItem>doc_ds_ws.nameValueDocument</orderItem>
+                          <orderType>document</orderType>
+                          <xmlMap type="xmap">
+                            <path>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters/order_subServiceParameter</path>
+                            <xmlName>subServiceParameter</xmlName>
+                          </xmlMap>
+                          <UserInterface name="UserInterface" type="tree">
+                            <autoExpand>true</autoExpand>
+                            <defaultFolderImage>undefined</defaultFolderImage>
+                            <defaultLeafImage>undefined</defaultLeafImage>
+                            <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters/order_subServiceParameter</element>
+                            <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                            <variableList>
+                              <variable name="model" type="uivar">
+                                <label>model</label>
+                                <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters/order_subServiceParameter</valueType>
+                              </variable>
+                            </variableList>
+                            <vformList>
+                              <vform name="Forms" type="frmui">
+                                <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                              </vform>
+                            </vformList>
+                          </UserInterface>
+                        </child>
+                      </childList>
+                      <UserInterface name="UserInterface" type="tree">
+                        <autoExpand>true</autoExpand>
+                        <defaultFolderImage>undefined</defaultFolderImage>
+                        <defaultLeafImage>undefined</defaultLeafImage>
+                        <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters</element>
+                        <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                        <variableList>
+                          <variable name="model" type="uivar">
+                            <label>model</label>
+                            <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters</valueType>
+                          </variable>
+                        </variableList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </UserInterface>
+                    </child>
+                    <child name="subServiceBlockParameters" type="order">
+                      <extends>mdl_com.conceptwave.system.Model</extends>
+                      <guid>{519b2e28-ea45-489e-b8dd-91f757100432}</guid>
+                      <label>Sub-SubService BlockParameters</label>
+                      <maxInstances>999</maxInstances>
+                      <orderType>collection</orderType>
+                      <childList>
+                        <child name="subServiceBlockParameter" type="order">
+                          <extends>mdl_com.conceptwave.system.Model</extends>
+                          <guid>{d842801d-d736-44c5-8a18-fb31574a19ef}</guid>
+                          <label>SubService BlockParameter</label>
+                          <mandatory>true</mandatory>
+                          <orderItem>doc_ds_ws.blockNameValueDocument</orderItem>
+                          <orderType>document</orderType>
+                          <xmlMap type="xmap">
+                            <path>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceBlockParameters/order_subServiceBlockParameter</path>
+                            <xmlName>subServiceBlockParameter</xmlName>
+                          </xmlMap>
+                          <UserInterface name="UserInterface" type="tree">
+                            <autoExpand>true</autoExpand>
+                            <defaultFolderImage>undefined</defaultFolderImage>
+                            <defaultLeafImage>undefined</defaultLeafImage>
+                            <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceBlockParameters/order_subServiceBlockParameter</element>
+                            <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                            <variableList>
+                              <variable name="model" type="uivar">
+                                <label>model</label>
+                                <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceBlockParameters/order_subServiceBlockParameter</valueType>
+                              </variable>
+                            </variableList>
+                            <vformList>
+                              <vform name="Forms" type="frmui">
+                                <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                              </vform>
+                            </vformList>
+                          </UserInterface>
+                        </child>
+                      </childList>
+                      <UserInterface name="UserInterface" type="tree">
+                        <autoExpand>true</autoExpand>
+                        <defaultFolderImage>undefined</defaultFolderImage>
+                        <defaultLeafImage>undefined</defaultLeafImage>
+                        <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceBlockParameters</element>
+                        <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                        <variableList>
+                          <variable name="model" type="uivar">
+                            <label>model</label>
+                            <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceBlockParameters</valueType>
+                          </variable>
+                        </variableList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </UserInterface>
+                    </child>
+                  </childList>
+                  <UserInterface name="UserInterface" type="tree">
+                    <autoExpand>true</autoExpand>
+                    <defaultFolderImage>undefined</defaultFolderImage>
+                    <defaultLeafImage>undefined</defaultLeafImage>
+                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices</element>
+                    <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                    <variableList>
+                      <variable name="model" type="uivar">
+                        <label>model</label>
+                        <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices</valueType>
+                      </variable>
+                    </variableList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </UserInterface>
+                </child>
+              </childList>
+              <UserInterface name="UserInterface" type="tree">
+                <autoExpand>true</autoExpand>
+                <defaultFolderImage>undefined</defaultFolderImage>
+                <defaultLeafImage>undefined</defaultLeafImage>
+                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services</element>
+                <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+                <variableList>
+                  <variable name="model" type="uivar">
+                    <label>model</label>
+                    <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services</valueType>
+                  </variable>
+                </variableList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </UserInterface>
+            </child>
+          </childList>
+          <UserInterface name="UserInterface" type="tree">
+            <autoExpand>true</autoExpand>
+            <defaultFolderImage>undefined</defaultFolderImage>
+            <defaultLeafImage>undefined</defaultLeafImage>
+            <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits</element>
+            <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+            <variableList>
+              <variable name="model" type="uivar">
+                <label>model</label>
+                <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits</valueType>
+              </variable>
+            </variableList>
+            <vformList>
+              <vform name="Forms" type="frmui">
+                <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+              </vform>
+            </vformList>
+          </UserInterface>
+        </child>
+      </childList>
+      <UserInterface name="UserInterface" type="tree">
+        <autoExpand>true</autoExpand>
+        <defaultFolderImage>undefined</defaultFolderImage>
+        <defaultLeafImage>undefined</defaultLeafImage>
+        <element>order_ds_ws.bundleOrderSTC/order_bundles</element>
+        <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+        <variableList>
+          <variable name="model" type="uivar">
+            <label>model</label>
+            <valueType>order_ds_ws.bundleOrderSTC/order_bundles</valueType>
+          </variable>
+        </variableList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </UserInterface>
+    </child>
+  </childList>
+  <UserInterface name="UserInterface" type="tree">
+    <autoExpand>true</autoExpand>
+    <defaultFolderImage>undefined</defaultFolderImage>
+    <defaultLeafImage>undefined</defaultLeafImage>
+    <element>order_ds_ws.bundleOrderSTC</element>
+    <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+    <tableDoc>doc_com.conceptwave.system.TreeDocument</tableDoc>
+    <childList>
+      <child name="orderHeader" type="tnOi">
+        <autoExpand>true</autoExpand>
+        <autoSave>true</autoSave>
+        <detailForm>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+        <detailUI>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface</detailUI>
+        <element>doc_ds_ws.bundleOrderHeaderDocument</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <label>Order Header</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_ds_ws.bundleOrderSTC/order_orderHeader</orderItem>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </child>
+      <child name="orderHeaderParameter" type="tnOi">
+        <autoSave>true</autoSave>
+        <element>order_ds_ws.bundleOrderSTC/order_orderHeaderParameters</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <hideExpandIcon>true</hideExpandIcon>
+        <hideWhenEmpty>true</hideWhenEmpty>
+        <label>Order Header Parameters</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_ds_ws.bundleOrderSTC/order_orderHeaderParameters</orderItem>
+        <showChildrenCount>true</showChildrenCount>
+        <childList>
+          <child name="orderHeaderParametersInstance" type="tnOi">
+            <autoSave>true</autoSave>
+            <collectionInstance>true</collectionInstance>
+            <element>order_ds_ws.bundleOrderSTC/order_orderHeaderParameters</element>
+            <extends>tn_com.conceptwave.system.TreeNode</extends>
+            <hideExpandIcon>true</hideExpandIcon>
+            <hideWhenEmpty>true</hideWhenEmpty>
+            <label>Order Header Parameters</label>
+            <nodeType>4</nodeType>
+            <orderItem>order_ds_ws.bundleOrderSTC/order_orderHeaderParameters</orderItem>
+            <showChildrenCount>true</showChildrenCount>
+            <childList>
+              <child name="orderHeaderParameter" type="tnOi">
+                <autoExpand>true</autoExpand>
+                <autoSave>true</autoSave>
+                <detailForm>doc_ds_ws.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                <detailUI>doc_ds_ws.nameValueDocument/ui_UserInterface</detailUI>
+                <element>doc_ds_ws.nameValueDocument</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <label>Order Header Parameter</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_ds_ws.bundleOrderSTC/order_orderHeaderParameters/order_orderHeaderParameter</orderItem>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+            </childList>
+            <vformList>
+              <vform name="Forms" type="frmui">
+                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+              </vform>
+            </vformList>
+          </child>
+        </childList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </child>
+      <child name="bundles" type="tnOi">
+        <autoExpand>true</autoExpand>
+        <autoSave>true</autoSave>
+        <element>order_ds_ws.bundleOrderSTC/order_bundles</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <hideExpandIcon>true</hideExpandIcon>
+        <hideWhenEmpty>true</hideWhenEmpty>
+        <label>Bundles</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles</orderItem>
+        <showChildrenCount>true</showChildrenCount>
+        <childList>
+          <child name="bundlesInstance" type="tnOi">
+            <autoExpand>true</autoExpand>
+            <autoSave>true</autoSave>
+            <collectionInstance>true</collectionInstance>
+            <element>order_ds_ws.bundleOrderSTC/order_bundles</element>
+            <extends>tn_com.conceptwave.system.TreeNode</extends>
+            <hideExpandIcon>true</hideExpandIcon>
+            <hideWhenEmpty>true</hideWhenEmpty>
+            <label>Bundle</label>
+            <nodeType>4</nodeType>
+            <orderItem>order_ds_ws.bundleOrderSTC/order_bundles</orderItem>
+            <childList>
+              <child name="bundle" type="tnOi">
+                <autoExpand>true</autoExpand>
+                <autoSave>true</autoSave>
+                <detailForm>doc_ds_ws.lineItemDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                <detailUI>doc_ds_ws.lineItemDocument/ui_UserInterface</detailUI>
+                <element>doc_ds_ws.lineItemDocument</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <label>Bundle</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_bundle</orderItem>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+              <child name="bundleParameters" type="tnOi">
+                <autoSave>true</autoSave>
+                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleParameters</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <hideExpandIcon>true</hideExpandIcon>
+                <hideWhenEmpty>true</hideWhenEmpty>
+                <label>Bundle Parameters</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleParameters</orderItem>
+                <showChildrenCount>true</showChildrenCount>
+                <childList>
+                  <child name="bundleParametersInstance" type="tnOi">
+                    <autoSave>true</autoSave>
+                    <collectionInstance>true</collectionInstance>
+                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleParameters</element>
+                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                    <hideExpandIcon>true</hideExpandIcon>
+                    <hideWhenEmpty>true</hideWhenEmpty>
+                    <label>Bundle Parameters Instance</label>
+                    <nodeType>4</nodeType>
+                    <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleParameters</orderItem>
+                    <showChildrenCount>true</showChildrenCount>
+                    <childList>
+                      <child name="bundleParameter" type="tnOi">
+                        <autoExpand>true</autoExpand>
+                        <autoSave>true</autoSave>
+                        <detailForm>doc_ds_ws.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                        <detailUI>doc_ds_ws.nameValueDocument/ui_UserInterface</detailUI>
+                        <element>doc_ds_ws.nameValueDocument</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <label>Bundle Parameter</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleParameters/order_bundleParameter</orderItem>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                    </childList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </child>
+                </childList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+              <child name="bundleBlockParameters" type="tnOi">
+                <autoSave>true</autoSave>
+                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleBlockParameters</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <hideExpandIcon>true</hideExpandIcon>
+                <hideWhenEmpty>true</hideWhenEmpty>
+                <label>Bundle Block Parameters</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleBlockParameters</orderItem>
+                <showChildrenCount>true</showChildrenCount>
+                <childList>
+                  <child name="bundleBlockParametersInstance" type="tnOi">
+                    <autoSave>true</autoSave>
+                    <collectionInstance>true</collectionInstance>
+                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleBlockParameters</element>
+                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                    <hideExpandIcon>true</hideExpandIcon>
+                    <hideWhenEmpty>true</hideWhenEmpty>
+                    <label>Bundle Block Parameters</label>
+                    <nodeType>4</nodeType>
+                    <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleBlockParameters</orderItem>
+                    <showChildrenCount>true</showChildrenCount>
+                    <childList>
+                      <child name="bundleBlockParameter" type="tnOi">
+                        <autoExpand>true</autoExpand>
+                        <autoSave>true</autoSave>
+                        <detailForm>doc_ds_ws.blockNameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                        <detailUI>doc_ds_ws.blockNameValueDocument/ui_UserInterface</detailUI>
+                        <element>doc_ds_ws.blockNameValueDocument</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <label>Bundle Block Parameter</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_bundleBlockParameters/order_bundleBlockParameter</orderItem>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                    </childList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </child>
+                </childList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+              <child name="circuits" type="tnOi">
+                <autoExpand>true</autoExpand>
+                <autoSave>true</autoSave>
+                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <hideExpandIcon>true</hideExpandIcon>
+                <hideWhenEmpty>true</hideWhenEmpty>
+                <label>Circuits</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits</orderItem>
+                <showChildrenCount>true</showChildrenCount>
+                <childList>
+                  <child name="circuitsInstance" type="tnOi">
+                    <autoExpand>true</autoExpand>
+                    <autoSave>true</autoSave>
+                    <collectionInstance>true</collectionInstance>
+                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits</element>
+                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                    <hideExpandIcon>true</hideExpandIcon>
+                    <hideWhenEmpty>true</hideWhenEmpty>
+                    <label>Circuit</label>
+                    <nodeType>4</nodeType>
+                    <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits</orderItem>
+                    <childList>
+                      <child name="circuit" type="tnOi">
+                        <autoExpand>true</autoExpand>
+                        <autoSave>true</autoSave>
+                        <detailForm>doc_ds_ws.lineItemDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                        <detailUI>doc_ds_ws.lineItemDocument/ui_UserInterface</detailUI>
+                        <element>doc_ds_ws.lineItemDocument</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <label>Circuit</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuit</orderItem>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                      <child name="circuitParameters" type="tnOi">
+                        <autoSave>true</autoSave>
+                        <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <hideExpandIcon>true</hideExpandIcon>
+                        <hideWhenEmpty>true</hideWhenEmpty>
+                        <label>Circuit Parameters</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters</orderItem>
+                        <showChildrenCount>true</showChildrenCount>
+                        <childList>
+                          <child name="circuitParametersInstance" type="tnOi">
+                            <autoSave>true</autoSave>
+                            <collectionInstance>true</collectionInstance>
+                            <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters</element>
+                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                            <hideExpandIcon>true</hideExpandIcon>
+                            <hideWhenEmpty>true</hideWhenEmpty>
+                            <label>Circuit Parameters Instance</label>
+                            <nodeType>4</nodeType>
+                            <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters</orderItem>
+                            <showChildrenCount>true</showChildrenCount>
+                            <childList>
+                              <child name="circuitParameter" type="tnOi">
+                                <autoExpand>true</autoExpand>
+                                <autoSave>true</autoSave>
+                                <detailForm>doc_ds_ws.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                <detailUI>doc_ds_ws.nameValueDocument/ui_UserInterface</detailUI>
+                                <element>doc_ds_ws.nameValueDocument</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <label>Circuit Parameter</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters/order_circuitParameter</orderItem>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                            </childList>
+                            <variableList>
+                              <variable name="model" type="uivar">
+                                <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters</valueType>
+                              </variable>
+                            </variableList>
+                            <vformList>
+                              <vform name="Forms" type="frmui">
+                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                              </vform>
+                            </vformList>
+                          </child>
+                        </childList>
+                        <variableList>
+                          <variable name="model" type="uivar">
+                            <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitParameters</valueType>
+                          </variable>
+                        </variableList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                      <child name="circuitBlockParameters" type="tnOi">
+                        <autoSave>true</autoSave>
+                        <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <hideExpandIcon>true</hideExpandIcon>
+                        <hideWhenEmpty>true</hideWhenEmpty>
+                        <label>Circuit Block Parameters</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters</orderItem>
+                        <showChildrenCount>true</showChildrenCount>
+                        <childList>
+                          <child name="circuitBlockParametersInstance" type="tnOi">
+                            <autoSave>true</autoSave>
+                            <collectionInstance>true</collectionInstance>
+                            <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters</element>
+                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                            <hideExpandIcon>true</hideExpandIcon>
+                            <hideWhenEmpty>true</hideWhenEmpty>
+                            <label>Circuit Block Parameters</label>
+                            <nodeType>4</nodeType>
+                            <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters</orderItem>
+                            <showChildrenCount>true</showChildrenCount>
+                            <childList>
+                              <child name="circuitBlockParameter" type="tnOi">
+                                <autoExpand>true</autoExpand>
+                                <autoSave>true</autoSave>
+                                <detailForm>doc_ds_ws.blockNameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                <detailUI>doc_ds_ws.blockNameValueDocument/ui_UserInterface</detailUI>
+                                <element>doc_ds_ws.blockNameValueDocument</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <label>Circuit Block Parameter</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters/order_circuitBlockParameter</orderItem>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                            </childList>
+                            <variableList>
+                              <variable name="model" type="uivar">
+                                <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters</valueType>
+                              </variable>
+                            </variableList>
+                            <vformList>
+                              <vform name="Forms" type="frmui">
+                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                              </vform>
+                            </vformList>
+                          </child>
+                        </childList>
+                        <variableList>
+                          <variable name="model" type="uivar">
+                            <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_circuitBlockParameters</valueType>
+                          </variable>
+                        </variableList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                      <child name="services" type="tnOi">
+                        <autoExpand>true</autoExpand>
+                        <autoSave>true</autoSave>
+                        <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <hideExpandIcon>true</hideExpandIcon>
+                        <hideWhenEmpty>true</hideWhenEmpty>
+                        <label>Services</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services</orderItem>
+                        <showChildrenCount>true</showChildrenCount>
+                        <childList>
+                          <child name="servicesInstance" type="tnOi">
+                            <autoExpand>true</autoExpand>
+                            <autoSave>true</autoSave>
+                            <collectionInstance>true</collectionInstance>
+                            <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services</element>
+                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                            <hideExpandIcon>true</hideExpandIcon>
+                            <hideWhenEmpty>true</hideWhenEmpty>
+                            <label>Service</label>
+                            <nodeType>4</nodeType>
+                            <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services</orderItem>
+                            <childList>
+                              <child name="service" type="tnOi">
+                                <autoExpand>true</autoExpand>
+                                <autoSave>true</autoSave>
+                                <detailForm>doc_ds_ws.lineItemDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                <detailUI>doc_ds_ws.lineItemDocument/ui_UserInterface</detailUI>
+                                <element>doc_ds_ws.lineItemDocument</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <label>Service</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_service</orderItem>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                              <child name="serviceParameters" type="tnOi">
+                                <autoSave>true</autoSave>
+                                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <hideExpandIcon>true</hideExpandIcon>
+                                <hideWhenEmpty>true</hideWhenEmpty>
+                                <label>Service Parameters</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters</orderItem>
+                                <showChildrenCount>true</showChildrenCount>
+                                <childList>
+                                  <child name="serviceParametersInstance" type="tnOi">
+                                    <autoSave>true</autoSave>
+                                    <collectionInstance>true</collectionInstance>
+                                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters</element>
+                                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                    <hideExpandIcon>true</hideExpandIcon>
+                                    <hideWhenEmpty>true</hideWhenEmpty>
+                                    <label>Service Parameters Instance</label>
+                                    <nodeType>4</nodeType>
+                                    <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters</orderItem>
+                                    <showChildrenCount>true</showChildrenCount>
+                                    <childList>
+                                      <child name="serviceParameter" type="tnOi">
+                                        <autoExpand>true</autoExpand>
+                                        <autoSave>true</autoSave>
+                                        <detailForm>doc_ds_ws.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                        <detailUI>doc_ds_ws.nameValueDocument/ui_UserInterface</detailUI>
+                                        <element>doc_ds_ws.nameValueDocument</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <label>Service Parameter</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters/order_serviceParameter</orderItem>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                    </childList>
+                                    <variableList>
+                                      <variable name="model" type="uivar">
+                                        <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters</valueType>
+                                      </variable>
+                                    </variableList>
+                                    <vformList>
+                                      <vform name="Forms" type="frmui">
+                                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                      </vform>
+                                    </vformList>
+                                  </child>
+                                </childList>
+                                <variableList>
+                                  <variable name="model" type="uivar">
+                                    <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceParameters</valueType>
+                                  </variable>
+                                </variableList>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                              <child name="serviceBlockParameters" type="tnOi">
+                                <autoSave>true</autoSave>
+                                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <hideExpandIcon>true</hideExpandIcon>
+                                <hideWhenEmpty>true</hideWhenEmpty>
+                                <label>Service Block Parameters</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</orderItem>
+                                <showChildrenCount>true</showChildrenCount>
+                                <childList>
+                                  <child name="serviceBlockParametersInstance" type="tnOi">
+                                    <autoSave>true</autoSave>
+                                    <collectionInstance>true</collectionInstance>
+                                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</element>
+                                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                    <hideExpandIcon>true</hideExpandIcon>
+                                    <hideWhenEmpty>true</hideWhenEmpty>
+                                    <label>Service Block Parameters</label>
+                                    <nodeType>4</nodeType>
+                                    <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</orderItem>
+                                    <showChildrenCount>true</showChildrenCount>
+                                    <childList>
+                                      <child name="serviceBlockParameter" type="tnOi">
+                                        <autoExpand>true</autoExpand>
+                                        <autoSave>true</autoSave>
+                                        <detailForm>doc_ds_ws.blockNameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                        <detailUI>doc_ds_ws.blockNameValueDocument/ui_UserInterface</detailUI>
+                                        <element>doc_ds_ws.blockNameValueDocument</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <label>Service Block Parameter</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters/order_serviceBlockParameter</orderItem>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                    </childList>
+                                    <variableList>
+                                      <variable name="model" type="uivar">
+                                        <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</valueType>
+                                      </variable>
+                                    </variableList>
+                                    <vformList>
+                                      <vform name="Forms" type="frmui">
+                                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                      </vform>
+                                    </vformList>
+                                  </child>
+                                </childList>
+                                <variableList>
+                                  <variable name="model" type="uivar">
+                                    <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</valueType>
+                                  </variable>
+                                </variableList>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                              <child name="subServices" type="tnOi">
+                                <autoExpand>true</autoExpand>
+                                <autoSave>true</autoSave>
+                                <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <hideExpandIcon>true</hideExpandIcon>
+                                <hideWhenEmpty>true</hideWhenEmpty>
+                                <label>SubServices</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices</orderItem>
+                                <showChildrenCount>true</showChildrenCount>
+                                <childList>
+                                  <child name="subServicesInstance" type="tnOi">
+                                    <autoExpand>true</autoExpand>
+                                    <autoSave>true</autoSave>
+                                    <collectionInstance>true</collectionInstance>
+                                    <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices</element>
+                                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                    <hideExpandIcon>true</hideExpandIcon>
+                                    <hideWhenEmpty>true</hideWhenEmpty>
+                                    <label>SubService</label>
+                                    <nodeType>4</nodeType>
+                                    <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices</orderItem>
+                                    <childList>
+                                      <child name="subService" type="tnOi">
+                                        <autoExpand>true</autoExpand>
+                                        <autoSave>true</autoSave>
+                                        <detailForm>doc_ds_ws.lineItemDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                        <detailUI>doc_ds_ws.lineItemDocument/ui_UserInterface</detailUI>
+                                        <element>doc_ds_ws.lineItemDocument</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <label>SubService</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subService</orderItem>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                      <child name="subServiceParameters" type="tnOi">
+                                        <autoSave>true</autoSave>
+                                        <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <hideExpandIcon>true</hideExpandIcon>
+                                        <hideWhenEmpty>true</hideWhenEmpty>
+                                        <label>SubService Parameters</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters</orderItem>
+                                        <showChildrenCount>true</showChildrenCount>
+                                        <childList>
+                                          <child name="subServiceParametersInstance" type="tnOi">
+                                            <autoSave>true</autoSave>
+                                            <collectionInstance>true</collectionInstance>
+                                            <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters</element>
+                                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                            <hideExpandIcon>true</hideExpandIcon>
+                                            <hideWhenEmpty>true</hideWhenEmpty>
+                                            <label>SubService Parameters Instance</label>
+                                            <nodeType>4</nodeType>
+                                            <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters</orderItem>
+                                            <showChildrenCount>true</showChildrenCount>
+                                            <childList>
+                                              <child name="subServiceParameter" type="tnOi">
+                                                <autoExpand>true</autoExpand>
+                                                <autoSave>true</autoSave>
+                                                <detailForm>doc_ds_ws.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                                <detailUI>doc_ds_ws.nameValueDocument/ui_UserInterface</detailUI>
+                                                <element>doc_ds_ws.nameValueDocument</element>
+                                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                                <label>SubService Parameter</label>
+                                                <nodeType>4</nodeType>
+                                                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters/order_subServiceParameter</orderItem>
+                                                <vformList>
+                                                  <vform name="Forms" type="frmui">
+                                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                                  </vform>
+                                                </vformList>
+                                              </child>
+                                            </childList>
+                                            <variableList>
+                                              <variable name="model" type="uivar">
+                                                <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters</valueType>
+                                              </variable>
+                                            </variableList>
+                                            <vformList>
+                                              <vform name="Forms" type="frmui">
+                                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                              </vform>
+                                            </vformList>
+                                          </child>
+                                        </childList>
+                                        <variableList>
+                                          <variable name="model" type="uivar">
+                                            <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_subServices/order_subServiceParameters</valueType>
+                                          </variable>
+                                        </variableList>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                      <child name="subServiceBlockParameters" type="tnOi">
+                                        <autoSave>true</autoSave>
+                                        <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <hideExpandIcon>true</hideExpandIcon>
+                                        <hideWhenEmpty>true</hideWhenEmpty>
+                                        <label>SubService Block Parameters</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</orderItem>
+                                        <showChildrenCount>true</showChildrenCount>
+                                        <childList>
+                                          <child name="subServiceBlockParametersInstance" type="tnOi">
+                                            <autoSave>true</autoSave>
+                                            <collectionInstance>true</collectionInstance>
+                                            <element>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</element>
+                                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                            <hideExpandIcon>true</hideExpandIcon>
+                                            <hideWhenEmpty>true</hideWhenEmpty>
+                                            <label>SubService Block Parameters</label>
+                                            <nodeType>4</nodeType>
+                                            <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</orderItem>
+                                            <showChildrenCount>true</showChildrenCount>
+                                            <childList>
+                                              <child name="subServiceBlockParameter" type="tnOi">
+                                                <autoExpand>true</autoExpand>
+                                                <autoSave>true</autoSave>
+                                                <detailForm>doc_ds_ws.blockNameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                                <detailUI>doc_ds_ws.blockNameValueDocument/ui_UserInterface</detailUI>
+                                                <element>doc_ds_ws.blockNameValueDocument</element>
+                                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                                <label>SubService Block Parameter</label>
+                                                <nodeType>4</nodeType>
+                                                <orderItem>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters/order_serviceBlockParameter</orderItem>
+                                                <vformList>
+                                                  <vform name="Forms" type="frmui">
+                                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                                  </vform>
+                                                </vformList>
+                                              </child>
+                                            </childList>
+                                            <variableList>
+                                              <variable name="model" type="uivar">
+                                                <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</valueType>
+                                              </variable>
+                                            </variableList>
+                                            <vformList>
+                                              <vform name="Forms" type="frmui">
+                                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                              </vform>
+                                            </vformList>
+                                          </child>
+                                        </childList>
+                                        <variableList>
+                                          <variable name="model" type="uivar">
+                                            <valueType>order_ds_ws.bundleOrderSTC/order_bundles/order_circuits/order_services/order_serviceBlockParameters</valueType>
+                                          </variable>
+                                        </variableList>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                    </childList>
+                                    <vformList>
+                                      <vform name="Forms" type="frmui">
+                                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                      </vform>
+                                    </vformList>
+                                  </child>
+                                </childList>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                            </childList>
+                            <vformList>
+                              <vform name="Forms" type="frmui">
+                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                              </vform>
+                            </vformList>
+                          </child>
+                        </childList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                    </childList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </child>
+                </childList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+            </childList>
+            <vformList>
+              <vform name="Forms" type="frmui">
+                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+              </vform>
+            </vformList>
+          </child>
+        </childList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </child>
+    </childList>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>order_ds_ws.bundleOrderSTC</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Menu" type="exov">
+            <base>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</order>

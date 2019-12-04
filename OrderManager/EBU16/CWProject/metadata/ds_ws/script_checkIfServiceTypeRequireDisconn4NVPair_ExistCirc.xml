@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="698dc14e78793ad22e6866ef8e6a17fb" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.checkIfServiceTypeRequireDisconn4NVPair_ExistCirc">
+  <label>Check If ServiceType Requires Disconnect For NVPair &apos;Existing Circuit&apos;</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_ds_ws.serviceType</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("ds_ws.search_ServiceTypeBehaviorConfigurationDoc");
+    inputDoc.serviceType = serviceType;
+
+    var resultList = Finder.runFinder("ds_ws.findBehaviorConfigurationForServiceType", "select", inputDoc);
+
+    var disconnectForNVPairExistingCircuit = false;
+
+    if(resultList != null && resultList.length > 0) {
+        disconnectForNVPairExistingCircuit = resultList[0].disconnectForNVPair_ExistingCircuit;
+    }
+
+    return disconnectForNVPairExistingCircuit;
+  ]]></script>
+</script>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.isWOSUToBeDiscarderd">
+  <label>Is WOSU To Be Discarded</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>dstruct_ds_jms.workOrderStatusUpdate</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    var nvpairs = input.parameters;
+
+    if(!nvpairs) {
+        return false;
+    }
+
+    var output = Finder.runFinder("ds_ws.findNVPairsSkipWOSU", "select", null);
+    var nvPairsObj = {};
+
+
+    /* Buiding the hash for lookup */
+    if (output != null && output.size > 0) {
+        for(var i = 0; i < output.size; i++){
+            nvPairsObj[output[i].name] = output[i].value;
+        }
+    }
+    else {
+       return false;
+    }
+
+    /* Checking if it's a reason to skip */
+    for( var i = 0; i < nvpairs.length; i++) {
+        var prop = nvPairsObj[nvpairs[i].name];
+        if(prop != null && nvpairs[i].value == prop){
+            debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + input.orderNumber + "]: Skipping WOSU due to parameter: " + nvpairs[i].name);
+            debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + input.orderNumber + "]: WOSU skipped: " + input.toXML());
+            return true;
+        }
+    }
+
+    return false;
+  ]]></script>
+</script>

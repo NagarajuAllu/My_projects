@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="a5094edca1b1df6f85106e95f7ba35e9" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.searchLineItemDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{b177e5d2-6980-4eb9-a5b2-690b5f705d81}</guid>
+  <label>Search Element: LineItem</label>
+  <metaVersion>4</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="lineItemIdentifier" type="leaf">
+      <valueType>dtype_ds_ws.string255</valueType>
+    </variable>
+    <variable name="serviceNumber" type="leaf">
+      <valueType>dtype_ds_ws.string255</valueType>
+    </variable>
+    <variable name="elementTypeInOrderTree" type="leaf">
+      <valueType>dtype_ds_ws.elementTypeInOrderTree</valueType>
+    </variable>
+    <variable name="provisioningFlag" type="leaf">
+      <valueType>dtype_ds_ws.string10</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.searchLineItemDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

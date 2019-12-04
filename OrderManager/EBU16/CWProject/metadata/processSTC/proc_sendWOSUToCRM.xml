@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="processSTC.sendWOSUToCRM">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>130.0</x>
+    <y>46.0</y>
+    <childList>
+      <child name="sendWOSUToCRM" type="scriptActivity">
+        <label>Send WOSU To CRM</label>
+        <x>331.0</x>
+        <y>144.0</y>
+        <childList>
+          <child name="retry" type="compensateActivity">
+            <compensatesList>
+              <compensates>6</compensates>
+            </compensatesList>
+            <label>Retry</label>
+            <x>494.0</x>
+            <y>172.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>start</label>
+                <x>727.0</x>
+                <y>164.0</y>
+                <childList>
+                  <child name="firstPassSw" type="switchActivity">
+                    <label>First Pass Switch</label>
+                    <x>722.33105</x>
+                    <y>266.0</y>
+                    <childList>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>805.0</x>
+                        <y>406.92578</y>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              if (this.process.processDocument.firstPassWOSU == "N")
+                                    return true;
+
+                              return false;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>68.84033</x>
+                        <y>222.0</y>
+                        <childList>
+                          <child name="alert" type="scriptActivity">
+                            <label>Alert</label>
+                            <x>668.0</x>
+                            <y>408.92578</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  processSTC.sendMailForError("Caught error in sendWOSUToCRM process " + this.process.id, Global.getConfigVariable("MAIL_RECEIVER_FOR_ALERTS"));
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="waitTimeforSubmit" type="scriptActivity">
+                    <label>Wait Time for Submit</label>
+                    <schedule type="sched">
+                      <duration type="dur">
+                        <methodList>
+                          <method name="cwOnDuration" type="action">
+                            <system>true</system>
+                            <script><![CDATA[
+                              // configured time for sleeping
+                              var submitSleep = Global.getConfigVariable("SUBMITSLEEP", "10");
+
+                              var isB2BOrder = (this.processOrder != null ? processSTC.isB2BOrder(this.processOrder.orderHeader) : false);
+                              var interfaceName = (isB2BOrder ? "ifEAI_WOSU_17122008:receiveWorkOrderStatusUpdate_B2B_PortType" : "ifEAI_WOSU_17122008:receiveWorkOrderStatusUpdate_PortType");
+
+                              // if downtime
+                              var ifDelay = Global.getInterfaceDelay(interfaceName);
+                              ifDelay = ((ifDelay != null) ? ifDelay : "10") ;
+
+                              // sleepTime of the process = max(submitSleep, ifDelay);
+                              var sleepTime = ((submitSleep > ifDelay) ? submitSleep : ifDelay);
+
+                              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.id + "] - sleep for : " + sleepTime + " secs -- {" + submitSleep + ";" + ifDelay + "}");
+
+                              return sleepTime;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </duration>
+                    </schedule>
+                    <x>726.6572</x>
+                    <y>537.8887</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[this.process.processDocument.firstPassWOSU  = "N";]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              this.process.processDocument.errorType = null;
+
+              try {
+                  var graniteWOSU = processSTC.readWOSUFromDB(this.process.processDocument.latestWOSUId);
+
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - WOSU = '" + graniteWOSU.toXML() + "'");
+
+                  var existOrder = (this.process.processOrder != null);
+                  var existOrderFromProcessDocument = false;
+                  var orderFromProcessDocument = null;
+                  var orderItemFromProcessDocument = null;
+
+                  var hasLineItemToSkipWOSU = false;
+
+                  if(!existOrder) {
+                      existOrderFromProcessDocument = (this.process.processDocument.lineItemId != null);
+                      orderItemFromProcessDocument = (existOrderFromProcessDocument ? Document.readDoc("ds_ws:lineItemDocument", this.process.processDocument.lineItemId) : null);
+                      orderFromProcessDocument = (orderItemFromProcessDocument != null ? Order.getOrderById(orderItemFromProcessDocument.orderId) : null);
+                  }
+                  else {
+                      hasLineItemToSkipWOSU = processSTC.hasLineItemToSkipWOSU(this.process.processOrderItem,
+                                                                               ds_ws.isLegacyService(this.process.processOrder.bundles[0]),
+                                                                               graniteWOSU.taskOperation,
+                                                                               processSTC.isB2BOrder(this.process.processOrder.orderHeader));
+                  }
+
+                  var woStatus = graniteWOSU.workOrderStatus;
+                  if(existOrder) {
+                      if (woStatus == "COMPLETED") {
+                          if(this.process.processOrderItem.isCancel) {
+                              woStatus = "CANCELLED";
+                          }
+                      }
+                  }
+                  else if(existOrderFromProcessDocument) {
+                      if (woStatus == "COMPLETED") {
+                          if(orderItemFromProcessDocument.isCancel) {
+                              woStatus = "CANCELLED";
+                          }
+                      }
+                  }
+
+                  // map graniteWOSU into data sent to CRM
+                  // map graniteResponse into data sent to CRM
+                  var request = new DataStructure("ifEAI_WOSU_17122008.receiveWorkOrderStatusUpdate_el");
+                  processSTC.fillHeaderForOrderACK_WOSU(request.workOrderStatusUpdateRequest.header, "WorkOrderStatusUpdate");
+
+                  // SMR 1639 - setting the CROMOrderNumber equals to primaryOrderNumber if it's set
+                  var orderNumber = graniteWOSU.crmOrderNumber;
+                  if(existOrder) {
+                      orderNumber = (this.process.processOrder.orderHeader.primaryOrderNumber != null ? this.process.processOrder.orderHeader.primaryOrderNumber :
+                                                                                                        this.process.processOrder.orderHeader.orderNumber);
+                  }
+
+                  // STCSUP-102 - in case the WO is completed and the serviceStatus = "READY TO ACT", set the serviceStatus to "LIVE"
+                  var receivedServiceStatus = graniteWOSU.serviceStatus;
+                  if(graniteWOSU.workOrderStatus == "COMPLETED" && graniteWOSU.serviceStatus == "READY TO ACT") {
+                      receivedServiceStatus = "LIVE";
+                  }
+
+                  // checking if it's related to B2B order
+                  var isB2BOrder = (existOrder ? processSTC.isB2BOrder(this.process.processOrder.orderHeader) :
+                                                 (existOrderFromProcessDocument ? processSTC.isB2BOrder(orderFromProcessDocument.orderHeader) : false));
+
+
+                  var crmOrderStatus = (existOrder ? this.process.processOrder.orderHeader.orderStatus :
+                                                     (existOrderFromProcessDocument ? orderFromProcessDocument.orderHeader.orderStatus : graniteWOSU.workOrderStatus));
+                  request.workOrderStatusUpdateRequest.body.crmOrderNumber = orderNumber;
+                  request.workOrderStatusUpdateRequest.body.crmOrderStatus = (crmOrderStatus == "New" ? "ORDERED" : crmOrderStatus);
+                  request.workOrderStatusUpdateRequest.body.businessUnit = (existOrder ? this.process.processOrder.orderHeader.businessUnit : graniteWOSU.businessUnit);
+
+                  if(isB2BOrder) {
+                      request.workOrderStatusUpdateRequest.body.fulfillmentMode = graniteWOSU.fulfillmentMode;
+                  }
+
+                  request.workOrderStatusUpdateRequest.body.reservationNumber = graniteWOSU.reservationNumber;
+                  request.workOrderStatusUpdateRequest.body.lineItemIdentifier = (existOrder ? this.process.processOrderItem.lineItemIdentifier :
+                                                                                               (existOrderFromProcessDocument ? orderItemFromProcessDocument.lineItemIdentifier : -1));
+                  request.workOrderStatusUpdateRequest.body.lineItemStatus = receivedServiceStatus;
+                  request.workOrderStatusUpdateRequest.body.lineItemType = (existOrder ? this.process.processOrderItem.lineItemType :
+                                                                                         (existOrderFromProcessDocument ? orderItemFromProcessDocument.lineItemType : "-"));
+                  request.workOrderStatusUpdateRequest.body.remarks = (existOrder ? this.process.processOrderItem.remarks :
+                                                                                    (existOrderFromProcessDocument ? orderItemFromProcessDocument.remarks : null));
+                  request.workOrderStatusUpdateRequest.body.workOrderName = (existOrder ? this.process.processOrderItem.workOrderNumber : graniteWOSU.workOrderNumber);
+                  request.workOrderStatusUpdateRequest.body.workOrderStatus = woStatus;
+                  request.workOrderStatusUpdateRequest.body.workOrderRemarks = graniteWOSU.workOrderRemarks;
+                  request.workOrderStatusUpdateRequest.body.workOrderProblemDescription = graniteWOSU.workOrderProblemDescription;
+                  request.workOrderStatusUpdateRequest.body.workOrderServiceCompletionStatus = graniteWOSU.workOrderServiceCompletionStatus;
+                  request.workOrderStatusUpdateRequest.body.taskNumber = graniteWOSU.taskNumber;
+                  request.workOrderStatusUpdateRequest.body.taskName = graniteWOSU.taskName;
+                  request.workOrderStatusUpdateRequest.body.taskAllocatedTime = graniteWOSU.taskAllocatedTime;
+                  request.workOrderStatusUpdateRequest.body.taskDescription = graniteWOSU.taskDescription;
+                  request.workOrderStatusUpdateRequest.body.taskOperation = graniteWOSU.taskOperation;
+                  request.workOrderStatusUpdateRequest.body.taskPriority = graniteWOSU.taskPriority;
+                  // 2015-06-15: according to Rao email, renamed attribute in Granite JMS event from taskServiceStatus to serviceStatus
+                  // request.workOrderStatusUpdateRequest.body.taskServiceStatus = graniteWOSU.taskServiceStatus;
+                  request.workOrderStatusUpdateRequest.body.taskServiceStatus = receivedServiceStatus;
+                  request.workOrderStatusUpdateRequest.body.taskStatusCode = graniteWOSU.taskStatusCode;
+                  request.workOrderStatusUpdateRequest.body.taskDeptOf = graniteWOSU.taskDeptOf;
+                  request.workOrderStatusUpdateRequest.body.taskRemarks = graniteWOSU.taskRemarks;
+                  request.workOrderStatusUpdateRequest.body.taskJeopardyStatus = graniteWOSU.taskJeopardyStatus;
+                  request.workOrderStatusUpdateRequest.body.woStage = graniteWOSU.woStage;
+                  request.workOrderStatusUpdateRequest.body.icmsTaskId = graniteWOSU.icmsTaskId;
+
+                  if(graniteWOSU.parameters != null && graniteWOSU.parameters.length > 0) {
+                      for(var i=0; i<graniteWOSU.parameters.length; i++) {
+                          var parameter = new DataStructure("ifEAI_WOSU_17122008.addParameters");
+                          parameter.name = graniteWOSU.parameters[i].name;
+                          parameter.value = graniteWOSU.parameters[i].value;
+
+                          // 2019-06-03: workaround to fix the case in which CIM-E is sending the NV Pair "FeasibilityStatus" without any value!
+                          if(parameter.name == "FeasibilityStatus") {
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus' ....");
+
+                              if(parameter.value == null) {
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; null value, so continue the check");
+
+                                  if(existOrder) {
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; related to a real order!");
+
+                                      if(this.process.processOrder.orderHeader.orderType == "F") {
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; related to a real 'F' order!");
+
+                                          var isLineItemCompleted = processSTC.isLineItemCompleted(this.process.processOrderItem.lineItemStatus) ||
+                                                                    (processSTC.isLineItemOnHeld(this.process.processOrderItem.lineItemStatus) && (this.process.processOrder.orderHeader.orderType == "F"));
+                                          if(isLineItemCompleted) {
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; LineItem is COMPLETED! Checking UDA value");
+
+                                              var udaValueFound = granite.getUDAValueForWorkOrder(this.process.processOrderItem.workOrderNumber, "Feasibility Status", "Feasibility Info");
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; UDA VAlue is '" + udaValueFound + "'");
+
+                                              if(udaValueFound != null) {
+                                                  if(udaValueFound.toUpperCase() == "YES" || udaValueFound.toUpperCase() == "PARTIAL FEASIBLE" || udaValueFound.toUpperCase() == "NA") {
+                                                      parameter.value = "Yes";
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; converted to 'Yes'");
+                                                  }
+                                                  else {
+                                                      parameter.value = "No";
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; converted to 'No'");
+                                                  }
+                                              }
+                                              else {
+                                                  // do nothing because it's an issue on TMM side as per Dharvesh email on 2019-06-03!
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; Found NULL as UDA VAlue!!!");
+                                              }
+                                          }
+                                          else {
+                                              // do nothing because not completed
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; LineItem is NOT COMPLETED so do nothing!");
+                                          }
+                                      }
+                                      else {
+                                          // do nothing because it's not an "F" order
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; Order is not 'F' so do nothing");
+                                      }
+                                  }
+                                  else {
+                                      // do nothing because it's not a real order managed by EOC
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; WOSU not linked to a real Order in EOC");
+                                  }
+                              }
+                              else {
+                                  // do nothing because the value is not null
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Checking NV pair 'FeasibilityStatus'; NOT NULL value so OK!");
+                              }
+                          }
+                          // 2019-06-03: end of the workaround!
+
+                          request.workOrderStatusUpdateRequest.body.lineItemValuePairs.addParameters[i] = parameter;
+                      }
+                  }
+
+                  if(!existOrder || this.process.processOrder.orderHeader.internalOrder == "N") {
+                      if(!hasLineItemToSkipWOSU) {
+
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - WOSU to " + (isB2BOrder ? "CRM B2B" : "CRM-D") + "= '" + request.toXML() + "'");
+
+                          var interfaceName = (isB2BOrder ? "ifEAI_WOSU_17122008:receiveWorkOrderStatusUpdate_B2B_PortType" : "ifEAI_WOSU_17122008:receiveWorkOrderStatusUpdate_PortType");
+
+                          // sending data to EAI
+                          var response = processSTC.sendDataToInterface(request,
+                                                                        interfaceName,
+                                                                        "receiveWorkOrderStatusUpdate",
+                                                                        true,
+                                                                        this.process.id,
+                                                                        "SendWOSUToCRM",
+                                                                        (existOrder ? this.process.processOrder.orderHeader.orderNumber : graniteWOSU.crmOrderNumber),
+                                                                        (existOrder ? this.process.processOrderItem.workOrderNumber : graniteWOSU.workOrderNumber));
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - CRM WOSU response = '" + response.toXML() + "'");
+                      }
+                      else {
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - WOSU NOT sent to CRM because found configuration to skip WOSU; orderNumber = " + this.process.processOrder.orderHeader.orderNumber);
+                      }
+                  }
+                  else {
+                      if(existOrder) {
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - WOSU NOT sent to CRM because it's related to an internal order; orderNumber = " + this.process.processOrder.orderHeader.orderNumber);
+                      }
+                  }
+              }
+              catch(exc) {
+                  if(exc.message.indexOf("XE0023") >= 0 || exc.message.indexOf("XE0002")) {
+                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - I/F ifEAI_WOSU_17122008:WOSU/WorkOrderStatusUpdate error: " + exc.message);
+                      this.process.processDocument.errorType = "Interface";
+                  }
+                  else {
+                      this.process.processDocument.errorType = "Application";
+                  }
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="applicationErrored" type="switchActivity">
+        <label>Application Errored?</label>
+        <x>329.0</x>
+        <y>284.0</y>
+        <childList>
+          <child name="interfaceError" type="caseActivity">
+            <label>Interface Error</label>
+            <x>351.0</x>
+            <y>438.0</y>
+            <childList>
+              <child name="interfaceError" type="exceptActivity">
+                <element>excp_cwf.interfaceExcp</element>
+                <label>External Interface Error</label>
+                <x>483.0</x>
+                <y>426.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var isInterfaceError = (this.process.processDocument.errorType == "Interface");
+                  if(isInterfaceError) {
+                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Interface error while sending WOSU to EAI");
+                  }
+
+                  return isInterfaceError;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="applicationError" type="caseActivity">
+            <label>Application Error</label>
+            <x>454.0</x>
+            <y>433.0</y>
+            <childList>
+              <child name="applicationError" type="exceptActivity">
+                <element>excp_processSTC.genericApplicationError</element>
+                <label>Application Error</label>
+                <x>329.0</x>
+                <y>439.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var isApplicationError = (this.process.processDocument.errorType == "Application");
+                  if(isApplicationError) {
+                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Application error while sending WOSU to EAI");
+                  }
+
+                  return isApplicationError;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="noError" type="caseActivity">
+            <label>No Error</label>
+            <x>329.0</x>
+            <y>384.0</y>
+            <childList>
+              <child name="done" type="scriptActivity">
+                <label>Done</label>
+                <x>246.0</x>
+                <y>443.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="interfaceError" type="onExceptionActivity">
+        <element>excp_cwf.interfaceExcp</element>
+        <label>External Interface Error</label>
+        <x>126.0</x>
+        <y>146.0</y>
+        <childList>
+          <child name="start" type="seqActivity">
+            <label>Start Handle I/F Error</label>
+            <x>123.0</x>
+            <y>163.0</y>
+            <childList>
+              <child name="rollbackIFError" type="rollbackActivity">
+                <label>Rollback I/F Error</label>
+                <x>121.0</x>
+                <y>263.0</y>
+              </child>
+              <child name="resumeIFError" type="resumeActivity">
+                <label>Resume I/F Error</label>
+                <x>121.0</x>
+                <y>418.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="applicationError" type="onExceptionActivity">
+        <element>excp_processSTC.genericApplicationError</element>
+        <label>Application Error</label>
+        <x>126.0</x>
+        <y>146.0</y>
+        <childList>
+          <child name="start" type="seqActivity">
+            <label>Start Handle Application Error</label>
+            <x>21.0</x>
+            <y>156.0</y>
+            <childList>
+              <child name="rollbackApplicationError" type="rollbackActivity">
+                <label>Rollback Application Error</label>
+                <x>23.0</x>
+                <y>256.0</y>
+              </child>
+              <child name="resumeApplicationError" type="resumeActivity">
+                <label>Resume Application Error</label>
+                <x>23.0</x>
+                <y>408.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[this.process.processDocument.rollbackNumber = "6";]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_processSTC.STC_PROCESS_DOCUMENT</document>
+  <label>Send WOSU To CRM</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <revision>14</revision>
+  <type>User</type>
+</process>

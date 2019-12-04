@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="b335c9b040f599d9a7cf075bd9ece1fd" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="migrationSTC.globalOrderSynchronizationGraniteExpediter_cwr1">
+  <activity name="start" type="seqActivity">
+    <guid>{06e971e3-2924-bd2d-a8b9-503b4914aab5}</guid>
+    <label>Start</label>
+    <schedule type="sched">
+      <instance>Daily</instance>
+      <time>18:30:00</time>
+    </schedule>
+    <x>129.0</x>
+    <y>98.0</y>
+    <childList>
+      <child name="orderSynchronizationGraniteExpediter" type="spawnActivity">
+        <element>proc_migrationSTC.orderSynchronizationGraniteExpediter</element>
+        <guid>{0eeaee71-e05b-70c9-5368-39a8c93051dc}</guid>
+        <label>Synchronize Order Between Granite And Expediter</label>
+        <x>322.0</x>
+        <y>65.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0cc5837b-ccbe-a370-941f-5f22950558b3}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "] globalOrderSynchronizationGraniteExpediter - Starting USER process 'orderSynchronizationGraniteExpediter'");
+              this.activityData.ORDER_TYPE = Global.getConfigVariable("ORDER_TYPE_FOR_MISSING_ORDER_CREATION", "I");
+              this.activityData.SUBMITTED_DATE_YEAR = Global.getConfigVariable("SUBMITTED_YEAR_FOR_MISSING_ORDER_CREATION", "2012");
+              this.activityData.MAX_NUMBER_OF_ORDERS = Global.getConfigVariable("MAX_NUMBER_OF_ORDERS_FOR_MISSING_ORDER_CREATION", 1000);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="waitForEndSyncOrderProcess" type="joinActivity">
+        <element>proc_migrationSTC.orderSynchronizationGraniteExpediter</element>
+        <guid>{0efb7d7c-762a-95d1-5bbf-90438fcb6149}</guid>
+        <label>Wait For End SyncOrder Process</label>
+        <x>558.0</x>
+        <y>67.0</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <guid>{0804184e-8023-ee8a-2910-2b96fa8056cd}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "] globalOrderSynchronizationGraniteExpediter - Completed USER process 'orderSynchronizationGraniteExpediter'");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{01aeabbf-951c-0efe-b70b-0c5269450758}</guid>
+        <label>End</label>
+        <x>740.0</x>
+        <y>95.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{05cc11f8-42c8-d890-3242-69d8f138c6ad}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "] globalOrderSynchronizationGraniteExpediter - End");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0e307d9d-d715-97d3-1670-0af6efdb73f0}</guid>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "] globalOrderSynchronizationGraniteExpediter - Start");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <label>Global Process to Synchronize Orders Between Granite And Expediter</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_migrationSTC.globalOrderSynchronizationGraniteExpediter</process>
+  <type>Global</type>
+</process__revision>

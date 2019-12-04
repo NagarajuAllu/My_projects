@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="75d9a347eec50c6189cb417837d66541" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcc.checkSameValue">
+  <guid>{0ea5f571-47c5-b35b-2c18-a976951bc8f2}</guid>
+  <label>checkSameValue</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="newValue" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="oldValue" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = false;
+
+    if(newValue == null) {
+          result = (oldValue == null);
+    }
+    else {
+          if(oldValue == null) {
+                result = false;
+          }
+          else {
+                result = (oldValue == newValue);
+          }
+    }
+
+    return result;
+  ]]></script>
+</script>

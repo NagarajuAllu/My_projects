@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="48b2f3e5889c4f0af7034709ffeba214" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="migrationSTC.genericInputForDate">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{01bdb47e-bf64-c2d9-328c-19bf50c514ef}</guid>
+  <label>Generic Input For Date [Document query]</label>
+  <metaVersion>3</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="date" type="leaf">
+      <guid>{06dc0ed6-2a05-1e53-ce55-3b3dc8ea9acb}</guid>
+      <label>Date</label>
+      <propertyElement type="eldate">
+        <label>Date</label>
+        <showPickerIcon>false</showPickerIcon>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.Date</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_migrationSTC.genericInputForDate</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

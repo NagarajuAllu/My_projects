@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.search_BWForInsertOrder">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{bb7c90e5-2d74-4d03-adc8-62b76e60ee1e}</guid>
+  <label>Search Element: BW For InsertOrder</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="bw_name" type="leaf">
+      <propertyElement type="elfld">
+        <label>Bandwidth Name</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string30</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.search_BWForInsertOrder</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="search_BWForInsertOrderGrid" type="elgrd">
+                    <colWidths>90px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="search_BWForInsertOrderHeader" type="elhdr">
+                        <label>Search Element: Bandwidth For InsertOrder</label>
+                      </element>
+                      <element name="bandwidth" type="elfld">
+                        <label>Bandwidth [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_BWForInsertOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_BWForInsertOrder/leaf_bw_name</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>10px</height>
+                        <rowSpan>10px</rowSpan>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

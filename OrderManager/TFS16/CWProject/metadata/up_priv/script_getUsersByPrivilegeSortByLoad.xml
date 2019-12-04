@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="ace8c9f457f7b1083569ad88712a21fd" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="up_priv.getUsersByPrivilegeSortByLoad">
+  <label>Get Users By Privilege Sort By Load</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="privilegeName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var userList = null;
+
+    if(privilegeName != null) {
+        var finder = new Finder("up_priv.usersWithPrivilegeSortedByLoadFinder");
+        finder.searchDocument.value = privilegeName;
+        userList = finder.search();
+    }
+
+    return userList;
+  ]]></script>
+</script>

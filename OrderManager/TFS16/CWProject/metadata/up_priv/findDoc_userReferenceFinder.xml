@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="up_priv.userReferenceFinder">
+  <doubleClickSelect>true</doubleClickSelect>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_cwf_up.userProfileSearch</input>
+  <label>User Reference Finder</label>
+  <metaVersion>21</metaVersion>
+  <output>doc_cwf_up.userProfile</output>
+  <type>document</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_cwf_up.userProfileSearch</document>
+      <mappedDocument>doc_cwf_up.userProfile</mappedDocument>
+      <mappedPath>doc_cwf_up.userProfile/leaf_active</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwf_up.userProfileSearch/leaf_active</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cwf_up.userProfileSearch</document>
+      <mappedDocument>doc_cwf_up.userProfile</mappedDocument>
+      <mappedPath>doc_cwf_up.userProfile/leaf_email</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwf_up.userProfileSearch/leaf_email</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cwf_up.userProfileSearch</document>
+      <mappedDocument>doc_cwf_up.userProfile</mappedDocument>
+      <mappedPath>doc_cwf_up.userProfile/leaf_profileId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwf_up.userProfileSearch/leaf_profileId</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cwf_up.userProfileSearch</document>
+      <mappedDocument>doc_cwf_up.userProfile</mappedDocument>
+      <mappedPath>doc_cwf_up.userProfile/leaf_userId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwf_up.userProfileSearch/leaf_userId</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cwf_up.userProfileSearch</document>
+      <mappedDocument>doc_cwf_up.userProfile</mappedDocument>
+      <mappedPath>doc_cwf_up.userProfile/leaf_maxTasks</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwf_up.userProfileSearch/leaf_maxTasks</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cwf_up.userProfileSearch</document>
+      <mappedDocument>doc_cwf_up.userProfile</mappedDocument>
+      <mappedPath>doc_cwf_up.userProfile/leaf_minTasks</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwf_up.userProfileSearch/leaf_minTasks</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cwf_up.userProfileSearch</document>
+      <mappedDocument>doc_cwf_up.userProfile</mappedDocument>
+      <mappedPath>doc_cwf_up.userProfile/leaf_userName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwf_up.userProfileSearch/leaf_userName</path>
+    </search>
+  </searchList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>WGManager</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>WGManager</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>WGManager</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="attachPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <label>Finder User Interface</label>
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <label>User Profile Search</label>
+        <valueType>doc_cwf_up.userProfileSearch/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <label>User Profile</label>
+        <valueType>doc_cwf_up.userProfile</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <label>User Profile</label>
+        <valueType>doc_cwf_up.userProfile/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="result" type="vform">
+            <label>result</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <sortMap>
+                <sort key="doc_cwf_up.userProfile/leaf_userName">ascending</sort>
+              </sortMap>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findDoc_up_priv.userReferenceFinder/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <elementList>
+                <element name="userName" type="elfld">
+                  <dataLength>25</dataLength>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_up_priv.userReferenceFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf_up.userProfile/leaf_userName</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>150px</width>
+                </element>
+                <element name="domain" type="elfld">
+                  <dataLength>25</dataLength>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_up_priv.userReferenceFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf_up.userProfile/leaf_domain</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>150px</width>
+                </element>
+                <element name="email" type="elfld">
+                  <dataLength>25</dataLength>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_up_priv.userReferenceFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf_up.userProfile/leaf_email</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>150px</width>
+                </element>
+                <element name="active" type="elrgrp">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_up_priv.userReferenceFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf_up.userProfile/leaf_active</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>50px</width>
+                </element>
+                <element name="available" type="elrgrp">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_up_priv.userReferenceFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf_up.userProfile/leaf_available</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>50px</width>
+                </element>
+                <element name="curTasks" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_up_priv.userReferenceFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf_up.userProfile/leaf_curTasks</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>150px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfDetail" type="eldel"/>
+              <override name="cwfSearch" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+              <override name="finderMenuLayout" type="elext"/>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_up_priv.userReferenceFinder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_up_priv.userReferenceFinder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="onInit" type="action">
+        <script>this.cw$super_onInit();</script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="default" type="findVView">
+      <label>Users</label>
+      <outputOverlay>findDoc_up_priv.userReferenceFinder/ui_UserInterface/frmui_Forms/vform_result</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+    </view>
+  </viewList>
+</findDoc>

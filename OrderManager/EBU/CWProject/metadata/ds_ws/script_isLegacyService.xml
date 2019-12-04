@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="1f4a21292211bb2b1b6d52b4a3a72fa2" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.isLegacyService">
+  <label>Is Legacy Service</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // return true if the element is not VAS and doesn't have any child of type SERVICE
+    var bundle = bundleContainer.bundle;
+    var isLegacyService = false;
+
+    var isBundle_VAS = ds_ws.isVAS(bundle.lineItemType);
+
+    if(!isBundle_VAS) {
+        // checking the children
+        if(bundleContainer.circuits == null) {
+            isLegacyService = true;
+        }
+        else {
+            var serviceChildFound = false;
+            for(var i=0; i<bundleContainer.circuits.length && !serviceChildFound; i++) {
+                serviceChildFound = (! ds_ws.isVAS(bundleContainer.circuits[i].circuit.lineItemType));
+            }
+
+            if(! serviceChildFound) {
+                isLegacyService = true;
+            }
+        }
+    }
+    else {
+        isLegacyService = false;
+    }
+
+    return isLegacyService;
+  ]]></script>
+</script>

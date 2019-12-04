@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getIsProvisionableByProductCode">
+  <label>Get IsVPN By ProductCode</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="productCode" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var isProvisionable = true;
+
+    var searchDoc = new Document("stcconf.search_ProductCodeDoc");
+    searchDoc.productCode = productCode;
+
+    var resultList = Finder.runFinder("stcconf.findAllProductCodes", "select", searchDoc);
+
+    if(resultList != null && resultList.length > 0) {
+        isProvisionable = resultList[0].isProvisionable;
+    }
+
+    return isProvisionable;
+  ]]></script>
+</script>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="b97c07a5dde7eedd90b7a7b4f02ba866" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.getCircuitBWByName">
+  <label>Get Circuit Bandwidth By Name</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bandwidthName" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_granite.BANDWIDTH</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = null;
+
+    if (bandwidthName != null) {
+
+       var input = new Document("granite.search_CIRC_BW");
+       input.BANDWIDTH = bandwidthName;
+
+       var output = Finder.runFinder("granite.findCircBWByName", "select", input);
+
+       if (output != null && output.size > 0) {
+          result = output[0];
+       }
+    }
+
+    return result;
+  ]]></script>
+</script>

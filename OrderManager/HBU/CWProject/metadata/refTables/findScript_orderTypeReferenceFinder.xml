@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findScript filenameHash="f694bdaedfe1fe7d553a6aea8b45ff72" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="refTables.orderTypeReferenceFinder">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <guid>{08173811-e840-6148-8590-c549b662f926}</guid>
+  <label>OrderType Reference Finder</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>3</metaVersion>
+  <output>doc_refTables.orderTypeReferenceDoc</output>
+  <type>script</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <volatility>1</volatility>
+  <methodList>
+    <method name="cwOnFinderSel" type="action">
+      <guid>{0f5aedf1-f1b0-2b6f-8aad-20ddbe1d7027}</guid>
+      <system>true</system>
+      <script><![CDATA[
+        var orderTypeDocs = new Array();
+
+        var stdOrderTypes = ["I", "C", "T", "D", "E", "O"];
+        for(var i=0; i<stdOrderTypes.length; i++) {
+              var orderTypeDocument = new Document("refTables:orderTypeReferenceDoc");
+              orderTypeDocument.orderType = stdOrderTypes[i];
+              orderTypeDocs[orderTypeDocs.length] = orderTypeDocument;
+        }
+
+        var multipleOpsOrderTypes = refTables.getMultipleOpsOrderTypes();
+        if(multipleOpsOrderTypes != null) {
+              for(var i=0; i<multipleOpsOrderTypes.length; i++) {
+                    var orderTypeDocument = new Document("refTables:orderTypeReferenceDoc");
+                    orderTypeDocument.orderType = multipleOpsOrderTypes[i].orderType;
+                    orderTypeDocs[orderTypeDocs.length] = orderTypeDocument;
+              }
+        }
+
+        return orderTypeDocs;
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script>return this.enabled;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findScript_refTables.orderTypeReferenceFinder</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_refTables.orderTypeReferenceDoc</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_refTables.orderTypeReferenceDoc/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext">
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="_genForm_" type="vform">
+            <label>_genForm_</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findScript_refTables.orderTypeReferenceFinder/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Order_Type" type="elfld">
+                  <label>Order Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findScript_refTables.orderTypeReferenceFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_refTables.orderTypeReferenceDoc/leaf_orderType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="default" type="findVView">
+      <label>OrderType Reference Finder</label>
+      <outputOverlay>findScript_refTables.orderTypeReferenceFinder/ui_UserInterface/frmui_Forms/vform__genForm_</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+    </view>
+  </viewList>
+</findScript>

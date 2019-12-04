@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure name="wsws.service">
+  <container>true</container>
+  <label>service</label>
+  <metaVersion>3</metaVersion>
+  <xmlMap type="xmap">
+    <xmlName>service</xmlName>
+  </xmlMap>
+  <childList>
+    <child name="bandwidth" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>bandwidth</label>
+    </child>
+    <child name="creationDate" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.DateTime</element>
+      <label>creationDate</label>
+      <xmlMap type="xmap">
+        <xmlName>creationDate</xmlName>
+      </xmlMap>
+    </child>
+    <child name="nameValue" type="dstruct">
+      <array>true</array>
+      <element>dstruct_wsws.nameValue_noAction</element>
+      <label>nameValue</label>
+      <maxInstance>-1</maxInstance>
+    </child>
+    <child name="productCode" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>productCode</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="reservationNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>reservationNumber</label>
+      <xmlMap type="xmap">
+        <xmlName>reservationNumber</xmlName>
+      </xmlMap>
+    </child>
+    <child name="segmentFlag" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_wsws.segmentFlag</element>
+      <label>segmentFlag</label>
+      <mandatory>true</mandatory>
+      <xmlMap type="xmap">
+        <xmlName>segmentFlag</xmlName>
+      </xmlMap>
+    </child>
+    <child name="serviceDate" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.DateTime</element>
+      <label>serviceDate</label>
+    </child>
+    <child name="assetNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>assetNumber</label>
+    </child>
+    <child name="primaryAssetNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>primaryAssetNumber</label>
+    </child>
+    <child name="subservices" type="dstruct">
+      <array>true</array>
+      <element>dstruct_wsws.subservice</element>
+      <label>subservices</label>
+      <maxInstance>-1</maxInstance>
+    </child>
+    <child name="numberOfChannels" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>numberOfChannels</label>
+      <xmlMap type="xmap">
+        <xmlName>numberOfChannels</xmlName>
+      </xmlMap>
+    </child>
+  </childList>
+</dataStructure>

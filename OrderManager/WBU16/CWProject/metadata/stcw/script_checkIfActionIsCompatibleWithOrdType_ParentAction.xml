@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.checkIfActionIsCompatibleWithOrdType_ParentAction">
+  <label>Check If Action Is Compatible With OrderType And ParentAction</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderStatus" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="feasibilityFor" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="parentLineItemAction" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="lineItemAction" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="isLineItemActionReceived" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="buProvisioning" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var compatible = false;
+
+    if(lineItemAction == null) {
+        return compatible;
+    }
+
+
+    // Check compatibility between orderType and lineItemAction
+    if(orderType == "I") {
+        // Install New: Add
+        // Install Cancel: Cancel
+        // Install Revise: Modify
+        if(orderStatus.toUpperCase() == "NEW") {
+            compatible = (lineItemAction.toUpperCase() == "A");
+        }
+        else if(orderStatus.toUpperCase() == "CANCEL") {
+            if(isLineItemActionReceived) {
+                compatible = (lineItemAction.toUpperCase() == "C");
+            }
+            else {
+                compatible = (lineItemAction.toUpperCase() == "C" || lineItemAction.toUpperCase() == "N" || lineItemAction.toUpperCase() == "D");
+            }
+        }
+        else if(orderStatus.toUpperCase() == "REVISE") {
+            if(isLineItemActionReceived) {
+                // receivedAction can be only "M"
+                compatible = (lineItemAction.toUpperCase() == "M");
+            }
+            else {
+                // action "A" in case the lineItem is not into Granite
+                compatible = (lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "A");
+            }
+        }
+    }
+    else if(orderType == "C") {
+        // Change New: Modify, No Change (for ParentLineItem)
+        //             Add, Remove, Modify, No Change (for other LineItems)
+        // Change Cancel: Cancel
+        // Change Revise: Modify
+        if(orderStatus.toUpperCase() == "NEW") {
+            if(parentLineItemAction == null) {
+                // it's the parentLineItem
+                compatible = (lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "N");
+            }
+            else {
+                compatible = (lineItemAction.toUpperCase() == "A" || lineItemAction.toUpperCase() == "D" || lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "N");
+            }
+        }
+        else if(orderStatus.toUpperCase() == "CANCEL") {
+            if(isLineItemActionReceived) {
+                if(buProvisioning == "H") {
+                    compatible = (lineItemAction.toUpperCase() == "C" || lineItemAction.toUpperCase() == "N")
+                }
+                else {
+                    compatible = (lineItemAction.toUpperCase() == "C");
+                }
+            }
+            else {
+                compatible = (lineItemAction.toUpperCase() == "C" || lineItemAction.toUpperCase() == "N"  || lineItemAction.toUpperCase() == "D");
+            }
+        }
+        else if(orderStatus.toUpperCase() == "REVISE") {
+            if(isLineItemActionReceived) {
+                // receivedAction can be only "M"
+                compatible = (lineItemAction.toUpperCase() == "M");
+            }
+            else {
+                compatible = (lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "A" || lineItemAction.toUpperCase() == "D" || lineItemAction.toUpperCase() == "N");
+            }
+        }
+    }
+    else if(orderType == "O") {
+        // Permanent Disconnect New: Remove
+        // Permanent Disconnect Cancel: Allowed only for "H"
+        // Permanent Disconnect Revise: NOT ALLOWED
+        if(orderStatus.toUpperCase() == "NEW") {
+            compatible = (lineItemAction.toUpperCase() == "D");
+        }
+        else if(orderStatus.toUpperCase() == "CANCEL") {
+            if(buProvisioning == "H") {
+                compatible = (lineItemAction.toUpperCase() == "C");
+            }
+            else {
+                compatible = false;
+            }
+        }
+    }
+    else if(orderType == "F") {
+        // Feasibility New + FeasibilityFor = Install: Add
+        // Feasibility New + FeasibilityFor = Change: Modify (for parentLineItem)
+        //                                            Add, Modify, No Change (for other lineitems)
+        // Feasibility Cancel: Cancel, No Change, Disconnect - it's the action internally set by EOC in case it receives a cancel over a completed feasibility - to send a disconnect to GI
+        // Feasibility Revise: Modify, No Change
+        if(orderStatus.toUpperCase() == "NEW") {
+            if(buProvisioning == "M") {
+                compatible = false;
+            }
+            else {
+                if(feasibilityFor != null) {
+                    if(feasibilityFor.toUpperCase() == "INSTALL") {
+                        compatible = (lineItemAction.toUpperCase() == "A");
+                    }
+                    else if(feasibilityFor.toUpperCase() == "CHANGE") {
+                        if(parentLineItemAction == null) {
+                            // it's the parentLineItem
+                            compatible = (lineItemAction.toUpperCase() == "M");
+                        }
+                        else {
+                            if(buProvisioning == "H" || buProvisioning == "W") {
+                                compatible = (lineItemAction.toUpperCase() == "A" || lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "N" || lineItemAction.toUpperCase() == "D");
+                            }
+                            else {
+                                compatible = (lineItemAction.toUpperCase() == "A" || lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "N");
+                            }
+                        }
+                    }
+                }
+                else {
+                    compatible = false;
+                }
+            }
+        }
+        else if(orderStatus.toUpperCase() == "CANCEL") {
+            if(buProvisioning == "M") {
+                compatible = false;
+            }
+            else {
+                compatible = (lineItemAction.toUpperCase() == "C" || lineItemAction.toUpperCase() == "N" || lineItemAction.toUpperCase() == "D");
+            }
+        }
+        else if(orderStatus.toUpperCase() == "REVISE") {
+            if(buProvisioning == "M" || buProvisioning == "H") {
+                compatible = false;
+            }
+            else {
+                if(isLineItemActionReceived) {
+                    // receivedAction for feasibility can be only "M" and "N"
+                    compatible = (lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "N");
+                }
+                else {
+                    // actions for Revise are "M" and "N" but, in case of Revise, "M" means repush the lineitem with the same action so it has also to contain "A"
+                    compatible = (lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "N" || lineItemAction.toUpperCase() == "A");
+                }
+            }
+        }
+    }
+    else if(orderType == "D") {
+        // supported only for "HBU" and Mobile
+        if(buProvisioning != "H" && buProvisioning != "M") {
+            compatible = false;
+        }
+        else {
+            // Temporary Disconnect New: Suspend
+            // Temporary Disconnect Cancel: Cancel
+            // Temporary Disconnect Revise: Modify or Suspend
+            if(orderStatus.toUpperCase() == "NEW") {
+                compatible = (lineItemAction.toUpperCase() == "S");
+            }
+            else if(orderStatus.toUpperCase() == "CANCEL") {
+                compatible = (lineItemAction.toUpperCase() == "C");
+            }
+            else if(orderStatus.toUpperCase() == "REVISE"){
+                if(isLineItemActionReceived) {
+                    compatible = (lineItemAction.toUpperCase() == "M");
+                }
+                else {
+                    compatible = (lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "S");
+                }
+            }
+        }
+    }
+    else if(orderType == "E") {
+        // supported only for "HBU" and Mobile
+        if(buProvisioning != "H" && buProvisioning != "M") {
+            compatible = false;
+        }
+        else {
+            // Resume New: Resume
+            // Resume Cancel: Cancel
+            // Resume Revise: Modify or Resume
+            if(orderStatus.toUpperCase() == "NEW") {
+                compatible = (lineItemAction.toUpperCase() == "R");
+            }
+            else if(orderStatus.toUpperCase() == "CANCEL") {
+                compatible = (lineItemAction.toUpperCase() == "C");
+            }
+            else if(orderStatus.toUpperCase() == "REVISE"){
+                if(isLineItemActionReceived) {
+                    compatible = (lineItemAction.toUpperCase() == "M");
+                }
+                else {
+                    compatible = (lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "R");
+                }
+            }
+        }
+    }
+    else if(orderType == "T") {
+        compatible = false;
+    }
+
+
+    // Check compatibility between parentLineItemAction and lineItemAction
+    if(compatible && parentLineItemAction != null) {
+        // reset compatible flag to get only the compatible matches
+        compatible = false;
+        var isCancel = (orderStatus.toUpperCase() == "CANCEL");
+        var isRevise = (orderStatus.toUpperCase() == "REVISE");
+
+        // check compatibility between parentLineItemAction and lineItemAction
+        if(parentLineItemAction.toUpperCase() == "A") {
+            // Add -> Add
+            compatible = (lineItemAction.toUpperCase() == "A" || (orderType != null && orderType == "F" || lineItemAction.toUpperCase() == "N"));
+        }
+        else if(parentLineItemAction.toUpperCase() == "D") {
+            // Remove -> Remove
+            compatible = (lineItemAction.toUpperCase() == "D" || lineItemAction.toUpperCase() == "C");
+        }
+        else if(parentLineItemAction.toUpperCase() == "M") {
+            // Modify -> Add, Remove, Modify, No Change
+            compatible = (lineItemAction.toUpperCase() == "A" || lineItemAction.toUpperCase() == "D" || lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "N" ||
+                          (lineItemAction.toUpperCase() == "S" && orderStatus.toUpperCase() == "REVISE") || (lineItemAction.toUpperCase() == "R" && orderStatus.toUpperCase() == "REVISE"));
+        }
+        else if(parentLineItemAction.toUpperCase() == "N") {
+            // No Change -> Add, Remove, Modify, No Change
+            compatible = (lineItemAction.toUpperCase() == "A" || lineItemAction.toUpperCase() == "D" || lineItemAction.toUpperCase() == "M" || lineItemAction.toUpperCase() == "N" ||
+                          (orderType != null && orderType == "F" || lineItemAction.toUpperCase() == "C"));
+        }
+        else if(parentLineItemAction.toUpperCase() == "C") {
+            // Cancel -> Cancel
+            compatible = (lineItemAction.toUpperCase() == "C" || lineItemAction.toUpperCase() == "D" || (orderType != null && orderType == "F" || lineItemAction.toUpperCase() == "N"));
+        }
+        else if(parentLineItemAction.toUpperCase() == "S") {
+            // Suspend -> Suspend, Modify
+            compatible = (lineItemAction.toUpperCase() == "S");
+        }
+        else if(parentLineItemAction.toUpperCase() == "R") {
+            // Resume -> Resume
+            compatible = (lineItemAction.toUpperCase() == "R");
+        }
+    }
+
+    return compatible;
+  ]]></script>
+</script>

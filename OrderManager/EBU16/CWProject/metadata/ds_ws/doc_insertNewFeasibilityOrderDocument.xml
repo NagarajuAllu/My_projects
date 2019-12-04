@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.insertNewFeasibilityOrderDocument">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{56d22ce5-0037-4e01-bf00-230ae6c3962e}</guid>
+  <label>Insert New Feasibility Order Document</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="customerReferenceInGranite" type="leaf">
+      <column>CUSTOMER_ID</column>
+      <propertyElement type="elref">
+        <label>Customer</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_granite.customerReference</valueType>
+    </variable>
+    <variable name="serviceTypeReference" type="leaf">
+      <column>SERVICETYPE</column>
+      <propertyElement type="elref">
+        <label>Service Type</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_ds_ws.serviceTypeReference</valueType>
+    </variable>
+    <variable name="serviceDate" type="leaf">
+      <column>SERVICEDATE</column>
+      <propertyElement type="eldate">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Service Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="circuitBWReference" type="leaf">
+      <column>CIRCUITBW</column>
+      <propertyElement type="elref">
+        <label>Circuit BW Reference</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_ds_ws.circuitBWReference</valueType>
+    </variable>
+    <variable name="siteAReference" type="leaf">
+      <column>SITEA_INST_ID</column>
+      <propertyElement type="elref">
+        <label>Site A Reference</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_ds_ws.siteReference</valueType>
+    </variable>
+    <variable name="siteZReference" type="leaf">
+      <column>SITEZ_INST_ID</column>
+      <propertyElement type="elref">
+        <label>Site Z Reference</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_ds_ws.siteReference</valueType>
+    </variable>
+    <variable name="projectId" type="leaf">
+      <column>PROJECT_ID</column>
+      <propertyElement type="elfld">
+        <label>Project Id</label>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string30</valueType>
+    </variable>
+    <variable name="reasonCodeForInsertOrder" type="leaf">
+      <column>REASONCODE</column>
+      <propertyElement type="elslct">
+        <label>Reason Code</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_ds_ws.reasonCodeForInsertOrder</valueType>
+    </variable>
+    <variable name="jobId" type="leaf">
+      <column>JOBID</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Job Id</label>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_ds_ws.integer10</valueType>
+    </variable>
+    <variable name="rowNumber" type="leaf">
+      <column>ROWNUMBER</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Row Number</label>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_ds_ws.integer3</valueType>
+    </variable>
+    <variable name="generatedOrderNumber" type="leaf">
+      <column>GENERATEDORDERNUMBER</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Generated Order Number</label>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="graniteResponse" type="leaf">
+      <column>GI_RESPONSE</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Granite Response</label>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="graniteFailureMessage" type="leaf">
+      <column>GI_FAILURE_MSG</column>
+      <propertyElement type="eltxtArea">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Granite Failure Message</label>
+      </propertyElement>
+      <table>STC_INSERTORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string2000</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$reasonCodeForInsertOrder" type="laction">
+      <path>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_reasonCodeForInsertOrder</path>
+      <type>initializer</type>
+      <script><![CDATA[
+        var resultList = Finder.runFinder("ds_ws.findReasonCodeForInsertOrder", "select", null);
+        if(resultList != null && resultList.length > 0) {
+            document.reasonCodeForInsertOrder = resultList[0].id;
+        }
+
+        return document.reasonCodeForInsertOrder;
+      ]]></script>
+    </method>
+    <method name="serviceDateValidationRule" type="crule">
+      <code>AE0123</code>
+      <path>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_serviceDate</path>
+      <severity>error</severity>
+      <type>validator</type>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+      <script>return Calendar.isDateBefore(document.serviceDate, new Date());</script>
+    </method>
+    <method name="cwLeafInitAction$serviceDate" type="laction">
+      <path>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_serviceDate</path>
+      <type>initializer</type>
+      <valueType>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_serviceDate</valueType>
+      <script><![CDATA[
+        var now = new Date();
+        document.serviceDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7);
+
+        return document.serviceDate;
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script>return (this.jobId == null);</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="findAllNVPairsForInsertOrderUI" type="leaf">
+        <valueType>findSql_ds_ws.findAllNVPairsForInsertOrder/ui_UserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.insertNewFeasibilityOrderDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="FormFrameGeneral" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/frmui_Forms/vform_generalData</variablePath>
+                      </variablePathList>
+                    </formReference>
+                  </element>
+                  <element name="FormFrameNVPairs" type="elovf">
+                    <cellAlignment>center,center</cellAlignment>
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/frmui_Forms/vform_nvPairs</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/permMethod_isStoredPermission</variablePath>
+                      </variablePathList>
+                    </visible>
+                    <width>100%</width>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="generalData" type="vform">
+            <label>generalData</label>
+            <root name="defGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="insertNewFeasibilityOrderDocumentGrid" type="elgrd">
+                  <colWidths>90px,160px,90px,160px,90px,160px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>960px</width>
+                  <elementList>
+                    <element name="insertNewFeasibilityOrderDocumentHeader" type="elhdr">
+                      <label>Insert New Feasibility Order Document</label>
+                    </element>
+                    <element name="RowSpacer" type="elrsp">
+                      <height>10px</height>
+                      <rowSpan>10px</rowSpan>
+                    </element>
+                    <element name="customerReferenceInGranite" type="elref">
+                      <label>Customer</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_customerReferenceInGranite</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceTypeReference" type="elref">
+                      <label>Service Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_serviceTypeReference</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="circuitBWReference" type="elref">
+                      <label>Bandwidth</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_circuitBWReference</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="siteAReferenceInGranite" type="elref">
+                      <label>Site A</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_siteAReference</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="siteZReferenceInGranite" type="elref">
+                      <label>Site Z</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_siteZReference</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="projectId" type="elfld">
+                      <label>Project Id</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_projectId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer2" type="elrsp">
+                      <height>20px</height>
+                      <rowSpan>20px</rowSpan>
+                    </element>
+                    <element name="generatedOrderNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_generatedOrderNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/permMethod_isOrderGenerated</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="jobId" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_jobId</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/permMethod_isOrderGenerated</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="rowNumber" type="elfld">
+                      <label>Row Number</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_rowNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/permMethod_isOrderGenerated</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="graniteResponse" type="elfld">
+                      <label>Granite Response</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_graniteResponse</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/permMethod_isOrderGenerated</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="graniteFailureMessage" type="eltxtArea">
+                      <columnSpan>3</columnSpan>
+                      <height>50px</height>
+                      <label>Granite Failure Message</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/leaf_graniteFailureMessage</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/permMethod_isOrderGenerated</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="hl1" type="elext">
+                <elementList>
+                  <element name="submitFeasibilityOrder" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/usrActionMethod_submitOrder</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/MenuIconAdd.gif</icon>
+                    <label>Submit Feasibility Order</label>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                    <style>CwMEIDefItem</style>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/permMethod_isStoredWithoutJobIdPermission</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="viewGeneratedOrder" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/usrActionMethod_showGeneratedOrder</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <enable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/permMethod_isOrderGenerated</variablePath>
+                      </variablePathList>
+                    </enable>
+                    <icon>/cwf/order.gif</icon>
+                    <label>View Generated Feasibility Order</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/permMethod_isOrderGenerated</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="reloadMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/usrActionMethod_reloadModel</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <enable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/permMethod_isOrderGenerated</variablePath>
+                      </variablePathList>
+                    </enable>
+                    <icon>/cwf/refresh.gif</icon>
+                    <label>Update Info</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/permMethod_isOrderGenerated</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="nvPairs" type="vform">
+            <label>nvPairs</label>
+            <root name="VerticalLayout" type="elvlt">
+              <height>100%</height>
+              <width>100%</width>
+              <elementList>
+                <element name="insertNewFeasibilityOrderDocumentHeader" type="elhdr">
+                  <label>NV Pairs</label>
+                </element>
+                <element name="FormFrame" type="elovf">
+                  <formReference type="varPath">
+                    <variablePathList>
+                      <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/leaf_findAllNVPairsForInsertOrderUI</variablePath>
+                      <variablePath>findSql_ds_ws.findAllNVPairsForInsertOrder/ui_UserInterface/frmui_Forms/vform_showInParent</variablePath>
+                    </variablePathList>
+                  </formReference>
+                  <height>600px</height>
+                  <style>simpleBorder</style>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/leaf_findAllNVPairsForInsertOrderUI</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>850px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="onInit" type="action">
+        <valueType>nmeta_com.conceptwave.system.Object</valueType>
+        <script><![CDATA[
+          var res = this.cw$super_onInit();
+
+          this.findAllNVPairsForInsertOrderUI = new ds_ws.findAllNVPairsForInsertOrder.UserInterface(null, this);
+          this.findAllNVPairsForInsertOrderUI.search.model.cwDocID = this.model.id;
+          this.findAllNVPairsForInsertOrderUI.model.search();
+
+          return res;
+        ]]></script>
+      </method>
+      <method name="isStoredPermission" type="permMethod">
+        <script>return this.model.isStored;</script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <validate>true</validate>
+        <script><![CDATA[
+          this.cw$super_save();
+
+          this.findAllNVPairsForInsertOrderUI.search.model.cwDocID = this.model.id;
+          this.findAllNVPairsForInsertOrderUI.model.search();
+        ]]></script>
+      </method>
+      <method name="validateNVPairs" type="usrActionMethod">
+        <description><![CDATA[
+          <p style="margin-top: 0">
+            Perform validation on the NV pairs added.
+          </p>
+        ]]></description>
+        <script><![CDATA[
+          var nvPairs = this.findAllNVPairsForInsertOrderUI.result;
+          ds_ws.performValidationForNVPairs_InsertedOrder(nvPairs, null, false);
+        ]]></script>
+      </method>
+      <method name="submitOrder" type="usrActionMethod">
+        <confirmation>doc_ds_ws.insertNewFeasibilityOrderDocument/ui_UserInterface/uimthd_confirmSubmit</confirmation>
+        <dialogObject>ui_com.conceptwave.system.Dialog</dialogObject>
+        <dialogx>10</dialogx>
+        <dialogy>30</dialogy>
+        <form>ui_com.conceptwave.system.Dialog/frmui_Forms/exov_Default</form>
+        <userInterface>ui_com.conceptwave.system.Dialog</userInterface>
+        <validate>true</validate>
+        <valueType>ui_com.conceptwave.system.Dialog</valueType>
+        <script><![CDATA[
+          this.validateNVPairs();
+
+          try {
+              var generatedOrder = ds_ws.generateFeasibilityOrderFromGUI(this.model);
+              var processId = ds_ws.startProcessingGeneratedFeasibilityOrder(generatedOrder);
+              this.model.generatedOrderNumber = generatedOrder.orderHeader.orderNumber;
+              Global.showUserMessage("Feasibility Order created with orderNumber = " + generatedOrder.orderHeader.orderNumber + "; processId = " + processId);
+              this.model.save();
+          }
+          catch(exc) {
+              Global.showUserMessage("Caught the following error while processing the generated feasibility Order " + generatedOrder.orderHeader.orderNumber + ": " + exc.message);
+          }
+        ]]></script>
+      </method>
+      <method name="confirmSubmit" type="uimthd">
+        <script><![CDATA[return "AW0012";]]></script>
+      </method>
+      <method name="isOrderGenerated" type="permMethod">
+        <script>return (this.model.generatedOrderNumber != null);</script>
+      </method>
+      <method name="editablePerm" type="permMethod">
+        <script><![CDATA[
+          this.cw$super_editablePerm($psCondition);
+
+          return (! this.isOrderGenerated() && (this.model.jobId == null));
+        ]]></script>
+      </method>
+      <method name="showGeneratedOrder" type="usrActionMethod">
+        <dialogHeight>880</dialogHeight>
+        <dialogObject>ui_com.conceptwave.system.Dialog</dialogObject>
+        <dialogWidth>1280</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var orderHeader = ds_ws.getBundleOrderByOrderNumber(this.model.generatedOrderNumber);
+          if(orderHeader != null) {
+              return Order.getOrderById(orderHeader.orderId);
+          }
+        ]]></script>
+      </method>
+      <method name="isStoredWithoutJobIdPermission" type="permMethod">
+        <script><![CDATA[return (this.model.isStored && (this.model.jobId == null));]]></script>
+      </method>
+      <method name="reloadModel" type="usrActionMethod">
+        <script><![CDATA[
+          var searchDoc = new Document("cwt_common.docID");
+          searchDoc.cwDocID = this.model.id;
+
+          var resultFinder = Finder.runFinder("ds_ws.findInsertFeasibilityOrder", "select", searchDoc);
+          if(resultFinder != null && resultFinder.length > 0) {
+              return resultFinder[0];
+          }
+
+          return;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

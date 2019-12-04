@@ -1,0 +1,1482 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findOrder filenameHash="2a5b7f11aecea8e3cd2ca5b49b69a548" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.findAllSTCOrders">
+  <allDocuments>true</allDocuments>
+  <display>split screen</display>
+  <doubleClickSelect>true</doubleClickSelect>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <guid>{050ab0c0-552d-21a5-8bf5-1de7df329f12}</guid>
+  <highlight>12</highlight>
+  <input>doc_ds_ws.search_orderMessage</input>
+  <itemTypeList>
+    <itemType>order_ds_ws.default_orderSTC</itemType>
+  </itemTypeList>
+  <label>Find All STC Orders</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>3</metaVersion>
+  <output>doc_ds_ws.details_orderMessage</output>
+  <sortList>
+    <sort type="stitem">
+      <descending>true</descending>
+      <path>doc_ds_ws.details_orderMessage/leaf_orderNumber</path>
+    </sort>
+  </sortList>
+  <type>order</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <vDetailForm>doc_ds_ws.details_orderMessage/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>0</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_migratedToBundle</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_migratedToBundle</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_accountNumber</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_accountNumber</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_creationDate</mappedPath>
+      <operation>greater equal</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_after</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_creationDate</mappedPath>
+      <operation>less equal</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_before</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_cctType</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_cctType</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_circuitNumber</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_circuitNumber</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_customerIDNumber</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_customerIDNumber</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_internalOrderStatus</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_internalOrderStatus</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_orderNumber</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_orderNumber</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_orderStatus</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_orderStatus</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_orderType</mappedPath>
+      <operation>like</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_orderType</path>
+    </search>
+  </searchList>
+  <selectResultList>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_accountNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_accountNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_alternativeSolution</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_alternativeSolution</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_bandwidth</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_bandwidth</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_cctType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_cctType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_circuitNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_circuitNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_createdBy</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_createdBy</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_creationDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_creationDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_customerIDNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_customerIDNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_fictBillingNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_fictBillingNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_icmsSONumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_icmsSONumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationAAccessCircuit</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationAAccessCircuit</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationAAccessType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationAAccessType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationACCLICode</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationACCLICode</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationACity</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationACity</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationAContactAddress</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationAContactAddress</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationAContactEmail</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationAContactEmail</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationAContactName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationAContactName</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationAContactTel</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationAContactTel</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationAExchangeSwitchCode</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationAExchangeSwitchCode</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationAInterface</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationAInterface</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationAJVCode</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationAJVCode</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationAPlateID</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationAPlateID</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationARemarks</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationARemarks</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBAccessCircuit</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBAccessCircuit</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBAccessType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBAccessType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBCCLICode</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBCCLICode</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBCity</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBCity</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBContactAddress</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBContactAddress</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBContactEmail</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBContactEmail</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBContactName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBContactName</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBContactTel</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBContactTel</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBExchangeSwitchCode</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBExchangeSwitchCode</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBInterface</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBInterface</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBJVCode</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBJVCode</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBPlateID</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBPlateID</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_locationBRemarks</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_locationBRemarks</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_oldCircuitNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_oldCircuitNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_orderNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_orderNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_orderStatus</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_orderStatus</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_orderType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_orderType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_priority</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_priority</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_projectId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_projectId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_referenceTelNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_referenceTelNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_remarks</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_remarks</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_serviceDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_serviceDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_serviceDescription</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_serviceDescription</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_serviceType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_serviceType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_wires</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_wires</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_customerName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_customerName</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_customerType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_customerType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_customerContact</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_customerContact</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_plateID</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_plateID</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_oldPlateId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_oldPlateId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_tbPortNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_tbPortNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_cwDocStamp</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_cwDocStamp</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_cwDocId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_cwDocId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_lastUpdatedDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_lastUpdatedDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_cwOrderCreationDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_cwOrderCreationDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_cwOrderId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_cwOrderId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_cwParentId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_cwParentId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_updatedBy</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_updatedBy</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_internalOrderStatus</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_internalOrderStatus</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_circuitStatus</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_circuitStatus</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_unitNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_unitNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_oldUnitNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_oldUnitNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_businessUnit</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_businessUnit</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_customerIDType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_customerIDType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_customerNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_customerNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_actionOnOrder</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_dialogSizeX</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_dialogSizeY</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_ds_ws.details_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage</mappedDocument>
+      <mappedOrder>order_ds_ws.default_orderSTC/order_orderMessage</mappedOrder>
+      <mappedPath>doc_ds_ws.details_orderMessage/leaf_migratedToBundle</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.details_orderMessage/leaf_migratedToBundle</path>
+    </selectResult>
+  </selectResultList>
+  <methodList>
+    <method name="cwOnFilter" type="action">
+      <guid>{0b0313ad-a450-5cde-5ed5-9f36961dc598}</guid>
+      <system>true</system>
+      <script><![CDATA[
+        // Modified on 06.01.2009:
+        // - check if the Order Status is 'ARCHIVED': in this case is rejected;
+        return (input.orderStatus == null || input.orderStatus.toUpperCase() != "ARCHIVE");
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.SplitFinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findOrder_ds_ws.findAllSTCOrders</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_ds_ws.search_orderMessage/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.details_orderMessage</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_ds_ws.details_orderMessage/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.SplitFinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.SplitFinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.SplitFinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext"/>
+            </overrideList>
+          </overlay>
+          <overlay name="output_mainInformation" type="vform">
+            <label>output_mainInformation</label>
+            <root name="result" type="eltabl">
+              <headerHeight>30</headerHeight>
+              <onSelectChange type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </onSelectChange>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Order__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>360px</width>
+                </element>
+                <element name="Order_Status" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_orderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>72px</width>
+                </element>
+                <element name="Internal_Order_Status" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_internalOrderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>204px</width>
+                </element>
+                <element name="Order_Type" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_orderType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Priority" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_priority</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CCT_Type" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_cctType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Circuit__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_circuitNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>288px</width>
+                </element>
+                <element name="Status" type="elfld">
+                  <label>Status</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_circuitStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Account__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_accountNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Customer_Id___" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_customerIDNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="detailMenu" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="detailMenuEx" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Menu</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <overflow>visible</overflow>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <width>1px</width>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="default" type="vform">
+            <label>default</label>
+            <root name="defaultLayoutStack" type="elvltstck">
+              <height>100%</height>
+              <width>100%</width>
+              <elementList>
+                <element name="defaultStack" type="elsectnstck">
+                  <height>100%</height>
+                  <width>100%</width>
+                  <elementList>
+                    <element name="default_mainInformationSection" type="elsect">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/frmui_Forms/vform_default_mainInformation</variablePath>
+                        </variablePathList>
+                      </formReference>
+                    </element>
+                    <element name="default_circuitInformationSection" type="elsect">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/frmui_Forms/vform_default_circuitInformation</variablePath>
+                        </variablePathList>
+                      </formReference>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="default_mainInformation" type="vform">
+            <label>default_mainInformation</label>
+            <root name="result" type="eltabl">
+              <headerHeight>30</headerHeight>
+              <onSelectChange type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </onSelectChange>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Order__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Type" type="elslct">
+                  <label>Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_orderType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>204px</width>
+                </element>
+                <element name="Status" type="elfld">
+                  <label>Status</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_orderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Internal_Order_Status" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_internalOrderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>204px</width>
+                </element>
+                <element name="Business_Unit" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_businessUnit</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>204px</width>
+                </element>
+                <element name="Priority" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_priority</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Account__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_accountNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Service_Date" type="eldate">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_serviceDate</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>102px</width>
+                </element>
+                <element name="Service_Description" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_serviceDescription</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Service_Type" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_serviceType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Fict__Billing__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_fictBillingNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="ICMS_S_O__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_icmsSONumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Customer__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_customerNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Id___" type="elfld">
+                  <label>Id. #</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_customerIDNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Id__Type" type="elfld">
+                  <label>Id. Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_customerIDType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Name" type="elfld">
+                  <label>Name</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_customerName</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Type1" type="elfld">
+                  <label>Type1</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_customerType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Contact" type="elfld">
+                  <label>Contact</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_customerContact</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Unit__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_unitNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Old_Unit__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_oldUnitNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="default_circuitInformation" type="vform">
+            <label>default_circuitInformation</label>
+            <root name="result" type="eltabl">
+              <headerHeight>30</headerHeight>
+              <onSelectChange type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </onSelectChange>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Circuit__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_circuitNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Old_Circuit__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_oldCircuitNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Status" type="elfld">
+                  <label>Status</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_circuitStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Bandwidth" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_bandwidth</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Project_Id_" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_projectId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Plate_Id_" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_plateID</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Old_Plate_Id_" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_oldPlateId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CCT_Type" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_cctType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Wires" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_wires</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Tb_Port__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_tbPortNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Address" type="elfld">
+                  <label>Address</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationAContactAddress</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="E_mail" type="elfld">
+                  <label>E-mail</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationAContactEmail</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Name" type="elfld">
+                  <label>Name</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationAContactName</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Tel___" type="elfld">
+                  <label>Tel. #</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationAContactTel</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="City" type="elfld">
+                  <label>City</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationACity</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Access_Circuit" type="elfld">
+                  <label>Access Circuit</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationAAccessCircuit</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Access_Type" type="elfld">
+                  <label>Access Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationAAccessType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CCLI_Code" type="elfld">
+                  <label>CCLI Code</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationACCLICode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Exchange_Switch_Code" type="elfld">
+                  <label>Exchange Switch Code</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationAExchangeSwitchCode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Interface" type="elfld">
+                  <label>Interface</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationAInterface</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="JV_Code" type="elfld">
+                  <label>JV Code</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationAJVCode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Plate_Id_1" type="elfld">
+                  <label>Plate Id.</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationAPlateID</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Remarks" type="elfld">
+                  <label>Remarks</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationARemarks</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Address1" type="elfld">
+                  <label>Address</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBContactAddress</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="E_mail1" type="elfld">
+                  <label>E-mail</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBContactEmail</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Name1" type="elfld">
+                  <label>Name</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBContactName</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Tel___1" type="elfld">
+                  <label>Tel. #</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBContactTel</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="City1" type="elfld">
+                  <label>City</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBCity</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Access_Circuit1" type="elfld">
+                  <label>Access Circuit</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBAccessCircuit</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Access_Type1" type="elfld">
+                  <label>Access Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBAccessType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CCLI_Code1" type="elfld">
+                  <label>CCLI Code</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBCCLICode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Exchange_Switch_Code1" type="elfld">
+                  <label>Exchange Switch Code</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBExchangeSwitchCode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Interface1" type="elfld">
+                  <label>Interface</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBInterface</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="JV_Code1" type="elfld">
+                  <label>JV Code</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBJVCode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Plate_Id_2" type="elfld">
+                  <label>Plate Id.</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBPlateID</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Remarks1" type="elfld">
+                  <label>Remarks</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage/leaf_locationBRemarks</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="default" type="findVView">
+      <inputOverlay>doc_ds_ws.search_orderMessage/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find All STC Orders</label>
+      <outputOverlay>findOrder_ds_ws.findAllSTCOrders/ui_UserInterface/frmui_Forms/vform_output_mainInformation</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findOrder>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="e0a1ab26555782039cff1db71f25ced7" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="processSTC.startUpdReadComp_cwr1">
+  <activity name="start" type="seqActivity">
+    <guid>{01a3de85-2339-55bc-fabd-cb60914ff767}</guid>
+    <label>start</label>
+    <x>66.0</x>
+    <y>30.0</y>
+    <childList>
+      <child name="firstPassSw" type="switchActivity">
+        <guid>{09a4e5d8-aead-a041-0a04-e94894ff357f}</guid>
+        <label>First Pass Switch</label>
+        <x>61.331055</x>
+        <y>122.0</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <guid>{08a67c4c-6b5c-5967-c11d-223b7695c2ca}</guid>
+            <label>No</label>
+            <x>114.0</x>
+            <y>231.92578</y>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{0f836c80-c781-869d-8ec3-1504dafad819}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  if (this.process.processDocument.firstPassSubRead == "N")
+                        return true;
+
+                  return false;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="yes" type="caseActivity">
+            <guid>{05c5efff-4bad-2bce-35d9-beee6b5d79c5}</guid>
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>200.0</y>
+            <childList>
+              <child name="alert" type="scriptActivity">
+                <guid>{04fbbfc1-5a10-6796-2fc9-9e0ae13a5e37}</guid>
+                <label>Alert</label>
+                <x>30.0</x>
+                <y>231.92578</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{08320333-be1b-9948-d656-4d3a015d5c5f}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      processSTC.sendMailForError("Caught error in update read process " + this.process.id, Global.getConfigVariable("MAIL_RECEIVER_FOR_ALERTS"));
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="waitTimeforSubmit" type="scriptActivity">
+        <guid>{095d8b19-6f24-b7a5-ebba-4e1823f83bbc}</guid>
+        <label>Wait Time for Submit</label>
+        <x>60.657227</x>
+        <y>327.88867</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0d29ebdc-8047-ddb1-4ddd-687359fab3ba}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              this.process.processDocument.firstPassSubRead = "N";
+              var submitSleep = Global.getConfigVariable("SUBMITSLEEP");
+
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - sleep for : " + submitSleep);
+
+              Global.sleep(submitSleep);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Start Update Read Compensate</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_processSTC.startUpdReadComp</process>
+  <type>Sub-flow</type>
+</process__revision>

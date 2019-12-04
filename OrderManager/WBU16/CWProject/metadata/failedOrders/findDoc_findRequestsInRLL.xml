@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="failedOrders.findRequestsInRLL">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_failedOrders.search_requestInRLL</input>
+  <label>Find Requests In RLL</label>
+  <maxRowsLimit>500</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_failedOrders.RLL_REQUEST</output>
+  <sortList>
+    <sort type="stitem">
+      <descending>true</descending>
+      <path>doc_failedOrders.RLL_REQUEST/leaf_REQUEST_TS</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <volatility>0</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_failedOrders.search_requestInRLL</document>
+      <mappedDocument>doc_failedOrders.RLL_REQUEST</mappedDocument>
+      <mappedPath>doc_failedOrders.RLL_REQUEST/leaf_TASK_NUM</mappedPath>
+      <operation>equal</operation>
+      <path>doc_failedOrders.search_requestInRLL/leaf_TASK_NUM</path>
+    </search>
+    <search type="sitem">
+      <document>doc_failedOrders.search_requestInRLL</document>
+      <mappedDocument>doc_failedOrders.RLL_REQUEST</mappedDocument>
+      <mappedPath>doc_failedOrders.RLL_REQUEST/leaf_WO_NAME</mappedPath>
+      <operation>equal</operation>
+      <path>doc_failedOrders.search_requestInRLL/leaf_WO_NAME</path>
+    </search>
+  </searchList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_failedOrders.RLL_REQUEST</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>ui_com.conceptwave.system.UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>ui_com.conceptwave.system.UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findRequestsInRLLResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="PROCESS_STATUS" type="elfld">
+                        <label>Process Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.RLL_REQUEST/leaf_PROCESS_STATUS</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="REQ_OPERATION" type="elfld">
+                        <label>Request Operation</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.RLL_REQUEST/leaf_REQ_OPERATION</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="REQ_STATUS" type="elfld">
+                        <label>Request Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.RLL_REQUEST/leaf_REQ_STATUS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="REQ_STRUCTURE" type="elfld">
+                        <label>Request DataType</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.RLL_REQUEST/leaf_REQ_STRUCTURE</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="REQUEST_TS" type="eldatetime">
+                        <label>Request Timestamp</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.RLL_REQUEST/leaf_REQUEST_TS</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="TASK_NUM" type="elfld">
+                        <label>Task Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.RLL_REQUEST/leaf_TASK_NUM</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="WO_NAME" type="elfld">
+                        <label>WO Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_failedOrders.RLL_REQUEST/leaf_WO_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="MenuEx" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>MenuEx</label>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="datarecv" type="elmnu">
+                    <menuAccel type="mAccelP"/>
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/usrActionMethod_showOutboundMsg</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/consume.gif</icon>
+                    <label>Received Data</label>
+                    <menuType>5</menuType>
+                  </element>
+                  <element name="datasent" type="elmnu">
+                    <menuAccel type="mAccelP"/>
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/usrActionMethod_showInboundMsg</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/produce.gif</icon>
+                    <label>Sent Data</label>
+                    <menuType>5</menuType>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="showInboundMsg" type="usrActionMethod">
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>500</dialogWidth>
+        <validate>true</validate>
+        <script><![CDATA[
+          var m = this.result.selected;
+          if (m != null) {
+              if (m.length > 1) {
+                  Global.throwException("UU0116");
+              }
+          }
+          else {
+              Global.throwException("UU0111");
+          }
+
+          m = this.result.selected[0];
+
+          var msg = this.result.selected[0].INBOUND_XML;
+          Global.showModelessDialog(msg,500,400,'text/xml');
+        ]]></script>
+      </method>
+      <method name="showOutboundMsg" type="usrActionMethod">
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>500</dialogWidth>
+        <validate>true</validate>
+        <script><![CDATA[
+          var m = this.result.selected;
+          if (m != null) {
+              if (m.length > 1) {
+                  Global.throwException("UU0116");
+              }
+          }
+          else {
+              Global.throwException("UU0111");
+          }
+
+          m = this.result.selected[0];
+
+          var msg = this.result.selected[0].OUTBOUND_XML;
+          Global.showModelessDialog(msg,500,400,'text/xml');
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="findRequestsInRLLView" type="findVView">
+      <label>Requests Log</label>
+      <outputOverlay>findDoc_failedOrders.findRequestsInRLL/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+    </view>
+  </viewList>
+</findDoc>

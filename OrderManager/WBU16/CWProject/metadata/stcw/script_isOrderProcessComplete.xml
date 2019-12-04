@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.isOrderProcessComplete">
+  <label>Is Order Process Complete</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="order" type="rifp">
+      <mandatory>true</mandatory>
+      <type>order_com.conceptwave.system.Order</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if (order == null)
+          return (true);
+
+    return (order.header.orderStatus == "COMPLETED");
+  ]]></script>
+</script>

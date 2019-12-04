@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="368ad15b64bb65ba8ef6b04490a7e5a2" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.getSiteDataInGranite">
+  <label>Get Site Data In Granite</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="siteInstId" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_granite.INST_ID</type>
+    </parameter>
+    <parameter name="siteName" type="rifp">
+      <type>dtype_granite.SITE_HUM_ID</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = null;
+
+    if (siteInstId != null || siteName != null) {
+
+       var input = new Document("granite:search_SITE_INST");
+       input.INST_ID = siteInstId;
+       input.SITE_HUM_ID = siteName;
+
+       var output = Finder.runFinder("granite:findSiteByNameAndId", "select", input);
+
+       if (output != null && output.size > 0) {
+          result = output[0];
+       }
+    }
+
+    return result;
+  ]]></script>
+</script>

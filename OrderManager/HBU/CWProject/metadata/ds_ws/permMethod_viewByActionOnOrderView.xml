@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<permMethod filenameHash="b2689391576e9e7e4517063a10d0c8f2" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.viewByActionOnOrderView">
+  <metaVersion>3</metaVersion>
+  <privilegesType>NEVER</privilegesType>
+  <script><![CDATA[
+    var result = false;
+
+    if (this instanceof OrderGroup) {
+          result = (this.orderMessage.actionOnOrder != null);
+    }
+
+    return result;
+  ]]></script>
+</permMethod>

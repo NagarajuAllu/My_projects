@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="tfs.findPRNRByChangeTFRId">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_cwt_common.docID</input>
+  <label>Find PRNR by Change TFR Id</label>
+  <metaVersion>25</metaVersion>
+  <output>doc_tfs.prnr</output>
+  <type>document</type>
+  <vDetailForm>doc_tfs.prnr/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <searchList>
+    <search type="sitem">
+      <document>doc_cwt_common.docID</document>
+      <mappedDocument>doc_tfs.prnr</mappedDocument>
+      <mappedPath>doc_tfs.prnr/leaf_changedTFRId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwt_common.docID/leaf_cwDocID</path>
+    </search>
+  </searchList>
+</findDoc>

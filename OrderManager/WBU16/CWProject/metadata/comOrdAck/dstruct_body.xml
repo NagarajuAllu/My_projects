@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure name="comOrdAck.body">
+  <container>true</container>
+  <label>body</label>
+  <metaVersion>25</metaVersion>
+  <childList>
+    <child name="masterOrderNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>masterOrderNumber</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="serviceOrderNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>serviceOrderNumber</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="masterOrderStatus" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>masterOrderStatus</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="serviceOrderStatus" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>serviceOrderStatus</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="lineItemIdentifier" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>lineItemIdentifier</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="serviceNumber" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>serviceNumber</label>
+    </child>
+    <child name="failure" type="dstruct">
+      <array>true</array>
+      <element>dstruct_comOrdAck.failure</element>
+      <label>failure</label>
+      <maxInstance>-1</maxInstance>
+    </child>
+  </childList>
+</dataStructure>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="failedOrders.performCompleteActionOnSelectedTask">
+  <label>Perform Complete Action On Selected Task</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="selectedTask" type="rifp">
+      <type>doc_granite.WO_TASK_INST</type>
+    </parameter>
+    <parameter name="woName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="tasksInWO" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="pathInstId" type="rifp">
+      <type>dtype_granite.INST_ID_10</type>
+    </parameter>
+    <parameter name="ontEquipmentDetails" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var taskToReprocessConfig = failedOrders.getTaskToReprocessConfig(selectedTask.TASK_OPERATION, selectedTask.STATUS_CODE);
+    if(taskToReprocessConfig == null) {
+        var errorMsg = Global.translateText("AE0205", null, [selectedTask.TASK_OPERATION, selectedTask.TASK_STATUS]);
+
+        if(selectedTask.TASK_OPERATION == "REJECT_FTTH_ORDER" && selectedTask.STATUS_CODE == 4) {
+            // get task blocked by this one
+            var blockedTaskIds = granite.getBlockedTaskIdsForDependency(selectedTask.WO_INST_ID, selectedTask.TASK_INST_ID);
+            if(blockedTaskIds != null && blockedTaskIds.length > 0) {
+                var blockedTask = Document.readDoc("granite.WO_TASK_INST", blockedTaskIds[0]);
+
+                errorMsg = errorMsg + "\n\n" + Global.translateText("AE0216", null, [selectedTask.TASK_OPERATION, blockedTask.TASK_NUMBER, blockedTask.TASK_NAME]);
+            }
+        }
+        Global.throwException(errorMsg);
+    }
+
+    if(! taskToReprocessConfig.supportsComplete) {
+        Global.throwException("AE0206", [selectedTask.TASK_OPERATION, "Complete"]);
+    }
+
+    if(taskToReprocessConfig.ontMandatory && ontEquipmentDetails == null) {
+        Global.throwException("AE0214", [selectedTask.TASK_OPERATION, selectedTask.TASK_STATUS]);
+    }
+
+    var blockingTask = null;
+    if(taskToReprocessConfig.existDependent) {
+        // verify if there is a dependent task...
+        var blockingTaskIdList = granite.getBlockingTaskIdsForDependency(selectedTask.WO_INST_ID, selectedTask.TASK_INST_ID);
+        if(blockingTaskIdList != null) {
+            var foundTaskInReady = false;
+            for(var i=0; i<blockingTaskIdList.length; i++) {
+                var blockingTaskInLoop = granite.getTaskById(blockingTaskIdList[i]);
+                if(blockingTaskInLoop != null && blockingTaskInLoop.STATUS_CODE == 4) {
+                    foundTaskInReady = true;
+
+                    blockingTask = blockingTaskInLoop;
+                }
+            }
+
+            if(!foundTaskInReady) {
+                Global.throwException("AE0212", [selectedTask.TASK_OPERATION, selectedTask.TASK_STATUS]);
+            }
+        }
+        else {
+            Global.throwException("AE0213", [selectedTask.TASK_OPERATION, selectedTask.TASK_STATUS]);
+        }
+    }
+    else if(taskToReprocessConfig.alreadyCompletedTaskOp != null) {
+        var foundTaskOp = false;
+        var foundCompletedTaskOp = false;
+
+        for(var i=0; i<tasksInWO; i++) {
+            if(tasksInWO[i].TASK_OPERATION == taskToReprocessConfig.alreadyCompletedTaskOp) {
+                foundTaskOp = true;
+
+                if(tasksInWO[i].STATUS_CODE == 7) {
+                    foundCompletedTaskOp = true;
+                }
+            }
+        }
+
+        if(!foundTaskOp) {
+            Global.throwException("AE0210", [selectedTask.TASK_OPERATION, selectedTask.TASK_STATUS, taskToReprocessConfig.alreadyCompletedTaskOp]);
+        }
+
+        if(!foundCompletedTaskOp) {
+            Global.throwException("AE0211", [selectedTask.TASK_OPERATION, selectedTask.TASK_STATUS, taskToReprocessConfig.alreadyCompletedTaskOp]);
+        }
+    }
+
+
+    var requireAdditionalInfo = false;
+    if(taskToReprocessConfig.additionalInfoDocument != null) {
+        // the action will be performed by the document itself
+        var additionalInfoDocument = new Document(taskToReprocessConfig.additionalInfoDocument);
+        additionalInfoDocument.taskInstId = selectedTask.TASK_INST_ID;
+        additionalInfoDocument.woInstId = selectedTask.WO_INST_ID;
+        additionalInfoDocument.pathInstId = pathInstId;
+        additionalInfoDocument.taskOperation = selectedTask.TASK_OPERATION;
+        additionalInfoDocument.blockingTaskInstId = (blockingTask != null ? blockingTask.TASK_INST_ID : null);
+        additionalInfoDocument.isForResending = false;
+        return additionalInfoDocument;
+    }
+
+    // perform the action:
+    // if FAILED -> COMPLETED
+    // if ON-HOLD & dependent -> 1. Move selected task to rejection queue
+    //                           2. Complete Rejection Task
+    //                           3. Complete selected Task
+
+
+    var actionResult = null;
+
+    if(selectedTask.STATUS_CODE == 9) {
+        // the selected task is in status FAILED; completing it
+        actionResult = granitews4eoc.invokeCompleteTaskAPI(selectedTask.TASK_INST_ID, Global.getUserId(), woName, selectedTask.TASK_NAME);
+    }
+    else {
+        if(blockingTask == null) {
+            Global.throwException("Unable to find the Blocking Task for the selected one!");
+        }
+
+        var queueName = granite.getQueueNameById(blockingTask.QUEUE_INST_ID);
+        if(queueName == null) {
+            queueName = "FTTH REJECTIONS";
+        }
+        // the selected task is in status FAILED; completing it
+        actionResult = granitews4eoc.invokeCompleteBlockedTaskAPI(selectedTask.TASK_INST_ID, queueName, blockingTask.TASK_INST_ID, Global.getUserId(), woName, selectedTask.TASK_NAME);
+    }
+
+    if(actionResult != null) {
+        var resultMessage = actionResult.ResultMessage;
+        if(resultMessage.result != "SUCCESS") {
+            // there was an error in updating OLT and ONT, so throwing the error;
+            var errorMsg = "Error while completing the task; received Error Message: '" + resultMessage.errorDescription + "'";
+            Global.throwException(errorMsg);
+        }
+    }
+    else {
+        // no message received
+        var errorMsg = "No response received while completing the task! Pls refresh the WorkOrder and retry";
+        Global.throwException(errorMsg);
+    }
+
+    Global.showUserMessage("Task Completed!");
+  ]]></script>
+</script>

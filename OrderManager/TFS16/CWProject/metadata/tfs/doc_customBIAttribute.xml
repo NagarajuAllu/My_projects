@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfs.customBIAttribute">
+  <audit>true</audit>
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{98f40d6a-2983-4842-967c-eed751f74af4}</guid>
+  <label>Custom BI Attribute</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="biId" type="leaf">
+      <column>BI_ID</column>
+      <key>2</key>
+      <table>STC_BI_CUSTOMATTR</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="customAttributeId" type="leaf">
+      <audit>true</audit>
+      <column>CUSTOMATTR_ID</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>Custom Attr Id</label>
+      </propertyElement>
+      <table>STC_BI_CUSTOMATTR</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="attributeValue" type="leaf">
+      <column>ATTRIBUTE_VALUE</column>
+      <propertyElement type="elfld">
+        <label>Attribute Value</label>
+      </propertyElement>
+      <table>STC_BI_CUSTOMATTR</table>
+      <valueType>dtype_common.string1000</valueType>
+    </variable>
+    <variable name="attributeName" type="leaf">
+      <dontMap>true</dontMap>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="customAttrType" type="leaf">
+      <dontMap>true</dontMap>
+      <valueType>dtype_common.customAttrType</valueType>
+    </variable>
+    <variable name="objectType" type="leaf">
+      <dontMap>true</dontMap>
+      <valueType>dtype_common.objectType</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="hyperlinkValue" type="leaf">
+        <valueType>dtype_cwt_common.URL</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfs.customBIAttribute</valueType>
+      </variable>
+      <variable name="customAttributePickListValuesFinderUI" type="leaf">
+        <valueType>findDoc_configuration.customAttributePickListValuesFinder/ui_UserInterface</valueType>
+      </variable>
+      <variable name="dateValue" type="leaf">
+        <valueType>dtype_common.tfsDateTime</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="dateForm" type="vform">
+            <label>dateForm</label>
+            <root name="VerticalLayout" type="elvlt">
+              <elementList>
+                <element name="dateCustomAttributeGridLayout" type="elgrd">
+                  <colWidths>120px,180px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>2</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>300px</width>
+                  <elementList>
+                    <element name="dateCustomAttributeHeader" type="elhdr">
+                      <label>Custom Attribute</label>
+                    </element>
+                    <element name="dateValue" type="eldatetime">
+                      <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+                      <label>Value</label>
+                      <startRow>true</startRow>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/leaf_dateValue</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="pickListForm" type="vform">
+            <label>pickListForm</label>
+            <root name="VerticalLayout" type="elvlt">
+              <elementList>
+                <element name="pickListCustomAttributeGridLayout" type="elgrd">
+                  <colWidths>120px,180px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>2</numOfCols>
+                  <redrawOnResize>true</redrawOnResize>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>600px</width>
+                  <elementList>
+                    <element name="pickListCustomAttributeHeader" type="elhdr">
+                      <label>Custom Attribute</label>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="FormFrame" type="elovf">
+                  <formReference type="varPath">
+                    <variablePathList>
+                      <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/leaf_customAttributePickListValuesFinderUI</variablePath>
+                      <variablePath>findDoc_configuration.customAttributePickListValuesFinder/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                    </variablePathList>
+                  </formReference>
+                  <height>150px</height>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/leaf_customAttributePickListValuesFinderUI</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>300px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="stringForm" type="vform">
+            <label>stringForm</label>
+            <root name="VerticalLayout" type="elvlt">
+              <elementList>
+                <element name="stringCustomAttributeGridLayout" type="elgrd">
+                  <colWidths>120px,180px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>2</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>300px</width>
+                  <elementList>
+                    <element name="stringCustomAttributeHeader" type="elhdr">
+                      <label>Custom Attribute</label>
+                    </element>
+                    <element name="attributeValue" type="elfld">
+                      <label>Value</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_tfs.customBIAttribute/leaf_attributeValue</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="VerticalLayout" type="elvlt">
+                <elementList>
+                  <element name="stringFormFrame" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/frmui_Forms/vform_stringForm</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/permMethod_isString</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="dateFormFrame" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/frmui_Forms/vform_dateForm</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/permMethod_isDate</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="pickListFormFrame" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/frmui_Forms/vform_pickListForm</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/permMethod_isPickList</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="hyperlinkFormFrame" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/frmui_Forms/vform_hyperLinkForm</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/permMethod_isHyperlink</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/usrActionMethod_customAttributeValueSave</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <label>Save</label>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="hyperLinkForm" type="vform">
+            <label>hyperLinkForm</label>
+            <root name="VerticalLayout" type="elvlt">
+              <elementList>
+                <element name="hyperLinkCustomAttributeGridLayout" type="elgrd">
+                  <colWidths>120px,120px,120px,180px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>4</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>300px</width>
+                  <elementList>
+                    <element name="hyperLinkCustomAttributeHeader" type="elhdr">
+                      <label>Custom Attribute</label>
+                    </element>
+                    <element name="hyperlinkValue" type="ellnk">
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Click here to open the URL</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/leaf_hyperlinkValue</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="updateLinkButton" type="elbtn">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_tfs.customBIAttribute/ui_UserInterface/usrActionMethod_updateHyperlinkValue</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Recompute Link</label>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="onInit" type="action">
+        <valueType>nmeta_com.conceptwave.system.Object</valueType>
+        <script><![CDATA[
+          var resultOnInit = this.cw$super_onInit();
+
+          if(this.model.customAttrType == "PickList") {
+              this.customAttributePickListValuesFinderUI = new configuration.customAttributePickListValuesFinder.UserInterface(null, this);
+              this.customAttributePickListValuesFinderUI.search.model.cwDocID = this.model.customAttributeId;
+              var result = this.customAttributePickListValuesFinderUI.model.search();
+
+              for(var i=0; i<result.length; i++) {
+                  if(result[i].attributeValue == this.model.attributeValue) {
+                      result.setSelected(result[i]);
+                  }
+              }
+          }
+          else if(this.model.customAttrType == "Date") {
+              this.dateValue = Calendar.parseDate(this.model.attributeValue, 'yyyy/MM/dd HH:mm:ss');
+          }
+          else if(this.model.customAttrType == "Hyperlink") {
+              this.hyperlinkValue = this.model.attributeValue;
+          }
+
+          return resultOnInit;
+        ]]></script>
+      </method>
+      <method name="customAttributeValueSave" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <validate>true</validate>
+        <script><![CDATA[
+          if(this.model.customAttrType == "PickList") {
+              var selectedItem = this.customAttributePickListValuesFinderUI.result.selected;
+              if(selectedItem == null || selectedItem.length == 0) {
+                  Global.throwException("UU0115");
+              }
+              else if(selectedItem.length > 1) {
+                  Global.throwException("UU0116");
+              }
+              this.model.attributeValue = selectedItem[0].attributeValue;
+          }
+          else if(this.model.customAttrType == "Date") {
+              this.model.attributeValue = Calendar.formatDate(this.dateValue, 'yyyy/MM/dd HH:mm:ss');
+          }
+          else if(this.model.customAttrType == "Hyperlink") {
+              this.model.attributeValue = tfs.computeHyperlinkValue("BI", this.model.biId, this.model.customAttributeId);
+          }
+
+          tfs.storeCustomAttribute(this.model.biId, this.model.customAttributeId, this.model.attributeValue, "BI");
+
+          this.model.parent.search();
+          return Global.STOP_UI;
+        ]]></script>
+      </method>
+      <method name="isPickList" type="permMethod">
+        <script><![CDATA[return (this.model.customAttrType == "PickList");]]></script>
+      </method>
+      <method name="isDate" type="permMethod">
+        <script><![CDATA[return (this.model.customAttrType == "Date");]]></script>
+      </method>
+      <method name="isString" type="permMethod">
+        <script><![CDATA[return (this.model.customAttrType == "String");]]></script>
+      </method>
+      <method name="isHyperlink" type="permMethod">
+        <script><![CDATA[return (this.model.customAttrType == "Hyperlink");]]></script>
+      </method>
+      <method name="updateHyperlinkValue" type="usrActionMethod">
+        <confirmation>doc_tfs.customBIAttribute/ui_UserInterface/uimthd_updateHyperlinkValue_confirm</confirmation>
+        <script><![CDATA[
+          this.model.attributeValue = tfs.computeHyperlinkValue("BI", this.model.biId, this.model.customAttributeId);
+          this.hyperlinkValue = this.model.attributeValue;
+        ]]></script>
+      </method>
+      <method name="updateHyperlinkValue_confirm" type="uimthd">
+        <script><![CDATA[return "AW0014";]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

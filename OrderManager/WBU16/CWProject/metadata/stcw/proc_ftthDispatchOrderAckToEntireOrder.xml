@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.ftthDispatchOrderAckToEntireOrder">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>72.0</x>
+    <y>287.0</y>
+    <childList>
+      <child name="processedAllServices" type="switchActivity">
+        <label>Processed All Services?</label>
+        <x>223.0</x>
+        <y>276.0</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>324.0</x>
+            <y>140.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>351.0</x>
+                <y>283.0</y>
+                <childList>
+                  <child name="checkIfServiceProvisionable" type="switchActivity">
+                    <label>Is Service Provisionable?</label>
+                    <x>464.0</x>
+                    <y>271.0</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>603.0</x>
+                        <y>107.0</y>
+                        <childList>
+                          <child name="sendOrderAckForService" type="seqActivity">
+                            <label>Send OrderAck For Service</label>
+                            <x>608.0</x>
+                            <y>278.0</y>
+                            <childList>
+                              <child name="sendOrderAckForFTTHToCOM" type="spawnActivity">
+                                <element>proc_stcw.sendOrderAckForFTTHToCOM</element>
+                                <label>Send OrderAck For FTTH To COM</label>
+                                <x>743.0</x>
+                                <y>257.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      var childProcessDocument = this.activityData;
+                                      childProcessDocument.orderAckProcessId = this.process.processDocument.orderAckProcessId;
+                                      childProcessDocument.lineItemId = this.process.processOrder.parentLineItems[0].services[this.process.processDocument.counter].serviceLineItem.id;
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="waitForCompletion" type="joinActivity">
+                                <element>proc_stcw.sendOrderAckForFTTHToCOM</element>
+                                <label>Wait For Completion</label>
+                                <x>738.0</x>
+                                <y>32.0</y>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var order = this.process.processOrder;
+                              var serviceUnderManagement = order.parentLineItems[0].services[this.process.processDocument.counter].serviceLineItem;
+
+                              var requireOrderAck = (stcw.isServiceProvisionable(serviceUnderManagement.id) || (serviceUnderManagement.action != "N"));
+
+                              if(requireOrderAck) {
+                                  if(serviceUnderManagement.receivedAction == "N") {
+                                      // EOC changed the action to something else but COM is not expecting orderAck for this element
+                                      requireOrderAck = false;
+                                  }
+                              }
+
+                              return requireOrderAck;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>487.0</x>
+                        <y>171.0</y>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="increaseCounter" type="scriptActivity">
+                    <label>Increase Counter</label>
+                    <x>480.0</x>
+                    <y>32.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script>this.process.processDocument.counter++;</script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="repeatWithNextService" type="repeatActivity">
+                    <element>proc_stcw.ftthDispatchOrderAckToEntireOrder/seqActivity_start/switchActivity_processedAllServices</element>
+                    <label>Repeat With Next Service</label>
+                    <x>225.0</x>
+                    <y>30.0</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var order = this.process.processOrder;
+                  var countServices = order.parentLineItems[0].services.count;
+
+                  return (this.process.processDocument.counter < countServices);
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>312.0</x>
+            <y>111.0</y>
+            <childList>
+              <child name="done" type="scriptActivity">
+                <label>Done</label>
+                <x>235.0</x>
+                <y>409.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script>this.process.processDocument.counter = 0;</script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>FTTH - Dispatch OrderAck To All Elements of Entire Order</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

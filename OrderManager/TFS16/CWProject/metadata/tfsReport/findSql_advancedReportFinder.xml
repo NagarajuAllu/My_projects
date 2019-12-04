@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="tfsReport.advancedReportFinder">
+  <dbSchema>INTERFACE</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_tfsReport.advancedReportSearchDoc</input>
+  <label>Advanced Report</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_tfsReport.advancedReportResultDoc</output>
+  <rtConfigurable>true</rtConfigurable>
+  <type>SQL</type>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select v.tfr_id,
+               v.tfr_number,
+               v.ni_number,
+               v.prn_id,
+               v.prn_name,
+               v.prn_status,
+               v.bi_id,
+               v.bi_status,
+               v.icms_number,
+               v.district,
+               v.region,
+               v.priority,
+               v.project,
+               v.tfr_type,
+               v.tfr_status,
+               v.current_userid,
+               v.mapping_status,
+               v.dept_created_by,
+               v.updatedBy,
+               v.requirement_type,
+               v.site_a_name,
+               v.site_z_name,
+               v.site_a_jvc,
+               v.site_z_jvc,
+               v.site_a_exchangetype,
+               v.site_z_exchangetype,
+               v.cwo_type,
+               v.bu_requester,
+               v.reason_for_issue,
+               v.hajj_committment,
+               v.group_requester,
+               v.customer_name,
+               v.site_a_if,
+               v.site_z_if,
+               v.existing,
+               v.required,
+               v.total,
+               v.order_number,
+               v.circuit_number,
+               v.creation_date,
+               v.planned_rfs_date,
+               v.customer_expd_date,
+               v.fa_completion_date,
+               v.tfr_remarks
+          from stc_advanced_report_v v
+         where 1 = 1
+           {[0] and v.tfr_number = ?}
+           {[1] and v.ni_number = ?}
+           {[2] and v.prn_name = ?}
+           {[3] and v.bi_id = ?}
+           {[4] and v.icms_number = ?}
+           {[5] and v.district = ?}
+           {[6] and v.region = ?}
+           {[7] and v.priority = ?}
+           {[8] and v.project = ?}
+           {[9] and v.tfr_type = ?}
+           {[10] and v.tfr_status = ?}
+           {[11] and v.current_userid = ?}
+           {[12] and v.mapping_status = ?}
+           {[13] and v.dept_created_by = ?}
+           {[14] and v.updatedBy = ?}
+           {[15] and v.requirement_type = ?}
+           {[16] and v.site_a_name = ?}
+           {[17] and v.site_z_name = ?}
+           {[18] and v.site_a_jvc = ?}
+           {[19] and v.site_z_jvc = ?}
+           {[20] and v.site_a_exchangetype = ?}
+           {[21] and v.site_z_exchangetype = ?}
+           {[22] and v.cwo_type = ?}
+           {[23] and v.bu_requester = ?}
+           {[24] and v.reason_for_issue = ?}
+           {[25] and v.hajj_committment = ?}
+           {[26] and v.group_requester = ?}
+           {[27] and v.customer_name = ?}
+           {[28] and v.site_a_if = ?}
+           {[29] and v.site_z_if = ?}
+           {[30] and v.existing = ?}
+           {[31] and v.required = ?}
+           {[32] and v.total = ?}
+           {[33] and v.creation_date >= ?}
+           {[34] and v.creation_date <= ?}
+           {[35] and v.planned_rfs_date >= ?}
+           {[36] and v.planned_rfs_date <= ?}
+           {[37] and v.customer_expd_date >= ?}
+           {[38] and v.customer_expd_date <= ?}
+           {[39] and v.fa_completion_date >= ?}
+           {[40] and v.fa_completion_date <= ?}
+           {[41] and v.tfr_remarks = ?}
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_tfsReport.advancedReportSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_tfsReport.advancedReportResultDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_tfsReport.advancedReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="advancedReportFinderResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="tfrNumber" type="elfld">
+                        <label>TFR Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_tfrNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="niNumber" type="elfld">
+                        <label>NI Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_niNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnName" type="elfld">
+                        <label>PRN Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_prnName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnStatus" type="elfld">
+                        <label>PRN Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_prnStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>250px</width>
+                      </element>
+                      <element name="biId" type="elfld">
+                        <label>BI Ticket Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_biId</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="biStatus" type="elfld">
+                        <label>BI Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_biStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>250px</width>
+                      </element>
+                      <element name="icmsNumber" type="elfld">
+                        <label>ICMS Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_icmsNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="districtName" type="elfld">
+                        <label>District Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_districtName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="regionCode" type="elfld">
+                        <label>Region Code</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_regionCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="priority" type="elslct">
+                        <label>Priority</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_priority</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>100px</width>
+                      </element>
+                      <element name="project" type="elfld">
+                        <label>Project</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_project</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>100px</width>
+                      </element>
+                      <element name="tfrType" type="elfld">
+                        <label>TFR Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_tfrType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="tfrStatus" type="elfld">
+                        <label>TFR Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_tfrStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>250px</width>
+                      </element>
+                      <element name="currentUserId" type="elref">
+                        <label>Current User</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_currentUserId</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="tfrMappingStatus" type="elfld">
+                        <label>Mapping Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_tfrMappingStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="departmentCreatedBy" type="elref">
+                        <label>Department Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_departmentCreatedBy</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="updatedBy" type="elref">
+                        <label>Updated By</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_updatedBy</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="requirementType" type="elfld">
+                        <label>Requirement Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_requirementType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="siteAName" type="elref">
+                        <label>Site A</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_siteAName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="siteZName" type="elref">
+                        <label>Site Z</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_siteZName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="siteAJVCode" type="elfld">
+                        <label>Site A JV Code</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_siteAJVCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="siteZJVCode" type="elfld">
+                        <label>Site Z JV Code</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_siteZJVCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="siteAExchangeType" type="elfld">
+                        <label>Site A ExchangeType</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_siteAExchangeType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>250px</width>
+                      </element>
+                      <element name="siteZExchangeType" type="elfld">
+                        <label>Site Z ExchangeType</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_siteZExchangeType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>250px</width>
+                      </element>
+                      <element name="cwoType" type="elfld">
+                        <label>CWO Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_cwoType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="businessUnit_Requester" type="elfld">
+                        <label>Requester</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_businessUnit_Requester</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="reasonForIssue" type="elfld">
+                        <label>Reason For Issue</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_reasonForIssue</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="hajjCommittment" type="elfld">
+                        <label>Hajj Committment</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_hajjCommittment</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="groupRequester" type="elfld">
+                        <label>Business Unit</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_groupRequester</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="customerName" type="elfld">
+                        <label>Customer Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_customerName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="siteAInterface" type="elfld">
+                        <label>Site A Interface</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_siteAInterface</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="siteZInterface" type="elfld">
+                        <label>Site Z Interface</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_siteZInterface</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="existing" type="elfld">
+                        <label>Existing</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_existing</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="required" type="elfld">
+                        <label>Required</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_required</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="total" type="elfld">
+                        <label>Total</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_total</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="orderNumber" type="elfld">
+                        <label>Order Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_orderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="circuitNumber" type="elfld">
+                        <label>Circuit Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_circuitNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="creationDateFrom" type="eldate">
+                        <label>Received Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_creationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="plannedRFSDateFrom" type="eldate">
+                        <label>Planned RFS Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_plannedRFSDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="customerExpectedDateFrom" type="eldate">
+                        <label>Customer Expected Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_customerExpectedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="faCompletionDateFrom" type="eldate">
+                        <label>FA Completion Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_faCompletionDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="tfrRemarks" type="elfld">
+                        <label>TFR Remarks</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.advancedReportResultDoc/leaf_tfrRemarks</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfDetail" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="showTFRMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/usrActionMethod_showTFR</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show TFR</label>
+                  </element>
+                  <element name="showPRNMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/usrActionMethod_showPRN</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show PRN</label>
+                  </element>
+                  <element name="showAllBIsMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/usrActionMethod_showAllBI</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show All BI Tickets</label>
+                  </element>
+                  <element name="showAllTFRTasksMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.advancedReportFinder/ui_UserInterface/usrActionMethod_showAllTFRTask</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show All TFR Tasks</label>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="showTFR" type="usrActionMethod">
+        <dialogHeight>768</dialogHeight>
+        <dialogWidth>1024</dialogWidth>
+        <parameterList>
+          <parameter name="dialog" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          if(this.model.selected == null || this.model.selected.length == 0) {
+              Global.throwException("UU0115");
+          }
+
+          if(this.model.selected.length > 1) {
+              Global.throwException("UU0116");
+          }
+
+          var tfrFinder = new Finder("tfs.findTFR");
+          tfrFinder.searchDocument.tfrId = this.model.selected[0].tfrId;
+          var resultList = tfrFinder.search();
+
+          var tfrFound = null;
+
+          if(resultList != null && resultList.length > 0) {
+              tfrFound = resultList[0];
+          }
+          else {
+              Global.throwException("AE0008", ["TFR", "Advanced Report"]);
+          }
+
+          return tfrFound;
+        ]]></script>
+      </method>
+      <method name="showPRN" type="usrActionMethod">
+        <dialogHeight>768</dialogHeight>
+        <dialogWidth>1024</dialogWidth>
+        <parameterList>
+          <parameter name="dialog" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          if(this.model.selected == null || this.model.selected.length == 0) {
+              Global.throwException("UU0115");
+          }
+
+          if(this.model.selected.length > 1) {
+              Global.throwException("UU0116");
+          }
+
+          var prnFinder = new Finder("tfs.findPRN");
+          prnFinder.searchDocument.prnId = this.model.selected[0].prnId;
+          var resultList = prnFinder.search();
+
+          var prnFound = null;
+
+          if(resultList != null && resultList.length > 0) {
+              prnFound = resultList[0];
+          }
+          else {
+              Global.throwException("AE0008", ["PRN", "Advanced Report"]);
+          }
+
+          return prnFound;
+        ]]></script>
+      </method>
+      <method name="showAllTFRTask" type="usrActionMethod">
+        <dialogHeight>768</dialogHeight>
+        <dialogWidth>1024</dialogWidth>
+        <parameterList>
+          <parameter name="dialog" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          if(this.model.selected == null || this.model.selected.length == 0) {
+              Global.throwException("UU0115");
+          }
+
+          if(this.model.selected.length > 1) {
+              Global.throwException("UU0116");
+          }
+
+          var tfrTaskFinder = new Finder("tfs.findAllTasks");
+          tfrTaskFinder.searchDocument.tfrNumber = this.model.selected[0].tfrNumber;
+          tfrTaskFinder.search();
+
+          return tfrTaskFinder;
+        ]]></script>
+      </method>
+      <method name="showAllBI" type="usrActionMethod">
+        <dialogHeight>768</dialogHeight>
+        <dialogWidth>1200</dialogWidth>
+        <parameterList>
+          <parameter name="dialog" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          if(this.model.selected == null || this.model.selected.length == 0) {
+              Global.throwException("UU0115");
+          }
+
+          if(this.model.selected.length > 1) {
+              Global.throwException("UU0116");
+          }
+
+          var biFinder = new Finder("tfs.findBI");
+          biFinder.searchDocument.tfrId = this.model.selected[0].tfrId;
+          biFinder.searchDocument.tfrNumber = this.model.selected[0].tfrNumber;
+          biFinder.searchDocument.prnId = this.model.selected[0].prnId;
+          biFinder.searchDocument.prnName = this.model.selected[0].prnName;
+          biFinder.search();
+
+          return biFinder;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="advancedReportFinderView" type="findVView">
+      <inputOverlay>doc_tfsReport.advancedReportSearchDoc/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Advanced Report</label>
+      <outputOverlay>findSql_tfsReport.advancedReportFinder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findSql>

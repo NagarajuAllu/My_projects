@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.handleGraniteWorkOrderStatusUpdates">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>123.87244</x>
+    <y>79.0</y>
+    <childList>
+      <child name="receiveGraniteWOSU" type="opActivity">
+        <element>iface_stcw.xngServicesNotificationToProcesses/oper_workOrderStatusUpdateNotification</element>
+        <label>Work Order Status Update Notification</label>
+        <participant>part_stcw.xngServicesNotificationToProcessesParticipant</participant>
+        <x>311.19568</x>
+        <y>59.0</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - receivedWOSU = " + this.activityData.toXML());
+
+              var receivedWOSUNotification = this.activityData;
+              this.process.processDocument.latestWOSUId = this.activityData.wosuId;
+
+              // reading WOSU from DB
+              var receivedWOSU = stcw.readGraniteWOSUFromDB(this.activityData.wosuId);
+
+              // update status of the element
+              this.process.processOrderItem.lineItemStatus = receivedWOSU.workOrderStatus;
+              this.process.processOrderItem.serviceNumber = (receivedWOSU.assetNumber != null ? receivedWOSU.assetNumber : this.process.processOrderItem.serviceNumber);
+
+              if(stcw.isLineItemCompleted(this.process.processOrderItem.lineItemStatus)) {
+                  if(this.process.processOrderItem.isCancel) {
+                      this.process.processOrderItem.lineItemStatus = "CANCELLED";
+                      this.process.processOrderItem.completionDate = new Date();
+                  }
+                  else {
+                      if(this.process.processOrder.orderHeader.orderType == "F") {
+                          if(receivedWOSU.feasibilityStatus != null) {
+                              this.process.processOrderItem.lineItemStatus = receivedWOSU.feasibilityStatus;
+
+                              if(stcw.checkIfLineItemIsFeasibleForQuote(this.process.processOrderItem.lineItemStatus.toUpperCase(), "F")) {
+                                  this.process.processOrderItem.completionDate = new Date();
+
+                              }
+                              else {
+                                  this.process.processOrderItem.lineItemStatus = receivedWOSU.feasibilityStatus;
+                              }
+                          }
+                          else {
+                              // not feasible status; assuming "Not Feasible"
+                              this.process.processOrderItem.lineItemStatus = "Not Feasible";
+                          }
+                          this.process.processOrderItem.reservationDays = receivedWOSU.reservationDays;
+                          this.process.processOrderItem.reservationNumber = receivedWOSU.reservationNumber;
+                      }
+                      else {
+                          this.process.processOrderItem.completionDate = new Date();
+                      }
+                  }
+              }
+
+              // 2015-12-31: adding update of CLLI according to WOSU data
+              if(receivedWOSU.nvPairs != null && receivedWOSU.nvPairs.length > 0) {
+                  for(var i=0; i<receivedWOSU.nvPairs.length; i++) {
+                      var paramName = receivedWOSU.nvPairs[i].name;
+                      var paramValue = receivedWOSU.nvPairs[i].value;
+
+                      if(paramName == "Cct-Site-A" && paramValue != null) {
+                          this.process.processOrderItem.locationACCLICode = paramValue;
+                      }
+                      if(paramName == "LOCATIONA" && paramValue != null) {
+                          this.process.processOrderItem.locationACCLICode = paramValue;
+                      }
+
+                      if(paramName == "Cct-Site-Z" && paramValue != null) {
+                          this.process.processOrderItem.locationBCCLICode = paramValue;
+                      }
+                      if(paramName == "LOCATIONZ" && paramValue != null) {
+                          this.process.processOrderItem.locationBCCLICode = paramValue;
+                      }
+                  }
+              }
+
+              this.process.processOrderItem.remarks = receivedWOSU.workOrderRemarks;
+              this.process.processOrderItem.save();
+
+              if(this.process.processOrder.orderHeader.orderType == "F") {
+                  stcw.updateBundleAndOrderHeaderStatusForFeasibility(this.process.processOrder, this.process.processOrderItem);
+              }
+              else {
+                  stcw.updateBundleAndOrderHeaderStatus(this.process.processOrder, this.process.processOrderItem);
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="sendWorkOrderStatusUpdateToCOM" type="spawnActivity">
+        <element>proc_stcw.sendWOSUToCOM</element>
+        <label>Send WOSU To COM</label>
+        <x>314.87244</x>
+        <y>195.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var childProcessDocument = this.activityData;
+              childProcessDocument.latestWOSUId = this.process.processDocument.latestWOSUId;
+              childProcessDocument.firstPassWOSU = "Y";
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="waitOnComUpdateprocesses" type="joinActivity">
+        <element>proc_stcw.sendWOSUToCOM</element>
+        <label>Wait On COM Update processes</label>
+        <x>314.87244</x>
+        <y>328.0</y>
+      </child>
+      <child name="moreUpdatesExpected" type="switchActivity">
+        <label>More Updates Expected ?</label>
+        <x>312.87244</x>
+        <y>475.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="repeat" type="repeatActivity">
+                <element>proc_stcw.handleGraniteWorkOrderStatusUpdates/seqActivity_start</element>
+                <label>Repeat</label>
+                <x>125.87244</x>
+                <y>487.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  // checking lineItemStatus
+                  var isLineItemCompleted = stcw.isLineItemCompleted(this.process.processOrderItem.lineItemStatus);
+
+                  if(! isLineItemCompleted) {
+                      if(stcw.checkIfLineItemIsNotFeasibleForQuote(this.process.processOrderItem.lineItemStatus.toUpperCase(), this.process.processOrder.orderHeader.orderType) ||
+                         stcw.checkIfLineItemIsFeasibleForQuote(this.process.processOrderItem.lineItemStatus.toUpperCase(), this.process.processOrder.orderHeader.orderType)) {
+                          isLineItemCompleted = true;
+                      }
+                      else {
+                          // checking dummy WOSU
+                          var supportDummyWOSU = Global.getConfigVariable("DUMMY_WOSU_FOR_FAILED_ORDER", "FALSE");
+                          if(supportDummyWOSU == "TRUE") {
+                              // to know if WD is managing dummy WOSU, it checks if the status = 'FAILED' and also if
+                              // the lineItem has been accepted or not by Granite: if a dummy WOSU, the provisioning process is KO
+                              isLineItemCompleted = (this.process.processOrderItem.lineItemStatus == "FAILED" &&
+                                                     stcw.checkIfExistProcessKOInOrchestrationTblForLineItem(this.process.processOrder.id, this.process.processOrderItem.id));
+                          }
+                      }
+                  }
+
+                  return (! isLineItemCompleted);
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>450.87244</x>
+            <y>490.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="xngServicesNotificationToProcessesParticipant" type="participantActivity">
+        <label>XNG Services Notification To Processes Participant</label>
+        <participant>part_stcw.xngServicesNotificationToProcessesParticipant</participant>
+        <x>549.0</x>
+        <y>26.0</y>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Handle Granite WorkOrderStatusUpdates</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

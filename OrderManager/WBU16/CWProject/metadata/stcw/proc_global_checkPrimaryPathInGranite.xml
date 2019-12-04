@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.global_checkPrimaryPathInGranite">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <schedule type="sched">
+      <duration type="dur">
+        <methodList>
+          <method name="cwOnDuration" type="action">
+            <system>true</system>
+            <script><![CDATA[
+              var sleepTime = Global.getConfigVariable("SLEEP_TIME_FOR_CHECKPATHINGRANITE", 1);
+              var sleepTimeNumber = new Number(sleepTime);
+              if(sleepTimeNumber == Number.NAN) {
+                 sleepTimeNumber = 1;
+              }
+
+              sleepTimeNumber *= 60; //3600;
+
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - Check PrimaryPath In Granite - SleepTime = " + sleepTimeNumber);
+              return sleepTimeNumber;
+            ]]></script>
+          </method>
+        </methodList>
+      </duration>
+    </schedule>
+    <x>64.0</x>
+    <y>65.0</y>
+    <childList>
+      <child name="checkPrimaryPathsInGranite" type="scriptActivity">
+        <label>Check PrimaryPaths In Granite</label>
+        <x>231.0</x>
+        <y>44.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var debugHeader = "[" + this.process.id + "] - 'Check PrimaryPath In Granite'";
+
+              var notCompletedCheckPrimaryPathList = Finder.runFinder("stcw.findNotCompletedCheckPrimaryPath", "select", null);
+
+              var maxDurationTime = Global.getConfigVariable("MAX_NUMDAYS_FOR_CHECKPATHINGRANITE", 10);
+              var maxDurationTimeNumber = new Number(maxDurationTime);
+              if(maxDurationTimeNumber == Number.NAN) {
+                 maxDurationTime = "10";
+              }
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + " - Max Duration Time = " + maxDurationTime);
+
+
+              if(notCompletedCheckPrimaryPathList != null) {
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + " - Found " + notCompletedCheckPrimaryPathList.length + " records to check");
+                  for(var i=0; i<notCompletedCheckPrimaryPathList.length; i++) {
+                      var processId = null;
+                      var isInGranite = (granite.getPathByName(notCompletedCheckPrimaryPathList[i].primaryCircuit) != null);
+                      if(isInGranite) {
+                          // found in Granite
+                          processId = notCompletedCheckPrimaryPathList[i].processId;
+                          notCompletedCheckPrimaryPathList[i].result = "OK";
+                      }
+                      else {
+                          if(! Calendar.isDateBefore(new Date(), notCompletedCheckPrimaryPathList[i].creationDate, maxDurationTime, Calendar.DATE_DAY)) {
+                              // expired
+                              processId = notCompletedCheckPrimaryPathList[i].processId;
+                              notCompletedCheckPrimaryPathList[i].result = "KO";
+                          }
+                      }
+
+                      if(processId != null) {
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + " - Sending signal to process " + processId + "; result is " + notCompletedCheckPrimaryPathList[i].result);
+
+                          notCompletedCheckPrimaryPathList[i].save();
+                          Process.sendSignal("stcw.notifyPrimaryPathExistence", processId);
+                      }
+                  }
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>464.0</x>
+        <y>64.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var debugHeader = "[" + this.process.id + "]";
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + " - End Global process 'Check PrimaryPath In Granite'");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          var debugHeader = "[" + this.process.id + "]";
+          debugPrintln(stcc.getSysdateForLog() + debugHeader + " - Start Global process 'Check PrimaryPath In Granite'");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Global: Check Primary Paths in Granite</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>Global</type>
+</process>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="granite.getOLTEquipmentDetailsByPathInstId">
+  <label>Get OLT Equipment Details By PathInstId</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="pathInstId" type="rifp">
+      <type>dtype_granite.INST_ID_10</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = null;
+
+    if(pathInstId != null) {
+        var searchDoc = new Document("granite.graniteInstId_10_SearchDoc");
+        searchDoc.INST_ID = pathInstId;
+
+        var resultList = Finder.runFinder("granite.findOLTEquipmentDetailsByPathInstId", "select", searchDoc);
+        if(resultList != null && resultList.size > 0) {
+            result = resultList[0];
+        }
+    }
+
+    return result;
+  ]]></script>
+</script>

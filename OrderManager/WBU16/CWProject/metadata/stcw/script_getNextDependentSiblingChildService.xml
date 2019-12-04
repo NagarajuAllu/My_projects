@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getNextDependentSiblingChildService">
+  <label>Get Next Dependent Sibling Child Service</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderUnderMgmt" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="elementTypeInOrderTree" type="rifp">
+      <type>dtype_stcw.elementTypeInOrderTree</type>
+    </parameter>
+    <parameter name="priority" type="rifp">
+      <type>dtype_wsws.lineItemPriority</type>
+    </parameter>
+    <parameter name="considerTaskOperation" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="taskOperationName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debugMsg = " getNextDependentChildService - ";
+
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "(" + serviceType + "," + orderUnderMgmt.id + "," + elementTypeInOrderTree + "," + priority + ")");
+
+    var searchDoc = new Document("stcconf.search_serviceTypesHierarchy");
+    searchDoc.parentServiceType = serviceType;
+
+    var resultList = Finder.runFinder("stcconf.findServiceTypeHierarchyConf", "select", searchDoc);
+
+    var childServiceIdList = null;
+    var childServicePositionList = null;
+
+    if(resultList != null && resultList.length > 0) {
+        for(var i=0; i<resultList.length; i++) {
+            var childServiceType = null;
+            if(considerTaskOperation == null || considerTaskOperation == false) {
+                // include the record in the analysis as usual
+                childServiceType = resultList[i].childServiceType;
+            }
+            else {
+                if(taskOperationName == null) {
+                    // no taskOperationName received
+                    if(resultList[i].taskOperation == null){
+                        // include the record in the analysis because no taskOperationName has been received
+                        childServiceType = resultList[i].childServiceType;
+                    }
+                    else {
+                        // not included because the taskOperationName is null but the record is configured to check the taskOperation
+                    }
+                }
+                else {
+                    // taskOperationName received
+                    if(resultList[i].taskOperation == null) {
+                        // not included because the taskOperationName is not null but the record is configured to ignore the taskOperation
+                    }
+                    else {
+                        if(resultList[i].taskOperation == taskOperationName){
+                            childServiceType = resultList[i].childServiceType;
+                        }
+                        else {
+                            // not included because the taskOperationName is not null and the record is configured to check the taskOperation but they are different
+                        }
+                    }
+                }
+            }
+
+            if(childServiceType != null ) {
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Found ChildService <" + childServiceType + "> for service " + serviceType);
+
+                var searchDocForLineItem = new Document("stcw.search_LineItemByServiceTypeAndPosition");
+                searchDocForLineItem.orderId = orderUnderMgmt.id;
+                searchDocForLineItem.receivedServiceType = childServiceType;
+                searchDocForLineItem.elementTypeInOrderTree = (resultList[i].isSibling ? elementTypeInOrderTree : null);
+                searchDocForLineItem.priority = (resultList[i].isSibling ? priority : null);
+
+                var resultServiceList = Finder.runFinder("stcw.findLineItemInOrderByServiceTypeAndPosition", "select", searchDocForLineItem);
+                if(resultServiceList != null && resultServiceList.length > 0) {
+                    for (var j=0; j<resultServiceList.length; j++) {
+                        var foundServiceId = resultServiceList[j].id;
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Processing #" +  j + " instance of service <" + childServiceType + "> in order with given priority and position: " + foundServiceId);
+
+                        var orchestrationRecord = stcw.getRecordInOrchestrationTableByLineItemId(foundServiceId);
+                        if(orchestrationRecord != null && orchestrationRecord.provisionable && orchestrationRecord.provisioningProcessResult == null) {
+                            childServiceIdList = appendToArray_(childServiceIdList, foundServiceId);
+                            childServicePositionList =  appendToArray_(childServicePositionList, getPositionForLineItemInOrder_(orchestrationRecord.cwOrderItemPath, childServicePositionList));
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Found childService instance: " + foundServiceId);
+                        }
+                    }
+                }
+                else {
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Not ChildServices <" + childServiceType + "> in order with given priority and position");
+                }
+            }
+            else {
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "ChildServices <" + resultList[i].childServiceType + "> ignored due to conditions on taskOperation");
+            }
+        }
+    }
+    else {
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Not ChildServices for serviceType <" + serviceType + "> in hierarchy");
+    }
+
+
+    var childServiceId = null;
+
+    if(childServiceIdList != null) {
+        var positionInArray = getPositionWithMinValue_(childServicePositionList);
+        if(positionInArray != -1) {
+            childServiceId = childServiceIdList[positionInArray];
+        }
+    }
+
+    return childServiceId;
+
+
+
+    function appendToArray_(genericArray, recordToAdd) {
+        if(genericArray == null) {
+            genericArray = new Array();
+        }
+
+        genericArray.push(recordToAdd);
+
+        return genericArray;
+    }
+
+    function getPositionForLineItemInOrder_(orderDataPath, childServicePositionArray) {
+        // initialize position with the length of the array!
+        var position = (childServicePositionArray == null ? 0 : childServicePositionArray.length);
+
+        var indexLastDot = orderDataPath.lastIndexOf(".");
+        if(indexLastDot > 0) {
+            var indexPreviousLastDot = orderDataPath.lastIndexOf(".", (indexLastDot - 1));
+
+            if(indexPreviousLastDot > 0) {
+                position = orderDataPath.substr(indexPreviousLastDot + 1, indexLastDot - (indexPreviousLastDot + 1));
+            }
+        }
+
+        return position;
+    }
+
+    function getPositionWithMinValue_(childServicePositionList) {
+        var position = -1;
+        var minValue = 99999;
+
+        if(childServicePositionList != null) {
+            for(var i=0; i<childServicePositionList.length; i++) {
+                var readValue = childServicePositionList[i];
+                if(readValue < minValue) {
+                    position = i;
+                    minValue = readValue;
+                }
+            }
+        }
+
+        return position;
+    }
+  ]]></script>
+</script>

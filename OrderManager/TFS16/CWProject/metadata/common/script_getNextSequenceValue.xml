@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="bc9dc35a58abd11c33280184eec2596f" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="common.getNextSequenceValue">
+  <label>Get Next Sequence Value</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="sequenceName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="schemaName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var sql = "SELECT " + sequenceName + ".NEXTVAL FROM DUAL";
+    if(schemaName == null) {
+        schemaName = "ORDER";
+    }
+    var output = Global.runSQLQuery(schemaName, "common:docString", 1, null, sql);
+
+    return output[0].value;
+  ]]></script>
+</script>

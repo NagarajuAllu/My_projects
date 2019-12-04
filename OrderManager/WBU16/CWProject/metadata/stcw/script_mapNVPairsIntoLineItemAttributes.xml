@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.mapNVPairsIntoLineItemAttributes">
+  <label>Map NV Pairs Into LineItem Attributes</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var failureArray = null;
+
+    var attributeNames = ["bandwidth", "locationACCLICode", "locationBCCLICode"];
+    var nvPairNames = ["FACILITY_BW", "LOCATIONA", "LOCATIONZ"];
+
+
+    if(bundleOrder != null) {
+        for(var i=0; i<bundleOrder.parentLineItems.length; i++) {
+            var parentLineItemContainer = bundleOrder.parentLineItems[i];
+            var isLegacy = stcw.isLegacyService(parentLineItemContainer, true);
+            var isCollocation = stcw.isCollocationServiceType(parentLineItemContainer.parentLineItem.serviceType);
+
+            if(!isCollocation) {
+                for(var zz=0; zz<attributeNames.length; zz++) {
+                    if(attributeNames[zz] == "bandwidth") {
+                        if(isLegacy) {
+                            checkAttributeAndNVPair_(parentLineItemContainer.parentLineItem, parentLineItemContainer.parentLineItemNameValueParameters, attributeNames[zz], nvPairNames[zz], isLegacy);
+                        }
+                        else {
+                            // skip check for BW in Bundle
+                        }
+                    }
+                    else {
+                        checkAttributeAndNVPair_(parentLineItemContainer.parentLineItem, parentLineItemContainer.parentLineItemNameValueParameters, attributeNames[zz], nvPairNames[zz], isLegacy);
+                    }
+                }
+            }
+
+            if(parentLineItemContainer.services != null) {
+                for (var j=0; j<parentLineItemContainer.services.length; j++) {
+                    var serviceLineItemContainer = parentLineItemContainer.services[j];
+                    isCollocation = stcw.isCollocationServiceType(serviceLineItemContainer.serviceLineItem.serviceType);
+                    if(!isCollocation) {
+                        for(var zz=0; zz<attributeNames.length; zz++) {
+                            checkAttributeAndNVPair_(serviceLineItemContainer.serviceLineItem, serviceLineItemContainer.serviceLineItemNameValueParameters, attributeNames[zz], nvPairNames[zz], false);
+                        }
+                    }
+
+                    if(serviceLineItemContainer.subServices != null) {
+                        for (var k=0; k<serviceLineItemContainer.subServices.length; k++) {
+                            var subServiceLineItemContainer = serviceLineItemContainer.subServices[k];
+                            isCollocation = stcw.isCollocationServiceType(subServiceLineItemContainer.subServiceLineItem.serviceType);
+                            if(!isCollocation) {
+                                for(var zz=0; zz<attributeNames.length; zz++) {
+                                    checkAttributeAndNVPair_(subServiceLineItemContainer.subServiceLineItem, subServiceLineItemContainer.subServiceLineItemNameValueParameters, attributeNames[zz], nvPairNames[zz], false);
+                                }
+                            }
+
+                            if(subServiceLineItemContainer.subSubServices != null) {
+                                for (var m=0; m<subServiceLineItemContainer.subSubServices.length; m++) {
+                                    var subSubServiceLineItemContainer =subServiceLineItemContainer.subSubServices[m];
+                                    isCollocation = stcw.isCollocationServiceType(subSubServiceLineItemContainer.subSubServiceLineItem.serviceType);
+                                    if(!isCollocation) {
+                                        for(var zz=0; zz<attributeNames.length; zz++) {
+                                            checkAttributeAndNVPair_(subSubServiceLineItemContainer.subSubServiceLineItem, subSubServiceLineItemContainer.subSubServiceLineItemNameValueParameters, attributeNames[zz], nvPairNames[zz], false);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return failureArray;
+
+
+    function checkAttributeAndNVPair_(lineItem, nvPairsList, attributeName, nvPairName, isLegacy) {
+        var attrValue = lineItem[attributeName];
+        var nvPairValue =  null;
+        var nvPair = null;
+        var recordsFound = 0;
+        var nvPairPosition = -1;
+        var countNVPair = (nvPairsList != null ? nvPairsList.length : 0);
+
+        // extract the value from the nvPairList
+        if(nvPairsList != null) {
+            for(var i=0; i<nvPairsList.length; i++) {
+                if(lineItem.elementTypeInOrderTree == "B") {
+                    nvPair = nvPairsList[i].parentLineItemNameValueParameter;
+                }
+                else if(lineItem.elementTypeInOrderTree == "C") {
+                    nvPair = nvPairsList[i].serviceLineItemNameValueParameter;
+                }
+                else if(lineItem.elementTypeInOrderTree == "S") {
+                    nvPair = nvPairsList[i].subServiceLineItemNameValueParameter;
+                }
+                else {
+                    nvPair = nvPairsList[i].subSubServiceLineItemNameValueParameter;
+                }
+
+                if(nvPair.name == nvPairName) {
+                    nvPairPosition = i;
+                    recordsFound++;
+                    if(recordsFound == 1) {
+                        // 1st instance of the NV pair; it's ok
+                        nvPairValue = nvPair.value;
+                    }
+                    else {
+                        // not the 1st instance; reset the value!
+                        nvPairValue = null;
+                    }
+                }
+            }
+        }
+
+        if(recordsFound > 1) {
+            // found too many; return error
+            var validationError = ["AE0138", Global.translateText("AE0138", null, [recordsFound, nvPairName, lineItem.lineItemIdentifier])];
+            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, lineItem.lineItemIdentifier, failureArray, isSubmit);
+
+            return;
+        }
+
+        var convertedNVPairValue = nvPairValue;
+        var convertedAttributeValue = attrValue;
+        if(nvPairName == "FACILITY_BW") {
+            convertedNVPairValue = (nvPairValue != null ? stcw.convertCOMValueToGraniteOne(nvPairName, nvPairValue) : null);
+            convertedAttributeValue = (attrValue != null ? stcw.convertCOMValueToGraniteOne(nvPairName, attrValue) : null);
+        }
+
+        if(nvPairValue == null) {
+            // nv pair has no value
+            if(attrValue == null) {
+                // also attribute has no value, so generate error
+                var validationError = ["AE0139", Global.translateText("AE0139", null, [attributeName, nvPairName, lineItem.lineItemIdentifier])];
+                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, lineItem.lineItemIdentifier, failureArray, isSubmit);
+            }
+            else {
+                if(lineItem.elementTypeInOrderTree == "B") {
+                    // add only if it's legacy!
+                    if(isLegacy)  {
+                        // attribute has value, so adding the NV Pair
+                        countNVPair++;
+                        //addNVPair_(lineItem, countNVPair, nvPairName, attrValue);
+                        addNVPair_(lineItem, countNVPair, nvPairName, convertedAttributeValue);
+                    }
+                }
+                else {
+                    // attribute has value, so adding the NV Pair
+                    countNVPair++;
+                    //addNVPair_(lineItem, countNVPair, nvPairName, attrValue);
+                    addNVPair_(lineItem, countNVPair, nvPairName, convertedAttributeValue);
+                }
+
+                // replacing the value of the attribute with the converted one
+                lineItem[attributeName] = convertedAttributeValue;
+            }
+        }
+        else {
+            // nvPair has value
+            if(attrValue == null) {
+                // attribute has no value, so set the value of the attribute
+                // lineItem[attributeName] = nvPairValue;
+                lineItem[attributeName] = convertedNVPairValue;
+
+                // replacing the NVPair value with the converted one
+                if(lineItem.elementTypeInOrderTree == "B") {
+                    nvPairsList[nvPairPosition].parentLineItemNameValueParameter.value = convertedNVPairValue;
+                }
+                else if(lineItem.elementTypeInOrderTree == "C") {
+                    nvPairsList[nvPairPosition].serviceLineItemNameValueParameter.value = convertedNVPairValue;
+                }
+                else if(lineItem.elementTypeInOrderTree == "S") {
+                    nvPairsList[nvPairPosition].subServiceLineItemNameValueParameter.value = convertedNVPairValue;
+                }
+                else {
+                    nvPairsList[nvPairPosition].subSubServiceLineItemNameValueParameter.value = convertedNVPairValue;
+                }
+            }
+            else {
+                if(nvPairValue != attrValue) {
+                    // both have the value but different, so generate the error
+                    var validationError = ["AE0140", Global.translateText("AE0140", null, [attributeName, nvPairName, lineItem.lineItemIdentifier, attrValue, nvPairValue])];
+                    failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, lineItem.lineItemIdentifier, failureArray, isSubmit);
+                }
+                else {
+                    // same value so ok!
+                    lineItem[attributeName] = convertedNVPairValue;
+
+                    // replacing the NVPair value with the converted one
+                    if(lineItem.elementTypeInOrderTree == "B") {
+                        nvPairsList[nvPairPosition].parentLineItemNameValueParameter.value = convertedNVPairValue;
+                    }
+                    else if(lineItem.elementTypeInOrderTree == "C") {
+                        nvPairsList[nvPairPosition].serviceLineItemNameValueParameter.value = convertedNVPairValue;
+                    }
+                    else if(lineItem.elementTypeInOrderTree == "S") {
+                        nvPairsList[nvPairPosition].subServiceLineItemNameValueParameter.value = convertedNVPairValue;
+                    }
+                    else {
+                        nvPairsList[nvPairPosition].subSubServiceLineItemNameValueParameter.value = convertedNVPairValue;
+                    }
+                }
+            }
+        }
+    } // end checkAttributeAndNVPair_
+
+    function addNVPair_(parentElement, position, name, value) {
+        var orderItemPath = parentElement.orderDataPath;
+
+        if(parentElement.elementTypeInOrderTree == "B") {
+            orderItemPath = orderItemPath.substring(0, orderItemPath.lastIndexOf("parentLineItem"));
+            orderItemPath = orderItemPath + "parentLineItemNameValueParameters." + position + ".parentLineItemNameValueParameter";
+        }
+        else if(parentElement.elementTypeInOrderTree == "C") {
+            orderItemPath = orderItemPath.substring(0, orderItemPath.lastIndexOf("serviceLineItem"));
+            orderItemPath = orderItemPath + "serviceLineItemNameValueParameters." + position + ".serviceLineItemNameValueParameter";
+        }
+        else if(parentElement.elementTypeInOrderTree == "S") {
+            orderItemPath = orderItemPath.substring(0, orderItemPath.lastIndexOf("subServiceLineItem"));
+            orderItemPath = orderItemPath + "subServiceLineItemNameValueParameters." + position + ".subServiceLineItemNameValueParameter";
+        }
+        else {
+            orderItemPath = orderItemPath.substring(0, orderItemPath.lastIndexOf("subSubServiceLineItem"));
+            orderItemPath = orderItemPath + "subSubServiceLineItemNameValueParameters." + position + ".subSubServiceLineItemNameValueParameter";
+        }
+
+        var nvDoc = bundleOrder.createOrderItemByPath(orderItemPath);
+        nvDoc.name = name;
+        nvDoc.value = value;
+        nvDoc.isVAS = "N";
+        nvDoc.parentElementId = parentElement.id;
+    }
+  ]]></script>
+</script>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcconf.search_COMToGraniteData">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{405cc216-9486-4b85-b213-9ede18405825}</guid>
+  <label>Search Element: COM to Granite Data</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="comName" type="leaf">
+      <propertyElement type="elfld">
+        <label>COM Attribute Name</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+    <variable name="comElement" type="leaf">
+      <propertyElement type="elfld">
+        <label>COM Element</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string6</valueType>
+    </variable>
+    <variable name="giName" type="leaf">
+      <propertyElement type="elfld">
+        <label>GI Attribute Name</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+    <variable name="giElement" type="leaf">
+      <propertyElement type="elfld">
+        <label>GI Element</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string2</valueType>
+    </variable>
+    <variable name="cim" type="leaf">
+      <propertyElement type="elslct">
+        <label>Which CIM?</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_stcw.cimType</valueType>
+    </variable>
+    <variable name="orderQuote" type="leaf">
+      <propertyElement type="elslct">
+        <label>Order or Quote?</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_stcw.orderQuote</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcconf.search_COMToGraniteData</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STCW_COM_TO_GRANITE_DATAGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="STCW_COM_TO_GRANITE_DATAHeader" type="elhdr">
+                        <label>Map COM to Granite Data</label>
+                      </element>
+                      <element name="comName" type="elfld">
+                        <label>COM Attribute Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/leaf_comName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="comElement" type="elfld">
+                        <label>COM Element</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/leaf_comElement</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="giName" type="elfld">
+                        <label>GI Attribute Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/leaf_giName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="giElement" type="elfld">
+                        <label>GI Element</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/leaf_giElement</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cim" type="elslct">
+                        <label>Which CIM?</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/leaf_cim</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderQuote" type="elslct">
+                        <label>Order or Quote?</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_COMToGraniteData/leaf_orderQuote</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>20px</height>
+                        <rowSpan>20px</rowSpan>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

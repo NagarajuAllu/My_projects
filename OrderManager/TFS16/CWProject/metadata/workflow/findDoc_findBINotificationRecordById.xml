@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="workflow.findBINotificationRecordById">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_cwt_common.docID</input>
+  <label>Find BI Notification Record By Id</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_workflow.biNotificationMessage</output>
+  <type>document</type>
+  <volatility>0</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_cwt_common.docID</document>
+      <mappedDocument>doc_workflow.biNotificationMessage</mappedDocument>
+      <mappedPath>doc_workflow.biNotificationMessage/leaf_cwDocId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwt_common.docID/leaf_cwDocID</path>
+    </search>
+  </searchList>
+</findDoc>

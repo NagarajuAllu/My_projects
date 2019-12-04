@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.mobileProcessCompensate">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>63.0</x>
+    <y>19.0</y>
+    <childList>
+      <child name="isApplicationOrTooManyRetry" type="switchActivity">
+        <label>Is Application Error Or Too Many Retries?</label>
+        <x>56.0</x>
+        <y>120.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>149.0</x>
+            <y>283.0</y>
+            <childList>
+              <child name="assignToWL" type="seqActivity">
+                <label>Assign To WL</label>
+                <x>315.0</x>
+                <y>126.0</y>
+                <childList>
+                  <child name="assignToMobileErrorWL" type="opActivity">
+                    <element>iface_stcw.mobileErrorMonitoring/oper_errorDetected</element>
+                    <label>Assign To Mobile Error WL</label>
+                    <participant>part_stcw.mobileErrorResolutionParticipant</participant>
+                    <x>314.0</x>
+                    <y>256.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - assigned to Participant");
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="errorResolved" type="opActivity">
+                    <element>iface_stcw.mobileErrorMonitoring/oper_errorResolved</element>
+                    <label>Error Resolved</label>
+                    <participant>part_stcw.mobileErrorResolutionParticipant</participant>
+                    <x>325.0</x>
+                    <y>434.0</y>
+                    <methodList>
+                      <method name="cwOnProcActAfter" type="action">
+                        <category>script</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          this.process.processDocument.ifErrorCount = 0;
+
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - participant completed; resuming");
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var toWL = false;
+
+                  if(this.process.processDocument.errorType == "Application") {
+                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - ApplicationError => Assign to WL");
+                      toWL = true;
+                  }
+                  else {
+                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - retryCount: " + this.process.processDocument.retryCountForOp + "; ifErrorCount: " + this.process.processDocument.ifErrorCount);
+                      toWL = (this.process.processDocument.ifErrorCount >= this.process.processDocument.retryCountForOp);
+                  }
+
+                  return toWL;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>114.0</x>
+            <y>403.0</y>
+            <childList>
+              <child name="waitTimeforRetry" type="scriptActivity">
+                <label>Wait Time for Retry</label>
+                <schedule type="sched">
+                  <duration type="dur">
+                    <methodList>
+                      <method name="cwOnDuration" type="action">
+                        <system>true</system>
+                        <script><![CDATA[
+                          // configured time for sleeping
+                          var submitSleep = Global.getConfigVariable("SUBMITSLEEP", "10");
+
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - processDocumentInCompensate: " + this.processDocument.toXML());
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - ifName: " + this.processDocument.interfaceName);
+
+                          var ifDelay = Global.getInterfaceDelay(this.processDocument.interfaceName);
+                          ifDelay = ((ifDelay != null) ? ifDelay : "10") ;
+
+                          // sleepTime of the process = max(submitSleep, ifDelay);
+                          var sleepTime = ((submitSleep > ifDelay) ? submitSleep : ifDelay);
+
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - sleep for : " + sleepTime + " secs -- {" + submitSleep + ";" + ifDelay + "}");
+
+                          return sleepTime;
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </duration>
+                </schedule>
+                <x>58.0</x>
+                <y>315.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script>this.process.processDocument.ifErrorCount++;</script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="mobileErrorResolutionParticipant" type="participantActivity">
+        <label>Mobile Error Resolution Participant</label>
+        <participant>part_stcw.mobileErrorResolutionParticipant</participant>
+        <x>493.0</x>
+        <y>318.0</y>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>MOBILE - Process Compensate</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

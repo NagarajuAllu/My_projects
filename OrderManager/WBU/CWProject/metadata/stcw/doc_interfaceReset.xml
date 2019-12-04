@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="c6184327fe88c648e0eb333dba205640" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.interfaceReset">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0fab3288-9392-34f6-f0cf-0a6ef1464837}</guid>
+  <label>Interface Reset</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="interfaceName" type="leaf">
+      <guid>{0bd60eb2-4ade-293a-010a-f8937f05e5ad}</guid>
+      <label>Interface Name</label>
+      <propertyElement type="elslct">
+        <label>Interface Name</label>
+      </propertyElement>
+      <valueType>dtype_stcw.ResettableInterface</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.interfaceReset</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="resetInterface" type="vform">
+            <label>resetInterface</label>
+            <root name="resetInterfaceGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="interfaceResetHeader" type="elhdr">
+                  <label>Reset Interface</label>
+                  <showValidation>true</showValidation>
+                  <style>CwFOT</style>
+                </element>
+                <element name="resetInterfaceGrid" type="elgrd">
+                  <colWidths>234,234</colWidths>
+                  <numOfCols>2</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>468px</width>
+                  <elementList>
+                    <element name="rowSpacer" type="elrsp">
+                      <columnSpan>02</columnSpan>
+                      <startRow>true</startRow>
+                    </element>
+                    <element name="interfaceName1" type="elslct">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.interfaceReset/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.interfaceReset/leaf_interfaceName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Reset" type="elbtn">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.interfaceReset/ui_UserInterface/usrActionMethod_cwOnFormFieldBefore_resetInterfaceReset</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <columnSpan>1</columnSpan>
+                      <label>Reset</label>
+                      <width>*</width>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+      <method name="cwOnFormFieldAfter_resetInterfaceReset" type="usrActionMethod">
+        <parameterList>
+          <parameter name="selectList" type="rifp">
+            <mandatory>true</mandatory>
+            <type>nmeta_com.conceptwave.system.Object</type>
+          </parameter>
+          <parameter name="selectData" type="rifp">
+            <mandatory>true</mandatory>
+            <type>nmeta_com.conceptwave.system.Object</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          var count = stcw.bulkResolveInterfaceError ("stcw:interfaceErrorMonitoring/interfaceErrorDetected", this.model.interfaceName, "errorResolved");
+          var message = count;
+          if (count == 1)
+                message = message + " order";
+          else
+                message = message + " orders"
+
+          message = message + " restarted";
+
+          Global.showUserMessage (message);
+        ]]></script>
+      </method>
+      <method name="cwOnFormFieldBefore_resetInterfaceReset" type="usrActionMethod">
+        <script><![CDATA[
+          function funcReturnsValCallDisplayScript(scriptReturnsValToCallDisplayScriptThis) {
+
+          scriptReturnsValToCallDisplayScriptThis.cwOnFormFieldAfter_resetInterfaceReset();
+
+          }
+
+          var funcReturnsValCallDisplayScriptRes = funcReturnsValCallDisplayScript(this);
+          if(funcReturnsValCallDisplayScriptRes != null && funcReturnsValCallDisplayScriptRes instanceof Document &&
+              funcReturnsValCallDisplayScriptRes.hasMethod("displayScript"))
+            funcReturnsValCallDisplayScriptRes.displayScript();
+          return funcReturnsValCallDisplayScriptRes;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

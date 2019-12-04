@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="processSTC.prepareJMSDSOrder">
+  <label>Prepare JMS DS Submit/Update Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+    <parameter name="orderItem" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var jmsOrderDS = new DataStructure("ds_jms.bundleOrderMessage_el");
+
+    // map orderHeader
+    bundleOrder.orderHeader.mapTo(jmsOrderDS);
+    jmsOrderDS.orderStatus = (orderItem.isSubmit ? "New" : (orderItem.isCancel ? "Cancel" : "Revise"));
+
+    // adding workOrderType to orderHeader
+    var workOrderType = processSTC.getWorkOrderType(bundleOrder.orderHeader.orderType, orderItem.action);
+    jmsOrderDS.workOrderType = (workOrderType != null ? workOrderType : bundleOrder.orderHeader.orderType);
+
+
+    // adding workOrderNumber to orderHeader
+    if(orderItem.workOrderNumber != null) {
+        // applicable only for updateOrder
+        jmsOrderDS.workOrderNumber = orderItem.workOrderNumber;
+    }
+    else {
+        var workOrderNumber = processSTC.generateWONumber(orderItem, workOrderType, bundleOrder); // processSTC.getNewChildOrderNumber(workOrderType);
+        if(workOrderNumber == null) {
+            Global.throwException("Error in generating workOrderNumber");
+        }
+        jmsOrderDS.workOrderNumber = workOrderNumber;
+
+        orderItem.workOrderNumber = workOrderNumber;
+        orderItem.save();
+    }
+
+    // managing reservation
+    if(bundleOrder.orderHeader.orderType == "F") {
+        if(orderItem.feasibilityType != null) {
+            // using orderItem info
+            jmsOrderDS.reservation = (orderItem.feasibilityType == "ENQUIRY" ? "N" : "Y");
+        }
+        else if(bundleOrder.orderHeader.reservation != null) {
+            jmsOrderDS.reservation = bundleOrder.orderHeader.reservation;
+        }
+    }
+    else if(bundleOrder.orderHeader.orderType == "I") {
+        var requiresFlagForAutoDesign = ds_ws.checkIfServiceTypeRequireFlagForAutoDesign(orderItem.serviceType);
+
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][prepareJMSDSOrder] ServiceType " + orderItem.serviceType + " requires Check For AutoDesign ? " + requiresFlagForAutoDesign);
+
+        if(requiresFlagForAutoDesign) {
+            jmsOrderDS.reservation = "Y";
+        }
+    }
+
+    ////////
+    //
+    // 2019-01-14: managing reservationNumber now linked to the lineItem and not to the header
+    ////////
+    if(bundleOrder.orderHeader.orderType == 'I' || bundleOrder.orderHeader.orderType == 'C') {
+        jmsOrderDS.reservationNumber = orderItem.reservationNumber;
+    }
+
+    // adding reasonCode array to orderHeader
+    var reasonCodeArray = ds_ws.getReasonCodesAsArray(bundleOrder.orderHeader.id);
+    if(reasonCodeArray != null) {
+        for(var i=0; i<reasonCodeArray.length; i++) {
+            jmsOrderDS.reasonCode[i] = reasonCodeArray[i];
+        }
+    }
+
+    // mapping order parameters (NV)
+    if(bundleOrder.orderHeaderParameters != null) {
+        for(var i=0; i<bundleOrder.orderHeaderParameters.length; i++) {
+            bundleOrder.orderHeaderParameters[i].orderHeaderParameter.mapTo(jmsOrderDS.orderNameValueParameters[i]);
+        }
+    }
+
+
+    /////////////////////////////////////////////
+    //    LINE ITEM
+    /////////////////////////////////////////////
+
+    // mapping orderItem
+    processSTC.mapLineItemIntoJMSDSOrder(bundleOrder, orderItem, jmsOrderDS.lineItem, true);
+
+    return jmsOrderDS;
+  ]]></script>
+</script>

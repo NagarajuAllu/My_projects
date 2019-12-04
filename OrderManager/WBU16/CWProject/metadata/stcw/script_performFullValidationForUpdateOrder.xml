@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.performFullValidationForUpdateOrder">
+  <label>Perform Full Validation For UpdateOrder</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="existingBundleOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="isCancel" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var failureArray = null;
+
+    // check number of bundles
+    if(bundleOrder.parentLineItems.length > 1) {
+        var validationError = ["AE0028", Global.translateText("AE0028")];
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+    }
+
+    if(bundleOrder.orderHeader.orderType == "T") {
+        var validationError = ["AE0010", Global.translateText("AE0010", null, ["orderType", bundleOrder.orderHeader.orderType, bundleOrder.parentLineItems[0].parentLineItem.provisioningBU])];
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, true);
+    }
+
+    if(bundleOrder.parentLineItems[0].parentLineItem.provisioningBU == "M") {
+        if(bundleOrder.orderHeader.orderType == "F") {
+            var validationError = ["AE0010", Global.translateText("AE0010", null, ["orderType", bundleOrder.orderHeader.orderType, bundleOrder.parentLineItems[0].parentLineItem.provisioningBU])];
+            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, true);
+        }
+        else if(!isCancel) {
+            var validationError = ["AE0010", Global.translateText("AE0010", null, ["operation", "ReviseOrder", bundleOrder.parentLineItems[0].parentLineItem.provisioningBU])];
+            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, true);
+        }
+    }
+
+    // checking that the lineItemIdentifier of the Revise is the same of the existing order
+    var existingOrderBundleIdentifier = existingBundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier;
+    var receivedBundleIdentifier = bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier;
+    if(existingOrderBundleIdentifier != receivedBundleIdentifier) {
+        var validationError = ["AE0076",  Global.translateText("AE0076", null, [receivedBundleIdentifier, existingOrderBundleIdentifier])];
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+    }
+
+    // check if the existing bundle is in PROVISIONING, otherwise it will be rejected
+    if(existingBundleOrder.parentLineItems[0].parentLineItem.provisioningFlag != "PROVISIONING") {
+        if(existingBundleOrder.orderHeader.orderType != "F") {
+            var validationError = ["AE0072", Global.translateText("AE0072", null, [(isCancel ? "CancelOrder" : "ReviseOrder")])];
+            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+        }
+        else {
+            if(isCancel) {
+                /*
+
+                commented because it's always possible to receive a cancel for a F order also if already completed.
+                2018/12/27 - it's valid also for "H"
+
+                var isLegacy = stcw.isLegacyService(existingBundleOrder.parentLineItems[0], true);
+
+                // check that all the lineItems have provisioningBU = "E"
+                var lineItems = stcw.getAllLineItemsByCOMOrderNumber(existingBundleOrder.orderHeader.orderNumber);
+                if(lineItems != null) {
+                    for(var i=0; i<lineItems.length; i++) {
+                        if(isLegacy || lineItems[i].elementTypeInOrderTree != "B") {
+                            if(lineItems[i].provisioningBU == "W") {
+                                var validationError = ["AE0072", Global.translateText("AE0072", null, [(isCancel ? "CancelOrder" : "ReviseOrder")])];
+                                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+                            }
+                        }
+                    }
+                }
+                */
+            }
+            else {
+                var validationError = ["AE0072", Global.translateText("AE0072", null, [(isCancel ? "CancelOrder" : "ReviseOrder")])];
+                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+            }
+        }
+
+        var provisioningBundle = stcw.getAllLineItemsByIdentifierAndProvisioningFlag(bundleOrder.parentLineItems[0].parentLineItem.lineItemIdentifier, "B", "PROVISIONING");
+        if(provisioningBundle != null && provisioningBundle.length > 0) {
+            // it means that there is another order in "PROVISIONING" status for the same lineItemIidentider even if the previous version of this order is not in "PROVISIONING"
+            var orderInProvisioning = Order.getOrderById(provisioningBundle[0].orderId);
+            if(orderInProvisioning != null) {
+                var validationError = ["AE0196", Global.translateText("AE0196", null, [(isCancel ? "CancelOrder" : "ReviseOrder"), orderInProvisioning.orderHeader.orderNumber])];
+                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+            }
+        }
+    }
+
+
+    if(isCancel && existingBundleOrder.orderHeader.orderType == "F" &&
+       existingBundleOrder.orderHeader.reservation == "N" &&
+       (stcw.isLineItemCompleted(existingBundleOrder.parentLineItems[0].parentLineItem.lineItemStatus) ||
+        stcw.checkIfLineItemIsFeasibleForQuote(existingBundleOrder.parentLineItems[0].parentLineItem.lineItemStatus, "F"))) {
+        // cancel flow is related to a completed feasibility without reservation; for this reason, the cancel have to be rejected
+        var validationError = ["AE0108", Global.translateText("AE0108", null)];
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+    }
+
+
+
+    // 2015-12-30: added repush for updateOrder management
+    var existingOrderWasKO = stcw.checkIfExistProcessKOInOrchestrationTable(existingBundleOrder.id);
+
+    if(bundleOrder.orderHeader.orderType != null && bundleOrder.orderHeader.orderType != "F") {
+        // check if there is any lineitem whose provisioning process is already completed
+        if(stcw.checkIfAtLeastOneProcessInOrchestrTableIsComplOK(existingBundleOrder.id)) {
+            // adding "Disconnect for Cancel" management
+            if(stcw.getSendDisconnectForCancelByProductCode(existingBundleOrder.parentLineItems[0].parentLineItem.productCode)) {
+                // checking if the completed lineItems have action equals to "A" or requestedActionIsA flag enabled
+                var raiseError = false;
+                var lineItems = stcw.getAllLineItemsByCOMOrderNumber(existingBundleOrder.orderHeader.orderNumber);
+                if(lineItems != null) {
+                    for(var i=0; i<lineItems.length; i++) {
+                        if(stcw.isLineItemCompleted(lineItems[i].lineItemStatus)) {
+                            // found a lineItem completed
+                            if(lineItems[i].action != "A" && (! lineItems[i].requestedActionIsA)) {
+                                // action in existing lineItem is different from A and original requested action was different from A
+                                raiseError = true;
+                            }
+                        }
+                    }
+                }
+
+                if(raiseError) {
+                    var validationError = ["AE0158", Global.translateText("AE0158", null, [(isCancel ? "CancelOrder" : "ReviseOrder")])];
+                    failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+                }
+            }
+            else {
+                // parentLineItem productCode doesn't support "Disconnect for Cancel", so raise the error
+                var validationError = ["AE0158", Global.translateText("AE0158", null, [(isCancel ? "CancelOrder" : "ReviseOrder")])];
+                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleOrder.orderHeader.orderNumber, failureArray, false);
+            }
+        }
+    }
+
+    // check if OM is waiting for Granite response
+    failureArray = stcw.checkIfLineItemIsWaitingForGraniteResp(existingBundleOrder, failureArray);
+
+    // compare and update the received order with the data of the existing order
+    failureArray = stcw.compareAndUpdateReceivedOrderWithExistingOne(existingBundleOrder, bundleOrder, isCancel, existingOrderWasKO, failureArray);
+
+    // perform formal validation on Order
+    failureArray = stcw.performFullValidationOnOrder(bundleOrder, false, failureArray);
+
+    // perform validation on Granite of the Order
+    failureArray = stcw.performOrderValidationInGranite(bundleOrder, false, failureArray);
+
+    if(bundleOrder.parentLineItems[0].parentLineItem.provisioningBU == "H") {
+        // perform validation for FTTH services
+        failureArray = stcw.performFullValidationOnFTTHServices(bundleOrder, false, isCancel, failureArray);
+    }
+    else if(bundleOrder.parentLineItems[0].parentLineItem.provisioningBU == "M") {
+        // perform validation for FTTH services
+        failureArray = stcw.performFullValidationOnLTEServices(bundleOrder, false, isCancel, failureArray)
+    }
+
+
+
+    return failureArray;
+  ]]></script>
+</script>

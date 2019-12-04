@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.STC_INSERTORDER_IFTYPE_CFG">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{d533fb0c-9bd8-44e6-abf5-2523e18c4ba1}</guid>
+  <label>Interface Types For Insert Orders From GUI</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="interfaceType" type="leaf">
+      <column>INTERFACETYPE</column>
+      <key>1</key>
+      <table>STC_INSERTORDER_IFTYPE_CFG</table>
+      <valueType>dtype_ds_ws.string25</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.STC_INSERTORDER_IFTYPE_CFG</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

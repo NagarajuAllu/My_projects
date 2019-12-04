@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="d3ebb5136d22628dc70a8129d7e8d45f" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.common_replaceSpecialCharacter">
+  <guid>{0a7b6349-a853-c40a-0dc9-01819b6376d8}</guid>
+  <label>Common Methods: Replace Special Characters</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var output = null;
+
+    if (input != null) {
+          var pattern = /\&amp\;/gi;
+          output = input.replace(pattern, "&");
+    }
+
+    return output;
+  ]]></script>
+</script>

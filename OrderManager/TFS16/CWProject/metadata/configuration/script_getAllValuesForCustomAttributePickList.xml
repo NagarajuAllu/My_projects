@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="6320736848c42074e4a5e648fc2acd23" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="configuration.getAllValuesForCustomAttributePickList">
+  <label>Get All Values For Custom Attribute PickList</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="customAttributeId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var allPickListValues = null;
+
+    if(customAttributeId != null) {
+        var searchDoc = new Document("cwt_common.docID");
+        searchDoc.cwDocID = customAttributeId;
+
+        allPickListValues = Finder.runFinder("configuration.customAttributePickListValuesFinder", "select", searchDoc);
+    }
+
+    return allPickListValues;
+  ]]></script>
+</script>

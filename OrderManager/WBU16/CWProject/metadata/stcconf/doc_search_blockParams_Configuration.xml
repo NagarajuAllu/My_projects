@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcconf.search_blockParams_Configuration">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{cfc15ccc-d89e-4f50-9224-1ec62258ef3c}</guid>
+  <label>Search Element: Block Parameters Configuration</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="orderType" type="leaf">
+      <propertyElement type="elslct">
+        <label>Order Type</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_wsws.orderType</valueType>
+    </variable>
+    <variable name="serviceType" type="leaf">
+      <propertyElement type="elfld">
+        <label>Service Type</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string25</valueType>
+    </variable>
+    <variable name="blockParameterName" type="leaf">
+      <propertyElement type="elfld">
+        <label>Block Name NV Pair</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+    <variable name="isMandatory" type="leaf">
+      <propertyElement type="elchk">
+        <label>Is Mandatory?</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcconf.search_blockParams_Configuration</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="blockParamsGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px,110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>8</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="BlockParametersHeader" type="elhdr">
+                        <label>Search Block NV Pairs For ServiceType &amp; OrderType</label>
+                      </element>
+                      <element name="blockParameterName" type="elfld">
+                        <label>Block Parameter Name [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_blockParams_Configuration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_blockParams_Configuration/leaf_blockParameterName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderType" type="elslct">
+                        <label>Order Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_blockParams_Configuration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_blockParams_Configuration/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <label>Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_blockParams_Configuration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_blockParams_Configuration/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="isMandatory" type="elchk">
+                        <label>Is Mandatory?</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.search_blockParams_Configuration/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.search_blockParams_Configuration/leaf_isMandatory</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp"/>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <confirmation>doc_stcconf.search_blockParams_Configuration/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

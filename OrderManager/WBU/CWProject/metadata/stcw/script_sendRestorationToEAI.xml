@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="be8e4efe464d8a9c7efc91f2c2a2d6a7" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.sendRestorationToEAI">
+  <guid>{08c2af61-82e4-2f06-93b0-ebe5661ded2e}</guid>
+  <label>Send Restoration To EAI</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="request" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // it uses the common method:
+    // sendDataToInterface( request, processId, operationDescription, interfaceName, operationName )
+    var response = stcc.sendDataToInterface(request, processId, "sendRestorationToEAI", "sirestor:processRequest_PortType", "processRequest");
+    return response;
+  ]]></script>
+</script>

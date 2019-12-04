@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="666ec62e50670a0818c9889cb84f8a6e" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.search_CIRC_TYPES">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{995c26a7-35a1-4a63-8fbe-d2bca2e70040}</guid>
+  <label>Search Element: Circuit Types [XNG]</label>
+  <metaVersion>4</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="TYPE_NAME" type="leaf">
+      <propertyElement type="elfld">
+        <label>Type Name</label>
+      </propertyElement>
+      <valueType>dtype_granite.TYPE_NAME</valueType>
+    </variable>
+    <variable name="VALID_FOR_PATH" type="leaf">
+      <propertyElement type="elslct">
+        <label>Valid For Path</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_ds_ws.nY_pickList</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$VALID_FOR_PATH" type="laction">
+      <path>doc_granite.search_CIRC_TYPES/leaf_VALID_FOR_PATH</path>
+      <type>initializer</type>
+      <script><![CDATA[document.VALID_FOR_PATH="Y";]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_granite.search_CIRC_TYPES</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="search_CIRC_TYPESGrid" type="elgrd">
+                    <colWidths>160,160,160,160</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>640px</width>
+                    <elementList>
+                      <element name="search_CIRC_TYPESHeader" type="elhdr">
+                        <label>Service Types Search Data</label>
+                      </element>
+                      <element name="TYPE_NAME" type="elfld">
+                        <label>Type Name [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.search_CIRC_TYPES/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.search_CIRC_TYPES/leaf_TYPE_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="LayoutSpacer" type="ellsp">
+                    <height>15px</height>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

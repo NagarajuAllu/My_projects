@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="3813d39f5aa02b16552619b1715e5d3b" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.getAMO">
+  <label>Get AMO</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="resourceInstId" type="rifp">
+      <type>dtype_granite.INST_ID_16</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var amo = null;
+
+    if(resourceInstId != null) {
+        var resourceFinder = new Finder("granite.resourceFinder");
+        resourceFinder.searchDocument.INST_ID = resourceInstId;
+
+        var resourceList = resourceFinder.search();
+        if(resourceList != null && resourceList.size > 0) {
+            amo = resourceList[0];
+        }
+    }
+
+    return amo;
+  ]]></script>
+</script>

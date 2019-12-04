@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.checkIfExistABundleWithThisStatus">
+  <label>Check If Exist A Bundle With This Status</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="lineItemExpectedStatus" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="deepScan" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var found = false;
+    for(var i=0; i<bundleOrder.parentLineItems.length && !found; i++) {
+        if(deepScan) {
+            found = stcw.checkIfExistALineItemInBundleWithThisStatus(lineItemExpectedStatus, bundleOrder.parentLineItems[i].parentLineItem, true);
+        }
+        else {
+            found = (bundleOrder.parentLineItems[i].parentLineItem.lineItemStatus.toUpperCase() == lineItemExpectedStatus.toUpperCase());
+        }
+    }
+
+    debugPrintln(stcc.getSysdateForLog() + " checkIfExistABundleWithThisStatus([" + lineItemExpectedStatus + "," + bundleOrder.id + "," + deepScan + "]): " + found);
+    return found;
+  ]]></script>
+</script>

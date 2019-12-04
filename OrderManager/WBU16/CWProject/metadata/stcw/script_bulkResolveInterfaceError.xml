@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.bulkResolveInterfaceError">
+  <label>Bulk Resolve Interface Error</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="interfaceOperation" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_cwf.interOper</type>
+    </parameter>
+    <parameter name="interfaceName" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_stcw.InterfaceName</type>
+    </parameter>
+    <parameter name="completionAction" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Integer</valueType>
+  <script><![CDATA[
+    if (interfaceOperation == null)
+          return (0);
+
+    if (interfaceName == null)
+          return (0);
+
+    if (completionAction == null)
+          return (0);
+
+    var finder = new Finder ("cwf_pm:OrderItemWorklist");
+    finder.searchDocument.Operation = interfaceOperation;
+    finder.search ();
+
+    var list = finder.list;
+    if (list == null || list.size <= 0)
+          return (0);
+
+    var userId = UserProfile.userId ();
+    if (userId == null) {
+          Global.showUserMessage ("Cannot get user id for auto-complete");
+          return (0);
+    }
+
+    var completedCount = 0;
+    var document;
+    for (var i = 0; i < list.size; i++) {
+          document = list[i];
+          if (document.OrderId == null || document.orderItemId == null)
+                continue;
+
+          var order = Order.getOrderById (document.OrderId, false);
+          if (order == null)
+                continue;
+
+          var interfaceDocument = order.findItemById (document.orderItemId);
+          if (interfaceDocument == null || interfaceDocument.metadataType != "stcw:interfaceHeader")
+                continue;
+
+          if (interfaceDocument.interfaceName != interfaceName)
+                continue;
+
+          if (document.userId == null) {
+                document.userId = userId;
+                document.AssignedDate = new Date ();
+                document.save ();
+          }
+
+          Process.performWorklistAction (document, null, completionAction, false, order, null);
+          completedCount++;
+    }
+
+    return (completedCount);
+  ]]></script>
+</script>

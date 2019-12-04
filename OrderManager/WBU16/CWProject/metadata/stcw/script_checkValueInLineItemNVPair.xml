@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="d24bf64b103c177160802c9ca91da63" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.checkValueInLineItemNVPair">
+  <guid>{065edaed-6a6f-f09e-945d-ef9cd6817376}</guid>
+  <label>Check Value In LineItemNV Pair</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="nameInPair" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="newLineItem" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="oldLineItem" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var oldValue = null;
+    var newValue = null;
+
+    if(oldLineItem.nameValue == null) {
+          oldValue = null;
+    }
+    else {
+          var found = false;
+          for(var i=0; i<oldLineItem.nameValue.length && !found; i++) {
+                if(oldLineItem.nameValue[i].name == nameInPair) {
+                      oldValue = oldLineItem.nameValue[i].value;
+                      found = true;
+                }
+          }
+    }
+
+    if(newLineItem.nameValue == null) {
+          newValue = null;
+    }
+    else {
+          var found = false;
+          for(var i=0; i<newLineItem.nameValue.length && !found; i++) {
+                if(newLineItem.nameValue[i].name == nameInPair) {
+                      newValue = newLineItem.nameValue[i].value;
+                      found = true;
+                }
+          }
+    }
+
+    return stcc.checkSameValue(newValue, oldValue);
+  ]]></script>
+</script>

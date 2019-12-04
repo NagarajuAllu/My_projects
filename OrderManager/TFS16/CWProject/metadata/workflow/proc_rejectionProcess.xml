@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="workflow.rejectionProcess">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>13.185059</x>
+    <y>21.0</y>
+    <childList>
+      <child name="startLoop" type="seqActivity">
+        <label>Start Loop</label>
+        <x>186.18506</x>
+        <y>21.0</y>
+        <childList>
+          <child name="proposeNextQuestion" type="opActivity">
+            <element>iface_workflow.orderInitiatorTeamIF/oper_proposeNextQuestion</element>
+            <label>Next Question</label>
+            <participant>part_workflow.installOrderInitiatorParticipant</participant>
+            <x>417.1704</x>
+            <y>19.0</y>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var activityProcess = new Document("workflow.rejectProcessActivity");
+                  activityProcess.processId = this.process.id;
+                  activityProcess.creationDate = new Date();
+                  activityProcess.questionId = this.process.processOrder.rejectionProcData.questionId;
+                  activityProcess.save();
+
+
+                  this.process.processOrder.rejectionProcData.creationDate = new Date();
+                  this.process.processOrder.rejectionProcData.activityProcessId = activityProcess.id;
+                  this.process.processOrder.rejectionProcData.selectedAnswerId = null;
+                  this.process.processOrder.save();
+
+
+                  this.process.processDocument.answerId = null;
+                  this.process.processDocument.nextQuestionId = null;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="choiceUserFeedback" type="choiceActivity">
+            <label>Choice User Feedback</label>
+            <x>406.18506</x>
+            <y>144.0</y>
+            <childList>
+              <child name="answer" type="opActivity">
+                <element>iface_workflow.orderInitiatorTeamIF/oper_answerSelected</element>
+                <label>Answer Selected</label>
+                <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                <x>513.82764</x>
+                <y>306.20703</y>
+                <methodList>
+                  <method name="cwOnProcActAfter" type="action">
+                    <category>script</category>
+                    <system>true</system>
+                    <script>this.process.processDocument.isTerminatedByUser = false;</script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="terminateProcess" type="opActivity">
+                <element>iface_workflow.orderInitiatorTeamIF/oper_terminateProcess</element>
+                <label>Terminate Process</label>
+                <participant>part_workflow.installOrderInitiatorParticipant</participant>
+                <x>349.18506</x>
+                <y>312.0</y>
+                <methodList>
+                  <method name="cwOnProcActAfter" type="action">
+                    <category>script</category>
+                    <system>true</system>
+                    <script>this.process.processDocument.isTerminatedByUser = true;</script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+          <child name="completeIteration" type="scriptActivity">
+            <label>Complete Iteration</label>
+            <x>425.18506</x>
+            <y>461.0</y>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[
+                  debugPrintln("rejectionProcess.completeIteration()");
+
+                  var activityFinder = new Finder("workflow.rejectionProcessActivityFinder");
+                  activityFinder.searchDocument.cwDocID = this.process.processOrder.rejectionProcData.activityProcessId;
+                  var resultList = activityFinder.search();
+                  if(resultList != null && resultList.length > 0) {
+                      resultList[0].completionDate = new Date();
+                      resultList[0].answerId = this.process.processOrder.rejectionProcData.selectedAnswerId;
+                      resultList[0].remarks = this.process.processOrder.rejectionProcData.remarks;
+                      resultList[0].save();
+                  }
+
+                  this.process.processDocument.answerId = this.process.processOrder.rejectionProcData.selectedAnswerId;
+
+                  if(! this.process.processDocument.isTerminatedByUser) {
+                      this.process.processDocument.nextQuestionId = tfs.searchNextQuestionForRejectionAnswer(this.process.processDocument.answerId);
+                  }
+
+                  debugPrintln("~rejectionProcess.completeIteration()");
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="isCompleted" type="switchActivity">
+            <label>Is Completed or Terminated?</label>
+            <x>416.50244</x>
+            <y>583.6094</y>
+            <childList>
+              <child name="yes" type="caseActivity">
+                <label>Yes</label>
+                <x>556.3457</x>
+                <y>614.41406</y>
+                <methodList>
+                  <method name="cwOnProcActCond" type="action">
+                    <category>cond</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      if(this.process.processDocument.isTerminatedByUser) {
+                          // it's terminated by the user, so complete the process
+                          return true;
+                      }
+
+                      // checking if the answer has next question; if not, stop the loop
+                      return (this.process.processDocument.nextQuestionId == null);
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="no" type="caseActivity">
+                <label>No</label>
+                <x>747.0</x>
+                <y>350.0</y>
+                <childList>
+                  <child name="start" type="seqActivity">
+                    <label>Start</label>
+                    <x>186.3457</x>
+                    <y>607.4658</y>
+                    <childList>
+                      <child name="configureOrderDocForNextQuestion" type="scriptActivity">
+                        <label>Configure Order Document For Next Question</label>
+                        <x>181.0</x>
+                        <y>367.51758</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Assign QuestionId = " + this.process.processDocument.nextQuestionId);
+
+                              this.process.processOrder.rejectionProcData.questionId = this.process.processDocument.nextQuestionId;
+                              //var docUI = new tfs.rejectionProcData.UserInterface(this.process.processOrder.rejectionProcData);
+                              //docUI.initializeDocument();
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="processNextQuestion" type="repeatActivity">
+                        <element>proc_workflow.rejectionProcess/seqActivity_start/seqActivity_startLoop</element>
+                        <label>Process Next Question</label>
+                        <persistState>NEVER</persistState>
+                        <x>184.33105</x>
+                        <y>166.02344</y>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="completeRejectionProcess" type="scriptActivity">
+        <label>Complete Rejection Process</label>
+        <x>656.3457</x>
+        <y>597.41406</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var activityFinder = new Finder("workflow.rejectionProcessFinder");
+              activityFinder.searchDocument.cwDocID = this.process.id;
+              var resultActivityList = activityFinder.search();
+
+              if(resultActivityList != null && resultActivityList.length > 0) {
+                  resultActivityList[0].completionDate = new Date();
+                  resultActivityList[0].rejectProcStatus = (this.process.processDocument.isTerminatedByUser ? "Terminated by user" : "Completed");
+                  resultActivityList[0].save();
+              }
+
+              var answerFinder = new Finder("tfs.rejectionAnswerFinder");
+              answerFinder.searchDocument.cwDocID = this.process.processOrder.rejectionProcData.selectedAnswerId;
+              var resultAnswerList = answerFinder.search();
+
+              if(resultAnswerList != null && resultAnswerList.length > 0) {
+                  this.process.processDocument.returnPoint = resultAnswerList[0].resultAnalysisToReturn;
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="wakeUpParent" type="scriptActivity">
+        <label>Wake Up Parent</label>
+        <x>772.18506</x>
+        <y>603.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[Process.sendSignal("workflow:wakeUpParent", this.process.processOrder.rejectionProcData.parentProcessId);]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>868.18506</x>
+        <y>613.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Completed Rejection Process");]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="installOrderInitiatorParticipant" type="participantActivity">
+        <label>Install Order Initiator Participant</label>
+        <participant>part_workflow.installOrderInitiatorParticipant</participant>
+        <x>720.0</x>
+        <y>140.0</y>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Start Rejection Process");
+
+          var rejectionRootQuestionsFinder = new Finder("tfs.rejectionRootQuestionsFinder");
+          var rootQuestionList = rejectionRootQuestionsFinder.search();
+
+          if(rootQuestionList != null && rootQuestionList.length > 0) {
+          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Assign QuestionId = " + rootQuestionList[0].questionId);
+              // assign question and initialize document UI
+              this.process.processOrder.rejectionProcData.questionId = rootQuestionList[0].questionId;
+
+          //    var docUI = new tfs.rejectionProcData.UserInterface(this.process.processOrder.rejectionProcData);
+          //    docUI.initializeDocument();
+          }
+
+          this.process.processOrder.rejectionProcData.processId = this.process.id;
+          this.process.processOrder.save();
+
+          workflow.createRejectionProcessDocument(this.process);
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_workflow.rejectionProcessDocument</document>
+  <label>Rejection Process</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <revision>2</revision>
+  <type>User</type>
+</process>

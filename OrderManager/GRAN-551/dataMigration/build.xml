@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<project name="dataMigration" default="all">
+
+  <property name="src.dir" value="src"/>
+  <property name="classes.dir" value="classes"/>
+  <property name="config.dir" value="config"/>
+  
+  <property name="lib.asi.dir" value="lib/asi"/>
+  <property name="lib.log4j.dir" value="lib/log4j"/>
+  <property name="lib.oracle.dir" value="lib/oracle"/>
+  <property name="lib.wl.dir" value="lib/wl"/>
+
+  <property name="compile.debug" value="true"/>
+  <property name="compile.deprecation" value="false"/>
+  <property name="compile.optimize" value="true"/>
+
+  <property name="library.fileName" value="${ant.project.name}.jar"/>
+
+  <loadfile property="project.version" srcFile="version.txt"/>
+
+  <path id="project.classpath">
+    <pathelement location="${classes.dir}"/>
+    <pathelement location="${config.dir}"/>
+    <fileset dir="${lib.asi.dir}">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${lib.log4j.dir}">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${lib.wl.dir}">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${lib.oracle.dir}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+  <property name="project.classpath" refid="project.classpath"/>
+
+  <target name="init" description="Create classes dir">
+    <mkdir dir="${classes.dir}"/>
+  </target>
+
+  <target name="compile" description="Compile project" depends="init">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}"
+           target="1.7" source="1.7" debug="${compile.debug}"
+           deprecation="${compile.deprecation}"
+           optimize="${compile.optimize}">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="createLibrary" description="Create the library" depends="compile">
+    <delete file="${library.fileName}" />
+    <jar basedir="${classes.dir}" destfile="${library.fileName}">
+      <fileset dir="${classes.dir}" />
+      <manifest>
+        <attribute name="Implementation-Title" value="${ant.project.name}"/>
+        <attribute name="Implementation-Vendor" value="Ericsson"/>
+        <attribute name="Implementation-Version" value="${project.version}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="all" depends="clean, createLibrary"/>
+
+  <target name="clean">
+    <delete dir="${classes.dir}"/>
+    <delete file="${library.fileName}"/>
+  </target>
+
+</project>

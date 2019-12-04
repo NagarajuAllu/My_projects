@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.prnr_prnSummaryReportSearchDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{faca7301-cbbd-42d9-a9e4-d15e0373ab6f}</guid>
+  <label>PRNR/PRN Summary Report Search Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="customerName" type="leaf">
+      <valueType>dtype_tfs.customerPickListReference</valueType>
+    </variable>
+    <variable name="prnrReleaseDateFrom" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="prnrReleaseDateTo" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="prnCreationDateFrom" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="prnCreationDateTo" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.prnr_prnSummaryReportSearchDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultVerticalLayout" type="elvlt">
+                <width>1200px</width>
+                <elementList>
+                  <element name="inputDataLabel" type="elhdr">
+                    <cellAlignment>left,center</cellAlignment>
+                    <height>40px</height>
+                    <label>PRNR/PRN Summary Report Input Data</label>
+                    <width>1200px</width>
+                  </element>
+                  <element name="prnr_prnSummaryReportSearchDocGrid" type="elgrd">
+                    <colWidths>120px,200px,200px,150px,150px,150px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="customerName" type="elslct">
+                        <label>PRNR Customer Name</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.prnr_prnSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.prnr_prnSummaryReportSearchDoc/leaf_customerName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnrReleaseDateFrom" type="eldatetime">
+                        <label>PRNR Release Date &gt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.prnr_prnSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.prnr_prnSummaryReportSearchDoc/leaf_prnrReleaseDateFrom</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnrReleaseDateTo" type="eldatetime">
+                        <label>PRNR Release Date &lt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.prnr_prnSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.prnr_prnSummaryReportSearchDoc/leaf_prnrReleaseDateTo</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>15px</height>
+                        <rowSpan>15px</rowSpan>
+                      </element>
+                      <element name="CellSpacer" type="elcsp">
+                        <columnSpan>2</columnSpan>
+                      </element>
+                      <element name="prnCreationDateFrom" type="eldatetime">
+                        <label>PRN Creation Date &gt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.prnr_prnSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.prnr_prnSummaryReportSearchDoc/leaf_prnCreationDateFrom</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnCreationDateTo" type="eldatetime">
+                        <label>PRN Creation Date &lt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.prnr_prnSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.prnr_prnSummaryReportSearchDoc/leaf_prnCreationDateTo</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="LayoutSpacer" type="ellsp">
+                    <height>20px</height>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="common.tfsAttachmentFinder">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_cwf_oe.AttachmentSearch</input>
+  <label>Attachments Finder</label>
+  <metaVersion>21</metaVersion>
+  <output>doc_cwf_oe.CWDOCATTACHMENT</output>
+  <sortList>
+    <sort type="stitem">
+      <descending>true</descending>
+      <path>doc_cwf_oe.CWDOCATTACHMENT/leaf_CREATIONDATE</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <vDetailForm>doc_cwf_oe.CWDOCATTACHMENT/ui_UserInterface/frmui_Forms/vform_Default</vDetailForm>
+  <searchList>
+    <search type="sitem">
+      <document>doc_cwf_oe.AttachmentSearch</document>
+      <mappedDocument>doc_cwf_oe.CWDOCATTACHMENT</mappedDocument>
+      <mappedPath>doc_cwf_oe.CWDOCATTACHMENT/leaf_DOCID</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwf_oe.AttachmentSearch/leaf_DOCID</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cwf_oe.AttachmentSearch</document>
+      <mappedDocument>doc_cwf_oe.CWDOCATTACHMENT</mappedDocument>
+      <mappedPath>doc_cwf_oe.CWDOCATTACHMENT/leaf_DOCMETADATATYPE</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwf_oe.AttachmentSearch/leaf_DOCMETADATATYPE</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cwf_oe.AttachmentSearch</document>
+      <mappedDocument>doc_cwf_oe.CWDOCATTACHMENT</mappedDocument>
+      <mappedPath>doc_cwf_oe.CWDOCATTACHMENT/leaf_TOPORDERID</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwf_oe.AttachmentSearch/leaf_TOPORDERID</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cwf_oe.AttachmentSearch</document>
+      <mappedDocument>doc_cwf_oe.CWDOCATTACHMENT</mappedDocument>
+      <mappedPath>doc_cwf_oe.CWDOCATTACHMENT/leaf_TOPORDERMETADATATYPE</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwf_oe.AttachmentSearch/leaf_TOPORDERMETADATATYPE</path>
+    </search>
+  </searchList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <script><![CDATA[
+        if(this.controllerOwner.ownerItem instanceof Order) {
+            return true;
+        }
+
+        return (Global.getUserId() == this.controllerOwner.ownerItem.currentUserId);
+      ]]></script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <script><![CDATA[
+        if(this.controllerOwner.ownerItem instanceof Order) {
+            return true;
+        }
+
+        return (Global.getUserId() == this.controllerOwner.ownerItem.currentUserId);
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script><![CDATA[
+        if(this.controllerOwner.ownerItem instanceof Order) {
+            return true;
+        }
+
+        return (Global.getUserId() == this.controllerOwner.ownerItem.currentUserId);
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <label>Finder User Interface</label>
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <label>Attachment Search</label>
+        <valueType>doc_cwf_oe.AttachmentSearch/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <label>AttachmentDoc</label>
+        <valueType>doc_cwf_oe.CWDOCATTACHMENT</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <label>AttachmentDoc</label>
+        <valueType>doc_cwf_oe.CWDOCATTACHMENT/ui_UserInterface</valueType>
+      </variable>
+      <variable name="ownerItem" type="leaf">
+        <valueType>mdl_com.conceptwave.system.Model</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="vform">
+            <label>Result</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findDoc_common.tfsAttachmentFinder/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <elementList>
+                <element name="DateTime" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_common.tfsAttachmentFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf_oe.CWDOCATTACHMENT/leaf_CREATIONDATE</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>300px</width>
+                </element>
+                <element name="userId" type="elfld">
+                  <dataLength>15</dataLength>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_common.tfsAttachmentFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf_oe.CWDOCATTACHMENT/leaf_CREATIONUSER</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>150px</width>
+                </element>
+                <element name="attachmentDescription" type="elfld">
+                  <dataLength>60</dataLength>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_common.tfsAttachmentFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf_oe.CWDOCATTACHMENT/leaf_VISUALKEY</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>300px</width>
+                </element>
+                <element name="image" type="elimg">
+                  <clickMethod type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_common.tfsAttachmentFinder/ui_UserInterface/usrActionMethod_cwfOpen</variablePath>
+                    </variablePathList>
+                  </clickMethod>
+                  <label>!</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_common.tfsAttachmentFinder/ui_UserInterface/action_imageCalculate</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>25px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="cwfAttMenu" type="elmnu">
+                    <icon>/cwf/FileAttach.gif</icon>
+                    <label>Attachment</label>
+                    <menuType>2</menuType>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                      </variablePathList>
+                    </visible>
+                    <elementList>
+                      <element name="cwfOpen" type="elmnu">
+                        <menuAccel type="mAccelP">
+                          <keyName>O</keyName>
+                          <keys enum-type="menuAccelFlag">ALT_KEY</keys>
+                        </menuAccel>
+                        <clickMethod type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_common.tfsAttachmentFinder/ui_UserInterface/usrActionMethod_cwfOpen</variablePath>
+                          </variablePathList>
+                        </clickMethod>
+                        <label>Open</label>
+                        <menuType>5</menuType>
+                      </element>
+                      <element name="cwfAttach" type="elmnu">
+                        <menuAccel type="mAccelP">
+                          <keyName>A</keyName>
+                          <keys enum-type="menuAccelFlag">ALT_KEY</keys>
+                        </menuAccel>
+                        <clickMethod type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_common.tfsAttachmentFinder/ui_UserInterface/usrActionMethod_cwfAttach</variablePath>
+                          </variablePathList>
+                        </clickMethod>
+                        <label>Add/Replace</label>
+                        <menuType>5</menuType>
+                        <visible type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_common.tfsAttachmentFinder/ui_UserInterface/permMethod_cwfAttachView</variablePath>
+                          </variablePathList>
+                        </visible>
+                      </element>
+                      <element name="cwfAttDel" type="elmnu">
+                        <menuAccel type="mAccelP"/>
+                        <clickMethod type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_common.tfsAttachmentFinder/ui_UserInterface/usrActionMethod_cwfAttDel</variablePath>
+                          </variablePathList>
+                        </clickMethod>
+                        <label>Delete</label>
+                        <menuType>5</menuType>
+                        <visible type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_common.tfsAttachmentFinder/ui_UserInterface/permMethod_cwfAttDelView</variablePath>
+                          </variablePathList>
+                        </visible>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="addAction" type="action">
+        <parameterList>
+          <parameter name="addParam" type="rifp">
+            <type>doc_com.conceptwave.system.Document</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          this.cw$super_addAction(addParam);
+          if (this.detail != null && this.detail.model != null &&
+              this.search != null && this.search.model != null) {
+              var newDoc = this.detail.model;
+              newDoc.DOCID = this.ownerItem.id;
+              newDoc.DOCMETADATATYPE = this.ownerItem.metadataTypeNumber;
+          //  newDoc.TOPORDERID = this.ownerItem.order == null ? null : this.ownerItem.order.id;
+              if(this.ownerItem.order == null) {
+                  newDoc.TOPORDERID = this.ownerItem.cwOrderId;
+              }
+              else {
+                  newDoc.TOPORDERID = this.ownerItem.order.id;
+              }
+          }
+        ]]></script>
+      </method>
+      <method name="cwfAttDel" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <validate>true</validate>
+        <script>this.model.selected[0].deleteAttachmentFile();</script>
+      </method>
+      <method name="cwfAttDelView" type="permMethod">
+        <script><![CDATA[
+          var att = Global.getConfigVariable("modifyAttachmentsIfReadOnly");
+          att = att != null && att == "true";
+          return (this.owner == null) || att || !this.owner.readonly;
+        ]]></script>
+      </method>
+      <method name="cwfAttDel_confirm" type="action">
+        <script><![CDATA[
+          (this.model.selected != null && this.model.selected.length == 1 &&
+          !this.model.selected[0].MIMETYPE) ?
+                'UU0131' : 'UU0130'
+        ]]></script>
+      </method>
+      <method name="cwfAttach" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <validate>true</validate>
+        <script><![CDATA[
+          if(this.result.selected!=null && this.result.selected[0]!=null){
+                 var uploadController = new com.conceptwave.system.UploadPopup(null, this);
+                 uploadController.uploadOwner = this.result.selected[0];
+                 return uploadController;
+          }
+        ]]></script>
+      </method>
+      <method name="cwfAttachView" type="permMethod">
+        <script><![CDATA[
+          var att = Global.getConfigVariable("modifyAttachmentsIfReadOnly");
+          att = att != null && att == "true";
+          return (this.owner == null) || att || !this.owner.readonly;
+        ]]></script>
+      </method>
+      <method name="cwfOpen" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <validate>true</validate>
+        <script><![CDATA[
+          if (this.result.selected == null || this.result.selected[0] == null)
+            return;
+          var doc = this.result.selected[0];
+          Global.showAttachment(doc,500,500, doc.MIMETYPE);
+        ]]></script>
+      </method>
+      <method name="deleteAction" type="usrActionMethod">
+        <confirmation>ui_com.conceptwave.system.BaseFinderUserInterface/uimthd_onDeleteConfirm</confirmation>
+        <script><![CDATA[
+          this.cw$super_deleteAction();
+          this.updateAttachmentState();
+        ]]></script>
+      </method>
+      <method name="hideDetailAction" type="action">
+        <script><![CDATA[
+          this.cw$super_hideDetailAction();
+          this.searchAction();
+        ]]></script>
+      </method>
+      <method name="imageCalculate" type="action">
+        <parameterList>
+          <parameter name="document" type="rifp">
+            <mandatory>true</mandatory>
+            <type>doc_cwf_oe.CWDOCATTACHMENT</type>
+          </parameter>
+        </parameterList>
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if (document.MIMETYPE != null) {
+                return '/cwfv/attach.png';
+          }
+        ]]></script>
+      </method>
+      <method name="initSearchDoc" type="uimthd">
+        <script><![CDATA[
+          var searchDoc = this.model.searchDocument;
+
+          if (searchDoc != null && this.ownerItem instanceof Order){
+            searchDoc.TOPORDERID = this.ownerItem.order == null ? null : this.ownerItem.order.id;
+          }
+          else {
+            searchDoc.DOCID = this.ownerItem.id;
+            //searchDoc.DOCMETADATATYPE = this.ownerItem.metadataTypeNumber;
+          }
+        ]]></script>
+      </method>
+      <method name="searchAction" type="action">
+        <parameterList>
+          <parameter name="doValidate" type="rifp">
+            <type>dtype_com.conceptwave.system.Boolean</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          this.cw$super_searchAction(doValidate);
+          this.updateAttachmentState();
+        ]]></script>
+      </method>
+      <method name="setAttachmentState" type="uimthd">
+        <parameterList>
+          <parameter name="state" type="rifp">
+            <type>dtype_com.conceptwave.system.Boolean</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          if (this.ownerItem instanceof OrderItem) {
+            this.ownerItem.hasAttachment = state;
+          }
+        ]]></script>
+      </method>
+      <method name="updateAttachmentState" type="uimthd">
+        <script><![CDATA[
+          if (this.ownerItem instanceof Order && this.result != null) {
+              for(var i=0; i < this.result.length; i++  ) {
+                 if(this.result[i].DOCID == this.result[i].TOPORDERID) {
+                      this.setAttachmentState(true);
+                      return;
+                 }else{
+                      this.setAttachmentState(false);
+                      return;
+                 }
+              }
+          }
+          else if (this.result != null) {
+            this.setAttachmentState(this.result.length > 0);
+          }
+        ]]></script>
+      </method>
+      <method name="returnURL" type="uimthd">
+        <parameterList>
+          <parameter name="doc" type="rifp">
+            <type>doc_com.conceptwave.system.Document</type>
+          </parameter>
+        </parameterList>
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          //var doc = this.result.selected[0];
+          if(doc==null)
+                return null;
+          return Global.getWebappPrefix() + doc.getAttachmentUrl(doc.MIMETYPE);
+        ]]></script>
+      </method>
+      <method name="canDelete" type="permMethod">
+        <script><![CDATA[
+          if(this.ownerItem instanceof Order) {
+              return true;
+          }
+
+          return (Global.getUserId() == this.ownerItem.currentUserId);
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="default" type="findVView">
+      <label>Attachments</label>
+      <outputOverlay>findDoc_common.tfsAttachmentFinder/ui_UserInterface/frmui_Forms/vform_Result</outputOverlay>
+    </view>
+  </viewList>
+</findDoc>

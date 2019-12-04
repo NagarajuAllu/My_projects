@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="738863b08f8c540f998a2ec989e8eeac" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="migrationSTC.getLatestMsgForSIPOHFromCRMByParentOrderNumber">
+  <label>Get Latest Message For SIP HBU Orders From CRM By ParentOrderNumber</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="parentOrderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var latestMsgSent = null;
+
+    var searchDoc = new Document('migrationSTC.search_By_OrderNumber');
+    searchDoc.orderNumber = parentOrderNumber;
+
+    var resultList = Finder.runFinder('migrationSTC.find_STC_HOME_SIP_FROMCRM_ByParentOrderNumber', 'select', searchDoc);
+    if(resultList != null && resultList.length > 0) {
+        latestMsgSent = resultList[0];
+    }
+
+    return latestMsgSent;
+  ]]></script>
+</script>

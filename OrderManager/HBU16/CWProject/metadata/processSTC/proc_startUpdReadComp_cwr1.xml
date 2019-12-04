@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="processSTC.startUpdReadComp_cwr1">
+  <activity name="start" type="seqActivity">
+    <label>start</label>
+    <x>66.0</x>
+    <y>30.0</y>
+    <childList>
+      <child name="firstPassSw" type="switchActivity">
+        <label>First Pass Switch</label>
+        <x>61.331055</x>
+        <y>122.0</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>114.0</x>
+            <y>231.92578</y>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  if (this.process.processDocument.firstPassSubRead == "N")
+                        return true;
+
+                  return false;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>200.0</y>
+            <childList>
+              <child name="alert" type="scriptActivity">
+                <label>Alert</label>
+                <x>30.0</x>
+                <y>231.92578</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      processSTC.sendMailForError("Caught error in update read process " + this.process.id, Global.getConfigVariable("MAIL_RECEIVER_FOR_ALERTS"));
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="waitTimeforSubmit" type="scriptActivity">
+        <label>Wait Time for Submit</label>
+        <x>60.657227</x>
+        <y>327.88867</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              this.process.processDocument.firstPassSubRead = "N";
+              var submitSleep = Global.getConfigVariable("SUBMITSLEEP");
+
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - sleep for : " + submitSleep);
+
+              Global.sleep(submitSleep);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Start Update Read Compensate</label>
+  <metaVersion>23</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

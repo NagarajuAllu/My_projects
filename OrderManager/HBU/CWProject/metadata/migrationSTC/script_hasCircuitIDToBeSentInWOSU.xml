@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="9fba8d7d38add9d8c6dc45867ae5b080" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="migrationSTC.hasCircuitIDToBeSentInWOSU">
+  <guid>{0e951a0c-85b1-0c41-95d2-debc381aaa30}</guid>
+  <label>Has CircuitID To Be Sent In WOSU</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_ds_ws.serviceType</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_ds_ws.orderType</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var hasToBeSent = false;
+
+    if(serviceType != null && orderType != null) {
+          hasToBeSent = (serviceType.toUpperCase() == "DID_SIP" && orderType == "I");
+    }
+
+    return hasToBeSent;
+  ]]></script>
+</script>

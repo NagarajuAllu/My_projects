@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="tfs.findPRNByPRNRId">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_cwt_common.docID</input>
+  <label>Find PRN By PRNR Id</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>21</metaVersion>
+  <output>doc_tfs.prn</output>
+  <type>document</type>
+  <vDetailForm>doc_tfs.prn/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <searchList>
+    <search type="sitem">
+      <document>doc_cwt_common.docID</document>
+      <mappedDocument>doc_tfs.prn</mappedDocument>
+      <mappedPath>doc_tfs.prn/leaf_prnrId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cwt_common.docID/leaf_cwDocID</path>
+    </search>
+  </searchList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_tfs.prn</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_cwt_common.docID/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_tfs.prn/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findPRNByPRNRIdResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="prnId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_prnId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_prnName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnStatus" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_prnStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnrId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_prnrId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_customerName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerProject" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_customerProject</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerProjectPhase" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_customerProjectPhase</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="requirementType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_requirementType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="quantity" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_quantity</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteAName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_siteAName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteAIF" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_siteAIF</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteAJVC" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_siteAJVC</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteZName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_siteZName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteZIF" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_siteZIF</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteZJVC" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_siteZJVC</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="protectionType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_protectionType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="trafficType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_trafficType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="requestType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_requestType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDate" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_creationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="receivedDate" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_receivedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="planType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_planType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="issue" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_issue</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnYear" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_prnYear</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnMonth" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_prnMonth</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="beneficiaryName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_beneficiaryName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="beneficiaryContacts" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_beneficiaryContacts</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteAMPLSDevice" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_siteAMPLSDevice</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteZMPLSDevice" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_siteZMPLSDevice</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="peSlot" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_peSlot</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="pePort" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_pePort</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="peODF" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_peODF</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="peBayLoc" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_peBayLoc</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="portSharing" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_portSharing</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="gsmCellVendor" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_gsmCellVendor</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="planner" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_planner</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="analyzedBy" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_analyzedBy</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="vlanId_2G" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_vlanId_2G</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="vlanId_3G" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_vlanId_3G</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="analysisDate" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_analysisDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="analysisNotes" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_analysisNotes</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="plannedRFSDate" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_plannedRFSDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="createdBy" type="elfld">
+                        <dataLength>30</dataLength>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_createdBy</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="releasedDate" type="eldatetime">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_releasedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cancelledDate" type="eldatetime">
+                        <label>Cancelled Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_cancelledDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnAvailable" type="elchk">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_prnAvailable</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="project" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_project</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="gsmCellId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_gsmCellId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="trafficDiversity" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_trafficDiversity</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="tn" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_tn</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="tnPort" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_tnPort</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="currentUserId" type="elfld">
+                        <dataLength>30</dataLength>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_currentUserId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="businessUnit_Initiator" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_businessUnit_Initiator</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="circuitMapping" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_circuitMapping</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="tfrId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_tfrId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwDocStamp" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_cwDocStamp</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwOrderCreationDate" type="eldate">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_cwOrderCreationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwOrderId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_cwOrderId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwParentId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_cwParentId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="lastUpdatedDate" type="eldate">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_lastUpdatedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="updatedBy" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.prn/leaf_updatedBy</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findPRNByPRNRIdView" type="findVView">
+      <outputOverlay>findDoc_tfs.findPRNByPRNRId/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+    </view>
+  </viewList>
+</findDoc>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="42097b0bc7f1c7e035cdabb5a54abe57" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.timeDelay">
+  <label>Time Delay</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="timeConfig" type="rifp">
+      <type>dtype_processSTC.timeConfigVar</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var msec = Global.getConfigVariable(timeConfig,"10") * 1000;
+    Global.logDebug("Time Delay is " + msec/1000 + " seconds");
+    /****
+    msec += new Date().getTime();
+    while (new Date() < msec){}
+    ***/
+    Global.sleep(msec);
+  ]]></script>
+</script>

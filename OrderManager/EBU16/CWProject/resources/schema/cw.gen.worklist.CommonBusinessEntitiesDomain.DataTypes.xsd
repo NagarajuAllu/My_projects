@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema targetNamespace="worklist.CommonBusinessEntitiesDomain.DataTypes"	
+	xmlns="http://www.w3.org/2001/XMLSchema"	
+	xmlns:worklist.CommonBusinessEntitiesDomain.DataTypes="worklist.CommonBusinessEntitiesDomain.DataTypes"	
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"	
+	xmlns:api_common.data="http://www.conceptwave.com/api/common/data"	
+	xmlns:cwf="http://www.conceptwave.com/system">
+
+
+
+	<import namespace="http://www.conceptwave.com/api/common/data" schemaLocation="api_common.data.xsd"/>
+	<import namespace="http://www.conceptwave.com/system" schemaLocation="cwf.xsd"/>
+
+	<annotation>
+		<documentation>DataTypes</documentation>
+		<appinfo>
+			<metadata>STC Order Management EBU</metadata>
+			<created>Mon Sep 08 11:04:21 CEST 2008</created>
+		</appinfo>
+	</annotation>
+
+	<!-- Data types and elements -->
+
+	<simpleType name="dateTime">
+		<annotation>
+			<documentation>dateTime</documentation>
+		</annotation>
+		<restriction base="xsd:dateTime">
+			<pattern value="yyyy/MM/dd HH:mm"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="decimal10_2">
+		<annotation>
+			<documentation></documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="10"/>
+			<fractionDigits value="2"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="decimal4_0">
+		<annotation>
+			<documentation></documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="4"/>
+			<fractionDigits value="0"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="decimal5_2">
+		<annotation>
+			<documentation></documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="5"/>
+			<fractionDigits value="2"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="integer1">
+		<annotation>
+			<documentation>integer1</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="1"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="integer2">
+		<annotation>
+			<documentation>integer2</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="2"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="integer3">
+		<annotation>
+			<documentation>integer3</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="3"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="integer4">
+		<annotation>
+			<documentation>integer4</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="4"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="integer9">
+		<annotation>
+			<documentation>integer9</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="9"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="ruleLanguage">
+		<annotation>
+			<documentation>ruleLanguage</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="3"/>
+			<enumeration value="CR">
+				<annotation>
+					<documentation>Catalog Rule</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="42S">
+				<annotation>
+					<documentation>JavaScript</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string1">
+		<annotation>
+			<documentation>string1</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="1"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string10">
+		<annotation>
+			<documentation>string10</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="10"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string1024">
+		<annotation>
+			<documentation>string1024</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="1024"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string128">
+		<annotation>
+			<documentation>string128</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string16">
+		<annotation>
+			<documentation>string16</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="16"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string2048">
+		<annotation>
+			<documentation>string2048</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="2048"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string255">
+		<annotation>
+			<documentation>string255</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="255"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string256">
+		<annotation>
+			<documentation>string256</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="256"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string3">
+		<annotation>
+			<documentation>string3</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="3"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string32">
+		<annotation>
+			<documentation>string32</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="32"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string4">
+		<annotation>
+			<documentation>string4</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="4"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string4000">
+		<annotation>
+			<documentation>string4000</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="4000"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string64">
+		<annotation>
+			<documentation>string64</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="64"/>
+		</restriction>
+	</simpleType>
+
+	<!-- Structures -->
+
+	<complexType name="externalIdentifier">
+		<annotation>
+			<documentation>External Identifier</documentation>
+		</annotation>
+			<sequence>
+				<element name="externalId" minOccurs="0" maxOccurs="1" type="api_common.data:externalID"/>
+				<element name="ownerType" minOccurs="0" maxOccurs="1" type="api_common.data:externalIdentifierType"/>
+				<element name="externalsource" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+				<element name="externalidvalue" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="notes">
+		<annotation>
+			<documentation>Notes</documentation>
+		</annotation>
+			<sequence>
+				<element name="creationDate" minOccurs="0" maxOccurs="1" type="worklist.CommonBusinessEntitiesDomain.DataTypes:dateTime"/>
+				<element name="userId" minOccurs="0" maxOccurs="1" type="worklist.CommonBusinessEntitiesDomain.DataTypes:string64"/>
+				<element name="note" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="specificationAttachment">
+		<annotation>
+			<documentation>Attachments that used for support the product such as installation instructions, legal notes, user guides, etc.</documentation>
+			<appinfo>
+				<label>Specification Attachment</label>
+			</appinfo>
+		</annotation>
+			<sequence>
+				<element name="name" minOccurs="0" maxOccurs="1" type="worklist.CommonBusinessEntitiesDomain.DataTypes:string128"/>
+				<element name="value" minOccurs="0" maxOccurs="1" type="worklist.CommonBusinessEntitiesDomain.DataTypes:string2048"/>
+				<element name="type" minOccurs="0" maxOccurs="1" type="worklist.CommonBusinessEntitiesDomain.DataTypes:string32"/>
+				<element name="mimeType" minOccurs="0" maxOccurs="1" type="worklist.CommonBusinessEntitiesDomain.DataTypes:string256"/>
+				<element name="attachmentName" minOccurs="0" maxOccurs="1" type="worklist.CommonBusinessEntitiesDomain.DataTypes:string128"/>
+				<element name="attachmentCode" minOccurs="0" maxOccurs="1" type="worklist.CommonBusinessEntitiesDomain.DataTypes:string32"/>
+				<element name="translations" minOccurs="0" maxOccurs="unbounded" type="worklist.CommonBusinessEntitiesDomain.DataTypes:translationField"/>
+				<element name="URL" minOccurs="0" maxOccurs="1" type="worklist.CommonBusinessEntitiesDomain.DataTypes:string2048"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="timePeriod">
+		<annotation>
+			<documentation>A base(value) entity used to represent a period of time. A TimePeriod is a value entity and does not have any business identity.</documentation>
+			<appinfo>
+				<label>Time Period</label>
+			</appinfo>
+		</annotation>
+			<sequence>
+				<element name="startDateTime" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+				<element name="endDateTime" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="translationField">
+		<annotation>
+			<documentation>Translation Field</documentation>
+		</annotation>
+			<sequence>
+				<element name="fieldname" minOccurs="0" maxOccurs="1" type="worklist.CommonBusinessEntitiesDomain.DataTypes:string32"/>
+				<element name="translation" minOccurs="0" maxOccurs="unbounded" type="worklist.CommonBusinessEntitiesDomain.DataTypes:translationValue"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="translationValue">
+		<annotation>
+			<documentation>Translation Value</documentation>
+		</annotation>
+			<sequence>
+				<element name="text" minOccurs="0" maxOccurs="1" type="cwf:translationText"/>
+				<element name="language" minOccurs="0" maxOccurs="1" type="cwf:languages"/>
+			</sequence>
+		</complexType>
+
+	<!-- Documents -->
+
+</schema>

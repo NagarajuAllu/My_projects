@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="granite.findResourceByNameAndId">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_granite.search_RESOURCE_INST</input>
+  <label>Find Resource By Name And Id</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_granite.RESOURCE_INST</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_granite.RESOURCE_INST/leaf_RESOURCE_INST_ID</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <volatility>1</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_granite.search_RESOURCE_INST</document>
+      <mappedDocument>doc_granite.RESOURCE_INST</mappedDocument>
+      <mappedPath>doc_granite.RESOURCE_INST/leaf_NAME</mappedPath>
+      <operation>equal</operation>
+      <path>doc_granite.search_RESOURCE_INST/leaf_NAME</path>
+    </search>
+    <search type="sitem">
+      <document>doc_granite.search_RESOURCE_INST</document>
+      <mappedDocument>doc_granite.RESOURCE_INST</mappedDocument>
+      <mappedPath>doc_granite.RESOURCE_INST/leaf_RESOURCE_INST_ID</mappedPath>
+      <operation>equal</operation>
+      <path>doc_granite.search_RESOURCE_INST/leaf_RESOURCE_INST_ID</path>
+    </search>
+  </searchList>
+</findDoc>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.STC_ORDER_TYPE_STATUS_DISABLED">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{24608636-d38e-4513-822a-3313d69765c1}</guid>
+  <label>OrderType and OrderStatus Disabled</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="orderType" type="leaf">
+      <column>ORDERTYPE</column>
+      <key>1</key>
+      <table>STC_ORDER_TYPE_STATUS_DISABLED</table>
+      <valueType>dtype_ds_ws.orderType</valueType>
+    </variable>
+    <variable name="orderStatus" type="leaf">
+      <column>ORDERSTATUS</column>
+      <key>2</key>
+      <table>STC_ORDER_TYPE_STATUS_DISABLED</table>
+      <valueType>dtype_ds_ws.orderStatus</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script><![CDATA[return $psCondition && (!this.isStored);]]></script>
+    </method>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        if(this.isStored) {
+            Global.showUserMessage(Global.translateText("AI0002"));
+        }
+        else {
+            Global.showUserMessage(Global.translateText("AI0001"));
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.STC_ORDER_TYPE_STATUS_DISABLED</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STC_ORDER_TYPE_STATUS_DISABLEDGrid" type="elgrd">
+                    <colWidths>110px,150px,110px,150px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="STC_ORDER_TYPE_STATUS_DISABLEDHeader" type="elhdr">
+                        <label>OrderType and OrderStatus Configuration Disabled</label>
+                      </element>
+                      <element name="orderType" type="elslct">
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_ORDER_TYPE_STATUS_DISABLED/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.STC_ORDER_TYPE_STATUS_DISABLED/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderStatus" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_ORDER_TYPE_STATUS_DISABLED/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.STC_ORDER_TYPE_STATUS_DISABLED/leaf_orderStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <confirmation>doc_ds_ws.STC_ORDER_TYPE_STATUS_DISABLED/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

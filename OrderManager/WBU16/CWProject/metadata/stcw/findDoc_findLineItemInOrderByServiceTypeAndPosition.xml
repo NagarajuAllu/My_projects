@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="stcw.findLineItemInOrderByServiceTypeAndPosition">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_stcw.search_LineItemByServiceTypeAndPosition</input>
+  <label>Find LineItem In Order By ServiceType And Position</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_stcw.lineItemDocument</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_stcw.lineItemDocument/leaf_lineItemIdentifier</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <volatility>1</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_stcw.search_LineItemByServiceTypeAndPosition</document>
+      <mappedDocument>doc_stcw.lineItemDocument</mappedDocument>
+      <mappedPath>doc_stcw.lineItemDocument/leaf_elementTypeInOrderTree</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.search_LineItemByServiceTypeAndPosition/leaf_elementTypeInOrderTree</path>
+    </search>
+    <search type="sitem">
+      <document>doc_stcw.search_LineItemByServiceTypeAndPosition</document>
+      <mappedDocument>doc_stcw.lineItemDocument</mappedDocument>
+      <mappedPath>doc_stcw.lineItemDocument/leaf_cwOrderId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.search_LineItemByServiceTypeAndPosition/leaf_orderId</path>
+    </search>
+    <search type="sitem">
+      <document>doc_stcw.search_LineItemByServiceTypeAndPosition</document>
+      <mappedDocument>doc_stcw.lineItemDocument</mappedDocument>
+      <mappedPath>doc_stcw.lineItemDocument/leaf_priority</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.search_LineItemByServiceTypeAndPosition/leaf_priority</path>
+    </search>
+    <search type="sitem">
+      <document>doc_stcw.search_LineItemByServiceTypeAndPosition</document>
+      <mappedDocument>doc_stcw.lineItemDocument</mappedDocument>
+      <mappedPath>doc_stcw.lineItemDocument/leaf_receivedServiceType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.search_LineItemByServiceTypeAndPosition/leaf_receivedServiceType</path>
+    </search>
+    <search type="sitem">
+      <document>doc_stcw.search_LineItemByServiceTypeAndPosition</document>
+      <mappedDocument>doc_stcw.lineItemDocument</mappedDocument>
+      <mappedPath>doc_stcw.lineItemDocument/leaf_serviceType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.search_LineItemByServiceTypeAndPosition/leaf_serviceType</path>
+    </search>
+  </searchList>
+</findDoc>

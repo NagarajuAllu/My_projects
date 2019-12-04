@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="tfsReport.biReportFinder">
+  <dbSchema>INTERFACE</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_tfsReport.biReportSearchDoc</input>
+  <label>BI Report Finder</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_tfsReport.biReportResultDoc</output>
+  <rtConfigurable>true</rtConfigurable>
+  <type>SQL</type>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select v.bi_id,
+               v.creation_date,
+               v.completion_date,
+               v.bi_duration_hours,
+               v.bi_duration_days
+          from stc_bi_report_v v
+         where 1 = 1
+          {[1] and v.tfr_number like ?}
+          {[0] and v.prn_name like ?}
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_tfsReport.biReportSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_tfsReport.biReportResultDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_tfsReport.biReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.biReportFinder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.biReportFinder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="biReportFinderResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.biReportFinder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="biId" type="elfld">
+                        <label>BI Id</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biReportResultDoc/leaf_biId</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="biCreationDate" type="eldate">
+                        <label>BI Creation Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biReportResultDoc/leaf_biCreationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="biCloseDate" type="eldate">
+                        <label>BI Completion Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biReportResultDoc/leaf_biCloseDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="biDurationInHours" type="elfld">
+                        <label>Duration in hours</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biReportResultDoc/leaf_biDurationInHours</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="biDurationInDays" type="elfld">
+                        <label>Duration in days</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biReportResultDoc/leaf_biDurationInDays</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfDetail" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="biReportFinderView" type="findVView">
+      <label>BI Report Finder</label>
+      <outputOverlay>findSql_tfsReport.biReportFinder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+    </view>
+  </viewList>
+</findSql>

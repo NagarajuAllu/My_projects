@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.convertCOMValueToGraniteOne">
+  <label>Convert COM Value To Granite One</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="attributeName" type="rifp">
+      <type>dtype_stcw.attributeName</type>
+    </parameter>
+    <parameter name="comAttributeValue" type="rifp">
+      <type>dtype_stcw.attributeValue</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = null;
+
+    if(stcc.stringHasValue(comAttributeValue)) {
+        var convertValueFinder = new Finder ("stcconf.mapCOMToGraniteValueFinder");
+        convertValueFinder.searchDocument.comAttributeName  = attributeName.toUpperCase();
+        convertValueFinder.searchDocument.comAttributeValue = comAttributeValue.toUpperCase();
+        convertValueFinder.search();
+
+        var resultList = convertValueFinder.list;
+
+        if (resultList != null && resultList.size > 0) {
+            result = resultList.start.graniteAttributeValue;
+        }
+        else {
+            result = comAttributeValue;
+        }
+    }
+
+    return result;
+  ]]></script>
+</script>

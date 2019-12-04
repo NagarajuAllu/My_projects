@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="806b5b63cd607c86e07d681c8d9ddcc8" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.sendOrderUpdateToEAI">
+  <guid>{0c460ed9-1cc2-877c-8166-a9b9d9457b2a}</guid>
+  <label>Send OrderUpdate To EAI</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="request" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // it uses the common method:
+    // sendDataToInterface( request, processId, operationDescription, interfaceName, operationName )
+    var response = stcc.sendDataToInterface(request, processId, "sendOrderUpdateToEAI", "siosu:processRequest_PortType", "processRequest");
+    return response;
+  ]]></script>
+</script>

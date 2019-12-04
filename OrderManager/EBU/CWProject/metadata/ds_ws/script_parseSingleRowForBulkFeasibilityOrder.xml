@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="7e45147b7c3b888492dd923ec9cf2c54" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.parseSingleRowForBulkFeasibilityOrder">
+  <label>Parse Single Row For Bulk Feasibility Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="item" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="configHeader" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="columnSeparator" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="jobId" type="rifp">
+      <type>dtype_ds_ws.integer10</type>
+    </parameter>
+    <parameter name="rowNumber" type="rifp">
+      <type>dtype_ds_ws.integer3</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var documentData = item.split(columnSeparator);
+    var columnNames = configHeader.split(columnSeparator);
+    var dateFormat = "dd/MM/yyyy";
+
+    var resultList = Finder.runFinder("ds_ws.findInsertOrder_BulkMap", "select", null);
+    if(resultList == null || resultList.length == 0) {
+        Global.throwException(Global.translateText("AE0129"));
+    }
+
+    var insertNewFeasibilityOrderDocument = new Document("ds_ws.insertNewFeasibilityOrderDocument");
+    insertNewFeasibilityOrderDocument.jobId = jobId;
+    insertNewFeasibilityOrderDocument.rowNumber = rowNumber;
+
+    var errorsFound = new Array();
+
+
+    for(var i=0; i<resultList.length; i++) {
+        if(resultList[i].columnName == "NV_pair") {
+            // it's a nv pair
+
+            // to be sure that the parent document exists
+            insertNewFeasibilityOrderDocument.save();
+
+            var value = documentData[i];
+
+            if(value != null && value.length > 0) {
+                var nvPair = new Document("ds_ws.STC_INSERTORDER_NVPAIR");
+                nvPair.headerId = insertNewFeasibilityOrderDocument.id;
+                nvPair.name = columnNames[i];
+                nvPair.value = value;
+                nvPair.save();
+            }
+        }
+        else {
+            var value = documentData[i];
+
+            if(value != null && value.length > 0) {
+                if(resultList[i].columnName == "customerReferenceInGranite") {
+                    var customer = granite.getCustomerDataInGranite(value);
+                    if(customer == null) {
+                        errorsFound.push(Global.translateText("AE0130", null, [columnNames[i], value]));
+                        value = null;
+                    }
+                }
+                else if(resultList[i].columnName == "circuitTypeReferenceInGranite") {
+                    var circuitType = granite.getCircuitTypeForPathByName(value);
+                    if(circuitType == null) {
+                        errorsFound.push(Global.translateText("AE0130", null, [columnNames[i], value]));
+                        value = null;
+                    }
+                }
+                else if(resultList[i].columnName == "serviceDate") {
+                    try {
+                        value = Calendar.parseDate(value, dateFormat);
+                    }
+                    catch(exc) {
+                        errorsFound.push(Global.translateText("AE0131", null, [columnNames[i], dateFormat, value]));
+                        value = null;
+                    }
+                }
+                else if(resultList[i].columnName == "circuitBWReferenceInGranite") {
+                    var circuitBW = granite.getCircuitBWByName(value);
+                    if(circuitBW == null) {
+                        errorsFound.push(Global.translateText("AE0130", null, [columnNames[i], value]));
+                        value = null;
+                    }
+                }
+                else if(resultList[i].columnName == "siteAReferenceInGranite" || resultList[i].columnName == "siteZReferenceInGranite") {
+                    var siteData = granite.getSiteDataInGranite(null, value);
+                    if(siteData == null) {
+                        errorsFound.push(Global.translateText("AE0130", null, [columnNames[i], value]));
+                        value = null;
+                    }
+                    else {
+                        value = siteData.SITE_INST_ID;
+                    }
+                }
+                else if(resultList[i].columnName == "reasonCodeForInsertOrder") {
+                    var reasonCode = ds_ws.getReasonCodeForInsertOrderByName(value);
+                    if(reasonCode == null) {
+                        errorsFound.push(Global.translateText("AE0130", null, [columnNames[i], value]));
+                        value = null;
+                    }
+                    else {
+                        value = reasonCode.cwDocId;
+                    }
+                }
+            }
+            insertNewFeasibilityOrderDocument[resultList[i].columnName] = value;
+            insertNewFeasibilityOrderDocument.save();
+        }
+    }
+
+    // performing validation on the doc
+    var validationErrors = insertNewFeasibilityOrderDocument.validate(100, true);
+    if(validationErrors != null) {
+        for(var i=0; i<validationErrors.length; i=i+2) {
+            errorsFound.push(validationErrors[i+1]);
+        }
+    }
+
+    var nvPairs = ds_ws.getAllNVPairsForInsertOrder(insertNewFeasibilityOrderDocument.id);
+    errorsFound = ds_ws.performValidationForNVPairs_InsertedOrder(nvPairs, errorsFound, true);
+
+    return errorsFound;
+  ]]></script>
+</script>

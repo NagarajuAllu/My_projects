@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="common.timeDelay">
+  <label>Time Delay</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="sleepTimeInMilliSec" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    try {
+        Global.logDebug("Time Delay is " + sleepTimeInMilliSec + " milliseconds");
+
+        java.lang.Thread.sleep(sleepTimeInMilliSec);
+    }
+    catch(exc) {
+        debugPrintln("exc " + exc.message);
+    }
+  ]]></script>
+</script>

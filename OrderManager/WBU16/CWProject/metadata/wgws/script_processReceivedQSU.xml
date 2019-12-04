@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="wgws.processReceivedQSU">
+  <label>Process Received QSU</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="parentQuoteNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="quoteItem" type="rifp">
+      <type>doc_com.conceptwave.system.Document</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = "[MANAGE GRANITE WQSU] ";
+
+    fixMissingValuesInIncomingFlow_(input, quoteItem);
+
+    var wosuUnifiedModel = stcw.convertWBUQSUToUnifiedModel(input, parentQuoteNumber, quoteItem.lineItemIdentifier);
+
+    var orchestrationRecord = stcw.getRecordInOrchestrationTableByLineItemId(quoteItem.id);
+    if(orchestrationRecord != null) {
+        var provisioningProcessId = orchestrationRecord.provisioningProcessId;
+        if(provisioningProcessId != null) {
+
+            var processInstance = Process.getProcessInfo(provisioningProcessId);
+            if(processInstance != null) {
+                if(processInstance.processStatus == 8) {
+                    // the process is in status 8, so STALE; resume it
+                    debugPrintln(stcc.getSysdateForLog() + debug + "Resuming Stale process " + provisioningProcessId);
+                    Process.resumeAllStaleProcesses(provisioningProcessId);
+                }
+            }
+
+            var wosuId = stcw.writeGraniteWOSUIntoDB(provisioningProcessId, wosuUnifiedModel);
+
+            var wosuNotificationDS = new DataStructure("stcw.wosuNotificationDS");
+            wosuNotificationDS.wosuId = wosuId;
+
+            debugPrintln(stcc.getSysdateForLog() + debug + "Sending WOSU Notification for <" + input.quoteNumber + "," + input.reservationNumber + "> to process " + provisioningProcessId + "; wosuId = " + wosuId);
+            Process.sendMessageToProcess(provisioningProcessId, null, "stcw.xngServicesNotificationToProcesses/workOrderStatusUpdateNotification", wosuNotificationDS);
+        }
+        else {
+            debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Unable to find Provisioning Process for received granite WQSU for <" + input.quoteNumber + "," + input.reservationNumber + ">; starting standalone process");
+            var wosuId = stcw.writeGraniteWOSUIntoDB(-1, wosuUnifiedModel);
+            startProcessToManageVoiceOrderStatusUpdate_(input, wosuId);
+        }
+    }
+    else {
+        debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Unable to find Provisioning Process for received granite WQSU for <" + input.quoteNumber + "," + input.reservationNumber + ">; starting standalone process");
+        var wosuId = stcw.writeGraniteWOSUIntoDB(-1, wosuUnifiedModel);
+        startProcessToManageVoiceOrderStatusUpdate_(input, wosuId);
+    }
+
+
+
+    //
+    //  fixMissingValuesInIncomingFlow_
+    //
+    function fixMissingValuesInIncomingFlow_ (input, quoteItem) {
+
+        if(input.orderRowItemId != quoteItem.orderRowItemId) {
+    debugPrintln(stcc.getSysdateForLog() + " Received wrong orderRowItemId = '" + input.orderRowItemId + "'; replacing with the correct one = '" + quoteItem.orderRowItemId + "'" );
+              input.orderRowItemId = quoteItem.orderRowItemId;
+        }
+
+        input.reservationNumber = quoteItem.reservationNumber;
+        input.businessUnit = "Wholesale";
+
+    }            // f i x M i s s i n g V a l u e s I n I n c o m i n g F l o w _
+
+
+    //
+    //  startProcessToManageVoiceOrderStatusUpdate_
+    //
+    function startProcessToManageVoiceOrderStatusUpdate_ (input, wosuID) {
+        var processDocument = new Document("stcw.STCW_PROCESS_DOCUMENT");
+        processDocument.firstPassWOSU = "Y";
+        processDocument.latestWOSUId = wosuID;
+
+        var processId = Process.startProcess ("stcw.sendWOSUToCOM", processDocument);
+    debugPrintln(stcc.getSysdateForLog() + " started sendWOSUToCOM <" + input.quoteNumber + ">: processId = " + processId);
+    }      // s t a r t P r o c e s s T  o M a n a g e V o i c e O r d e r S t a t u s U p d a t e _
+  ]]></script>
+</script>

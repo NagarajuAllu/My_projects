@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process filenameHash="4f8cdd37d1d0933bd5d013330fae1a5c" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.global_terminateAllProcessesForUpdatedOrders">
+  <activity name="start" type="seqActivity">
+    <guid>{b916bb43-437a-434c-aa39-24dcfafd2b07}</guid>
+    <label>Start</label>
+    <schedule type="sched">
+      <duration type="dur">
+        <length>P0Y0M0DT0H3M0S</length>
+      </duration>
+    </schedule>
+    <x>84.0</x>
+    <y>37.0</y>
+    <childList>
+      <child name="terminateRunningProcesses" type="scriptActivity">
+        <guid>{81bab161-647d-4071-8672-4d24279c1d60}</guid>
+        <label>Terminate Running Processes</label>
+        <x>209.0</x>
+        <y>24.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var resultList = Finder.runFinder("processSTC.findRunningProcessesForUpdatedOrders", "select", null);
+              if(resultList != null && resultList.length > 0) {
+
+                  for(var i=0; i<resultList.length; i++) {
+                      Process.terminateProcess(resultList[i].processId);
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Terminated Process " + resultList[i].processId);
+
+                  }
+
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{1a64cb47-fe11-4194-a9df-2d6e04e7c0ad}</guid>
+        <label>End</label>
+        <x>336.0</x>
+        <y>36.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Global process completed");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Start Global process 'Terminate All Running Processes For UpdatedOrders");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <guid>{ee6ff932-9cb4-4dbe-bd13-39efde7e5819}</guid>
+  <label>Global: Terminate All Running Processes For UpdatedOrders</label>
+  <metaVersion>4</metaVersion>
+  <priority>8</priority>
+  <type>Global</type>
+</process>

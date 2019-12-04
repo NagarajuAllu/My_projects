@@ -1,0 +1,2216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.lineItemDocument">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{d3ec7b76-d035-4934-b64d-2c6f73367030}</guid>
+  <label>Generic LineItem</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="lineItemIdentifier" type="leaf">
+      <column>LINEITEMIDENTIFIER</column>
+      <propertyElement type="elfld">
+        <label>LineItem Identifier</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string255</valueType>
+    </variable>
+    <variable name="scanMode" type="leaf">
+      <column>SCANMODE</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.scanMode</valueType>
+    </variable>
+    <variable name="lineItemType" type="leaf">
+      <column>LINEITEMTYPE</column>
+      <propertyElement type="elfld">
+        <label>LineItem Type</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string10</valueType>
+    </variable>
+    <variable name="lineItemStatus" type="leaf">
+      <column>LINEITEMSTATUS</column>
+      <propertyElement type="elfld">
+        <label>LineItem Status</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string25</valueType>
+    </variable>
+    <variable name="workOrderNumber" type="leaf">
+      <column>WORKORDERNUMBER</column>
+      <propertyElement type="elfld">
+        <label>WorkOrder Number</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string20</valueType>
+    </variable>
+    <variable name="reservationNumber" type="leaf">
+      <column>RESERVATIONNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Reservation #</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="priority" type="leaf">
+      <column>PRIORITY</column>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.lineItemPriority</valueType>
+    </variable>
+    <variable name="action" type="leaf">
+      <column>ACTION</column>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.lineItemAction</valueType>
+    </variable>
+    <variable name="serviceType" type="leaf">
+      <column>SERVICETYPE</column>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.serviceType</valueType>
+    </variable>
+    <variable name="serviceNumber" type="leaf">
+      <column>SERVICENUMBER</column>
+      <propertyElement type="elfld">
+        <label>Service #</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string255</valueType>
+    </variable>
+    <variable name="oldServiceNumber" type="leaf">
+      <column>OLDSERVICENUMBER</column>
+      <propertyElement type="elfld">
+        <label>Old Service #</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string255</valueType>
+    </variable>
+    <variable name="productType" type="leaf">
+      <column>PRODUCTTYPE</column>
+      <propertyElement type="elfld">
+        <label>Product Type</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string255</valueType>
+    </variable>
+    <variable name="remarks" type="leaf">
+      <column>REMARKS</column>
+      <propertyElement type="elfld">
+        <label>Remarks</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string4000</valueType>
+    </variable>
+    <variable name="icmsSONumber" type="leaf">
+      <column>ICMSSONUMBER</column>
+      <propertyElement type="elfld">
+        <label>ICMS S/O #</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string19</valueType>
+    </variable>
+    <variable name="fictBillingNumber" type="leaf">
+      <column>FICTBILLINGNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Fict. Billing #</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="referenceTelNumber" type="leaf">
+      <column>REFERENCETELNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Reference Tel. #</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="serviceDescription" type="leaf">
+      <column>SERVICEDESCRIPTION</column>
+      <propertyElement type="elfld">
+        <label>Service Description</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="bandwidth" type="leaf">
+      <column>BANDWIDTH</column>
+      <label>Bandwidth</label>
+      <propertyElement type="elfld">
+        <label>Bandwidth</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string30</valueType>
+    </variable>
+    <variable name="accountNumber" type="leaf">
+      <column>ACCOUNTNUMBER</column>
+      <label>Account #</label>
+      <propertyElement type="elfld">
+        <label>Account #</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="oldAccountNumber" type="leaf">
+      <column>OLDACCOUNTNUMBER</column>
+      <label>Account #</label>
+      <propertyElement type="elfld">
+        <label>Old Account #</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="projectId" type="leaf">
+      <column>PROJECTID</column>
+      <propertyElement type="elfld">
+        <label>Project Id</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string30</valueType>
+    </variable>
+    <variable name="locationACity" type="leaf">
+      <column>LOCATIONACITY</column>
+      <label>Location A: City</label>
+      <propertyElement type="elfld">
+        <label>Location A: City</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string60</valueType>
+    </variable>
+    <variable name="locationACCLICode" type="leaf">
+      <column>LOCATIONACCLICODE</column>
+      <label>Location A: CCLI Code</label>
+      <propertyElement type="elfld">
+        <label>Location A: CCLI Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationAAccessCircuit" type="leaf">
+      <column>LOCATIONAACCESSCIRCUIT</column>
+      <label>Location A: Access Circuit</label>
+      <propertyElement type="elfld">
+        <label>Location A: Access Circuit</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationAJVCode" type="leaf">
+      <column>LOCATIONAJVCODE</column>
+      <label>Location A: JV Code</label>
+      <propertyElement type="elfld">
+        <label>Location A: JV Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string40</valueType>
+    </variable>
+    <variable name="locationAExchangeSwitchCode" type="leaf">
+      <column>LOCATIONAEXCHANGESWITCHCODE</column>
+      <label>Location A: Exchange Switch Code</label>
+      <propertyElement type="elfld">
+        <label>Location A: Exchange Switch Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationAAccessType" type="leaf">
+      <column>LOCATIONAACCESSTYPE</column>
+      <label>Location A: Access Type</label>
+      <propertyElement type="elfld">
+        <label>Location A: Access Type</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.locationAccessType</valueType>
+    </variable>
+    <variable name="locationAPlateID" type="leaf">
+      <column>LOCATIONAPLATEID</column>
+      <label>Location A: Plate Id.</label>
+      <propertyElement type="elfld">
+        <label>Location A: Plate Id.</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationAOldPlateID" type="leaf">
+      <column>LOCATIONAOLDPLATEID</column>
+      <propertyElement type="elfld">
+        <label>Location A: Old Plate Id.</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationAContactAddress" type="leaf">
+      <column>LOCATIONACONTACTADDRESS</column>
+      <label>Location A: Contact Address</label>
+      <propertyElement type="elfld">
+        <label>Location A: Contact Address</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationAContactName" type="leaf">
+      <column>LOCATIONACONTACTNAME</column>
+      <label>Location A: Contact Name</label>
+      <propertyElement type="elfld">
+        <label>Location A: Contact Name</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationAContactTel" type="leaf">
+      <column>LOCATIONACONTACTTEL</column>
+      <label>Location A: Contact Tel.</label>
+      <propertyElement type="elfld">
+        <label>Location A: Contact Tel.</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationAContactEmail" type="leaf">
+      <column>LOCATIONACONTACTEMAIL</column>
+      <label>Location A: Contact Email</label>
+      <propertyElement type="elfld">
+        <label>Location A: Contact Email</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationAUnitNumber" type="leaf">
+      <column>LOCATIONAUNITNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Location A: Unit #</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string20</valueType>
+    </variable>
+    <variable name="locationAInterface" type="leaf">
+      <column>LOCATIONAINTERFACE</column>
+      <label>Location A: Interface</label>
+      <propertyElement type="elfld">
+        <label>Location A: Interface</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.locationInterface</valueType>
+    </variable>
+    <variable name="locationARemarks" type="leaf">
+      <column>LOCATIONAREMARKS</column>
+      <label>Location A: Remarks</label>
+      <propertyElement type="elfld">
+        <label>Location A: Remarks</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationBCity" type="leaf">
+      <column>LOCATIONBCITY</column>
+      <label>Location B: City</label>
+      <propertyElement type="elfld">
+        <label>Location B: City</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string60</valueType>
+    </variable>
+    <variable name="locationBCCLICode" type="leaf">
+      <column>LOCATIONBCCLICODE</column>
+      <label>Location B: CCLI Code</label>
+      <propertyElement type="elfld">
+        <label>Location B: CCLI Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationBAccessCircuit" type="leaf">
+      <column>LOCATIONBACCESSCIRCUIT</column>
+      <label>Location B: Access Circuit</label>
+      <propertyElement type="elfld">
+        <label>Location B: Access Circuit</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationBJVCode" type="leaf">
+      <column>LOCATIONBJVCODE</column>
+      <label>Location B: JV Code</label>
+      <propertyElement type="elfld">
+        <label>Location B: JV Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string40</valueType>
+    </variable>
+    <variable name="locationBExchangeSwitchCode" type="leaf">
+      <column>LOCATIONBEXCHANGESWITCHCODE</column>
+      <label>Location B: Exchange Switch Code</label>
+      <propertyElement type="elfld">
+        <label>Location B: Exchange Switch Code</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationBAccessType" type="leaf">
+      <column>LOCATIONBACCESSTYPE</column>
+      <label>Location B: Access Type</label>
+      <propertyElement type="elfld">
+        <label>Location B: Access Type</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.locationAccessType</valueType>
+    </variable>
+    <variable name="locationBPlateID" type="leaf">
+      <column>LOCATIONBPLATEID</column>
+      <label>Location B: Plate Id.</label>
+      <propertyElement type="elfld">
+        <label>Location B: Plate Id.</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationBOldPlateID" type="leaf">
+      <column>LOCATIONBOLDPLATEID</column>
+      <propertyElement type="elfld">
+        <label>Location B: Old Plate Id.</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationBContactAddress" type="leaf">
+      <column>LOCATIONBCONTACTADDRESS</column>
+      <label>Location B: Contact Address</label>
+      <propertyElement type="elfld">
+        <label>Location B: Contact Address</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationBContactName" type="leaf">
+      <column>LOCATIONBCONTACTNAME</column>
+      <label>Location B: Contact Name</label>
+      <propertyElement type="elfld">
+        <label>Location B: Contact Name</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationBContactTel" type="leaf">
+      <column>LOCATIONBCONTACTTEL</column>
+      <label>Location B: Contact Tel.</label>
+      <propertyElement type="elfld">
+        <label>Location B: Contact Tel.</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationBContactEmail" type="leaf">
+      <column>LOCATIONBCONTACTEMAIL</column>
+      <label>Location B: Contact Email</label>
+      <propertyElement type="elfld">
+        <label>Location B: Contact Email</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="locationBUnitNumber" type="leaf">
+      <column>LOCATIONBUNITNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Location B: Unit #</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string20</valueType>
+    </variable>
+    <variable name="locationBInterface" type="leaf">
+      <column>LOCATIONBINTERFACE</column>
+      <label>Location B: Interface</label>
+      <propertyElement type="elfld">
+        <label>Location B: Interface</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.locationInterface</valueType>
+    </variable>
+    <variable name="locationBRemarks" type="leaf">
+      <column>LOCATIONBREMARKS</column>
+      <label>Location B: Remarks</label>
+      <propertyElement type="elfld">
+        <label>Location B: Remarks</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="tbPortNumber" type="leaf">
+      <column>TBPORTNUMBER</column>
+      <label>Tb Port #</label>
+      <propertyElement type="elfld">
+        <label>Tb Port #</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string255</valueType>
+    </variable>
+    <variable name="wires" type="leaf">
+      <column>WIRES</column>
+      <label>Wires</label>
+      <propertyElement type="elfld">
+        <label>Wires</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.wires</valueType>
+    </variable>
+    <variable name="serviceDate" type="leaf">
+      <column>SERVICEDATE</column>
+      <propertyElement type="eldate">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Service Date</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="creationDate" type="leaf">
+      <column>CREATIONDATE</column>
+      <propertyElement type="eldate">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Creation Date</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="dependencies" type="leaf">
+      <column>DEPENDENCIES</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string4000</valueType>
+    </variable>
+    <variable name="elementTypeInOrderTree" type="leaf">
+      <column>ELEMENTTYPEINORDERTREE</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.elementTypeInOrderTree</valueType>
+    </variable>
+    <variable name="isSubmit" type="leaf">
+      <column>ISSUBMIT</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="isCancel" type="leaf">
+      <column>ISCANCEL</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="alreadySentToGranite" type="leaf">
+      <column>ALREADYSENTTOGRANITE</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="alreadyReceivedCancel" type="leaf">
+      <column>ALREADYRECEIVEDCANCEL</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="sentAnytimeToGranite" type="leaf">
+      <column>SENTANYTIMETOGRANITE</column>
+      <propertyElement type="elchk">
+        <label>Sent Anytime To Granite?</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="requestedActionIsA" type="leaf">
+      <column>REQUESTEDACTIONISA</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="disconnectOrderLinked" type="leaf">
+      <column>DISCONNECTORDERLINKED</column>
+      <propertyElement type="elchk">
+        <label>Disconnect Order Linked</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="provisioningFlag" type="leaf">
+      <column>PROVISIONINGFLAG</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.provisioningFlag</valueType>
+    </variable>
+    <variable name="completionDate" type="leaf">
+      <column>COMPLETIONDATE</column>
+      <propertyElement type="eldate">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Completion Date</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="blackListed" type="leaf">
+      <column>BLACKLISTED</column>
+      <propertyElement type="elchk">
+        <label>BlackListed</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="parkProvisioning" type="leaf">
+      <column>PARKPROVISIONING</column>
+      <propertyElement type="elchk">
+        <label>Park Provisioning</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="resumeProvisioning" type="leaf">
+      <column>RESUMEPROVISIONING</column>
+      <propertyElement type="elchk">
+        <label>Resume Provisioning</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="feasibilityType" type="leaf">
+      <column>FEASIBILITYTYPE</column>
+      <propertyElement type="elslct">
+        <label>Feasibility Type</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.feasibilityType</valueType>
+    </variable>
+    <variable name="onHeld" type="leaf">
+      <column>ONHELD</column>
+      <propertyElement type="elchk">
+        <label>On Held</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="omOrderNumber" type="leaf">
+      <column>OMORDERNUMBER</column>
+      <propertyElement type="elfld">
+        <label>OM OrderNumber</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="feasible" type="leaf">
+      <column>FEASIBLE</column>
+      <propertyElement type="elchk">
+        <label>Feasible</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="previousWONumber" type="leaf">
+      <column>PREVIOUSWONUMBER</column>
+      <propertyElement type="elfld">
+        <label>Previous WorkOrder Number</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_ds_ws.string20</valueType>
+    </variable>
+    <variable name="previousActiveDocId" type="leaf">
+      <column>PREVIOUSACTIVEDOCID</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="autoFeasibilityMode" type="leaf">
+      <column>AUTOFEASIBILITYMODE</column>
+      <propertyElement type="elchk">
+        <label>&quot;Auto&quot; Feasibility Mode</label>
+      </propertyElement>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="cwDocStamp" type="leaf">
+      <column>CWDOCSTAMP</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_cwf.cwDocStamp</valueType>
+    </variable>
+    <variable name="cwOrderCreationDate" type="leaf">
+      <column>CWORDERCREATIONDATE</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_cwf.cwOrderCreationDate</valueType>
+    </variable>
+    <variable name="cwOrderId" type="leaf">
+      <column>CWORDERID</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_cwf.cwOrderId</valueType>
+    </variable>
+    <variable name="cwParentId" type="leaf">
+      <column>CWPARENTID</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_cwf.cwParentId</valueType>
+    </variable>
+    <variable name="lastUpdatedDate" type="leaf">
+      <column>LASTUPDATEDDATE</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_cwf.lastUpdatedDate</valueType>
+    </variable>
+    <variable name="updatedBy" type="leaf">
+      <column>UPDATEDBY</column>
+      <table>STC_LINEITEM</table>
+      <valueType>dtype_cwf.updatedBy</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$autoFeasibilityMode" type="laction">
+      <path>doc_ds_ws.lineItemDocument/leaf_autoFeasibilityMode</path>
+      <type>initializer</type>
+      <script>document.autoFeasibilityMode = false;</script>
+    </method>
+    <method name="cwLeafInitAction$feasible" type="laction">
+      <path>doc_ds_ws.lineItemDocument/leaf_feasible</path>
+      <type>initializer</type>
+      <valueType>doc_ds_ws.lineItemDocument/leaf_feasible</valueType>
+      <script>document.feasible = false;</script>
+    </method>
+    <method name="cwLeafInitAction$onHeld" type="laction">
+      <path>doc_ds_ws.lineItemDocument/leaf_onHeld</path>
+      <type>initializer</type>
+      <script>document.onHeld = false;</script>
+    </method>
+    <method name="cwLeafInitAction$resumeProvisioning" type="laction">
+      <path>doc_ds_ws.lineItemDocument/leaf_resumeProvisioning</path>
+      <type>initializer</type>
+      <valueType>doc_ds_ws.lineItemDocument/leaf_resumeProvisioning</valueType>
+      <script>document.resumeProvisioning = false;</script>
+    </method>
+    <method name="cwLeafInitAction$parkProvisioning" type="laction">
+      <path>doc_ds_ws.lineItemDocument/leaf_parkProvisioning</path>
+      <type>initializer</type>
+      <valueType>doc_ds_ws.lineItemDocument/leaf_parkProvisioning</valueType>
+      <script>document.parkProvisioning = false;</script>
+    </method>
+    <method name="cwLeafInitAction$lineItemStatus" type="laction">
+      <path>doc_ds_ws.lineItemDocument/leaf_lineItemStatus</path>
+      <type>initializer</type>
+      <script><![CDATA[document.lineItemStatus = "Hold";]]></script>
+    </method>
+    <method name="cwLeafInitAction$disconnectOrderLinked" type="laction">
+      <path>doc_ds_ws.lineItemDocument/leaf_disconnectOrderLinked</path>
+      <type>initializer</type>
+      <script>return false;</script>
+    </method>
+    <method name="cwLeafInitAction$alreadyReceivedCancel" type="laction">
+      <path>doc_ds_ws.lineItemDocument/leaf_alreadyReceivedCancel</path>
+      <type>initializer</type>
+      <valueType>doc_ds_ws.lineItemDocument/leaf_alreadyReceivedCancel</valueType>
+      <script>return false;</script>
+    </method>
+    <method name="cwLeafInitAction$alreadySentToGranite" type="laction">
+      <path>doc_ds_ws.lineItemDocument/leaf_alreadySentToGranite</path>
+      <type>initializer</type>
+      <valueType>doc_ds_ws.lineItemDocument/leaf_alreadySentToGranite</valueType>
+      <script>return false;</script>
+    </method>
+    <method name="validationForDependencies" type="crule">
+      <code>AE0029</code>
+      <severity>error</severity>
+      <type>validator</type>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+      <script><![CDATA[
+        // throws error if dependencies are set
+        return (document.dependencies != null)
+        // return false;
+      ]]></script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <script><![CDATA[
+        this.cw$super_deletePerm($psCondition);
+        return false;
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script><![CDATA[
+        this.cw$super_editablePerm($psCondition);
+        return false;
+      ]]></script>
+    </method>
+    <method name="cwOnDocVisualKey" type="action">
+      <system>true</system>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+      <script><![CDATA[return this.lineItemIdentifier + " [" + this.serviceType + "]";]]></script>
+    </method>
+    <method name="validationForVAS" type="crule">
+      <code>AE0036</code>
+      <severity>error</severity>
+      <type>validator</type>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+      <script><![CDATA[
+        // throws error if the lineItem is a VAS
+        return ds_ws.isVAS(document.lineItemType);
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="lineItemDetailLabel" type="leaf">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+      </variable>
+      <variable name="nvPairLabel" type="leaf">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+      </variable>
+      <variable name="blockNVLabel" type="leaf">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.lineItemDocument</valueType>
+      </variable>
+      <variable name="reasonCodes" type="leaf">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+      </variable>
+      <variable name="nameValueList" type="leaf">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.nameValueDocument</valueType>
+      </variable>
+      <variable name="blockNameValueList" type="leaf">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.blockNameWithAllValuesDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="Tabset" type="eltset">
+                <elementList>
+                  <element name="TabFrameLineItemDetails" type="eltab">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/frmui_Forms/vform_lineItemDetails</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <label>Line Item Details</label>
+                    <labelPath type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_lineItemDetailLabel</variablePath>
+                      </variablePathList>
+                    </labelPath>
+                  </element>
+                  <element name="TabFrameNVParameters" type="eltab">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/frmui_Forms/vform_lineItemNVParameters</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <label>NameValue Parameters</label>
+                    <labelPath type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_nvPairLabel</variablePath>
+                      </variablePathList>
+                    </labelPath>
+                  </element>
+                  <element name="TabFrameBlockNVParameters" type="eltab">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/frmui_Forms/vform_lineItemBlockNVParameters</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <label>Block NameValue Parameters</label>
+                    <labelPath type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_blockNVLabel</variablePath>
+                      </variablePathList>
+                    </labelPath>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="eldel"/>
+              <override name="hl1" type="elext">
+                <elementList>
+                  <element name="showMessageLog" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/usrActionMethod_showMessages</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show Messages for the LineItem</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/permMethod_showMessagePerm</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="lineItemDetails" type="vform">
+            <label>lineItemDetails</label>
+            <root name="default_lineItemInformationGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="details_lineItem" type="elhdr">
+                  <label>Line Item Details</label>
+                  <showValidation>true</showValidation>
+                </element>
+                <element name="details_elementInfo" type="elhdr">
+                  <label>Element Information</label>
+                </element>
+                <element name="elementInfoGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>1000px</width>
+                  <wrapLabel>true</wrapLabel>
+                  <elementList>
+                    <element name="lineItemIdentifier" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_lineItemIdentifier</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="priority" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>LineItem Priority</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_priority</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="action" type="elfld">
+                      <label>LineItem Action</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_action</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceType" type="elfld">
+                      <label>Service Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_serviceType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="workOrderNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_workOrderNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="reservationNumber" type="elfld">
+                      <label>Reservation #</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_reservationNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_serviceNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="oldServiceNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_oldServiceNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="lineItemStatus" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_lineItemStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="lineItemType" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_lineItemType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="feasibilityType" type="elfld">
+                      <label>Feasibility Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_feasibilityType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="productType" type="elfld">
+                      <label>Product Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_productType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="creationDate" type="eldate">
+                      <label>Creation Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_creationDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceDate" type="eldate">
+                      <label>Service Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_serviceDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="completionDate" type="eldate">
+                      <label>Completion Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_completionDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="accountNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_accountNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="oldAccountNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_oldAccountNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="provisioningFlag" type="elfld">
+                      <label>Provisioning Status For Service/Bundle</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_provisioningFlag</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="omOrderNumber" type="elfld">
+                      <label>OM OrderNumber</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_omOrderNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="dependencies" type="elfld">
+                      <label>Dependencies</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_dependencies</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="elementTypeInOrderTree" type="elfld">
+                      <label>Element Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_elementTypeInOrderTree</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="isSubmit" type="elchk">
+                      <label>Is Submit?</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_isSubmit</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="isCancel" type="elchk">
+                      <label>Is Cancel?</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_isCancel</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="alreadyReceivedCancel" type="elchk">
+                      <label>Already Received Cancel?</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_alreadyReceivedCancel</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="alreadySentToGranite" type="elchk">
+                      <label>Sent Instance To Granite?</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_alreadySentToGranite</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="sentAnytimeToGranite" type="elchk">
+                      <label>Sent Anytime WO To Granite?</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_sentAnytimeToGranite</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="requestedActionIsA" type="elchk">
+                      <label>Original Requested Action = &quot;A&quot; ?</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_requestedActionIsA</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="disconnectOrderLinked" type="elchk">
+                      <label>Disconnect Order Linked?</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_disconnectOrderLinked</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="scanMode" type="elfld">
+                      <label>Scan Mode</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_scanMode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="blackListed" type="elchk">
+                      <label>BlackListed</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_blackListed</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="parkProvisioning" type="elchk">
+                      <label>Park Provisioning</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_parkProvisioning</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="resumeProvisioning" type="elchk">
+                      <label>Resume Provisioning</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_resumeProvisioning</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="onHeld" type="elchk">
+                      <label>On Held</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_onHeld</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="feasible" type="elchk">
+                      <label>Feasible</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_feasible</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="autoFeasibilityMode" type="elchk">
+                      <label>&quot;Auto&quot; Feasibility Mode?</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_autoFeasibilityMode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="previousWONumber" type="elfld">
+                      <label>Previous WorkOrder Number</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_previousWONumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="previousActiveDocId" type="elfld">
+                      <label>Previous Active DocId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_previousActiveDocId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="LayoutSpacer" type="ellsp">
+                  <height>20px</height>
+                  <width>100%</width>
+                </element>
+                <element name="details_remarks" type="elhdr">
+                  <label>Remarks &amp; Reason Codes</label>
+                  <showValidation>true</showValidation>
+                </element>
+                <element name="remarksGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <fixedColWidths>true</fixedColWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>1000px</width>
+                  <wrapLabel>true</wrapLabel>
+                  <elementList>
+                    <element name="remarks" type="eltxtArea">
+                      <columnSpan>5</columnSpan>
+                      <icon>/cwfv/text_view.png</icon>
+                      <label>Remarks</label>
+                      <startRow>true</startRow>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_remarks</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer" type="elrsp">
+                      <height>10px</height>
+                      <rowSpan>10px</rowSpan>
+                    </element>
+                    <element name="reasonCodes" type="eltxtArea">
+                      <columnSpan>5</columnSpan>
+                      <icon>/cwfv/text_view.png</icon>
+                      <label>Reason Codes Received</label>
+                      <startRow>true</startRow>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_reasonCodes</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="LayoutSpacer1" type="ellsp">
+                  <height>20px</height>
+                  <width>100%</width>
+                </element>
+                <element name="details_serviceInfo" type="elhdr">
+                  <label>Service Information</label>
+                </element>
+                <element name="serviceInfoGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>1000px</width>
+                  <wrapLabel>true</wrapLabel>
+                  <elementList>
+                    <element name="bandwidth" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_bandwidth</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="icmsSONumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_icmsSONumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="fictBillingNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_fictBillingNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="projectId" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_projectId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="tbPortNumber" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_tbPortNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="wires" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_wires</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="referenceTelNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_referenceTelNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceDescription" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_serviceDescription</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="LayoutSpacer2" type="ellsp">
+                  <height>20px</height>
+                  <width>100%</width>
+                </element>
+                <element name="details_locationA" type="elhdr">
+                  <label>Location A</label>
+                </element>
+                <element name="groupLocationA" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>1000px</width>
+                  <wrapLabel>true</wrapLabel>
+                  <elementList>
+                    <element name="locationACCLICode" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>CCLI Code</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationACCLICode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationACity" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>City</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationACity</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAAccessCircuit" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Access Circuit</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAAccessCircuit</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAJVCode" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>JV Code</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAJVCode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAExchangeSwitchCode" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Exchange Switch Code</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAExchangeSwitchCode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAAccessType" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Access Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAAccessType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAPlateId" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Plate Id.</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAPlateID</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAOldPlateID" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Old Plate Id.</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAOldPlateID</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAContactAddress" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Contact Address</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAContactAddress</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAContactName" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Contact Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAContactName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAContactTel" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Contact Tel. #</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAContactTel</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAContactEmail" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Contact E-mail</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAContactEmail</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAUnitNumber" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Unit #</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAUnitNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAInterface" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Interface</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAInterface</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationARemarks" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Remarks</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationARemarks</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="details_locationB" type="elhdr">
+                  <label>Location B</label>
+                </element>
+                <element name="groupLocationB" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>1000px</width>
+                  <wrapLabel>true</wrapLabel>
+                  <elementList>
+                    <element name="locationBCCLICode" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>CCLI Code</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBCCLICode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBCity" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>City</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBCity</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBAccessCircuit" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Access Circuit</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBAccessCircuit</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBJVCode" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>JV Code</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBJVCode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBExchangeSwitchCode" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Exchange Switch Code</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBExchangeSwitchCode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBAccessType" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Access Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBAccessType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBPlateID" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Plate Id.</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBPlateID</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBOldPlateID" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Old Plate Id.</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBOldPlateID</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBContactAddress" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Contact Address</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBContactAddress</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBContactName" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Contact Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBContactName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBContactTel" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Contact Tel. #</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBContactTel</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBContactEmail" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Contact E-mail</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBContactEmail</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBUnitNumber" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Unit #</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBUnitNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBInterface" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Interface</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBInterface</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBRemarks" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Remarks</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBRemarks</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="lineItemNVParameters" type="vform">
+            <label>lineItemNVParameters</label>
+            <root name="topStack" type="elsectnstck">
+              <height>100%</height>
+              <visibilityMode>multiple</visibilityMode>
+              <visible type="varPath">
+                <variablePathList>
+                  <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                  <variablePath>doc_com.conceptwave.system.Document/permMethod_visiblePerm</variablePath>
+                </variablePathList>
+              </visible>
+              <width>100%</width>
+              <elementList>
+                <element name="topSection" type="elsect">
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="finderHeader" type="elsecth">
+                      <elementList>
+                        <element name="pref" type="elmnu">
+                          <icon>/cwt/images/16/preferences.png</icon>
+                          <showMenuDropDown>true</showMenuDropDown>
+                          <elementList>
+                            <element name="cwfXLS" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uimthd_downloadNVPairAsXLS</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <icon>/cwf/excel.gif</icon>
+                              <label>Download as XLS</label>
+                            </element>
+                            <element name="cwfCSV" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uimthd_downloadNVPairAsCSV</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <icon>/cwfv/text_marked.png</icon>
+                              <label>Download as CSV</label>
+                            </element>
+                          </elementList>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="details_nameValueHeader" type="elhdr">
+                      <height>30px</height>
+                      <label>NameValue Parameters</label>
+                    </element>
+                    <element name="Table" type="eltabl">
+                      <canReOrder type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                        </variablePathList>
+                      </canReOrder>
+                      <cellWidth>300</cellWidth>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <height>100%</height>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_nameValueList</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <width>915px</width>
+                      <elementList>
+                        <element name="name" type="elfld">
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_nameValueList</variablePath>
+                              <variablePath>doc_ds_ws.nameValueDocument/leaf_name</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                        <element name="value" type="elfld">
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_nameValueList</variablePath>
+                              <variablePath>doc_ds_ws.nameValueDocument/leaf_value</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                        <element name="action" type="elfld">
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_nameValueList</variablePath>
+                              <variablePath>doc_ds_ws.nameValueDocument/leaf_action</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                      </elementList>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="lineItemBlockNVParameters" type="vform">
+            <label>lineItemBlockNVParameters</label>
+            <root name="topStack" type="elsectnstck">
+              <height>100%</height>
+              <visibilityMode>multiple</visibilityMode>
+              <visible type="varPath">
+                <variablePathList>
+                  <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uivar_model</variablePath>
+                  <variablePath>doc_com.conceptwave.system.Document/permMethod_visiblePerm</variablePath>
+                </variablePathList>
+              </visible>
+              <width>100%</width>
+              <elementList>
+                <element name="topSection" type="elsect">
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="finderHeader" type="elsecth">
+                      <elementList>
+                        <element name="pref" type="elmnu">
+                          <icon>/cwt/images/16/preferences.png</icon>
+                          <showMenuDropDown>true</showMenuDropDown>
+                          <elementList>
+                            <element name="cwfXLS" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uimthd_downloadBlockParamsAsXLS</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <icon>/cwf/excel.gif</icon>
+                              <label>Download as XLS</label>
+                            </element>
+                            <element name="cwfCSV" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/uimthd_downloadBlockParamsAsCSV</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <icon>/cwfv/text_marked.png</icon>
+                              <label>Download as CSV</label>
+                            </element>
+                          </elementList>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="details_blockNameValueHeader" type="elhdr">
+                      <height>30px</height>
+                      <label>Block NameValue Parameters</label>
+                    </element>
+                    <element name="Table" type="eltabl">
+                      <canReOrder type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                        </variablePathList>
+                      </canReOrder>
+                      <cellWidth>300</cellWidth>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <height>100%</height>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_blockNameValueList</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <width>915px</width>
+                      <elementList>
+                        <element name="name" type="elfld">
+                          <label>Name</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_blockNameValueList</variablePath>
+                              <variablePath>doc_ds_ws.blockNameWithAllValuesDocument/leaf_name</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                        <element name="values" type="elfld">
+                          <label>Values</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_blockNameValueList</variablePath>
+                              <variablePath>doc_ds_ws.blockNameWithAllValuesDocument/leaf_values</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                        <element name="action" type="elfld">
+                          <label>Action</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_ds_ws.lineItemDocument/ui_UserInterface/leaf_blockNameValueList</variablePath>
+                              <variablePath>doc_ds_ws.blockNameWithAllValuesDocument/leaf_action</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                      </elementList>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="onInit" type="action">
+        <valueType>nmeta_com.conceptwave.system.Object</valueType>
+        <script><![CDATA[
+          var res = this.cw$super_onInit();
+
+          this.reasonCodes = ds_ws.getReasonCodesForUI(this.model.id);
+
+          this.nameValueList = ds_ws.getAllNameValuesByParentElementId(this.model.id);
+
+
+          this.blockNameValueList = ds_ws.getAllBlockNameValuesByParentElementId(this.model.id);
+
+          if(this.model.elementTypeInOrderTree == "B") {
+              this.lineItemDetailLabel = "ParentLineItem Details";
+              this.nvPairLabel = "ParentLineItem Parameters";
+              this.blockNVLabel = "ParentLineItem Block Parameters";
+          }
+          else if(this.model.elementTypeInOrderTree == "C") {
+              this.lineItemDetailLabel = "Service Details";
+              this.nvPairLabel = "Service Parameters";
+              this.blockNVLabel = "Service Block Parameters";
+          }
+          else if(this.model.elementTypeInOrderTree == "S") {
+              this.lineItemDetailLabel = "SubService Details";
+              this.nvPairLabel = "SubService Parameters";
+              this.blockNVLabel = "SubService Block Parameters";
+          }
+          else if(this.model.elementTypeInOrderTree == "T") {
+              this.lineItemDetailLabel = "Sub-SubService Details";
+              this.nvPairLabel = "Sub-SubService Parameters";
+              this.blockNVLabel = "Sub-SubService Block Parameters";
+          }
+
+          return res;
+        ]]></script>
+      </method>
+      <method name="showMessages" type="usrActionMethod">
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>1200</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var finder = new Finder("ds_ws.msgLogFinderNoShowInput");
+          finder.searchDocument.workOrderNumber = this.model.workOrderNumber;
+          finder.searchDocument.fromTime = null;
+          finder.search();
+          debugPrintln("finder.list.length = " + finder.list.length);
+          return finder;
+        ]]></script>
+      </method>
+      <method name="showMessagePerm" type="permMethod">
+        <script>return (this.model.workOrderNumber != null);</script>
+      </method>
+      <method name="downloadNVPairAsCSV" type="uimthd">
+        <script><![CDATA[this.downloadFinderResult("ds_ws.findNameValueByParentElementId", true, true, "nameValueList");]]></script>
+      </method>
+      <method name="downloadNVPairAsXLS" type="uimthd">
+        <script><![CDATA[this.downloadFinderResult("ds_ws.findNameValueByParentElementId", false, true, "nameValueList");]]></script>
+      </method>
+      <method name="downloadBlockParamsAsCSV" type="uimthd">
+        <script><![CDATA[this.downloadFinderResult("ds_ws.findBlockNameValuesByParentElementId", true, false, "blockParameterList");]]></script>
+      </method>
+      <method name="downloadBlockParamsAsXLS" type="uimthd">
+        <script><![CDATA[this.downloadFinderResult("ds_ws.findBlockNameValuesByParentElementId", false, false, "blockParameterList");]]></script>
+      </method>
+      <method name="downloadFinderResult" type="uimthd">
+        <parameterList>
+          <parameter name="finderName" type="rifp">
+            <type>dtype_com.conceptwave.system.String</type>
+          </parameter>
+          <parameter name="isCSV" type="rifp">
+            <type>dtype_com.conceptwave.system.Boolean</type>
+          </parameter>
+          <parameter name="isNVFinder" type="rifp">
+            <type>dtype_com.conceptwave.system.Boolean</type>
+          </parameter>
+          <parameter name="headerFileName" type="rifp">
+            <type>dtype_com.conceptwave.system.String</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          var finder = new Finder(finderName);
+          finder.searchDocument.cwDocID = this.model.id;
+          var res = finder.search();
+          debugPrintln("Res = " + res + "; length = " + res.length);
+
+
+          var finderUI = (isNVFinder ?
+                          new ds_ws.findNameValueByParentElementId.UserInterface(finder, this) :
+                          new ds_ws.findBlockNameValuesByParentElementId.UserInterface(finder, this));
+
+          var download = (isCSV ?
+                          new com.conceptwave.system.DownloadCsv(null, this) :
+                          new com.conceptwave.system.DownloadXls(null, this));
+
+          download.fileName = headerFileName + "-" + this.model.lineItemIdentifier + (isCSV ? ".csv" : ".xls");
+          download.objectToPrint = finderUI;
+          download.mimeType = (isCSV ? "text/csv" : "text/xsl");
+          Global.doDownload(download);
+
+
+
+          return finderUI;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

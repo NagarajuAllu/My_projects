@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="crmToSOMMigration.restartProcessForMigratedVPNOrders">
+  <label>Restart Processes For Migrated VPN Orders</label>
+  <metaVersion>25</metaVersion>
+  <script><![CDATA[
+    var debug = " restartProcessForMigratedVPNOrders - ";
+
+    var ordersFound = 0;
+    var restartedProcessForOrders = 0;
+
+    var foundVPNOrdersMigratedList = Finder.runFinder("crmToSOMMigration.findVPNOrderMigrated", "select", null);
+    if(foundVPNOrdersMigratedList != null && foundVPNOrdersMigratedList.length > 0) {
+        ordersFound = foundVPNOrdersMigratedList.length
+
+        for (var i=0; i<foundVPNOrdersMigratedList.length; i++) {
+    debugPrintln(stcc.getSysdateForLog() + debug + "Found VPN Order <" + foundVPNOrdersMigratedList[i].orderNumber + "> migrated");
+
+            var searchDoc = new Document("stcw.search_bundleOrder");
+            searchDoc.orderNumber = foundVPNOrdersMigratedList[i].orderNumber;
+            var orderListFound = Finder.runFinder("stcw.findAllSTCBundleOrders_Script", "select", searchDoc);
+            if(orderListFound != null && orderListFound.length > 0) {
+                var migratedOrder = Order.getOrderById(orderListFound[0].orderId);
+
+                var provisioningFlagMigratedOrder = migratedOrder.parentLineItems[0].parentLineItem.provisioningFlag;
+
+                if(provisioningFlagMigratedOrder == "ACTIVE") {
+    debugPrintln(stcc.getSysdateForLog() + debug + "VPN Order <" + foundVPNOrdersMigratedList[i].orderNumber + "> has provisioningFlag 'ACTIVE' so nothing to do");
+                }
+                else {
+    debugPrintln(stcc.getSysdateForLog() + debug + "VPN Order <" + foundVPNOrdersMigratedList[i].orderNumber + "> has provisioningFlag 'PROVISIONING' so starting the provisioning process");
+                    var processId = Process.startProcess ("stcw.mainSTCWOrchestrationProcess", migratedOrder.id, migratedOrder.id);
+
+                    restartedProcessForOrders++;
+    debugPrintln(stcc.getSysdateForLog() + debug + "- Started OrchestrationProcess For Order " + migratedOrder.id + "; processId = " + processId);
+                }
+            }
+            else {
+    debugPrintln(stcc.getSysdateForLog() + debug + "ERR ===> Unable to find the order with orderNumber " + foundVPNOrdersMigratedList[i].orderNumber);
+            }
+        } // end for foundVPNOrdersMigratedList
+    }
+    else {
+    debugPrintln(stcc.getSysdateForLog() + debug + "No migrated VPN orders found");
+    }
+
+    var result = [ordersFound, restartedProcessForOrders];
+    return result;
+  ]]></script>
+</script>

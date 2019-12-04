@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="6ab38645197bb2b7eeaa5c2ceaf43f69" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.customerInfoUpdate_cwr2">
+  <activity name="start" type="seqActivity">
+    <guid>{084a17be-ced6-5085-e6a7-056cd0021754}</guid>
+    <label>Start</label>
+    <x>73.34473</x>
+    <y>27.0</y>
+    <childList>
+      <child name="receiveCustomerInfoUpdate" type="subflowActivity">
+        <element>proc_stcw.receiveCustomerInfoUpdate</element>
+        <guid>{0b36611b-02b2-1994-ed69-3235d84b4d3d}</guid>
+        <label>Receive CustomerInfoUpdate</label>
+        <x>39.66797</x>
+        <y>122.0</y>
+      </child>
+      <child name="validateReceivedData" type="scriptActivity">
+        <guid>{03e6f2d3-bd52-86a3-fe67-1675c5b9b37f}</guid>
+        <label>Validate Received  Data</label>
+        <x>288.34473</x>
+        <y>116.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0ac8f215-7d44-fb90-e5a3-32f8b025e5ce}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.updateHistoryEvent (this, "expediterValidation");
+
+              var crmInput = stcw.findGenericProcessMessage (this.process.id, this.process.processDocument.activityName, "wsws:customerInformationUpdate");
+
+              // Applying Validation Rules
+              var error = null;
+              if (crmInput.businessUnit != "Wholesale") {
+                    error = (util.createError ("InvalidBusinessUnit", crmInput.businessUnit));
+              }
+              else {
+                    var validationResult = crmInput.validate(1, true);
+                    if(validationResult != null) {
+                          error      = new DataStructure ("util:Error");
+                          error.code = validationResult[0];
+                          error.text = validationResult[1];
+                    }
+              }
+
+              this.process.processDocument.activityName = "EXPEDITER_VALIDATION";
+              var response = new DataStructure("grws:customerInformationUpdateResponse");
+              var result = response.result;
+              result.AccountNumber           = crmInput.accountNumber;
+              result.BusinessUnit            = crmInput.businessUnit;
+
+              if(error != null) {
+                    // error, so setting additional fields Data Structure
+                    result.Status.ErrorCode        = error.code;
+                    result.Status.ErrorDescription = stcc.limitStringLengthToCRMValue(error.text);
+                    result.Status.ErrorTime        = stcc.getSysdateInYYYYMMDD_HH24MMSS();
+                    result.Status.ErrorType        = "FUNCTIONAL";
+                    result.Status.SystemName       = "Expediter";
+                    result.Status.Status           = "ERROR";
+              }
+              else {
+                    result.Status.Status           = "SUCCESS";
+              }
+
+              this.process.processDocument.ackResult = result.Status.Status;
+              stcw.storeGenericProcessMessage (this.process.id, this.process.processDocument.activityName, response);
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{07ec07e4-c6ff-f8bb-8daf-f7b716e0f059}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="validateEndsOK" type="switchActivity">
+        <guid>{008aae00-d039-5d3e-f48c-234e1dfbee14}</guid>
+        <label>Validate Ends OK?</label>
+        <x>445.34473</x>
+        <y>125.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <guid>{0b9dbc22-595b-3598-488b-0379a5e7038b}</guid>
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <guid>{0b49ad72-607b-1846-2b12-68ee42a66591}</guid>
+                <label>Start</label>
+                <x>450.34473</x>
+                <y>249.0</y>
+                <childList>
+                  <child name="enterCustomerInfoInGranite" type="subflowActivity">
+                    <element>proc_stcw.enterCustomerInfoInGranite</element>
+                    <guid>{0ecec733-f092-ccdb-7b2d-5a7724400d24}</guid>
+                    <label>Enter CustomerInfo In Granite</label>
+                    <x>436.0</x>
+                    <y>352.40234</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{054661e1-9733-d715-f411-7f85636bb2cc}</guid>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.ackResult == "SUCCESS");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{0d4c3c18-b101-9054-21d0-c559bd29a3c0}</guid>
+            <label>No</label>
+            <x>633.3447</x>
+            <y>132.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="forwardCustomerInfoAckToCrm" type="subflowActivity">
+        <element>proc_stcw.forwardCustomerInfoAckToCrm</element>
+        <guid>{05864fa6-e7ca-9f39-44c1-e05964305082}</guid>
+        <label>ForwardCustomerInfo To CRM</label>
+        <x>591.33887</x>
+        <y>354.8047</y>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{06237910-33c3-88ac-c798-6c98ff3660a7}</guid>
+        <label>End</label>
+        <x>633.3447</x>
+        <y>489.11523</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{03835e1b-08ee-9374-de07-a64b0e753b66}</guid>
+            <system>true</system>
+            <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - CustomerInfoUpdate - COMPLETED!!!");]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0c53ceb3-f476-eb7f-6722-78e4ad73c0df}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{096d1cd9-55fe-c73b-0989-7a1af033a33e}</guid>
+        <system>true</system>
+        <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - CustomerInfoUpdate - Start...");]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_stcw.orderProcess</document>
+  <label>Customer Information Update</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_stcw.customerInfoUpdate</process>
+  <revision>2</revision>
+  <type>User</type>
+</process__revision>

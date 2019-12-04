@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="wDashboards.processSummaryReport">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{c3127a69-84dd-4934-8ad8-627e38415b77}</guid>
+  <label>Process Summary Report</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="process" type="leaf">
+      <key>1</key>
+      <label>Numeric process type</label>
+      <propertyElement type="elfld">
+        <label>Process Name</label>
+      </propertyElement>
+      <valueType>dtype_cwf.procMetaId</valueType>
+    </variable>
+    <variable name="executing" type="leaf">
+      <label>Active</label>
+      <propertyElement type="elfld">
+        <label>Active</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+    <variable name="suspended" type="leaf">
+      <label>Suspended</label>
+      <propertyElement type="elfld">
+        <label>Suspended</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+    <variable name="error" type="leaf">
+      <label>Error</label>
+      <propertyElement type="elfld">
+        <label>Error</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+    <variable name="complete" type="leaf">
+      <label>Complete</label>
+      <propertyElement type="elfld">
+        <label>Complete</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+    <variable name="totalNonCompleted" type="leaf">
+      <label>Total</label>
+      <propertyElement type="elfld">
+        <label>Total</label>
+      </propertyElement>
+      <valueType>dtype_wDashboards.counter</valueType>
+    </variable>
+    <variable name="processName" type="leaf">
+      <propertyElement type="elfld">
+        <label>Process Name</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string500</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafCalculateAction$processName" type="laction">
+      <path>doc_wDashboards.processSummaryReport/leaf_processName</path>
+      <type>calculator</type>
+      <script><![CDATA[this.processName = this.formattedValue("process")]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_wDashboards.processSummaryReport</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="processStatusSummaryBarGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="processSummaryHeader" type="elhdr">
+                    <label>Process Status Summary</label>
+                    <showValidation>true</showValidation>
+                    <style>CwFOT</style>
+                  </element>
+                  <element name="processStatusSummaryBarGrid" type="elgrd">
+                    <colWidths>117,117,117,117,117,117,117</colWidths>
+                    <numOfCols>7</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>819px</width>
+                    <elementList>
+                      <element name="process1" type="elslct">
+                        <columnSpan>1</columnSpan>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.processSummaryReport/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.processSummaryReport/leaf_process</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="executing1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.processSummaryReport/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.processSummaryReport/leaf_executing</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="suspended1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.processSummaryReport/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.processSummaryReport/leaf_suspended</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="error1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.processSummaryReport/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.processSummaryReport/leaf_error</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="complete1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.processSummaryReport/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.processSummaryReport/leaf_complete</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="totalNonCompleted1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.processSummaryReport/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.processSummaryReport/leaf_totalNonCompleted</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="processStatusSummaryPie" type="vform">
+            <label>processStatusSummaryPie</label>
+            <root name="processStatusSummaryPieGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="processSummaryHeader" type="elhdr">
+                  <label>Process Status Summary Pie Chart</label>
+                  <showValidation>true</showValidation>
+                  <style>CwFOT</style>
+                </element>
+                <element name="processStatusSummaryPieGrid" type="elgrd">
+                  <colWidths>117,117,117,117,117,117,117</colWidths>
+                  <numOfCols>7</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>819px</width>
+                  <elementList>
+                    <element name="process3" type="elslct">
+                      <columnSpan>1</columnSpan>
+                      <sorted>false</sorted>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_wDashboards.processSummaryReport/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_wDashboards.processSummaryReport/leaf_process</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="executing3" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_wDashboards.processSummaryReport/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_wDashboards.processSummaryReport/leaf_executing</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="suspended3" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_wDashboards.processSummaryReport/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_wDashboards.processSummaryReport/leaf_suspended</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="error3" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_wDashboards.processSummaryReport/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_wDashboards.processSummaryReport/leaf_error</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="complete3" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_wDashboards.processSummaryReport/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_wDashboards.processSummaryReport/leaf_complete</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

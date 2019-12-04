@@ -1,0 +1,1 @@
+create index mau_cworderinstance_mdtype on CWORDERINSTANCE(METADATATYPE) tablespace cwe_ndx;

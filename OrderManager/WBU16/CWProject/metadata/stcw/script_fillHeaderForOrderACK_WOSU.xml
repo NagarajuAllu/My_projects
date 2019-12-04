@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.fillHeaderForOrderACK_WOSU">
+  <label>Fill Header For Order ACK_WOSU</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="header" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="operationNameInEAI" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="systemId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var curDate =  new Date();
+
+    header.systemId = (systemId == null ? "Granite" : systemId);
+    header.serverInfo = Global.getConfigVariable("EOC_HOSTNAME", "EOC");
+    header.messageId = stcc.getCurrentDateInFormat("yyyyMMddHHmmssSSS");
+    header.conversationId = header.messageId;
+    header.timestamp = stcc.getCurrentDateInFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+    header.domainId = "Data";
+    header.serviceId = operationNameInEAI;
+    header.operationType = "Update";
+    header.userId = "URY_WRMS";
+  ]]></script>
+</script>

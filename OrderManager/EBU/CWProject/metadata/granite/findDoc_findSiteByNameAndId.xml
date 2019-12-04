@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc filenameHash="77ed76104cdfd879bca182e8b043f0d" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.findSiteByNameAndId">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_granite.search_SITE_INST</input>
+  <label>Find Site By Name And Id</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>4</metaVersion>
+  <output>doc_granite.SITE_INST</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_granite.SITE_INST/leaf_SITE_HUM_ID</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_granite.search_SITE_INST</document>
+      <mappedDocument>doc_granite.SITE_INST</mappedDocument>
+      <mappedPath>doc_granite.SITE_INST/leaf_SITE_INST_ID</mappedPath>
+      <operation>equal</operation>
+      <path>doc_granite.search_SITE_INST/leaf_INST_ID</path>
+    </search>
+    <search type="sitem">
+      <document>doc_granite.search_SITE_INST</document>
+      <mappedDocument>doc_granite.SITE_INST</mappedDocument>
+      <mappedPath>doc_granite.SITE_INST/leaf_CLLI</mappedPath>
+      <operation>like</operation>
+      <path>doc_granite.search_SITE_INST/leaf_CLLI</path>
+    </search>
+    <search type="sitem">
+      <document>doc_granite.search_SITE_INST</document>
+      <mappedDocument>doc_granite.SITE_INST</mappedDocument>
+      <mappedPath>doc_granite.SITE_INST/leaf_NUM</mappedPath>
+      <operation>like</operation>
+      <path>doc_granite.search_SITE_INST/leaf_NUM</path>
+    </search>
+    <search type="sitem">
+      <document>doc_granite.search_SITE_INST</document>
+      <mappedDocument>doc_granite.SITE_INST</mappedDocument>
+      <mappedPath>doc_granite.SITE_INST/leaf_SITE_HUM_ID</mappedPath>
+      <operation>like</operation>
+      <path>doc_granite.search_SITE_INST/leaf_SITE_HUM_ID</path>
+    </search>
+    <search type="sitem">
+      <document>doc_granite.search_SITE_INST</document>
+      <mappedDocument>doc_granite.SITE_INST</mappedDocument>
+      <mappedPath>doc_granite.SITE_INST/leaf_STATUS</mappedPath>
+      <operation>like</operation>
+      <path>doc_granite.search_SITE_INST/leaf_STATUS</path>
+    </search>
+  </searchList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_granite.SITE_INST</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_granite.SITE_INST/ui_UserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_granite.search_SITE_INST/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findSiteByNameResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="SITE_INST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_SITE_INST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="SITE_HUM_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_SITE_HUM_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="STATUS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_STATUS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CLLI" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_CLLI</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="NUM" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_NUM</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="BASE_NUM" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_BASE_NUM</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="LATITUDE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_LATITUDE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="LONGITUDE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_LONGITUDE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="PARENT_SITE_INST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_PARENT_SITE_INST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RESTRICTIONS" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_RESTRICTIONS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CONTACTS" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_CONTACTS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="COMMENTS" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_COMMENTS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ADDRESS" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_ADDRESS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CITY" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_CITY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="STATE_PROV" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_STATE_PROV</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="POST_CODE_1" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_POST_CODE_1</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="POST_CODE_2" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_POST_CODE_2</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="FLOOR" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_FLOOR</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ROOM" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_ROOM</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="NPA_NXX" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_NPA_NXX</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="COUNTY" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_COUNTY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="COUNTRY" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_COUNTRY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="INST_VER" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.SITE_INST/leaf_INST_VER</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_granite.findSiteByNameAndId/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findSitesView" type="findVView">
+      <inputOverlay>doc_granite.search_SITE_INST/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find Sites</label>
+      <outputOverlay>findDoc_granite.findSiteByNameAndId/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findDoc>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="workflow.tracking">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{fb5af847-4f24-4fe9-8514-d4da33d755cf}</guid>
+  <label>Tracking</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_tracking</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="wlId" type="leaf">
+      <column>WL_ID</column>
+      <table>STC_tracking</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="processId" type="leaf">
+      <column>PROCESS_ID</column>
+      <table>STC_tracking</table>
+      <valueType>dtype_cwf.processId</valueType>
+    </variable>
+    <variable name="orderId" type="leaf">
+      <column>ORDER_ID</column>
+      <table>STC_tracking</table>
+      <valueType>dtype_cwf.cwOrderId</valueType>
+    </variable>
+    <variable name="objectId" type="leaf">
+      <column>OBJECT_ID</column>
+      <table>STC_tracking</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="objectType" type="leaf">
+      <column>OBJECT_TYPE</column>
+      <table>STC_tracking</table>
+      <valueType>dtype_common.objectType</valueType>
+    </variable>
+    <variable name="operationName" type="leaf">
+      <column>OPERATION_NAME</column>
+      <table>STC_tracking</table>
+      <valueType>dtype_cwf.interOper</valueType>
+    </variable>
+    <variable name="assignToUserDateTime" type="leaf">
+      <column>ASSIGN_TO_USER_DATE</column>
+      <table>STC_tracking</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="completionDateTime" type="leaf">
+      <column>COMPLETION_DATE</column>
+      <table>STC_tracking</table>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="actionPerformed" type="leaf">
+      <column>PERFORMED_TASK_NAME</column>
+      <table>STC_tracking</table>
+      <valueType>dtype_common.string256</valueType>
+    </variable>
+    <variable name="totalTimeInHours" type="leaf">
+      <dontMap>true</dontMap>
+      <valueType>dtype_common.integer5</valueType>
+    </variable>
+    <variable name="userId" type="leaf">
+      <column>USER_ID</column>
+      <table>STC_tracking</table>
+      <valueType>dtype_cwf.userId</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocLoad" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocLoad();
+
+        this.totalTimeInHours = null;
+        if(this.assignToUserDateTime != null && this.completionDateTime != null) {
+            var diffDateInMillisec = this.completionDateTime.getTime() - this.assignToUserDateTime.getTime();
+            this.totalTimeInHours = Math.ceil(diffDateInMillisec/(1000*60*60));
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_workflow.tracking</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="trackingGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>830px</width>
+                    <elementList>
+                      <element name="trackingHeader" type="elhdr">
+                        <label>Tracking</label>
+                      </element>
+                      <element name="objectType" type="elslct">
+                        <label>Object Type</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_workflow.tracking/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_objectType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="operationName" type="elfld">
+                        <label>Operation Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_workflow.tracking/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_operationName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="actionPerformed" type="elfld">
+                        <label>Action Performed</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_workflow.tracking/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_actionPerformed</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="assignToUserDateTime" type="eldatetime">
+                        <label>Assigned To User Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_workflow.tracking/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_assignToUserDateTime</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="completionDateTime" type="eldatetime">
+                        <label>Completion Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_workflow.tracking/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_completionDateTime</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="totalTimeInHours" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_workflow.tracking/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_totalTimeInHours</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="userId" type="elfld">
+                        <dataLength>30</dataLength>
+                        <label>User Id</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_workflow.tracking/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_userId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

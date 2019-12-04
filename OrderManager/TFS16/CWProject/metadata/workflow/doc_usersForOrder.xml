@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="workflow.usersForOrder">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{2ab37dc2-e30e-4019-92f6-87fde1808dd5}</guid>
+  <label>Users For Order</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="userId_Initiator" type="leaf">
+      <column>USERID_INITIATOR</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.orderInitiatorUserReference</valueType>
+    </variable>
+    <variable name="userId_Integration" type="leaf">
+      <column>USERID_INTEGRATION</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.integrationUserReference</valueType>
+    </variable>
+    <variable name="userId_BB_Transport_Design" type="leaf">
+      <column>USERID_BB_TRANSPORT_DESIGN</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.bbTransportDesignUserReference</valueType>
+    </variable>
+    <variable name="userId_Transport_Mapping" type="leaf">
+      <column>USERID_TRANSPORT_MAPPING</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.transportMappingUserReference</valueType>
+    </variable>
+    <variable name="userId_FA_Tx" type="leaf">
+      <column>USERID_FATX</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.faTxUserReference</valueType>
+    </variable>
+    <variable name="userId_TFA_ModSquad" type="leaf">
+      <column>USERID_TFA_MODSQUAD</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.tfaModSquadUserReference</valueType>
+    </variable>
+    <variable name="userId_TFA" type="leaf">
+      <column>USERID_TFA</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.tfaUserReference</valueType>
+    </variable>
+    <variable name="userId_AS" type="leaf">
+      <column>USERID_AS</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.asUserReference</valueType>
+    </variable>
+    <variable name="userId_FNI" type="leaf">
+      <column>USERID_FNI</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.fniUserReference</valueType>
+    </variable>
+    <variable name="userId_NetworkDesign" type="leaf">
+      <column>USERID_NETWORKDESIGN</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.networkDesignUserReference</valueType>
+    </variable>
+    <variable name="userId_FacilityDesign" type="leaf">
+      <column>USERID_FACILITYDESIGN</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.facilityDesignUserReference</valueType>
+    </variable>
+    <variable name="userId_XC" type="leaf">
+      <column>USERID_XC</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.xcUserReference</valueType>
+    </variable>
+    <variable name="userId_SwitchActivation" type="leaf">
+      <column>USERID_SWITCHACTIVATION</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.switchActUserReference</valueType>
+    </variable>
+    <variable name="userId_Quality" type="leaf">
+      <column>USERID_QUALITY</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.qualityUserReference</valueType>
+    </variable>
+    <variable name="userId_Site" type="leaf">
+      <column>USERID_SITE</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.siteUserReference</valueType>
+    </variable>
+    <variable name="userId_Verification" type="leaf">
+      <column>USERID_VERIFICATION</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.verificationUserReference</valueType>
+    </variable>
+    <variable name="userId_BI" type="leaf">
+      <column>USERID_BI</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.biUserReference</valueType>
+    </variable>
+    <variable name="userId_AsBuilt" type="leaf">
+      <column>USERID_ASBUILT</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_up_priv.asBuiltUserReference</valueType>
+    </variable>
+    <variable name="orderId" type="leaf">
+      <column>ORDER_ID</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="orderItemId" type="leaf">
+      <column>ORDERITEMID</column>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="isForDefaultProcess" type="leaf">
+      <column>IS_DEF_PROC</column>
+      <propertyElement type="elchk"/>
+      <table>STC_USERS4ORDER</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$isForDefaultProcess" type="laction">
+      <path>doc_workflow.usersForOrder/leaf_isForDefaultProcess</path>
+      <type>initializer</type>
+      <script>document.isForDefaultProcess = true;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_workflow.usersForOrder</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="VerticalLayout" type="elvlt">
+                <elementList>
+                  <element name="defFormFrame" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_workflow.usersForOrder/ui_UserInterface/frmui_Forms/vform_defForm</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_workflow.usersForOrder/ui_UserInterface/permMethod_isDefaultFormVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="biFormFrame" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_workflow.usersForOrder/ui_UserInterface/frmui_Forms/vform_biForm</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_workflow.usersForOrder/ui_UserInterface/permMethod_isBIFormVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="biForm" type="vform">
+            <label>biForm</label>
+            <root name="defaultGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="usersForOrderGrid" type="elgrd">
+                  <colWidths>110px,160px,110px,160px,110px,160px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>960px</width>
+                  <elementList>
+                    <element name="usersForOrderHeader" type="elhdr">
+                      <label>Users For BI Order</label>
+                    </element>
+                    <element name="userId_BB_Transport_Design" type="elref">
+                      <dataLength>30</dataLength>
+                      <iconAction type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_com.conceptwave.system.DocumentUserInterface/usrActionMethod_onRefClick</variablePath>
+                        </variablePathList>
+                      </iconAction>
+                      <label>Backbone Transport Design UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_BB_Transport_Design</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_FNI" type="elref">
+                      <dataLength>30</dataLength>
+                      <label>FNI UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_FNI</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_FA_Tx" type="elref">
+                      <dataLength>30</dataLength>
+                      <label>FA-Tx UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_FA_Tx</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_TFA_ModSquad" type="elref">
+                      <dataLength>30</dataLength>
+                      <label>TFA ModSquad UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_TFA_ModSquad</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_BI" type="elref">
+                      <dataLength>30</dataLength>
+                      <label>BI UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_BI</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="defForm" type="vform">
+            <label>defForm</label>
+            <root name="defaultGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="usersForOrderGrid" type="elgrd">
+                  <colWidths>110px,160px,110px,160px,110px,160px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>960px</width>
+                  <elementList>
+                    <element name="usersForOrderHeader" type="elhdr">
+                      <label>Users For Order</label>
+                    </element>
+                    <element name="userId_Initiator" type="elref">
+                      <dataLength>30</dataLength>
+                      <iconAction type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_com.conceptwave.system.DocumentUserInterface/usrActionMethod_onRefClick</variablePath>
+                        </variablePathList>
+                      </iconAction>
+                      <label>Order Initiator UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_Initiator</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_NetworkDesign" type="elref">
+                      <dataLength>30</dataLength>
+                      <label>Network Design UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_NetworkDesign</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_FacilityDesign" type="elref">
+                      <dataLength>30</dataLength>
+                      <label>Facility Design UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_FacilityDesign</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_XC" type="elref">
+                      <dataLength>30</dataLength>
+                      <label>XC UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_XC</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_SwitchActivation" type="elref">
+                      <label>Switch Activation UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_SwitchActivation</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_Quality" type="elref">
+                      <label>Quality UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_Quality</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_Site" type="elref">
+                      <label>Site UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_Site</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_Integration" type="elref">
+                      <label>Integration UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_Integration</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_Verification" type="elref">
+                      <label>Verification UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_Verification</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="userId_BI" type="elref">
+                      <dataLength>30</dataLength>
+                      <label>BI UserId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_workflow.usersForOrder/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_workflow.usersForOrder/leaf_userId_BI</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="isDefaultFormVisible" type="permMethod">
+        <script>return this.model.isForDefaultProcess;</script>
+      </method>
+      <method name="isBIFormVisible" type="permMethod">
+        <script>return (! this.model.isForDefaultProcess);</script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <validate>true</validate>
+        <script><![CDATA[
+          this.cw$super_save();
+
+          Global.closeDialog(this.parent);
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

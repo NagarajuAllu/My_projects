@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="workflow.dataSharingForBIAssociation">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{2b9c2fd9-42ed-4fb8-9d0b-96b0ef32f1d7}</guid>
+  <label>Data Sharing For BI Association</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="processId" type="leaf">
+      <column>PROCESS_ID</column>
+      <key>1</key>
+      <table>STC_DATA_4_BI_ASSOC_PROCESS</table>
+      <valueType>dtype_cwf.processId</valueType>
+    </variable>
+    <variable name="parentProcessId" type="leaf">
+      <column>PARENT_PROCESS_ID</column>
+      <table>STC_DATA_4_BI_ASSOC_PROCESS</table>
+      <valueType>dtype_cwf.processId</valueType>
+    </variable>
+    <variable name="requestNotification" type="leaf">
+      <column>REQUEST_NOTIFICATION</column>
+      <table>STC_DATA_4_BI_ASSOC_PROCESS</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="prnSource" type="leaf">
+      <column>PRN_SOURCE</column>
+      <table>STC_DATA_4_BI_ASSOC_PROCESS</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$prnSource" type="laction">
+      <path>doc_workflow.dataSharingForBIAssociation/leaf_prnSource</path>
+      <type>initializer</type>
+      <script>document.prnSource = false;</script>
+    </method>
+  </methodList>
+</document>

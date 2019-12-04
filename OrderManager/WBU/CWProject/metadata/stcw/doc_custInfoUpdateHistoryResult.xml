@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="8cf356fb6b8fe4d5306b1a7184378505" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.custInfoUpdateHistoryResult">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{013dab37-589f-45c6-a30d-e3a9689e12e9}</guid>
+  <label>CustInfoUpdate History Result</label>
+  <metaVersion>3</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <guid>{0a74d0c2-146d-3ae1-3b16-6ec59efe3dcc}</guid>
+      <key>1</key>
+      <label>System document ID</label>
+      <propertyElement type="elfld">
+        <label>System document ID</label>
+      </propertyElement>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="accountNumber" type="leaf">
+      <guid>{04747c07-b86d-ea3b-d52e-969934cc3524}</guid>
+      <label>Account Number</label>
+      <propertyElement type="elfld">
+        <label>Account Number</label>
+      </propertyElement>
+      <valueType>dtype_stcw.accountNumber</valueType>
+    </variable>
+    <variable name="accountName" type="leaf">
+      <guid>{08bee593-7b81-8371-cf84-f3fa0cac5966}</guid>
+      <label>Account Name</label>
+      <propertyElement type="elfld">
+        <label>Account Name</label>
+      </propertyElement>
+      <valueType>dtype_stcw.accountName</valueType>
+    </variable>
+    <variable name="processId" type="leaf">
+      <guid>{0e28c50b-75f3-6fdc-f61e-7e53899be813}</guid>
+      <label>Process Id</label>
+      <propertyElement type="elfld">
+        <label>Process Id</label>
+      </propertyElement>
+      <valueType>dtype_cwf_pm.PROCESS_ID</valueType>
+    </variable>
+    <variable name="processStatus" type="leaf">
+      <guid>{05c7202d-ed9d-1215-2451-49710d3f2de5}</guid>
+      <label>Process Status</label>
+      <propertyElement type="elfld">
+        <label>Process Status</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="PROCESS_METADATYPE" type="leaf">
+      <guid>{0cc48986-aa89-e938-d2cb-9f0b662ecdba}</guid>
+      <label>Process Type Name</label>
+      <propertyElement type="elfld">
+        <label>Process Type Name</label>
+      </propertyElement>
+      <valueType>dtype_cwf.procMetaId</valueType>
+    </variable>
+    <variable name="METADATATYPE_VER" type="leaf">
+      <guid>{0fd41720-ff6d-e0be-1e48-f161ec6712bf}</guid>
+      <label>Process Version</label>
+      <propertyElement type="elfld">
+        <label>Process Version</label>
+      </propertyElement>
+      <valueType>dtype_cwf.metadataVer</valueType>
+    </variable>
+    <variable name="revision" type="leaf">
+      <valueType>dtype_cwf_pm.revision</valueType>
+    </variable>
+    <variable name="activityPath" type="leaf">
+      <guid>{0615ff64-4ecc-31ee-4511-825b3ea3f7a4}</guid>
+      <label>Activity Path</label>
+      <propertyElement type="elfld">
+        <label>Activity Path</label>
+      </propertyElement>
+      <valueType>dtype_rpts.ActivityPath</valueType>
+    </variable>
+    <variable name="activityDescription" type="leaf">
+      <guid>{0035e73f-e51d-e0ae-b80b-04528b38557d}</guid>
+      <label>Activity Description</label>
+      <propertyElement type="elfld">
+        <label>Activity Description</label>
+      </propertyElement>
+      <valueType>dtype_rpts.ActivityDescription</valueType>
+    </variable>
+    <variable name="messageId" type="leaf">
+      <guid>{0362fc88-6fa4-4d47-dfab-8871ce2117f6}</guid>
+      <label>Message Id</label>
+      <propertyElement type="elfld">
+        <label>Message Id</label>
+      </propertyElement>
+      <valueType>dtype_stcw.messageId</valueType>
+    </variable>
+    <variable name="messageCreationTime" type="leaf">
+      <guid>{031eefc8-73ff-e700-8dec-95329741d305}</guid>
+      <label>Message Creation Time</label>
+      <propertyElement type="eldatetime">
+        <label>Message Creation Time</label>
+      </propertyElement>
+      <valueType>dtype_stcc.formattedDateTime</valueType>
+    </variable>
+    <variable name="messageReceivedTime" type="leaf">
+      <guid>{0974d6fb-628b-3dc4-a967-3b763cb6e64e}</guid>
+      <label>Message Received Time</label>
+      <propertyElement type="eldatetime">
+        <label>Message Received Time</label>
+      </propertyElement>
+      <valueType>dtype_stcc.formattedDateTime</valueType>
+    </variable>
+    <variable name="messageSentTime" type="leaf">
+      <guid>{0a4612c9-93e6-e61e-22ea-1ba675d3c079}</guid>
+      <label>Message Sent Time</label>
+      <propertyElement type="eldatetime">
+        <label>Message Sent Time</label>
+      </propertyElement>
+      <valueType>dtype_stcc.formattedDateTime</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.custInfoUpdateHistoryResult</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="searchResult" type="vform">
+            <label>searchResult</label>
+            <root name="searchResultGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="searchResultGrid" type="elgrd">
+                  <colWidths>195,195,195,195</colWidths>
+                  <numOfCols>4</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>780px</width>
+                  <elementList>
+                    <element name="accountNumber1" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_accountNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="accountName1" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_accountName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="processId1" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_processId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="PROCESS_METADATYPE1" type="elslct">
+                      <columnSpan>2</columnSpan>
+                      <sorted>false</sorted>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_PROCESS_METADATYPE</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="revision" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_revision</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Process_Status" type="eltxtArea">
+                      <autoFitText>true</autoFitText>
+                      <cellAlignment>left,center</cellAlignment>
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <height>22px</height>
+                      <labeAlign>center</labeAlign>
+                      <label>Process Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/ui_UserInterface/action_searchResult$cwCalculate_Process_Status</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="activityDescription1" type="elfld">
+                      <columnSpan>2</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_activityDescription</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="messageCreationTime1" type="eldatetime">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_messageCreationTime</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="messageReceivedTime1" type="eldatetime">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_messageReceivedTime</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="messageSentTime1" type="eldatetime">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_messageSentTime</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+      <method name="searchResult$cwCalculate_Process_Status" type="action">
+        <system>true</system>
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          var status = null;
+          switch(this.model.processStatus) {
+                case 1:
+                      status = "Executing";
+                      break;
+                case 2:
+                      status = "Suspended";
+                      break;
+                case 3:
+                      status = "Completed";
+                      break;
+                case 4:
+                      status = "Aborted";
+                      break;
+                case 5:
+                      status = "Error";
+                      break;
+                case 6:
+                      status = "Terminated";
+                      break;
+                default:
+                      status = "Not Started";
+                      break;
+          }
+
+          return status;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

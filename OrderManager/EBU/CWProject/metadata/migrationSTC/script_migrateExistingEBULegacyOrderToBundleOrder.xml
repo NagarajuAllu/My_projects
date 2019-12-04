@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="eaae834010cd2b7f15c98c72b24ffb99" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="migrationSTC.migrateExistingEBULegacyOrderToBundleOrder">
+  <label>Migrate Existing EBULegacyOrder To BundleOrder</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="existingOrder" type="rifp">
+      <type>order_ds_ws.default_orderSTC</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var bundleOrder = null;
+
+    if(existingOrder != null) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] migrateExistingOrderToBundleOrder - OrderNumber: " + existingOrder.orderMessage.orderNumber);
+
+        var existingBundleOrder = ds_ws.getBundleOrderByOrderNumber(existingOrder.orderMessage.orderNumber);
+
+        if(existingBundleOrder == null) {
+            // checking the status of the WO in Granite to verify that the status of the Order in WD is in sync
+            if(existingOrder.orderMessage.orderStatus != "COMPLETED" && existingOrder.orderMessage.orderStatus != "CANCELLED") {
+                var woStatusInGranite = granite.getStatusInGraniteForWO(existingOrder.orderMessage.orderNumber);
+                if(woStatusInGranite == 7 || woStatusInGranite == 9) {
+                    existingOrder.orderMessage.orderStatus = "COMPLETED";
+                    if(existingOrder.serviceParametersList != null && existingOrder.serviceParametersList.length > 0) {
+                       existingOrder.serviceParametersList[0].serviceParameters.serviceStatus = "COMPLETED";
+                    }
+
+                    existingOrder.save();
+                }
+            }
+
+            // convert existingOrder in bundleOrder
+            bundleOrder = new Order("ds_ws:bundleOrderSTC");
+
+            // mapping orderHeader
+            existingOrder.orderMessage.mapTo(bundleOrder.orderHeader);
+            bundleOrder.orderHeader.isMigrated = true;
+            bundleOrder.orderHeader.completionDate = granite.getWOCompletionDate(existingOrder.orderMessage.orderNumber);
+            var latestMsgSentToGranite = migrationSTC.getLatestMessageSentToGraniteByOrderNumber(existingOrder.orderMessage.orderNumber);
+
+            // mapping bundle
+            var bundleDoc = bundleOrder.createOrderItemByPath("bundles.1.bundle");
+            existingOrder.orderMessage.mapTo(bundleDoc);;
+
+            // Revise if:
+            // 1. orderStatus = "REVISE"
+            // 2. latestMsgSentToGranite.sentOrderStatus = "REVISE"
+            var isRevise = (bundleOrder.orderHeader.orderStatus.toUpperCase() == "REVISE" ||
+                            (latestMsgSentToGranite != null && latestMsgSentToGranite.sentOrderStatus.toUpperCase() == "REVISE"));
+            // Cancel if:
+            // 1. orderStatus = "CANCEL" or "CANCELLED"
+            // 2. latestMsgSentToGranite.sentOrderStatus = "CANCEL"
+            var isCancel = (bundleOrder.orderHeader.orderStatus.toUpperCase() == "CANCEL" ||  bundleOrder.orderHeader.orderStatus.toUpperCase() == "CANCELLED" ||
+                            (latestMsgSentToGranite != null && latestMsgSentToGranite.sentOrderStatus.toUpperCase() == "CANCEL"));
+
+            // Submit if:
+            // all other situation
+            var isSubmit = !(isCancel || isRevise);
+
+            bundleDoc.isSubmit = isSubmit;
+            bundleDoc.isCancel = isCancel;
+
+            bundleDoc.action = decodeActionOfServiceParameter_(bundleOrder.orderHeader, isSubmit, isCancel);
+            bundleDoc.alreadyReceivedCancel = isCancel;
+            bundleDoc.alreadySentToGranite = (bundleOrder.orderHeader.orderStatus.toUpperCase() != "NEW" && bundleOrder.orderHeader.orderStatus.toUpperCase() != "CANCEL" && bundleOrder.orderHeader.orderStatus.toUpperCase() != "REVISE");
+            bundleDoc.completionDate = bundleOrder.orderHeader.completionDate;
+            bundleDoc.requestedActionIsA = (bundleOrder.orderHeader.orderType == "I");
+
+            // compute provisioningFlag
+            if(bundleOrder.orderHeader.orderStatus.toUpperCase() == "COMPLETED") {
+                if(isCancel) {
+                    bundleDoc.provisioningFlag = "CANCELLED";
+                }
+                else {
+                    bundleDoc.provisioningFlag = "ACTIVE";
+                }
+            }
+            else if(bundleOrder.orderHeader.orderStatus.toUpperCase() == "CANCELLED") {
+                bundleDoc.provisioningFlag = "CANCELLED";
+            }
+            else {
+                bundleDoc.provisioningFlag = "PROVISIONING";
+            }
+
+            if(existingOrder.serviceParametersList != null) {
+                for(var i=0; i<existingOrder.serviceParametersList.length; i++) {
+                    if(i == 0) {
+                        mapServiceParametersOnBundle_(bundleDoc, "creationDate", existingOrder.serviceParametersList[0].serviceParameters, "creationDate");
+                        mapServiceParametersOnBundle_(bundleDoc, "lineItemStatus", existingOrder.serviceParametersList[0].serviceParameters, "serviceStatus");
+                        mapServiceParametersOnBundle_(bundleDoc, "oldServiceNumber", existingOrder.serviceParametersList[0].serviceParameters, "oldServiceNumber");
+                        mapServiceParametersOnBundle_(bundleDoc, "serviceDate", existingOrder.serviceParametersList[0].serviceParameters, "serviceDate");
+                        mapServiceParametersOnBundle_(bundleDoc, "serviceDescription", existingOrder.serviceParametersList[0].serviceParameters, "serviceDescription");
+                        mapServiceParametersOnBundle_(bundleDoc, "serviceNumber", existingOrder.serviceParametersList[0].serviceParameters, "serviceNumber");
+                        mapServiceParametersOnBundle_(bundleDoc, "serviceType", existingOrder.serviceParametersList[0].serviceParameters, "serviceType");
+                    }
+
+                    // mapping NV Pairs
+                    if(existingOrder.serviceParametersList[i].nameValueList != null) {
+                        var existingBundleParameters = 0;
+                        if(bundleOrder.bundles[0].bundleParameters != null) {
+                            existingBundleParameters = bundleOrder.bundles[0].bundleParameters.length;
+                        }
+
+                        for(var j=0; j<existingOrder.serviceParametersList[i].nameValueList.length; j++) {
+                            var nvDoc = bundleOrder.createOrderItemByPath("bundles.1.bundleParameters." + (existingBundleParameters + (j+1)) + ".bundleParameter");
+                            nvDoc.name = existingOrder.serviceParametersList[i].nameValueList[j].nameValue.name;
+                            nvDoc.value = existingOrder.serviceParametersList[i].nameValueList[j].nameValue.value;
+                            nvDoc.action = getNVAction_(bundleDoc.action);
+                            nvDoc.parentElementId = bundleDoc.id;
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] migrateExistingOrderToBundleOrder - already exist a BundleOrder with OrderNumber: " + existingOrder.orderMessage.orderNumber);
+            bundleOrder = existingBundleOrder;
+        }
+    }
+    else {
+        debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] migrateExistingOrderToBundleOrder - received NULL Order");
+    }
+
+    return bundleOrder;
+
+
+
+
+    function decodeActionOfServiceParameter_(orderHeader, isSubmit, isCancel) {
+        var orderStatus = orderHeader.orderStatus.toUpperCase();
+
+        var action = getActionByOrderStatusAndOrderType_(orderStatus, orderHeader.orderType);
+
+        if(action == null) {
+            if(isSubmit) {
+                action = getActionByOrderStatusAndOrderType_("NEW", orderHeader.orderType);
+            }
+            else if(isCancel) {
+                action = getActionByOrderStatusAndOrderType_("CANCEL", orderHeader.orderType);
+            }
+            else {
+                action = getActionByOrderStatusAndOrderType_("REVISE", orderHeader.orderType);
+            }
+        }
+
+        return action;
+    }
+
+    function getActionByOrderStatusAndOrderType_(orderStatus, orderType) {
+        if(orderStatus == "NEW") {
+            if(orderType == "I") {
+                return "A";
+            }
+            if(orderType == "C" || orderType == "T") {
+                return "M";
+            }
+            if(orderType == "D") {
+                return "S";
+            }
+            if(orderType == "E") {
+                return "R";
+            }
+            if(orderType == "O") {
+                return "D";
+            }
+        }
+
+        if(orderStatus == "CANCEL" || orderStatus == "CANCELLED") {
+            return "C";
+        }
+
+        if(orderStatus == "REVISE") {
+            return "M";
+        }
+    }
+
+
+    function mapServiceParametersOnBundle_(bundleDoc, bundleDocAttribute, serviceParametersDoc, serviceParametersDocAttribute) {
+        if(bundleDoc[bundleDocAttribute] == null) {
+            bundleDoc[bundleDocAttribute] = serviceParametersDoc[serviceParametersDocAttribute];
+        }
+    }
+
+
+
+    function getNVAction_(bundleAction) {
+        if(bundleAction == "A") {
+            return "Add";
+        }
+
+        if(bundleAction == "D" || bundleAction == "S") {
+            return "Remove";
+        }
+
+        if(bundleAction == "M" || bundleAction == "R" || bundleAction == "C") {
+            return "Modify";
+        }
+
+        if(bundleAction == "N") {
+            return "No-Change";
+        }
+    }
+  ]]></script>
+</script>

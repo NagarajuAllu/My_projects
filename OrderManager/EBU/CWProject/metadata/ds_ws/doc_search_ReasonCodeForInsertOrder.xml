@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="59d61229d589e7c10fcd22c03c77d4a0" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.search_ReasonCodeForInsertOrder">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{67e3d097-7f2e-4717-84ef-92bf8eec1120}</guid>
+  <label>Search Element: ReasonCode For Insert Order</label>
+  <metaVersion>4</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="reasonCode" type="leaf">
+      <propertyElement type="elfld">
+        <label>Reason Code</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string256</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.search_ReasonCodeForInsertOrder</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="nameGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="header" type="elgrd">
+                    <colWidths>100px,150px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>2</numOfCols>
+                    <width>350px</width>
+                    <elementList>
+                      <element name="reasonCodeDocumentHeader" type="elhdr">
+                        <height>30px</height>
+                        <label>Reason Code Search Doc</label>
+                      </element>
+                      <element name="reasonCode" type="elfld">
+                        <label>Reason Code [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_ReasonCodeForInsertOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_ReasonCodeForInsertOrder/leaf_reasonCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>30px</height>
+                        <rowSpan>30px</rowSpan>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="internalServiceTypeEditable" type="permMethod">
+        <script>return (this.model.internalServiceType == null);</script>
+      </method>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>doc_ds_ws.search_ReasonCodeForInsertOrder/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.performValidationForFeasibilityLegacyRequest">
+  <label>Perform Validation For Feasibility Legacy Request</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="inputDS" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var failureArray = null;
+
+    var receivedLineItemIdentifier = null;
+    var receivedServiceType = null;
+    var receivedFeasibilityType = null;
+    var receivedFeasibilityFor = null;
+
+    // extracting the lineItemIdentifier of the service lineITem
+    if(inputDS.message.ParentLineItems != null && inputDS.message.ParentLineItems.length > 0) {
+        receivedLineItemIdentifier = inputDS.message.ParentLineItems[0].ParentLineItemIdentifer;
+        receivedServiceType = inputDS.message.ParentLineItems[0].ServiceType;
+        receivedFeasibilityType = inputDS.message.ParentLineItems[0].FeasibilityType;
+        receivedFeasibilityFor = inputDS.message.FeasibilityFor;
+    }
+
+    if(receivedServiceType != null) {
+        var isSIPCircuit = ds_ws.isSIPCircuit(receivedServiceType);
+
+        if(isSIPCircuit) {
+            if(receivedFeasibilityType != null && !receivedFeasibilityType.equalsIgnoreCase("ENQUIRY")) {
+                var validationError = ["AE0178", Global.translateText("AE0178", null, [receivedServiceType, receivedFeasibilityType])];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performValidationForFeasibilityLegacyRequest: Found error [" + validationError + "]");
+                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, receivedLineItemIdentifier, failureArray, true);
+            }
+            else {
+                if(receivedFeasibilityFor != null && receivedFeasibilityFor.equalsIgnoreCase("INSTALL")) {
+                    // do nothing
+                }
+                else {
+                    // it's for change! Starting the checks on the existing order
+                    var lineItemInProvisioningOrder = ds_ws.getLineItemByServiceNumberAndLIIdAndProvFlag(null, receivedLineItemIdentifier, "PROVISIONING");
+                    if(lineItemInProvisioningOrder != null) {
+                        // found the lineItem in PROVISIONING order; reject
+                        var orderNumber = null;
+
+                        var orderInProvisioning = Order.getOrderById(lineItemInProvisioningOrder.orderId);
+                        if(orderInProvisioning != null) {
+                            orderNumber = orderInProvisioning.orderHeader.orderNumber;
+                        }
+                        var validationError = ["AE0045", Global.translateText("AE0045", null, [receivedLineItemIdentifier, orderNumber])];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performValidationForFeasibilityLegacyRequest: Found error [" + validationError + "]");
+                        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, receivedLineItemIdentifier, failureArray, true);
+                    }
+                    else {
+                        // searching for lineItem in ACTIVE order
+                        var lineItemInActiveOrder = ds_ws.getLineItemByServiceNumberAndLIIdAndProvFlag(null, receivedLineItemIdentifier, "ACTIVE");
+                        if(lineItemInActiveOrder == null) {
+                            // not found the lineItem in ACTIVE order; reject
+                            var validationError = ["AE0177", Global.translateText("AE0177", null, [receivedLineItemIdentifier])];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performValidationForFeasibilityLegacyRequest: Found error [" + validationError + "]");
+                            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, receivedLineItemIdentifier, failureArray, true);
+                        }
+                        else {
+                            // found the lineItem in ACTIVE order; starting the check on the orderType
+                            var orderInActive = Order.getOrderById(lineItemInActiveOrder.orderId);
+                            if(orderInActive == null) {
+                                var validationError = ["AE0052", Global.translateText("AE0052", null, [lineItemInActiveOrder.orderId])];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performValidationForFeasibilityLegacyRequest: Found error [" + validationError + "]");
+                                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, receivedLineItemIdentifier, failureArray, true);
+                            }
+                            else {
+                                if(orderInActive.orderHeader.orderType == "D") {
+                                    var validationError = ["AE0069", Global.translateText("AE0069", null, [inputDS.message.OrderType])];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performValidationForFeasibilityLegacyRequest: Found error [" + validationError + "]");
+                                    failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, receivedLineItemIdentifier, failureArray, true);
+                                }
+                                else if(orderInActive.orderHeader.orderType == "O") {
+                                    var validationError = ["AE0068", Global.translateText("AE0068", null, [inputDS.message.OrderType])];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performValidationForFeasibilityLegacyRequest: Found error [" + validationError + "]");
+                                    failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, receivedLineItemIdentifier, failureArray, true);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    return failureArray;
+  ]]></script>
+</script>

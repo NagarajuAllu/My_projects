@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.getTrackingRecordByWLId">
+  <description>Used to get tracking record which completion date has to be set up on Acknowledge action.</description>
+  <label>Get Tracking Record By WorklistItemId</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="wl_id" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    debugPrintln("getTrackingRecordByWLId()");
+    debugPrintln("Find tracking record with wlId:"+wl_id);
+
+    var finder = new Finder("workflow.findTrackingRecordByWLId");
+    finder.searchDocument.wlId = wl_id;
+    finder.search();
+
+    debugPrintln("Records found:"+finder.items.length);
+    debugPrintln("~getTrackingRecordByWLId()");
+
+    return finder.items[0];
+  ]]></script>
+</script>

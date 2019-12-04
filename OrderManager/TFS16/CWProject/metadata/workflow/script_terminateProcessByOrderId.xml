@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.terminateProcessByOrderId">
+  <label>Terminate Process By Order ID</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderId" type="rifp">
+      <array>true</array>
+      <type>dtype_cwf.orderId</type>
+    </parameter>
+    <parameter name="processType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var resultList = workflow.findProcessesByType(orderId, processType);
+
+    for( var i=0; i<resultList.length; i++){
+    //    if(processType == "workflow.rehomingOrderProcess") {
+            debugPrintln("Sending TerminateProcessException to Process: "+processType+" - ID: "+resultList[i]);
+            Process.sendExceptionToProcess(resultList[i], "cwf.stop");
+    //    }
+    //    else {
+    //        debugPrintln("Stop Process: "+processType+" - ID: "+resultList[i]);
+    //        Process.stopProcess(resultList[i]);
+    //        debugPrintln("Terminating Process: "+processType+" - ID: "+resultList[i]);
+    //        Process.terminateProcess(resultList[i]);
+    //    }
+    }
+
+    workflow.forceCompleteTrackRecords(orderId);
+  ]]></script>
+</script>

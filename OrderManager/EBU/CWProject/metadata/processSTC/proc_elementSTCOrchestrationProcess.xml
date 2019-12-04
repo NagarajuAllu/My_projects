@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process filenameHash="f3b175bdfdd47b21be69c03ff4973b31" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.elementSTCOrchestrationProcess">
+  <activity name="start" type="seqActivity">
+    <guid>{569293e3-fc9a-4a7d-8af2-be8b7524e3c5}</guid>
+    <label>Start</label>
+    <x>22.0</x>
+    <y>31.0</y>
+    <childList>
+      <child name="setProcessIdInOrchestrationTable" type="scriptActivity">
+        <guid>{e69bf256-ed77-4019-a1c3-1b3532e5af18}</guid>
+        <label>Set Process Id In Orchestration Table</label>
+        <x>118.0</x>
+        <y>16.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var recordInOrchestrationTable = processSTC.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+              recordInOrchestrationTable.orchestrationProcessId = this.process.id;
+              recordInOrchestrationTable.save();
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="isActionDeleteOrSuspend" type="switchActivity">
+        <guid>{4a0a27e8-74ec-4c8f-bf24-6139579128ec}</guid>
+        <label>Is Action = &quot;Delete&quot; or &quot;Suspend&quot;?</label>
+        <x>123.0</x>
+        <y>179.0</y>
+        <childList>
+          <child name="deleteOrSuspend" type="caseActivity">
+            <guid>{b291ca37-ee69-4e25-85ba-43d64dc5f94f}</guid>
+            <label>Delete or Suspend Action</label>
+            <x>35.0</x>
+            <y>342.0</y>
+            <childList>
+              <child name="startDelete_Suspend" type="seqActivity">
+                <guid>{2cc71441-6e8c-4422-b68e-9c448f622f9b}</guid>
+                <label>Start Workflow for Delete or Suspend</label>
+                <x>120.0</x>
+                <y>523.0</y>
+                <childList>
+                  <child name="hasChildElements" type="switchActivity">
+                    <guid>{00558a57-65d1-4ce6-8c67-748aa521c52a}</guid>
+                    <label>Has Child Elements?</label>
+                    <x>285.0</x>
+                    <y>517.0</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <guid>{d21ef31e-f6af-46f4-9c73-53a1ce3ddaf6}</guid>
+                        <label>Yes</label>
+                        <x>120.0</x>
+                        <y>608.0</y>
+                        <childList>
+                          <child name="start" type="seqActivity">
+                            <guid>{fdf626a1-078e-47a3-a6f4-afa4e76cbfc0}</guid>
+                            <label>Start</label>
+                            <x>291.0</x>
+                            <y>667.0</y>
+                            <childList>
+                              <child name="performProvisioningOfAllChildElements_Delete" type="subflowActivity">
+                                <element>proc_processSTC.performProvisioningOfAllChildElements_Delete</element>
+                                <guid>{c20cbcb2-8557-4270-b22b-49d3592a8f50}</guid>
+                                <label>Perform Provisioning Of All Child Elements - Delete_Suspend</label>
+                                <x>596.0</x>
+                                <y>630.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      var elementTypeInOrderTree = this.process.processOrderItem.elementTypeInOrderTree;
+                                      if(elementTypeInOrderTree == "B") {
+                                          this.process.processDocument.elementTypeInOrderTree = "C";
+                                      }
+                                      else if(elementTypeInOrderTree == "C") {
+                                          this.process.processDocument.elementTypeInOrderTree = "S";
+                                      }
+                                      else if(elementTypeInOrderTree == "S") {
+                                          this.process.processDocument.elementTypeInOrderTree = "T";
+                                      }
+
+                                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - starting OrchestrationWorkflowForChildElement with ElementType = " + this.process.processDocument.elementTypeInOrderTree);
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var childElementsList = processSTC.findRecordsInOrchTabByOrderId_ParentId(this.process.processOrder.id, this.process.processOrderItem.id);
+
+                              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - childElementsList.length= " + childElementsList.length);
+
+                              return (childElementsList != null && childElementsList.length > 0);
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <guid>{a05ef558-5307-481b-98a4-e03c8ce87632}</guid>
+                        <label>No</label>
+                        <x>446.0</x>
+                        <y>531.0</y>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="isElementProvisionable" type="switchActivity">
+                    <guid>{7548f341-1c7b-4e7b-a67f-f537140d3a93}</guid>
+                    <label>isElementProvisionable</label>
+                    <x>566.0</x>
+                    <y>531.0</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <guid>{3b0cf9eb-68ca-485d-a970-cd0031d72d3e}</guid>
+                        <label>Yes</label>
+                        <x>253.0</x>
+                        <y>361.0</y>
+                        <childList>
+                          <child name="start" type="seqActivity">
+                            <guid>{f2793b6a-dabc-4f7c-9e54-dd85540c55d1}</guid>
+                            <label>Start</label>
+                            <x>738.0</x>
+                            <y>531.0</y>
+                            <childList>
+                              <child name="existProcessKOInOrchestration" type="switchActivity">
+                                <guid>{73fda5d6-bbe3-4fe2-b0b5-5b0f71942460}</guid>
+                                <label>Is There Process KO In Orchestration?</label>
+                                <x>851.0</x>
+                                <y>508.0</y>
+                                <childList>
+                                  <child name="yes" type="caseActivity">
+                                    <guid>{1610af52-818c-4baf-b009-d243b8f8fba4}</guid>
+                                    <label>Yes</label>
+                                    <x>777.0</x>
+                                    <y>733.0</y>
+                                    <childList>
+                                      <child name="skipParentDueToProcessKO" type="scriptActivity">
+                                        <guid>{db791873-a2a9-4114-9e7a-821772ea6c1b}</guid>
+                                        <label>Skip Parent Due To Process KO</label>
+                                        <x>1129.0</x>
+                                        <y>508.0</y>
+                                        <methodList>
+                                          <method name="cwOnProcActBefore" type="action">
+                                            <category>before</category>
+                                            <system>true</system>
+                                            <script><![CDATA[
+                                              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - startingProvisioningProcessForElement: Found at least one process completed with KO, so skipping children");
+                                            ]]></script>
+                                          </method>
+                                        </methodList>
+                                      </child>
+                                    </childList>
+                                    <methodList>
+                                      <method name="cwOnProcActCond" type="action">
+                                        <category>cond</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          return processSTC.checkIfExistProcessKOInOrchestrationTable(this.process.processOrder.id);
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="no" type="caseActivity">
+                                    <guid>{3a591c9d-fd7c-46c5-9bb7-fb68ca4f199f}</guid>
+                                    <label>No</label>
+                                    <x>777.0</x>
+                                    <y>733.0</y>
+                                    <childList>
+                                      <child name="start" type="seqActivity">
+                                        <guid>{e99a1b29-8f1c-463f-8224-e24b7695c70f}</guid>
+                                        <label>Start</label>
+                                        <x>868.0</x>
+                                        <y>683.0</y>
+                                        <childList>
+                                          <child name="startProvisioningProcessForElement" type="scriptActivity">
+                                            <guid>{42f66ee7-652b-4e0e-8148-93a022b55111}</guid>
+                                            <label>Start Provisioning Process For Element</label>
+                                            <x>1034.0</x>
+                                            <y>645.0</y>
+                                            <methodList>
+                                              <method name="cwOnProcActBefore" type="action">
+                                                <category>before</category>
+                                                <system>true</system>
+                                                <script><![CDATA[
+                                                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - startingProvisioningProcessForElement: " + this.process.processOrderItem.id);
+
+                                                  var pid = Process.startProcess("processSTC:mainSTCProvisiongProcess", this.process.processOrder.id, this.process.processOrderItem.id);
+                                                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - startedProvisioningProcess: " + pid + "; element: " + this.process.processOrderItem.id);
+
+                                                  var recordInOrchestrationTable = processSTC.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+                                                  recordInOrchestrationTable.provisioningProcessId = pid;
+                                                  recordInOrchestrationTable.save();
+
+
+                                                  // Process.sendSignal("processSTC:notifyProvisioningIsCompleted", this.process.id);
+                                                ]]></script>
+                                              </method>
+                                            </methodList>
+                                          </child>
+                                          <child name="waitForProvisioningCompleted" type="syncActivity">
+                                            <element>signal_processSTC.notifyProvisioningIsCompleted</element>
+                                            <guid>{4101bced-3047-4640-baa3-135b67c10f4a}</guid>
+                                            <label>Wait For Provisioning Completed</label>
+                                            <x>1223.0</x>
+                                            <y>662.0</y>
+                                            <methodList>
+                                              <method name="cwOnProcActAfter" type="action">
+                                                <category>script</category>
+                                                <system>true</system>
+                                                <script><![CDATA[
+                                                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - provisioningProcessForElement " + this.process.processOrderItem.id + " - Completed!");
+                                                ]]></script>
+                                              </method>
+                                            </methodList>
+                                          </child>
+                                        </childList>
+                                      </child>
+                                    </childList>
+                                  </child>
+                                </childList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var recordInOrchestrationTable = processSTC.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+
+                              return (recordInOrchestrationTable.provisionable);
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <guid>{c26b4b08-71a5-4ded-bc35-16ffc6e94d33}</guid>
+                        <label>No</label>
+                        <x>1103.0</x>
+                        <y>403.0</y>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var element = this.process.processOrderItem;
+                  var order = this.process.processOrder;
+                  var orderType = order.orderHeader.orderType;
+                  var isDeleteOrSuspend = false;
+                  var scanMode = element.scanMode;
+
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - ScanMode for isDeleteOrSuspend: " + scanMode);
+
+                  var isReviseForSuspendOrDisconnect = (element.action == "M" && (orderType == "D" || orderType == "O"));
+
+                  // Remove = D; Suspend = S
+                  if(element.action != "M"){
+                      isDeleteOrSuspend = (element.action == "D" || element.action == "S");
+                  }
+                  else {
+                      if(scanMode == "default" || scanMode == null || isReviseForSuspendOrDisconnect){
+                          isDeleteOrSuspend = (element.action == "D" || element.action == "S" || isReviseForSuspendOrDisconnect);
+                      }
+                      else if(scanMode == "TopDown"){
+                          isDeleteOrSuspend = false;
+                      }
+                      else if(scanMode == "BottomUp"){
+                          isDeleteOrSuspend = true;
+                      }
+                  }
+
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - isDeleteOrSuspend " + isDeleteOrSuspend);
+
+                  return isDeleteOrSuspend;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="notDeleteOrSuspend" type="caseActivity">
+            <guid>{a8f93ee2-4bec-4883-9f8e-332a8cbe2e49}</guid>
+            <label>Not Delete Or Suspend Action</label>
+            <x>231.0</x>
+            <y>77.0</y>
+            <childList>
+              <child name="startNormalProcessing" type="seqActivity">
+                <guid>{689b5f6b-0e94-438d-bd2b-4602be6d526d}</guid>
+                <label>Start Normal Processing</label>
+                <x>253.0</x>
+                <y>186.0</y>
+                <childList>
+                  <child name="isElementProvisionable" type="switchActivity">
+                    <guid>{d92d3ddc-2ac3-40bd-acbe-52e354513b57}</guid>
+                    <label>isElementProvisionable</label>
+                    <x>353.0</x>
+                    <y>185.0</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <guid>{3b0cf9eb-68ca-485d-a970-cd0031d72d3e}</guid>
+                        <label>Yes</label>
+                        <x>253.0</x>
+                        <y>361.0</y>
+                        <childList>
+                          <child name="start" type="seqActivity">
+                            <guid>{f2793b6a-dabc-4f7c-9e54-dd85540c55d1}</guid>
+                            <label>Start</label>
+                            <x>393.0</x>
+                            <y>28.0</y>
+                            <childList>
+                              <child name="startProvisioningProcessForElement" type="scriptActivity">
+                                <guid>{42f66ee7-652b-4e0e-8148-93a022b55111}</guid>
+                                <label>Start Provisioning Process For Element</label>
+                                <x>517.0</x>
+                                <y>3.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - startingProvisioningProcessForElement: " + this.process.processOrderItem.id);
+
+                                      var pid = Process.startProcess("processSTC:mainSTCProvisiongProcess", this.process.processOrder.id, this.process.processOrderItem.id);
+                                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - startedProvisioningProcess: " + pid + "; element: " + this.process.processOrderItem.id);
+
+                                      var recordInOrchestrationTable = processSTC.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+                                      recordInOrchestrationTable.provisioningProcessId = pid;
+                                      recordInOrchestrationTable.save();
+
+
+                                      // Process.sendSignal("processSTC:notifyProvisioningIsCompleted", this.process.id);
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="waitForProvisioningCompleted" type="syncActivity">
+                                <element>signal_processSTC.notifyProvisioningIsCompleted</element>
+                                <guid>{4101bced-3047-4640-baa3-135b67c10f4a}</guid>
+                                <label>Wait For Provisioning Completed</label>
+                                <x>706.0</x>
+                                <y>10.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActAfter" type="action">
+                                    <category>script</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - provisioningProcessForElement " + this.process.processOrderItem.id + " - Completed!");
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var recordInOrchestrationTable = processSTC.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+
+                              return (recordInOrchestrationTable.provisionable);
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <guid>{c26b4b08-71a5-4ded-bc35-16ffc6e94d33}</guid>
+                        <label>No</label>
+                        <x>550.0</x>
+                        <y>185.0</y>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="existProcessKOInOrchestration" type="switchActivity">
+                    <guid>{4498166f-606a-4a07-b371-2f2e65e7a75b}</guid>
+                    <label>Is There Process KO In Orchestration?</label>
+                    <x>714.0</x>
+                    <y>175.0</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <guid>{d0895174-4f2c-48e3-8d70-fab9db0951ba}</guid>
+                        <label>Yes</label>
+                        <x>253.0</x>
+                        <y>386.0</y>
+                        <childList>
+                          <child name="skipChildrenDueToProcessKO" type="scriptActivity">
+                            <guid>{2af9dff3-1b81-4c9c-a96f-21a5f9f02648}</guid>
+                            <label>Skip Children Due To Process KO</label>
+                            <x>907.0</x>
+                            <y>7.0</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - startingProvisioningProcessForElement: Found at least one process completed with KO, so skipping children");
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              return processSTC.checkIfExistProcessKOInOrchestrationTable(this.process.processOrder.id);
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <guid>{590edc35-5265-40bc-96e0-a40d75d4ad64}</guid>
+                        <label>No</label>
+                        <x>253.0</x>
+                        <y>386.0</y>
+                        <childList>
+                          <child name="hasChildElements" type="switchActivity">
+                            <guid>{e3e35bee-b6ed-4817-9977-cff9ee7dc24b}</guid>
+                            <label>Has Child Elements?</label>
+                            <x>876.0</x>
+                            <y>178.0</y>
+                            <childList>
+                              <child name="yes" type="caseActivity">
+                                <guid>{93dbddcd-fb33-4328-b310-c49acca97947}</guid>
+                                <label>Yes</label>
+                                <x>253.0</x>
+                                <y>386.0</y>
+                                <childList>
+                                  <child name="start" type="seqActivity">
+                                    <guid>{2a171d34-f4b2-4191-93b0-8ec4f7d908f4}</guid>
+                                    <label>Start</label>
+                                    <x>882.0</x>
+                                    <y>346.0</y>
+                                    <childList>
+                                      <child name="performProvisioningOfAllChildElements_NoDelete" type="subflowActivity">
+                                        <element>proc_processSTC.performProvisioningOfAllChildElements_NotDelete</element>
+                                        <guid>{2aa06c18-91a8-471e-8628-cc0478884fa5}</guid>
+                                        <label>Perform Provisioning Of All Child Elements - No Delete_Suspend</label>
+                                        <x>1009.0</x>
+                                        <y>314.0</y>
+                                        <methodList>
+                                          <method name="cwOnProcActBefore" type="action">
+                                            <category>before</category>
+                                            <system>true</system>
+                                            <script><![CDATA[
+                                              var elementTypeInOrderTree = this.process.processOrderItem.elementTypeInOrderTree;
+                                              if(elementTypeInOrderTree == "B") {
+                                                  this.process.processDocument.elementTypeInOrderTree = "C";
+                                              }
+                                              else if(elementTypeInOrderTree == "C") {
+                                                  this.process.processDocument.elementTypeInOrderTree = "S";
+                                              }
+                                              else if(elementTypeInOrderTree == "S") {
+                                                  this.process.processDocument.elementTypeInOrderTree = "T";
+                                              }
+
+                                              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - starting OrchestrationWorkflowForChildElement with ElementType = " + this.process.processDocument.elementTypeInOrderTree);
+                                            ]]></script>
+                                          </method>
+                                        </methodList>
+                                      </child>
+                                    </childList>
+                                  </child>
+                                </childList>
+                                <methodList>
+                                  <method name="cwOnProcActCond" type="action">
+                                    <category>cond</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      var childElementsList = processSTC.findRecordsInOrchTabByOrderId_ParentId(this.process.processOrder.id, this.process.processOrderItem.id);
+
+                                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - childElementsList.length= " + childElementsList.length);
+
+                                      return (childElementsList != null && childElementsList.length > 0);
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="no" type="caseActivity">
+                                <guid>{9041a428-df2e-4736-ab74-a01da30fe479}</guid>
+                                <label>No</label>
+                                <x>1019.0</x>
+                                <y>183.0</y>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="sendWakeUpToParentProcess" type="scriptActivity">
+        <guid>{c02dd0d5-fde0-4e79-9556-73e2ff4b8646}</guid>
+        <label>Send WakeUp To Parent Process</label>
+        <x>1122.0</x>
+        <y>159.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              // it has to return the id of the parent process
+              var recordInOrchestrationTable = processSTC.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+              var recordForParentElementInOrchestrationTable = processSTC.getRecordInOrchestrationTableByLineItemId(recordInOrchestrationTable.cwParentObjectId);
+
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - SendWakeUp; parentProcessId " + recordForParentElementInOrchestrationTable.orchestrationProcessId);
+
+              Process.sendSignal("processSTC:wakeUpParentInOrchestration", recordForParentElementInOrchestrationTable.orchestrationProcessId);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{46d3b910-dd7c-41cb-91b8-04134bd8d342}</guid>
+        <label>End</label>
+        <x>1260.0</x>
+        <y>185.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Completed OrchestrationWorkflow for element " + this.process.processOrderItem.id);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="stopProcess" type="onExceptionActivity">
+        <element>excp_cwf_pm.stop</element>
+        <guid>{b0827909-33d0-4500-ad27-a6e19df33f6e}</guid>
+        <label>Stop Process</label>
+        <x>49.0</x>
+        <y>264.0</y>
+        <childList>
+          <child name="start" type="seqActivity">
+            <guid>{e3d9036f-6578-4478-9d35-caceda49845d}</guid>
+            <label>Start</label>
+            <x>22.0</x>
+            <y>191.0</y>
+            <childList>
+              <child name="stopOrchestrationProcess" type="completeActivity">
+                <guid>{ef42a169-eb83-4703-ba97-97160eb16b2b}</guid>
+                <label>Stop Orchestration Process</label>
+                <x>8.0</x>
+                <y>306.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Received Stop for this Orchestration process");
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Starting OrchestrationWorkflow for element " + this.process.processOrderItem.id);
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <description><![CDATA[
+    <p style="margin-top: 0">
+      Responsible of single element orchestration and its child elements;
+      processOrderItem = element to be provisioned!!!
+    </p>
+    <p style="margin-top: 0">
+      It uses the 2 following sub-flows to orchestrate the provisioning of the
+      child elements:
+    </p>
+    <p style="margin-top: 0">
+      - performProvisioningOfAllChildElements_NotDelete
+    </p>
+    <p style="margin-top: 0">
+      - performProvisioningOfAllChildElements_Delete
+    </p>
+  ]]></description>
+  <document>doc_processSTC.stcOrchestrationProcessDocument</document>
+  <guid>{161c58f6-25fe-402e-b553-9b946241396c}</guid>
+  <label>STC Element Orchestration Process</label>
+  <metaVersion>4</metaVersion>
+  <priority>8</priority>
+  <revision>22</revision>
+  <type>User</type>
+</process>

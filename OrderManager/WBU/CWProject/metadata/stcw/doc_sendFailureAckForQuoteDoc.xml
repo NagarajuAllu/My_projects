@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="22037d1c80785be915a5619fbfbb4296" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.sendFailureAckForQuoteDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0a15b583-6a3d-8660-66b6-2e07957f8d92}</guid>
+  <label>Send Failure Ack For Quote Document</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="ErrorCode" type="leaf">
+      <guid>{08be9a38-59a6-8797-5a9c-f068fd9d28c8}</guid>
+      <label>ErrorCode</label>
+      <propertyElement type="elfld">
+        <label>ErrorCode</label>
+      </propertyElement>
+      <valueType>dtype_xcutl.ErrorCode</valueType>
+    </variable>
+    <variable name="ErrorText" type="leaf">
+      <guid>{0003d634-8cf5-25fd-3598-f058b3ca496d}</guid>
+      <label>ErrorText</label>
+      <propertyElement type="elfld">
+        <label>ErrorText</label>
+      </propertyElement>
+      <valueType>dtype_stcw.errorText</valueType>
+    </variable>
+    <variable name="quoteNumber" type="leaf">
+      <guid>{038cbed3-9a3d-24a5-9288-83d1fc6f952e}</guid>
+      <label>Quote Number</label>
+      <propertyElement type="elfld">
+        <label>Quote Number</label>
+      </propertyElement>
+      <valueType>dtype_stcw.quoteNumber</valueType>
+    </variable>
+    <variable name="orderRowItemId" type="leaf">
+      <guid>{0ff1b240-94d3-53b8-4fc8-cc3f9dea034d}</guid>
+      <label>OrderRowItemId</label>
+      <propertyElement type="elfld">
+        <label>OrderRowItemId</label>
+      </propertyElement>
+      <valueType>dtype_stcw.orderRowItemId</valueType>
+    </variable>
+    <variable name="interfaceRetryCount" type="leaf">
+      <guid>{077d97c7-3225-6338-9c4a-1edfa24db0c8}</guid>
+      <label>Interface Retry Count</label>
+      <propertyElement type="elfld">
+        <label>Interface Retry Count</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="interOperationName" type="leaf">
+      <guid>{0d338a28-a9e0-1845-5d5f-015d84595111}</guid>
+      <label>Interface Operation Name</label>
+      <propertyElement type="elfld">
+        <label>Interface Operation Name</label>
+      </propertyElement>
+      <valueType>dtype_cwf.interOperFQ</valueType>
+    </variable>
+    <variable name="exceptionType" type="leaf">
+      <guid>{01e1ca5c-1ad9-eae6-f5e5-29fdfcc46164}</guid>
+      <label>ExceptionType</label>
+      <propertyElement type="elslct">
+        <label>ExceptionType</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_stcw.ExceptionType</valueType>
+    </variable>
+    <variable name="rollbackNumber" type="leaf">
+      <valueType>dtype_stcw.rollbackNumber</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.sendFailureAckForQuoteDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.generateInputDataForCIMEValidationWS">
+  <label>Generate Input Data For CIM-E ValidationWS</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationItemArray = null;
+
+    for(var i=0; i<bundleOrder.parentLineItems.length; i++) {
+        var bundleContainer = bundleOrder.parentLineItems[i];
+
+        if(stcw.isLegacyService(bundleContainer, true)) {
+            checkAndAppendInputDataForLineItem_(bundleContainer.parentLineItem);
+            // checking also the VAS components if they exist
+            if(bundleContainer.services != null) {
+                for(var j=0; j<bundleContainer.services.length; j++) {
+                    var circuitContainer = bundleContainer.services[j];
+                    checkAndAppendInputDataForLineItem_(circuitContainer.serviceLineItem);
+                }
+            }
+        }
+        else {
+            if(bundleContainer.services != null) {
+                for(var j=0; j<bundleContainer.services.length; j++) {
+                    var circuitContainer = bundleContainer.services[j];
+                    checkAndAppendInputDataForLineItem_(circuitContainer.serviceLineItem);
+
+                    if(circuitContainer.subServices != null) {
+                        for(var l=0; l<circuitContainer.subServices.length; l++) {
+                            var serviceContainer = circuitContainer.subServices[l];
+                            checkAndAppendInputDataForLineItem_(serviceContainer.subServiceLineItem);
+
+                            if(serviceContainer.subSubServices != null) {
+                                for(var m=0; m<serviceContainer.subSubServices.length; m++) {
+                                    var subServiceContainer = serviceContainer.subSubServices[m];
+                                    checkAndAppendInputDataForLineItem_(subServiceContainer.subSubServiceLineItem);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return validationItemArray;
+
+
+    function checkAndAppendInputDataForLineItem_(lineItem) {
+        if(lineItem.provisioningBU == "E") {
+            if(validationItemArray == null) {
+                validationItemArray = new Array();
+            }
+
+            var validationItem = new DataStructure("cimeValidationWS.validationItem");
+            validationItem.bwName = lineItem.bandwidth;
+            validationItem.siteACCLICode = lineItem.locationACCLICode;
+            validationItem.siteAPlateID = lineItem.locationAPlateID;
+            validationItem.siteAOldPlateID = lineItem.locationAOldPlateID;
+            validationItem.siteZCCLICode = lineItem.locationBCCLICode;
+            validationItem.siteZPlateID = lineItem.locationBPlateID;
+            validationItem.siteZOldPlateID = lineItem.locationBOldPlateID;
+            validationItem.serviceType = lineItem.serviceType;
+            validationItem.workOrderType = stcw.getWorkOrderType(bundleOrder.orderHeader.orderType, lineItem.action);
+            validationItem.lineItemIdentifier = lineItem.lineItemIdentifier;
+            validationItem.serviceNumber = lineItem.serviceNumber;
+            validationItemArray.push(validationItem);
+        }
+    }
+  ]]></script>
+</script>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="crmToSOMMigration.migrateGenericCRMOrders">
+  <label>Migrate Generic CRM Orders</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="debugMsg" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var countFound = 0;
+    var countTotalMigrated = 0;
+    var countMigratedWithValidationError = 0;
+    var countMigratedSuccessfully = 0;
+    var countMigratedFailed = 0;
+
+    var allORBOrderHeaders = crmToSOMMigration.getAllORBOrderHeaderByOrderType(orderType);
+
+    if(allORBOrderHeaders != null) {
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "'" + orderType + "' orders to be migrated: " + allORBOrderHeaders.length);
+        countFound = allORBOrderHeaders.length;
+
+        for(var i=0; i<allORBOrderHeaders.length; i++) {
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Started order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + "; orderNumber = " + allORBOrderHeaders[i].orderNumber);
+
+            var crmOrder = null;
+            try {
+                crmOrder = Order.getOrderById(allORBOrderHeaders[i].orderId, false);
+            }
+            catch(exc) {
+                var errMsg = Global.translateText("AE0052", null, allORBOrderHeaders[i].orderId) + "; Exc message = " + exc.message;
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Failed Migration order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + "; Unexpected error: " + errMsg);
+
+                crmOrder = null;
+            }
+
+            if(crmOrder != null) {
+                var versionsInSequence = crmToSOMMigration.getVersionIDsInSequence(allORBOrderHeaders[i].orderId);
+
+                var previousOrder = null;
+                var currentOrder = null;
+                var versionHeader = null;
+                for(var j=0; j<versionsInSequence.length; j++) {
+                    versionHeader = Document.readDoc("stcw.versionHeader", versionsInSequence[j].cwDocID);
+                    if(j > 0) {
+                        previousOrder = currentOrder;
+                    }
+
+                    currentOrder = crmToSOMMigration.migrateVersionForOrder(crmOrder, versionHeader.versionName, j);
+                    countTotalMigrated++;
+
+                    if(currentOrder != null) {
+                        if(currentOrder.orderHeader.orderNumber != allORBOrderHeaders[i].orderNumber) {
+                            var errMsg = Global.translateText("AE0162", null, [allORBOrderHeaders[i].orderNumber, currentOrder.orderHeader.orderNumber]);
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Failed Migration order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + "; Unexpected error: " + errMsg);
+                            crmToSOMMigration.logMigrationRecord(true, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, orderType, 2, errMsg);
+
+                            // discarding migrated order
+                            currentOrder = null;
+                            countMigratedFailed++;
+                        }
+                        else if(currentOrder.orderHeader.orderType != orderType) {
+                            var errMsg = Global.translateText("AE0163", null, [orderType, currentOrder.orderHeader.orderType]);
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Failed Migration order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + "; Unexpected error: " + errMsg);
+                            crmToSOMMigration.logMigrationRecord(true, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, orderType, 2, errMsg);
+
+                            // discarding migrated order
+                            currentOrder = null;
+                            countMigratedFailed++;
+                        }
+                        else {
+                            var searchDoc = new Document("stcw.search_bundleOrder");
+                            searchDoc.orderNumber = currentOrder.orderHeader.orderNumber;
+                            searchDoc.isMigrated  = true;
+                            var orderListFound = Finder.runFinder("stcw.findAllSTCBundleOrders_Script", "select", searchDoc);
+                            if(orderListFound != null && orderListFound.length > 0) {
+                                if(orderListFound[0].id != currentOrder.id) {
+                                    if(previousOrder == null || previousOrder.id != orderListFound[0].id) {
+                                        var errMsg = "Unexpected error: Already exists an order with orderId " + currentOrder.orderHeader.orderNumber;
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Failed Migration order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + errMsg);
+                                        crmToSOMMigration.logMigrationRecord(true, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, orderType, 2, errMsg);
+
+                                        // discarding migrated order
+                                        currentOrder = null;
+                                        countMigratedFailed++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        crmToSOMMigration.logMigrationRecord(true, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, orderType, 2, "Returned NULL object in migration of version " + versionHeader.versionName);
+                        countMigratedFailed++;
+                    }
+
+                    if(orderType != "I") {
+                        if(currentOrder != null) {
+                            if(currentOrder.parentLineItems[0].parentLineItem.serviceNumber != null) {
+                                // change parentLineItem according to the serviceNumber
+                                var activeLineItem = stcw.getLineItemByServiceNumberAndLIIdAndProvFlag(currentOrder.parentLineItems[0].parentLineItem.serviceNumber, null, "ACTIVE");
+                                if(activeLineItem != null) {
+                                    currentOrder.parentLineItems[0].parentLineItem.lineItemIdentifier = activeLineItem.lineItemIdentifier;
+                                }
+                                else {
+                                    if(currentOrder.parentLineItems[0].parentLineItem.oldServiceNumber != null) {
+                                        // change parentLineItem according to the oldServiceNumber
+                                        activeLineItem = stcw.getLineItemByServiceNumberAndLIIdAndProvFlag(currentOrder.parentLineItems[0].parentLineItem.oldServiceNumber, null, "ACTIVE");
+                                        if(activeLineItem != null) {
+                                            currentOrder.parentLineItems[0].parentLineItem.lineItemIdentifier = activeLineItem.lineItemIdentifier;
+                                        }
+                                        else {
+                                            if(currentOrder.parentLineItems[0].parentLineItem.reservationNumber != null) {
+                                                var lineItems = stcw.getAllLineItemIdsPendingOrActiveByReservNumber(currentOrder.parentLineItems[0].parentLineItem.reservationNumber);
+                                                if(lineItems != null && lineItems.length > 0) {
+                                                    // it means that the lineItem with reservationNumber exists! And, due to it's a change, there is only 1 lineItem
+                                                    currentOrder.parentLineItems[0].parentLineItem.lineItemIdentifier = lineItems[0].result;
+
+                                                    // checking the provisioning flag of the previous lineItem is "ACTIVE", otherwise setting it
+                                                    var lineItemWithResNumber = stcw.getLineItemByServiceNumberAndLIIdAndProvFlag(null, lineItems[0].result, null);
+                                                    if(lineItemWithResNumber != null) {
+                                                        if(lineItemWithResNumber.provisioningFlag == "PROVISIONING") {
+                                                            lineItemWithResNumber.provisioningFlag = "ACTIVE";
+                                                            lineItemWithResNumber.save();
+                                                        }
+                                                    }
+                                                }
+                                                else {
+                                                    var errMsg = "Unexpected error: Unable to find the 'ACTIVE' lineItem for order " + currentOrder.orderHeader.orderNumber;
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Failed Migration order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + errMsg);
+                                                    crmToSOMMigration.logMigrationRecord(true, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, orderType, 4, errMsg);
+
+                                                    /****
+                                                    2017/07/03 - commented because if it exists and migration procedure accepted it, it means that Granite accepted it ...
+
+                                                    // discarding migrated order
+                                                    currentOrder = null;
+                                                    countMigratedFailed++;
+                                                    ***/
+                                                }
+                                            }
+                                            else {
+                                                var errMsg = "Unexpected error: Unable to find the 'ACTIVE' lineItem for order " + currentOrder.orderHeader.orderNumber + " using oldServiceNumber";
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Failed Migration order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + errMsg);
+                                                crmToSOMMigration.logMigrationRecord(true, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, orderType, 4, errMsg);
+
+                                                /****
+                                                2017/07/03 - commented because if it exists and migration procedure accepted it, it means that Granite accepted it ...
+
+                                                // discarding migrated order
+                                                currentOrder = null;
+                                                countMigratedFailed++;
+                                                ***/
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        var errMsg = "Unexpected error: Unable to find the OldServiceNumber value in lineItem for order " + currentOrder.orderHeader.orderNumber;
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Failed Migration order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + errMsg);
+                                        crmToSOMMigration.logMigrationRecord(true, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, orderType, 4, errMsg);
+
+                                        /****
+                                        2017/07/03 - commented because if it exists and migration procedure accepted it, it means that Granite accepted it ...
+
+                                        // discarding migrated order
+                                        currentOrder = null;
+                                        countMigratedFailed++;
+                                        ***/
+                                    }
+                                }
+                            }
+                            else {
+                                var errMsg = "Unexpected error: Unable to find the ServiceNumber value in lineItem for order " + currentOrder.orderHeader.orderNumber;
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Failed Migration order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId + errMsg);
+                                crmToSOMMigration.logMigrationRecord(true, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, orderType, 4, errMsg);
+
+                                /****
+                                2017/07/03 - commented because if it exists and migration procedure accepted it, it means that Granite accepted it ...
+
+                                // discarding migrated order
+                                currentOrder = null;
+                                countMigratedFailed++;
+                                ***/
+                            }
+                        }
+                    }
+
+                    if(currentOrder != null) {
+                        var validationErrors = currentOrder.validate(1000, true);
+                        if(validationErrors != null) {
+                            countMigratedWithValidationError++
+
+                            // migrated order is not valid
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Order #" + i + "; Migrated Order.id: " + currentOrder.id + " - ValidationErrors: ");
+                            for(var k=0; k<validationErrors.length; k=k+2) {
+                                debugPrintln(("" + k/2).leftPad(4, " ") + ". - " + validationErrors[k] + " = " + validationErrors[k+1]);
+                            }
+                        }
+
+                        var orchestrationError = stcw.writeSequenceForOrder(currentOrder);
+                        if(orchestrationError != null) {
+                            for(var k=0; k<orchestrationError.length; k++) {
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Order #" + i + "; Migrated Order.id: " + currentOrder.id + " - Error in creating orchestration records: " +
+             "<" + orchestrationError[k].ErrorCode + "," + orchestrationError[k].ErrorDescription + ">");
+                            }
+                        }
+                        else {
+                            countMigratedSuccessfully++;
+                        }
+
+                        if(previousOrder != null) {
+                            // archiving old version of the order
+                            previousOrder.orderHeader.orderNumber = previousOrder.orderHeader.orderNumber +
+                                                                    (versionHeader.versionName == "CANCEL" ? "_CANC_" : "_REVI_") +
+                                                                    Calendar.formatDate(versionHeader.cwCreated, "yyyyMMddHHmmss");
+                            previousOrder.parentLineItems[0].parentLineItem.provisioningFlag = "OLD";
+                            previousOrder.save();
+
+                            stcw.updateOrchestrationRecordsForNewOrderNumber(previousOrder, previousOrder.orderHeader.orderNumber);
+                        }
+                        currentOrder.save();
+                    }
+                }
+
+                if(currentOrder != null) {
+                    currentOrder.parentLineItems[0].parentLineItem.lineItemStatus = crmOrder.header.orderStatus;
+                    if(crmOrder.header.completedDate != null) {
+                        currentOrder.parentLineItems[0].parentLineItem.completionDate = crmOrder.header.completedDate;
+                        currentOrder.parentLineItems[0].parentLineItem.provisioningFlag = (versionHeader.versionName == "CANCEL" ? "CANCELLED" : "ACTIVE");
+
+                        currentOrder.orderHeader.completionDate = crmOrder.header.completedDate;
+                        currentOrder.orderHeader.orderStatus = (versionHeader.versionName == "CANCEL" ? "CANCELLED" : "COMPLETED");
+
+                        if(currentOrder.parentLineItems[0].parentLineItem.provisioningFlag == "ACTIVE") {
+                            var activeLineItems = stcw.getAllLineItemsByIdentifierAndProvisioningFlag(currentOrder.parentLineItems[0].parentLineItem.lineItemIdentifier, "B", "ACTIVE");
+                            for(var j=0; j<activeLineItems.length; j++) {
+                                activeLineItems[j].provisioningFlag = "OLD";
+                                activeLineItems[j].save();
+                            }
+                        }
+                    }
+                    currentOrder.save();
+
+                    crmOrder.header.migrated = 1;
+                    crmToSOMMigration.logMigrationRecord(true, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, orderType, 1, null);
+                }
+                else {
+                    crmOrder.header.migrated = 2;
+                }
+                crmOrder.save();
+            }
+            else {
+    debugPrintln(stcc.getSysdateForLog() + debugMsg + "Unable to load order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId);
+                crmToSOMMigration.logMigrationRecord(true, allORBOrderHeaders[i].id, allORBOrderHeaders[i].orderNumber, orderType, 3, "Unable to load order #" + i + "; docid = " + allORBOrderHeaders[i].id + "; orderId = " + allORBOrderHeaders[i].orderId);
+                countMigratedFailed++;
+
+                // search CRM OrderHeader and set migrated = 3
+                var crmOrderHeader = Document.readDoc("stcw.orderHeader", allORBOrderHeaders[i].id);
+                if(crmOrderHeader != null) {
+                    crmOrderHeader.migrated = 3;
+                    crmOrderHeader.save();
+                }
+            }
+        }
+    }
+
+    var result = new Array();
+    result[0] = countFound;
+    result[1] = countTotalMigrated;
+    result[2] = countMigratedWithValidationError;
+    result[3] = countMigratedSuccessfully;
+    result[4] = countMigratedFailed;
+
+
+    return result;
+  ]]></script>
+</script>

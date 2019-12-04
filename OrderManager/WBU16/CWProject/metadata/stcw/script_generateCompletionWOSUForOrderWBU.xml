@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.generateCompletionWOSUForOrderWBU">
+  <label>Generate Completion WOSU For Order WBU</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="workOrderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    debugPrintln(stcc.getSysdateForLog() + "[" + processId + "] - Generating COMPLETED or CANCELLED OSU event for workOrderNumber " + workOrderNumber);
+
+    var completedOSU = null;
+
+    var osuFinder = new Finder("granite.findAssetInfoByOrderNumber");
+    osuFinder.searchDocument.WO_NAME = workOrderNumber;
+    osuFinder.search();
+
+    var completedOSUList = osuFinder.list;
+    if(completedOSUList != null && completedOSUList.size > 0) {
+        var completedOSU = completedOSUList[0];
+
+        var osuEvent = new DataStructure("wgws.updateOrderStatus");
+        osuEvent.assetNumber       = completedOSU.ASSETNAME;
+        osuEvent.assetStatus       = completedOSU.ASSETSTATUS;
+        osuEvent.businessUnit      = "Wholesale";
+        osuEvent.comments          = completedOSU.WO_COMMENTS;
+        osuEvent.orderNumber       = workOrderNumber;
+        osuEvent.systemDesignation = "";
+        osuEvent.workOrderStatus   = ((completedOSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED");
+
+        var targetSubType          = null;
+        var targetInstId           = null;
+
+        var niNumberInfo = getNINumberInfo_(completedOSU.RESOURCE_INST_ID);
+        if(niNumberInfo != null) {
+            osuEvent.NINumber      = niNumberInfo[0];
+            targetSubType          = niNumberInfo[1];
+            targetInstId           = niNumberInfo[2];
+        }
+
+        osuEvent = stcw.addOSUNVPairs(osuEvent, workOrderNumber, orderType, targetSubType, targetInstId, completedOSU.RESOURCE_INST_ID);
+    }
+
+    if(osuEvent != null) {
+    debugPrintln(stcc.getSysdateForLog() + "[" + processId + "] - Generated COMPLETED or CANCELLED OSU event for workOrderNumber " + workOrderNumber + ": " + osuEvent.toXML());
+    }
+
+    return osuEvent;
+
+
+    function getNINumberInfo_(resourceInstId) {
+        var resultList = null;
+
+        if(resourceInstId != null) {
+            var niNumberFinder = new Finder("granite.findNINumberByResourceInstId");
+            niNumberFinder.searchDocument.INST_ID = resourceInstId;
+            var niNumberList = niNumberFinder.search();
+
+            if(niNumberList != null && niNumberList.size > 0) {
+                resultList = [niNumberList[0].NINUMBER, niNumberList[0].TARGET_SUBTYPE, niNumberList[0].TARGET_INST_ID];
+            }
+        }
+
+        return resultList;
+    }
+  ]]></script>
+</script>

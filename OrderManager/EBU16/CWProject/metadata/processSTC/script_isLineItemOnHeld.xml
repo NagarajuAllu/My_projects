@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="processSTC.isLineItemOnHeld">
+  <label>Is LineItem On Held</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="lineItemStatus" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = false;
+
+    if(lineItemStatus != null) {
+        result = (lineItemStatus.toUpperCase() == "IN-HELD");
+    }
+
+    return result;
+  ]]></script>
+</script>

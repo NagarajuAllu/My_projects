@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.isLegacyService">
+  <label>Is Legacy Service</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="considerVAS" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var isLegacyService = false;
+
+    if(considerVAS == null || considerVAS == false) {
+        // checking the children; any service element, even if VAS, marks the service as bundle
+        if(bundleContainer.services == null) {
+            isLegacyService = true;
+        }
+    }
+    else {
+        if(bundleContainer.services == null) {
+            isLegacyService = true;
+        }
+        else {
+            var areAllVAS = true;
+            for(var i=0; i<bundleContainer.services.length && areAllVAS; i++) {
+                if(bundleContainer.services[i].serviceLineItem.isVAS) {
+                    // checking if there are any additional subServices; if yes, it's not a legacy
+                    areAllVAS = (bundleContainer.services[i].subServices == null);
+                }
+                else {
+                    // the service doesn't have the flag isVAS set so, it's not a legacy
+                    areAllVAS = false;
+                }
+            }
+
+            isLegacyService = areAllVAS;
+        }
+    }
+
+    return isLegacyService;
+  ]]></script>
+</script>

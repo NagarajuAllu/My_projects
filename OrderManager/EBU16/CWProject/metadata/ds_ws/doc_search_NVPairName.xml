@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.search_NVPairName">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0ba32f7a-ae3a-466f-883a-d2bd55d7ffbb}</guid>
+  <label>Search Element: NV Pair Name</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="name" type="leaf">
+      <propertyElement type="elfld">
+        <label>Name in NV Pair</label>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.search_NVPairName</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="nameGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="header" type="elgrd">
+                    <colWidths>80px,200px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <width>300px</width>
+                    <elementList>
+                      <element name="nameNVPairDocumentHeader" type="elhdr">
+                        <height>30px</height>
+                        <label>Name of NV Pair:</label>
+                      </element>
+                      <element name="name" type="elfld">
+                        <label>Name in NV Pair</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_NVPairName/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_NVPairName/leaf_name</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>30px</height>
+                        <rowSpan>30px</rowSpan>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

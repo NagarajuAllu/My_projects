@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="configuration.statusMappingDoc">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{49d74f75-ed14-4c28-8074-d2fd51b1287b}</guid>
+  <label>Status Mapping</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="statusMappingId" type="leaf">
+      <column>STATUS_MAPPING_ID</column>
+      <key>1</key>
+      <table>STC_STATUS_MAPPING</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="objectType" type="leaf">
+      <column>OBJECT_TYPE</column>
+      <table>STC_STATUS_MAPPING</table>
+      <valueType>dtype_common.objectType</valueType>
+    </variable>
+    <variable name="internalStatus" type="leaf">
+      <column>INTERNAL_STATUS</column>
+      <table>STC_STATUS_MAPPING</table>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="externalStatus" type="leaf">
+      <column>GUI_STATUS</column>
+      <table>STC_STATUS_MAPPING</table>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_configuration.statusMappingDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

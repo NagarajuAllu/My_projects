@@ -1,0 +1,78 @@
+rename CWPROCESSEVENTLOG to CWPROCESSEVENTLOG_STCSUP177;
+drop index CWFELOG0;
+drop index CWFELOG1;
+alter table CWPROCESSEVENTLOG_STCSUP177 drop constraint CWPK_PROCESSEVENTLOG;
+drop index CWPK_PROCESSEVENTLOG /* CWPROCESSEVENTLOG(EVENT_ID) */ ;
+
+create table CWPROCESSEVENTLOG (
+  event_id       NUMBER(16) not null,
+  transaction_id NUMBER(16),
+  event_source   NUMBER(2) not null,
+  event_severity NUMBER(1) not null,
+  event_code     NUMBER(4) not null,
+  description    NVARCHAR2(1024),
+  event_time     TIMESTAMP(6) not null,
+  user_id        VARCHAR2(64),
+  metadata_type  VARCHAR2(256),
+  metadata_ver   NUMBER(9),
+  object_id      VARCHAR2(256),
+  external_code  VARCHAR2(8),
+  external_type  VARCHAR2(64),
+  qualified_name VARCHAR2(256),
+  stack_trace    VARCHAR2(4000),
+  node_id        VARCHAR2(50),
+  activity       VARCHAR2(32),
+  avm_id         NUMBER(8),
+  app_name       VARCHAR2(32)
+)
+PARTITION BY HASH(event_id) 
+     (PARTITION p1   TABLESPACE CWH,
+      PARTITION p2   TABLESPACE CWH,
+      PARTITION p3   TABLESPACE CWH,
+      PARTITION p4   TABLESPACE CWH,
+      PARTITION p5   TABLESPACE CWH,
+      PARTITION p6   TABLESPACE CWH,
+      PARTITION p7   TABLESPACE CWH,
+      PARTITION p8   TABLESPACE CWH,
+      PARTITION p9   TABLESPACE CWH,
+      PARTITION p10  TABLESPACE CWH,
+      PARTITION p11  TABLESPACE CWH,
+      PARTITION p12  TABLESPACE CWH,
+      PARTITION p13  TABLESPACE CWH,
+      PARTITION p14  TABLESPACE CWH,
+      PARTITION p15  TABLESPACE CWH,
+      PARTITION p16  TABLESPACE CWH,
+      PARTITION p17  TABLESPACE CWH,
+      PARTITION p18  TABLESPACE CWH,
+      PARTITION p19  TABLESPACE CWH,
+      PARTITION p20  TABLESPACE CWH);
+
+insert into CWPROCESSEVENTLOG select * from CWPROCESSEVENTLOG_STCSUP177;
+commit;
+      
+-- Create/Recreate indexes 
+create index CWFELOG0 on CWPROCESSEVENTLOG (OBJECT_ID)
+  tablespace CWH_NDX
+  compress;
+
+create index CWFELOG1 on CWPROCESSEVENTLOG (EVENT_TIME)
+  tablespace CWH_NDX;
+
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table CWPROCESSEVENTLOG add constraint CWPK_PROCESSEVENTLOG primary key (EVENT_ID)
+using index GLOBAL PARTITION BY HASH (EVENT_ID)
+     (PARTITION p1   TABLESPACE CWH_NDX,
+      PARTITION p2   TABLESPACE CWH_NDX,
+      PARTITION p3   TABLESPACE CWH_NDX,
+      PARTITION p4   TABLESPACE CWH_NDX,
+      PARTITION p5   TABLESPACE CWH_NDX,
+      PARTITION p6   TABLESPACE CWH_NDX,
+      PARTITION p7   TABLESPACE CWH_NDX,
+      PARTITION p8   TABLESPACE CWH_NDX,
+      PARTITION p9   TABLESPACE CWH_NDX,
+      PARTITION p10  TABLESPACE CWH_NDX,
+      PARTITION p11  TABLESPACE CWH_NDX,
+      PARTITION p12  TABLESPACE CWH_NDX);
+      
+
+drop table CWPROCESSEVENTLOG_STCSUP177;

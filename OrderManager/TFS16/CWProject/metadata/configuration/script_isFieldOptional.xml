@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="configuration.isFieldOptional">
+  <label>Is Field Optional</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="objectType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="fieldName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var finder = new Finder("configuration.mandatoryAttributesFinder");
+    finder.searchDocument.objectType = objectType;
+    finder.searchDocument.fieldName = fieldName;
+    var result = finder.search();
+
+    return (result == null || result.length == 0);
+  ]]></script>
+</script>

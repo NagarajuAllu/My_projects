@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure filenameHash="90bccbd32fdd55bacd9979a54d957a79" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ifCIM_E_ws.validationResponseItem">
+  <container>true</container>
+  <guid>{7fe37d79-7685-41a8-b8c0-fa0a8f79e422}</guid>
+  <label>validationResponseItem</label>
+  <metaVersion>4</metaVersion>
+  <xmlMap type="xmap">
+    <includeXsiType>true</includeXsiType>
+  </xmlMap>
+  <childList>
+    <child name="result" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_ifCIM_E_ws.resultValue</element>
+      <guid>{3447372d-a368-433f-91cd-907d4c887ba4}</guid>
+      <label>result</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="lineItemIdentifier" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <guid>{4b66ba2c-c7bf-427f-b052-cbe9f4b19a49}</guid>
+      <label>lineItemIdentifier</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="failure" type="dstruct">
+      <array>true</array>
+      <element>dstruct_ifCIM_E_ws.failure</element>
+      <guid>{0fabad0f-9df9-4b9e-bb7d-89706a1b078f}</guid>
+      <label>failure</label>
+      <maxInstance>-1</maxInstance>
+    </child>
+  </childList>
+  <UserInterface name="UserInterface" type="tree">
+    <defaultFolderImage>undefined</defaultFolderImage>
+    <defaultLeafImage>undefined</defaultLeafImage>
+    <element>dstruct_ifCIM_E_ws.validationResponseItem</element>
+    <extends>tree_com.conceptwave.system.DataStructureUserInterface</extends>
+    <tableDoc>doc_com.conceptwave.system.TreeDocument</tableDoc>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>dstruct_ifCIM_E_ws.validationResponseItem</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>tree_com.conceptwave.system.DataStructureUserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</dataStructure>

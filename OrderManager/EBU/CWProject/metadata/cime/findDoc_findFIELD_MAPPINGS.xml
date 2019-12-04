@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc filenameHash="da011444e05f4c43408ff66d77f6d852" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="cime.findFIELD_MAPPINGS">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_cime.FIELD_MAPPINGS</input>
+  <label>Find Field_Mappings</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>4</metaVersion>
+  <output>doc_cime.FIELD_MAPPINGS</output>
+  <type>document</type>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_cime.FIELD_MAPPINGS</document>
+      <mappedDocument>doc_cime.FIELD_MAPPINGS</mappedDocument>
+      <mappedPath>doc_cime.FIELD_MAPPINGS/leaf_order_type</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cime.FIELD_MAPPINGS/leaf_order_type</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cime.FIELD_MAPPINGS</document>
+      <mappedDocument>doc_cime.FIELD_MAPPINGS</mappedDocument>
+      <mappedPath>doc_cime.FIELD_MAPPINGS/leaf_object_type</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cime.FIELD_MAPPINGS/leaf_object_type</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cime.FIELD_MAPPINGS</document>
+      <mappedDocument>doc_cime.FIELD_MAPPINGS</mappedDocument>
+      <mappedPath>doc_cime.FIELD_MAPPINGS/leaf_object_category</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cime.FIELD_MAPPINGS/leaf_object_category</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cime.FIELD_MAPPINGS</document>
+      <mappedDocument>doc_cime.FIELD_MAPPINGS</mappedDocument>
+      <mappedPath>doc_cime.FIELD_MAPPINGS/leaf_source</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cime.FIELD_MAPPINGS/leaf_source</path>
+    </search>
+    <search type="sitem">
+      <document>doc_cime.FIELD_MAPPINGS</document>
+      <mappedDocument>doc_cime.FIELD_MAPPINGS</mappedDocument>
+      <mappedPath>doc_cime.FIELD_MAPPINGS/leaf_target</mappedPath>
+      <operation>equal</operation>
+      <path>doc_cime.FIELD_MAPPINGS/leaf_target</path>
+    </search>
+  </searchList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_cime.FIELD_MAPPINGS</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_cime.FIELD_MAPPINGS/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_cime.FIELD_MAPPINGS/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findFieldMappingsResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_cime.findFIELD_MAPPINGS/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="order_type" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_cime.findFIELD_MAPPINGS/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_cime.FIELD_MAPPINGS/leaf_order_type</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="object_type" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_cime.findFIELD_MAPPINGS/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_cime.FIELD_MAPPINGS/leaf_object_type</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="object_category" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_cime.findFIELD_MAPPINGS/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_cime.FIELD_MAPPINGS/leaf_object_category</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="source" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_cime.findFIELD_MAPPINGS/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_cime.FIELD_MAPPINGS/leaf_source</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="target" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_cime.findFIELD_MAPPINGS/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_cime.FIELD_MAPPINGS/leaf_target</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_cime.findFIELD_MAPPINGS/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_cime.findFIELD_MAPPINGS/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findFieldMappingsView" type="findVView">
+      <label>Find FIELD_MAPPINGS</label>
+      <outputOverlay>findDoc_cime.findFIELD_MAPPINGS/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+    </view>
+  </viewList>
+</findDoc>

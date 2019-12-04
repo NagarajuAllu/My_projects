@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="granite.findCircuitTypeForPathByName">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_granite.search_CIRC_TYPES</input>
+  <label>Find Circuit Type For Path By Name</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>21</metaVersion>
+  <output>doc_granite.CIRC_TYPES</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_granite.CIRC_TYPES/leaf_REL_ORDER</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_granite.search_CIRC_TYPES</document>
+      <mappedDocument>doc_granite.CIRC_TYPES</mappedDocument>
+      <mappedPath>doc_granite.CIRC_TYPES/leaf_TYPE_NAME</mappedPath>
+      <operation>like</operation>
+      <path>doc_granite.search_CIRC_TYPES/leaf_TYPE_NAME</path>
+    </search>
+    <search type="sitem">
+      <document>doc_granite.search_CIRC_TYPES</document>
+      <mappedDocument>doc_granite.CIRC_TYPES</mappedDocument>
+      <mappedPath>doc_granite.CIRC_TYPES/leaf_VALID_FOR_PATH</mappedPath>
+      <operation>equal</operation>
+      <path>doc_granite.search_CIRC_TYPES/leaf_VALID_FOR_PATH</path>
+    </search>
+  </searchList>
+  <methodList>
+    <method name="addInit" type="uimthd">
+      <script><![CDATA[
+        this.cw$super_addInit();
+        var searchDoc = this.searchDocument;
+        searchDoc.VALID_FOR_PATH = "Y";
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_granite.CIRC_TYPES</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_granite.CIRC_TYPES/ui_UserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_granite.search_CIRC_TYPES/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findCircuitTypesResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_granite.findCircuitTypeForPathByName/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="TYPE_NAME" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircuitTypeForPathByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_TYPES/leaf_TYPE_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ICON_NAME" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircuitTypeForPathByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_TYPES/leaf_ICON_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="VALID_FOR_SEGMENT" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircuitTypeForPathByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_TYPES/leaf_VALID_FOR_SEGMENT</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="VALID_FOR_PATH" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircuitTypeForPathByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_TYPES/leaf_VALID_FOR_PATH</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="VALID_FOR_NETWORK" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircuitTypeForPathByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_TYPES/leaf_VALID_FOR_NETWORK</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="IS_TRUNK_GROUP" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircuitTypeForPathByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_TYPES/leaf_IS_TRUNK_GROUP</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="REL_ORDER" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCircuitTypeForPathByName/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.CIRC_TYPES/leaf_REL_ORDER</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_granite.findCircuitTypeForPathByName/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_granite.findCircuitTypeForPathByName/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findCircuitTypesView" type="findVView">
+      <inputOverlay>doc_granite.search_CIRC_TYPES/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find Circuit Types</label>
+      <outputOverlay>findDoc_granite.findCircuitTypeForPathByName/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findDoc>

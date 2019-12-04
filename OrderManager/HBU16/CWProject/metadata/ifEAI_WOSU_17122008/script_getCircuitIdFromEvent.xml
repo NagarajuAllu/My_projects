@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="c99f7e2461f4e0d12efc419186b237fd" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ifEAI_WOSU_17122008.getCircuitIdFromEvent">
+  <guid>{06f45b08-994c-4484-3c97-80eff726f257}</guid>
+  <label>Get CircuitId From Event</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="receivedEvent" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var foundCircuitId = null;
+
+    if(receivedEvent.circuitNumber != null) {
+          foundCircuitId = receivedEvent.circuitNumber;
+    }
+    else {
+          if(receivedEvent.parameters != null) {
+                var elementNameForSIPCircuitID = ifEAI_WOSU_17122008.getElementNameForSIPCircuitID();
+                var parametersLength = receivedEvent.parameters.length;
+                for(var i=0; i<parametersLength; i++) {
+                      var nameValuePair = receivedEvent.parameters[i];
+                      if(nameValuePair.name == elementNameForSIPCircuitID) {
+                            foundCircuitId = nameValuePair.value;
+                      }
+                }
+          }
+    }
+
+    return foundCircuitId;
+  ]]></script>
+</script>

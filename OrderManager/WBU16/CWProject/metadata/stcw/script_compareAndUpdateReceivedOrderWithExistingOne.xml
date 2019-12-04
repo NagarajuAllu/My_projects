@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.compareAndUpdateReceivedOrderWithExistingOne">
+  <label>Compare And Update Received Order With Existing One</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="existingOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="receivedOrder" type="rifp">
+      <type>order_stcw.wholesaleBundleOrderSTC</type>
+    </parameter>
+    <parameter name="isCancel" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="existingOrderWasKO" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+
+    failureArray = stcw.compareAndUpdateReceivedOrderHeaderWithExistingOne(existingOrder, receivedOrder, isCancel, existingOrderWasKO, failureArray);
+
+    // parentLineItem check; it loops in parentLineItem of existing order and verifies if it exists also in received one
+    if(existingOrder.parentLineItems != null) {
+        var missingReceived = 0;
+        for(var i=0; i<existingOrder.parentLineItems.length; i++) {
+            var existingLineItemId = existingOrder.parentLineItems[i].parentLineItem.lineItemIdentifier;
+            var found = false;
+            // search parentLineItem in received
+            if(receivedOrder.parentLineItems != null) {
+                for(var j=0; j<receivedOrder.parentLineItems.length && !found; j++) {
+                    if(existingLineItemId == receivedOrder.parentLineItems[j].parentLineItem.lineItemIdentifier) {
+                        // found; comparing the 2 lineItems and the entire hierarchy
+                        found = true;
+                        failureArray = stcw.compareAndUpdateReceivedLineItemWithExistingOne(existingOrder.parentLineItems[i], receivedOrder.parentLineItems[j], "B", isCancel,
+                                                                                            receivedOrder.orderHeader.orderNumber, receivedOrder.orderHeader.orderType, existingOrderWasKO,
+                                                                                            null, receivedOrder.parentLineItems[j].parentLineItem.productCode, failureArray);
+                    }
+                }
+            }
+
+            if(!found) {
+                // not found parentLineItem; adding error
+                validationErrors = stcw.appendToValidationErrors("AE0067", Global.translateText("AE0067", null, existingLineItemId), validationErrors, "compareAndUpdateReceivedOrderWithExistingOne (" + existingOrder.orderHeader.orderNumber + ")");
+                missingReceived++;
+            }
+        }
+
+        if(receivedOrder.parentLineItems != null) {
+            if((receivedOrder.parentLineItems.length + missingReceived) != existingOrder.parentLineItems.length) {
+                // it means that there are additional parentLineItems in received that are not in existing! ERROR!
+                validationErrors = stcw.appendToValidationErrors("AE0059", Global.translateText("AE0059",  null, ["B", "existing"]), validationErrors, "compareAndUpdateReceivedOrderWithExistingOne (" + existingOrder.orderHeader.orderNumber + ")");
+            }
+        }
+    }
+    else {
+        if(receivedOrder.parentLineItems != null) {
+            // it means that there are parentLineItems in received that are not in existing! ERROR!
+            validationErrors = stcw.appendToValidationErrors("AE0059", Global.translateText("AE0059",  null, ["B", "existing"]), validationErrors, "compareAndUpdateReceivedOrderWithExistingOne (" + existingOrder.orderHeader.orderNumber + ")");
+        }
+    }
+
+
+    if(validationErrors != null) {
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, existingOrder.orderHeader.orderNumber, failureArray, false);
+    }
+
+
+    return failureArray;
+  ]]></script>
+</script>

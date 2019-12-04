@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="tfs.isChangeAvailable">
+  <label>Is Change Available</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="tfr" type="rifp"/>
+  </parameterList>
+  <script><![CDATA[
+    //Find all PRNRs and TFRs related to changed tfr
+    //Find if TFR has been created
+    //
+
+    var prnrFinder = new Finder("tfs.findPRNRByChangeTFRId");
+    prnrFinder.searchDocument.cwDocID = tfr.tfrId;
+    var rL = prnrFinder.search();
+
+    var statusCancelled = configuration.getExternalNameForStatusByInternalName("CANCELLED", "PRNR");
+    var statusCompleted = configuration.getExternalNameForStatusByInternalName("COMPLETED", "PRNR");
+    var statusAutoAccepted = configuration.getExternalNameForStatusByInternalName("AUTOMATICALLY ACCEPTED", "PRNR");
+    if(!rL.length || rL.length < 1){
+        return true;
+    }
+
+
+    var cancelCounter = 0;
+    for(var i=0; i<rL.length; i++){
+        if(rL[i].prnrStatus == statusCompleted || rL[i].prnrStatus == statusAutoAccepted ){
+            Global.throwException("AE0021", "Change is impossible for this TFR because other revision is in complete state, please use newer TFR to start another change.");
+            //return false;
+        }
+        else if(rL[i].prnrStatus == statusCancelled){
+            cancelCounter += 1;
+        };
+        var orderId = rL[i].cwOrderId;
+        var resList = _findAllRunningProcesses(orderId);
+        if(resList.length > 0){
+            Global.throwException("AE0021", "Change is impossible for this TFR because other revision is started and has active processes assosiated with it.");
+            //return false;
+        }
+    }
+
+    if(cancelCounter != rL.length){
+        return false;
+    };
+
+    return true;
+
+
+
+    function _findAllRunningProcesses(orderId){
+        var f = new Document("cwf_pm.ProcessSearch");
+        f.ORDER_ID = orderId;
+
+        var procList = [];
+
+        var resultList = Finder.runFinder("cwf_pm:ProcessFinder", "select", f);
+
+
+        for(var i=0; i< resultList.length; i++){
+            var p = Process.getProcessInfo(resultList[i].PROCESS_ID);
+            if( p && (p.processStatus == 1)){
+                procList.push(resultList[i].PROCESS_ID);
+            }
+        };
+        return procList;
+    }
+  ]]></script>
+</script>

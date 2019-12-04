@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="3e6d5121bb59d8d13a55b07929708748" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.writeRecordForLineItemInOrchestrationTable">
+  <label>Write Record For LineItem In Orchestration Table</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="cwOrderId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="cwParentId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="sequence" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+    <parameter name="provisionable" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="lineItem" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="elementTypeInOrchestration" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var orchestrationRecord = new Document("processSTC.STC_ORDER_ORCHESTRATION");
+    orchestrationRecord.orderNumber = orderNumber;
+    orchestrationRecord.cwOrderId = cwOrderId;
+    orchestrationRecord.cwParentObjectId = cwParentId;
+    orchestrationRecord.sequence = sequence;
+    orchestrationRecord.provisionable = provisionable;
+    orchestrationRecord.cwDocId = lineItem.id;
+    orchestrationRecord.cwOrderItemPath = lineItem.orderDataPath;
+    orchestrationRecord.lineItemIdentifier = lineItem.lineItemIdentifier;
+    orchestrationRecord.elementTypeInOrchestration = elementTypeInOrchestration;
+
+    orchestrationRecord.save();
+  ]]></script>
+</script>

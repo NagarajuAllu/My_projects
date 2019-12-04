@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="be9c3267e051e75d7f25873a9175bb3f" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="wDashboards.averageCompletion">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{09d512b6-6f19-e45c-dfc9-fd405b64cb25}</guid>
+  <label>Average Completion</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <guid>{0ed3eb89-7922-f27e-ef64-5626fbe405b6}</guid>
+      <key>1</key>
+      <label>System document ID</label>
+      <propertyElement type="elfld">
+        <label>System document ID</label>
+      </propertyElement>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="averageTimeInSecs" type="leaf">
+      <guid>{04883cc8-1e1e-8423-b3d1-b0e94b273710}</guid>
+      <label>Total Time [secs]</label>
+      <propertyElement type="elfld">
+        <label>Total Time [secs]</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="averageDays" type="leaf">
+      <guid>{08dd4e8b-6db9-e50d-8c75-a6904a1213de}</guid>
+      <label>Days</label>
+      <propertyElement type="elfld">
+        <label>Days</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="averageHours" type="leaf">
+      <guid>{0ddfe7e4-6ea4-a908-bfb3-009d2fd3b300}</guid>
+      <label>Hours</label>
+      <propertyElement type="elfld">
+        <label>Hours</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="averageMinutes" type="leaf">
+      <guid>{06c7f68a-8818-47ce-a549-1c7736848102}</guid>
+      <label>Minutes</label>
+      <propertyElement type="elfld">
+        <label>Minutes</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="averageSeconds" type="leaf">
+      <guid>{04f6157e-76dd-7031-9d47-7bc62e41ec80}</guid>
+      <label>Seconds</label>
+      <propertyElement type="elfld">
+        <label>Seconds</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_wDashboards.averageCompletion</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="defaultGrid" type="elgrd">
+                    <colWidths>195,195,195,195</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>780px</width>
+                    <elementList>
+                      <element name="averageTimeInSecs1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.averageCompletion/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.averageCompletion/leaf_averageTimeInSecs</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="averageDays1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.averageCompletion/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.averageCompletion/leaf_averageDays</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="averageHours1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.averageCompletion/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.averageCompletion/leaf_averageHours</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="averageMinutes1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.averageCompletion/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.averageCompletion/leaf_averageMinutes</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="averageSeconds1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_wDashboards.averageCompletion/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_wDashboards.averageCompletion/leaf_averageSeconds</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

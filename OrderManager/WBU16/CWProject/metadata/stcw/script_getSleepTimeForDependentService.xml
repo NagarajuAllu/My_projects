@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getSleepTimeForDependentService">
+  <label>Get SleepTime For DependentService</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderDataPath" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var sleepTime = 0;
+    var indexLastDot = orderDataPath.lastIndexOf(".");
+    if(indexLastDot > 0) {
+        var indexPreviousLastDot = orderDataPath.lastIndexOf(".", (indexLastDot - 1));
+
+        if(indexPreviousLastDot > 0) {
+            sleepTime = orderDataPath.substr(indexPreviousLastDot + 1, indexLastDot - (indexPreviousLastDot + 1));
+
+            var sleepMultiplier = Global.getConfigVariable("SLEEP_MULTIPLIER_FOR_DEPENDANT_SERVICES", "1");
+
+            var sleepMultiplierNumber = new Number(sleepMultiplier);
+            if(sleepMultiplierNumber != Number.NAN) {
+               sleepTime = sleepTime*sleepMultiplierNumber;
+            }
+        }
+    }
+
+    return sleepTime;
+  ]]></script>
+</script>

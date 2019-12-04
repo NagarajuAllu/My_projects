@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="791b03201ca5467e8731f53cde8153d0" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="configuration.compressCustomAttrPickListValueSequence">
+  <label>Compress CustomAttr PickListValue Sequence</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="customAttributeId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(customAttributeId != null) {
+        var allPickListValues = configuration.getAllValuesForCustomAttributePickList(customAttributeId);
+
+        if(allPickListValues != null) {
+            for (var i=0; i<allPickListValues.length; i++) {
+                allPickListValues[i].sequenceNumber = (i+1);
+                allPickListValues[i].save();
+            }
+        }
+    }
+
+    return;
+  ]]></script>
+</script>

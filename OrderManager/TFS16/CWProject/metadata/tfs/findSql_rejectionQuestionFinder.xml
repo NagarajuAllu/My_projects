@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="tfs.rejectionQuestionFinder">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_tfs.rejectionQuestionSearchDoc</input>
+  <label>Rejection Question Finder</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>21</metaVersion>
+  <output>doc_tfs.rejectionQuestion</output>
+  <type>SQL</type>
+  <vDetailForm>doc_tfs.rejectionQuestion/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>10</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select q.question_id, q.parent_answer_id, a.text_answer, q.text_question
+          from stc_reject_question q, stc_reject_answer a
+         where a.answer_id (+) = q.parent_answer_id
+        {[0] and q.question_id = ?}
+        {[1] and q.parent_answer_id = ?}
+        {[2] and q.text_question like ?}
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_ConfigPriv</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_ConfigPriv</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_tfs.rejectionQuestion</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_tfs.rejectionQuestionSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_tfs.rejectionQuestion/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="rejectionQuestionFinderResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfs.rejectionQuestionFinder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <width>930px</width>
+                    <elementList>
+                      <element name="questionId" type="elfld">
+                        <label>Question Id</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.rejectionQuestionFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.rejectionQuestion/leaf_questionId</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>100px</width>
+                      </element>
+                      <element name="parentAnswerText" type="elfld">
+                        <label>Parent Answer Text</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.rejectionQuestionFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.rejectionQuestion/leaf_parentAnswerText</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>350px</width>
+                      </element>
+                      <element name="textQuestion" type="eltxtArea">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.rejectionQuestionFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.rejectionQuestion/leaf_textQuestion</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>450px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfs.rejectionQuestionFinder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfs.rejectionQuestionFinder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfCopy" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="canDelete" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>STC_ConfigPriv</privilege>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+        <script>return $psCondition</script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="rejectionQuestionFinderView" type="findVView">
+      <label>Rejection Question Finder</label>
+      <outputOverlay>findSql_tfs.rejectionQuestionFinder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+      <sortListList>
+        <sortList type="stitem">
+          <path>doc_tfs.rejectionQuestion/leaf_questionId</path>
+        </sortList>
+        <sortList type="stitem">
+          <path>doc_tfs.rejectionQuestion/leaf_parentAnswerId</path>
+        </sortList>
+      </sortListList>
+    </view>
+  </viewList>
+</findSql>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="44e74e283ebc54e860eb3397a025aa7a" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.isAMOForGivenWorkOrderDeleted">
+  <guid>{0484fba4-d68f-1ce1-b936-2e5617f6f5e2}</guid>
+  <label>Is AMO For Given WorkOrder Deleted</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="orderNumber" type="rifp">
+      <type>dtype_orb.OrderNumber</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var amoDeleted = false;
+
+    var amoFinder = new Finder ("granite:countArchivedAMOForWorkOrderInGranite");
+    amoFinder.searchDocument.orderNumber = orderNumber;
+    amoFinder.search();
+
+    var amoList = amoFinder.list;
+    if (amoList != null || amoList.size > 0) {
+          amoDeleted = (amoList.start.count > 0);
+    }
+    else {
+          amoDeleted = false;
+    }
+    return amoDeleted;
+  ]]></script>
+</script>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="granite.getAllTasksByWOInstIdForFOPages">
+  <label>Get All Tasks By WoInstId For FO Pages</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="woInstId" type="rifp">
+      <type>dtype_granite.INST_ID_10</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var resultList = null;
+
+    if(woInstId != null) {
+        var inputDoc = new Document("granite.graniteInstId_10_SearchDoc");
+        inputDoc.INST_ID = woInstId;
+
+        resultList = Finder.runFinder("granite.findTaskDetailsForFOPages", "select", inputDoc);
+    }
+
+    return resultList;
+  ]]></script>
+</script>

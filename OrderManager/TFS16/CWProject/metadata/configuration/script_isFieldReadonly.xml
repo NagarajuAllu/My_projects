@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="configuration.isFieldReadonly">
+  <label>Is Field Readonly</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="objectType" type="rifp"/>
+    <parameter name="attributeName" type="rifp"/>
+    <parameter name="privilegeName" type="rifp"/>
+  </parameterList>
+  <script><![CDATA[
+    var finder = new Finder("configuration.readonlyAttributeFinder");
+    finder.searchDocument.objectType = objectType;
+    finder.searchDocument.attributeName = attributeName;
+    finder.searchDocument.privilegeName = privilegeName;
+    var result = finder.search();
+
+    return (result != null && result.length > 0);
+  ]]></script>
+</script>

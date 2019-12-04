@@ -1,0 +1,1591 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<userInterface name="stcw.wholesaleOrderManagement">
+  <blockUIOnAction>true</blockUIOnAction>
+  <extends>ui_com.conceptwave.system.Application</extends>
+  <label>Wholesale Order Management</label>
+  <metaVersion>21</metaVersion>
+  <url>/wholesaleOrderManagement</url>
+  <worklist>findDoc_stcw.customWorkListFinder</worklist>
+  <variableList>
+    <variable name="workListFinder" type="uivar">
+      <valueType>findDoc_stcw.customWorkListFinder</valueType>
+    </variable>
+  </variableList>
+  <vformList>
+    <vform name="Forms" type="frmui">
+      <extends>ui_com.conceptwave.system.Application/frmui_Forms</extends>
+      <overlayList>
+        <overlay name="Menu" type="exov">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</extends>
+          <label>Menu</label>
+          <overrideList>
+            <override name="HorizontalLayoutForMenuItems" type="elext">
+              <elementList>
+                <element name="menuItem_orders" type="elmnu">
+                  <label>Order Management</label>
+                  <menuType>2</menuType>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <elementList>
+                    <element name="finder_bundleOrderSTC" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_bundleOrderSTC</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>List &quot;Bundle Order STC&quot;</label>
+                    </element>
+                    <element name="menuItemOrderBeforeMigration" type="elmnu">
+                      <label>Order Menu- Before Migration</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="findOrders" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_findOrders</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Find Orders</label>
+                        </element>
+                        <element name="separator1" type="elsep"/>
+                        <element name="orderHistory" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_orderHistory</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Order History</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="menuItemQuoteBeforeMigration" type="elmnu">
+                      <label>Quote Menu- Before Migration</label>
+                      <elementList>
+                        <element name="findQuotes" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_findQuotes</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Find Quotes</label>
+                        </element>
+                        <element name="separator11" type="elsep"/>
+                        <element name="quoteHistory" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_quoteHistory</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Quote History</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="Separator" type="elsep"/>
+                    <element name="finder_findFTTHOrders" type="elmnu">
+                      <label>Search FTTH Orders</label>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="dashboards" type="elmnu">
+                  <label>Dashboards</label>
+                  <menuType>2</menuType>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="setDashboardInputParams" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_setDashboardInputParams</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Set Dashboard Input Parameters</label>
+                    </element>
+                    <element name="sep1" type="elsep"/>
+                    <element name="orderDashboard" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_orderDashboard</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/Dashboard.gif</icon>
+                      <label>Order Dashboard</label>
+                    </element>
+                    <element name="quoteDashboard" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_quoteDashboard</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/Dashboard.gif</icon>
+                      <label>Quote Dashboard</label>
+                    </element>
+                    <element name="fullDashboard" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_fullDashboard</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/Dashboard.gif</icon>
+                      <label>Order &amp; Quote Dashboard</label>
+                    </element>
+                    <element name="sep2" type="elsep"/>
+                    <element name="orderChartDashboard" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_orderChartDashboard</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/Dashboard.gif</icon>
+                      <label>Order Chart Dashboard</label>
+                    </element>
+                    <element name="quoteChartDashboard" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_quoteChartDashboard</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/Dashboard.gif</icon>
+                      <label>Quote Chart Dashboard</label>
+                    </element>
+                    <element name="fullChartDashboard" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_fullChartDashboard</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/Dashboard.gif</icon>
+                      <label>Order &amp; Quote Chart Dashboard</label>
+                    </element>
+                    <element name="sep3" type="elsep"/>
+                    <element name="processDashboard" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_processDashboard</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Process Dashboard</label>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="historyReports" type="elmnu">
+                  <label>History Reports</label>
+                  <menuType>2</menuType>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <elementList>
+                    <element name="custInfoUpdateHistory" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_custInfoUpdateHistory</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Customer Information Update History</label>
+                    </element>
+                    <element name="siteInfoUpdateHistory" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_siteInfoUpdateHistory</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Site Information Update History</label>
+                    </element>
+                    <element name="restorationHistory" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_restorationHistory</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Restoration History</label>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="configMenu" type="elmnu">
+                  <label>Configuration Management</label>
+                  <menuType>2</menuType>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <elementList>
+                    <element name="generalConfig" type="elmnu">
+                      <label>General Configuration</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="allProductCodes" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_productCodes</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Configure All Product Codes</label>
+                        </element>
+                        <element name="mapCOMToGraniteServiceType" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_comToGraniteServiceType</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Map COM To Granite Service Type</label>
+                        </element>
+                        <element name="collocationServiceTypes" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_collocationServiceTypes</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Collocation Service Types</label>
+                        </element>
+                        <element name="comToGraniteName" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_comToGraniteName</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>COM To Granite Name</label>
+                        </element>
+                        <element name="comToGraniteValue" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_comToGraniteValue</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>COM To Granite Value</label>
+                        </element>
+                        <element name="separator10" type="elsep"/>
+                        <element name="groupConfigurationForFO" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_groupConfigurationForFO</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Group Configuration For FO</label>
+                        </element>
+                        <element name="findTaskToReprocessBehavior" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_findTaskToReprocessBehavior</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Find Task To Reprocess Configuration</label>
+                        </element>
+                        <element name="separator4" type="elsep"/>
+                        <element name="mapWorkOrderTypeView" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_mapWorkOrderType</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Map WorkOrderType - Read Only</label>
+                        </element>
+                        <element name="buProvisioningForServiceTypeAndProductCode" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_buProvisioningForServiceTypeAndProductCode</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>BU Provisioning For ServiceType And ProductCode - Read Only</label>
+                        </element>
+                        <element name="priorityMapping" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_priorityMappingByServiceType</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Priority Mapping - Read Only</label>
+                        </element>
+                        <element name="mapComToGraniteDataView" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_mapCOMToGraniteData</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Map COM To Granite Data - Read Only</label>
+                        </element>
+                        <element name="serviceTypeHierarchy" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_serviceTypesHierarchy</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>ServiceType Hierarchy – Read Only</label>
+                        </element>
+                        <element name="attributesWithSameValueInUpdateView" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_attributesWithSameValueInUpdate</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Attributes With Same Value in Update - Read Only</label>
+                        </element>
+                        <element name="internalNameMapping" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_internalAttributeNameMapping</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Internal Name Mapping – Read Only</label>
+                        </element>
+                        <element name="mopsOrderType" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_mopsOrderType</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>MOPS OrderType – Read Only</label>
+                        </element>
+                        <element name="operationForLTEConfiguration" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_stepForLTEProcess</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Step For LTE Process Configuration – Read Only</label>
+                        </element>
+                        <element name="mapComToLTEDataView" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_mapCOMToLTEData</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Map COM To LTE Data - Read Only</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="validationConfig" type="elmnu">
+                      <label>Configuration for Validation</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="orderHeaderValidationMap" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_orderHeaderValidationMap</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>OrderHeader Validation Map</label>
+                        </element>
+                        <element name="lineItemValidationMap" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_lineItemValidationMap</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>LineItem Validation Map</label>
+                        </element>
+                        <element name="mandatoryNVPairsForServType_OrdType" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_mandatoryNVPairsByOrdType_ServType</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Mandatory NVPair For OrderType &amp; ServiceType</label>
+                        </element>
+                        <element name="nvPairDependenciesForServType_OrdType" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_nvPairDependencies</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>NV Pair Dependencies</label>
+                        </element>
+                        <element name="pickListForValidation" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_pickListForValidation</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>PickList For Validation Management</label>
+                        </element>
+                        <element name="skipNVPairMgmt" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_skipNVPairMgmt</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Skip NVPair Management</label>
+                        </element>
+                        <element name="newAttrNVPairMgmt" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_newAttrNVPairMgmt</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>New Attribute NVPair Management</label>
+                        </element>
+                        <element name="storeForwardNVPairMgmt" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_storeAndForwardNVPairMgmt</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Store &amp; Forward NVPair Management</label>
+                        </element>
+                        <element name="blockParametersManagement" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_blockParametersConfiguration</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Block Parameters Management</label>
+                        </element>
+                        <element name="nvPairForBackupByServType" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_finder_nvPairsForBackupByServType</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>NV Pair for Backup Service Management</label>
+                        </element>
+                      </elementList>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="utility_menuItem" type="elmnu">
+                  <label>Utilities</label>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <elementList>
+                    <element name="processes" type="elmnu">
+                      <icon>/cwf/process.gif</icon>
+                      <label>Processes</label>
+                      <menuType>2</menuType>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="processManager" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_processManager</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <icon>/cwf/MenuIconProcessMgr.gif</icon>
+                          <label>Process Manager</label>
+                        </element>
+                        <element name="globalProcesses" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_globalProcesses</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <icon>/cwf/MenuIconGblProcessMgr.gif</icon>
+                          <label>Global Processes</label>
+                        </element>
+                        <element name="messageQueue" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_messageQueue</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <icon>/cwf/msgQueue.gif</icon>
+                          <label>Message Queue</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="interfaceMsgs" type="elmnu">
+                      <label>Interface Messages</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="messageLog" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_messageLog</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <icon>/cwf/msgLog.gif</icon>
+                          <label>Message Log</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="tools" type="elmnu">
+                      <label>Tools</label>
+                      <menuType>2</menuType>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="eventLog" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_eventLog</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <icon>/cwf/eventr.gif</icon>
+                          <label>Event Log</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="interfaceError" type="elmnu">
+                      <label>Interface Error</label>
+                      <menuType>2</menuType>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="bulkResolve" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_bulkResolve</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Bulk Resolve</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="separator2" type="elsep"/>
+                    <element name="selectApplication" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_selectApplication</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/choice.gif</icon>
+                      <label>Select Application</label>
+                    </element>
+                    <element name="separator" type="elsep"/>
+                    <element name="logout" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_logout</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/MenuIconLogout.gif</icon>
+                      <label>Logout</label>
+                      <menuType>5</menuType>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="migration_menuItem" type="elmnu">
+                  <label>Migration From Old to SOM Structure</label>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_stcw.wholesaleOrderManagement/permMethod_migrationMenuView</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="migrateInstallOrders_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_migrateInstallOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Migrate &quot;Install&quot; Orders</label>
+                    </element>
+                    <element name="migrateInstallFeasOrders_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_migrateInstallFeasOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Migrate &quot;Install&quot; Feasibility Orders</label>
+                    </element>
+                    <element name="migrateChangeFeasOrders_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_migrateChangeFeasOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Migrate &quot;Change&quot; Feasibility Orders</label>
+                    </element>
+                    <element name="migrateChangeOrders_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_migrateChangeOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Migrate &quot;Change&quot; Orders</label>
+                    </element>
+                    <element name="migrateDisconnectOrders_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_migrateDisconnectOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Migrate &quot;Disconnect&quot; Orders</label>
+                    </element>
+                    <element name="separator5" type="elsep"/>
+                    <element name="terminateAllRunningProcesses_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_terminateProcessesForOrders_Quotes</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/MenuIconCancel.gif</icon>
+                      <label>Terminate All Running Processes For Orders and Quotes</label>
+                    </element>
+                    <element name="separator6" type="elsep"/>
+                    <element name="startProcessForMigratedOrders_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_startProcessForMigratedOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/MenuIconCancel.gif</icon>
+                      <label>Start Process for Migrated Orders</label>
+                    </element>
+                    <element name="separator7" type="elsep"/>
+                    <element name="deleteMigratedOrders_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_deleteMigratedOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Delete All Migrated Orders</label>
+                    </element>
+                    <element name="separator8" type="elsep"/>
+                    <element name="sendQSUForSync_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_sendQSUForSync</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Send QSU For Sync</label>
+                    </element>
+                    <element name="sendOSUForSync_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_sendOSUForSync</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Send OSU For Sync</label>
+                    </element>
+                    <element name="separator9" type="elsep"/>
+                    <element name="createMissingOrders_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_createMissingOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Create Orders Missing In EOC</label>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="vpnMigration_menuItem" type="elmnu">
+                  <label>VPN Migration</label>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_stcw.wholesaleOrderManagement/permMethod_migrationMenuView</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="terminateAllVPNBundleProcesses_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_terminateAllVPNBundleProcesses</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Terminate Processes for VPN Bundle Orders</label>
+                    </element>
+                    <element name="migrateBundleVPNOrdersToFlat_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_migrateBundleVPNOrdersToFlat</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Migrate Bundle VPN Orders to Flat</label>
+                    </element>
+                    <element name="restartMigratedFlatOrders_menuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_script_restartMigratedOrders</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Restart Migrate Flat Orders</label>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="beforeMigrationMenuItem" type="elmnu">
+                  <label>Menu Before Migration</label>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="orders" type="elmnu">
+                      <label>Orders</label>
+                      <menuType>2</menuType>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="findOrdersToArchive" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_findOrdersToArchive</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Find Orders To Archive</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="quotes" type="elmnu">
+                      <label>Quotes</label>
+                      <menuType>2</menuType>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="cancelUnusedReservation" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_cancelUnusedReservation</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Cancel Unused Reservation</label>
+                        </element>
+                        <element name="findQuotesToArchive" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_stcw.wholesaleOrderManagement/usrActionMethod_findQuotesToArchive</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Find Quotes To Archive</label>
+                        </element>
+                      </elementList>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </override>
+          </overrideList>
+        </overlay>
+        <overlay name="Page" type="expg">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</extends>
+          <label>Page</label>
+          <stylesheet>/cwf/css/cwf.css</stylesheet>
+          <title>Wholesale Order Management</title>
+          <visible type="varPath">
+            <variablePathList>
+              <variablePath>ui_stcw.wholesaleOrderManagement/permMethod_applicationVisible</variablePath>
+            </variablePathList>
+          </visible>
+        </overlay>
+      </overlayList>
+    </vform>
+  </vformList>
+  <methodList>
+    <method name="findOrders" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findOrder_stcw.orderFinder/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findOrder_stcw.orderFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findOrder_stcw.orderFinder</valueType>
+    </method>
+    <method name="orderHistory" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findSql_stcw.orderHistory/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findSql_stcw.orderHistory</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_stcw.orderHistory</valueType>
+    </method>
+    <method name="findOrdersToArchive" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findOrder_stcw.orderToArchiveFinder/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findOrder_stcw.orderToArchiveFinder</userInterface>
+      <validate>true</validate>
+    </method>
+    <method name="findQuotes" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findOrder_stcw.quoteFinder/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findOrder_stcw.quoteFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findOrder_stcw.quoteFinder</valueType>
+    </method>
+    <method name="quoteHistory" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findSql_stcw.quoteHistory/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findSql_stcw.quoteHistory</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_stcw.quoteHistory</valueType>
+    </method>
+    <method name="cancelUnusedReservation" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findSql_stcw.cancelReservationReport/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findSql_stcw.cancelReservationReport</userInterface>
+      <validate>true</validate>
+    </method>
+    <method name="findQuotesToArchive" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findOrder_stcw.quoteToArchiveFinder/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findOrder_stcw.quoteToArchiveFinder</userInterface>
+      <validate>true</validate>
+    </method>
+    <method name="custInfoUpdateHistory" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findSql_stcw.custInfoUpdateHistory</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_stcw.custInfoUpdateHistory</valueType>
+    </method>
+    <method name="siteInfoUpdateHistory" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findSql_stcw.siteInfoUpdateHistory/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findSql_stcw.siteInfoUpdateHistory</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_stcw.siteInfoUpdateHistory</valueType>
+    </method>
+    <method name="restorationHistory" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findSql_stcw.restorationHistory/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findSql_stcw.restorationHistory</userInterface>
+      <validate>true</validate>
+    </method>
+    <method name="setDashboardInputParams" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>doc_wDashboards.inputForDashboards/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <parameterList>
+        <parameter name="menuObject" type="rifp">
+          <mandatory>true</mandatory>
+          <type>doc_wDashboards.inputForDashboards</type>
+        </parameter>
+        <parameter name="cwDialogParam" type="rifp">
+          <type>ui_com.conceptwave.system.Dialog</type>
+        </parameter>
+      </parameterList>
+      <showInPopup>true</showInPopup>
+      <userInterface>doc_wDashboards.inputForDashboards</userInterface>
+      <validate>true</validate>
+      <valueType>doc_wDashboards.inputForDashboards</valueType>
+      <script><![CDATA[
+        cwDialogParam.title = "Set Dashboard Input Parameters";
+
+        menuObject.startDateTime = Global.getSessionParameter("Dashboard_StartTime");
+        if(menuObject.startDateTime == null) {
+            var date = new Date();
+
+            menuObject.startDateTime = new Date(date.getFullYear(), date.getMonth()-1, date.getDate());
+            debugPrintln("startDateTime = " + menuObject.startDateTime);
+            debugPrintln("startDateTime.month = " + menuObject.startDateTime.getMonth());
+        }
+        menuObject.endDateTime = Global.getSessionParameter("Dashboard_EndTime");
+
+        menuObject.refreshTime = Global.getSessionParameter("Dashboard_RefreshTime");
+        if(menuObject.refreshTime == null) {
+            menuObject.refreshTime = 1;
+        }
+      ]]></script>
+    </method>
+    <method name="orderDashboard" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <userInterface>ui_wDashboards.wbuOrderDashboard</userInterface>
+      <valueType>ui_wDashboards.wbuOrderDashboard</valueType>
+    </method>
+    <method name="quoteDashboard" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <userInterface>ui_wDashboards.wbuQuoteDashboard</userInterface>
+      <valueType>ui_wDashboards.wbuQuoteDashboard</valueType>
+    </method>
+    <method name="fullDashboard" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <userInterface>ui_wDashboards.wbuAllDashboard</userInterface>
+      <valueType>ui_wDashboards.wbuAllDashboard</valueType>
+    </method>
+    <method name="orderChartDashboard" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <userInterface>ui_wDashboards.wbuOrderChartDashboard</userInterface>
+      <valueType>ui_wDashboards.wbuOrderChartDashboard</valueType>
+    </method>
+    <method name="quoteChartDashboard" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <userInterface>ui_wDashboards.wbuQuoteChartDashboard</userInterface>
+      <valueType>ui_wDashboards.wbuQuoteChartDashboard</valueType>
+    </method>
+    <method name="fullChartDashboard" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <userInterface>ui_wDashboards.wbuAllChartDashboard</userInterface>
+      <valueType>ui_wDashboards.wbuAllChartDashboard</valueType>
+    </method>
+    <method name="processDashboard" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <userInterface>ui_wDashboards.dashBoard</userInterface>
+      <valueType>ui_wDashboards.dashBoard</valueType>
+    </method>
+    <method name="processManager" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findDoc_cwf_pm.ProcessFinder/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findDoc_cwf_pm.ProcessFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_cwf_pm.ProcessFinder</valueType>
+    </method>
+    <method name="globalProcesses" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findDoc_cwf_pm.GlobalProcess</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_cwf_pm.GlobalProcess</valueType>
+    </method>
+    <method name="messageLog" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findSql_cwf_pm.msgLoggFinder/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findSql_cwf_pm.msgLoggFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_cwf_pm.msgLoggFinder</valueType>
+    </method>
+    <method name="messageQueue" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findDoc_cwf_pm.ParticipantQueue</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_cwf_pm.ParticipantQueue</valueType>
+    </method>
+    <method name="eventLog" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findDoc_cwf_oe.EventLogFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_cwf_oe.EventLogFinder</valueType>
+    </method>
+    <method name="selectApplication" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <userInterface>doc_cwf_oe.SelectApp</userInterface>
+      <validate>true</validate>
+      <valueType>doc_cwf_oe.SelectApp</valueType>
+    </method>
+    <method name="logout" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script>UserProfile.logout ();</script>
+    </method>
+    <method name="changePassword" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>doc_cwf_up.chgPwdDoc/ui_UserInterface/frmui_Forms/vform_Default</form>
+      <userInterface>doc_cwf_up.chgPwdDoc</userInterface>
+      <validate>true</validate>
+      <valueType>doc_cwf_up.chgPwdDoc</valueType>
+    </method>
+    <method name="bulkResolve" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>doc_stcw.interfaceReset/ui_UserInterface/frmui_Forms/vform_resetInterface</form>
+      <userInterface>doc_stcw.interfaceReset</userInterface>
+      <validate>true</validate>
+    </method>
+    <method name="finder_comToGraniteName" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.mapCOMToGraniteNameFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.mapCOMToGraniteNameFinder</valueType>
+    </method>
+    <method name="finder_comToGraniteValue" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.mapCOMToGraniteValueFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.mapCOMToGraniteValueFinder</valueType>
+    </method>
+    <method name="finder_bundleOrderSTC" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <userInterface>findOrder_stcw.findAllSTCBundleOrders</userInterface>
+      <validate>true</validate>
+      <valueType>findOrder_stcw.findAllSTCBundleOrders</valueType>
+    </method>
+    <method name="pickListForValidation" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findDoc_stcconf.findPickListForValidation/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findDoc_stcconf.findPickListForValidation</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findPickListForValidation</valueType>
+    </method>
+    <method name="configurationManagementView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="finder_mapWorkOrderType" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findSTCW_WORKORDERTYPE_MAP</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findSTCW_WORKORDERTYPE_MAP</valueType>
+    </method>
+    <method name="finder_mapCOMToGraniteData" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.mapCOMToGraniteDataFinder</userInterface>
+      <valueType>findDoc_stcconf.mapCOMToGraniteDataFinder</valueType>
+    </method>
+    <method name="finder_orderHeaderValidationMap" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findOrderHeaderValidationMapByOrdType</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findOrderHeaderValidationMapByOrdType</valueType>
+    </method>
+    <method name="finder_lineItemValidationMap" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findLineItemValidationMapByOrdType_ServType</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findLineItemValidationMapByOrdType_ServType</valueType>
+    </method>
+    <method name="finder_mandatoryNVPairsByOrdType_ServType" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findMandatoryNVPairsByOrderType_ServiceType</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findMandatoryNVPairsByOrderType_ServiceType</valueType>
+    </method>
+    <method name="finder_productCodes" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findAllProductCodes</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findAllProductCodes</valueType>
+    </method>
+    <method name="finder_comToGraniteServiceType" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.mapCOMToGraniteServiceTypeFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.mapCOMToGraniteServiceTypeFinder</valueType>
+    </method>
+    <method name="finder_buProvisioningForServiceTypeAndProductCode" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findBUProvisioningForServiceTypeAndProductCode</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findBUProvisioningForServiceTypeAndProductCode</valueType>
+    </method>
+    <method name="finder_priorityMappingByServiceType" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findPriorityMapping</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findPriorityMapping</valueType>
+    </method>
+    <method name="finder_skipNVPairMgmt" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findSKIPNVPair</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findSKIPNVPair</valueType>
+    </method>
+    <method name="finder_newAttrNVPairMgmt" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findNewAttrNVPair</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findNewAttrNVPair</valueType>
+    </method>
+    <method name="finder_storeAndForwardNVPairMgmt" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findStoreAndForwardNVPair</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findStoreAndForwardNVPair</valueType>
+    </method>
+    <method name="finder_collocationServiceTypes" type="usrActionMethod">
+      <form>findDoc_stcconf.findCollocationServiceTypes/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findDoc_stcconf.findCollocationServiceTypes</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findCollocationServiceTypes</valueType>
+    </method>
+    <method name="migrationMenuView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwMigrateMgmt</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="script_migrateInstallOrders" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_migrateInstallOrders_confirmation</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        debugPrintln(stcc.getSysdateForLog() + "migrateCRMInstallOrders - Start");
+        var startTime = new Date();
+
+        var statisticsMigration = crmToSOMMigration.migrateCRMInstallOrders();
+
+        var endTime = new Date();
+        var totalTime = (endTime.getTime() - startTime.getTime())/1000;
+
+        Global.commitTransaction("ORDER");
+
+        var msg = "Migrate Install Orders - Execution Completed\n" + "Statistics:\n" +
+                  "  Orders Found: " + statisticsMigration[0] + "\n" +
+                  "  Total Orders Created: " + statisticsMigration[1] + "\n" +
+                  "  Orders Migrated With Validation Errors: " + statisticsMigration[2] + "\n" +
+                  "  Orders Processed Successfully: " + statisticsMigration[3] + "\n" +
+                  "  Orders Whose Migration Failed: " + statisticsMigration[4] + "\n\n\n" +
+                  "Total Time: " + totalTime + " secs. \n\n\n" +
+                  "**** REMEMBER TO RUN SQL SCRIPT TO VALIDATE RESULT!!!! ****";
+        debugPrintln(stcc.getSysdateForLog() + "migrateCRMInstallOrders - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_migrateInstallOrders_confirmation" type="uimthd">
+      <script><![CDATA[return "AW0005";]]></script>
+    </method>
+    <method name="script_migrateChangeOrders" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_migrateChangeOrders_confirmation</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        debugPrintln(stcc.getSysdateForLog() + "migrateCRMChangeOrders - Start");
+        var startTime = new Date();
+
+        var statisticsMigration = crmToSOMMigration.migrateCRMChangeOrders();
+
+        var endTime = new Date();
+        var totalTime = (endTime.getTime() - startTime.getTime())/1000;
+
+        Global.commitTransaction("ORDER");
+
+        var msg = "Migrate Change Orders - Execution Completed\n" + "Statistics:\n" +
+                  "  Orders Found: " + statisticsMigration[0] + "\n" +
+                  "  Total Orders Created: " + statisticsMigration[1] + "\n" +
+                  "  Orders Migrated With Validation Errors: " + statisticsMigration[2] + "\n" +
+                  "  Orders Processed Successfully: " + statisticsMigration[3] + "\n" +
+                  "  Orders Whose Migration Failed: " + statisticsMigration[4] + "\n\n\n" +
+                  "Total Time: " + totalTime + " secs. \n\n\n" +
+                  "**** REMEMBER TO RUN SQL SCRIPT TO VALIDATE RESULT!!!! ****";
+        debugPrintln(stcc.getSysdateForLog() + "migrateCRMChangeOrders - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_migrateChangeOrders_confirmation" type="uimthd">
+      <script><![CDATA[return "AW0010";]]></script>
+    </method>
+    <method name="script_migrateDisconnectOrders" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_migrateDisconnectOrders_confirmation</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        debugPrintln(stcc.getSysdateForLog() + "migrateCRMDisconnectOrders - Start");
+        var startTime = new Date();
+
+        var statisticsMigration = crmToSOMMigration.migrateCRMDisconnectOrders();
+
+        var endTime = new Date();
+        var totalTime = (endTime.getTime() - startTime.getTime())/1000;
+
+        Global.commitTransaction("ORDER");
+
+        var msg = "Migrate Disconnect Orders - Execution Completed\n" + "Statistics:\n" +
+                  "  Orders Found: " + statisticsMigration[0] + "\n" +
+                  "  Total Orders Created: " + statisticsMigration[1] + "\n" +
+                  "  Orders Migrated With Validation Errors: " + statisticsMigration[2] + "\n" +
+                  "  Orders Processed Successfully: " + statisticsMigration[3] + "\n" +
+                  "  Orders Whose Migration Failed: " + statisticsMigration[4] + "\n\n\n" +
+                  "Total Time: " + totalTime + " secs. \n\n\n" +
+                  "**** REMEMBER TO RUN SQL SCRIPT TO VALIDATE RESULT!!!! ****";
+        debugPrintln(stcc.getSysdateForLog() + "migrateCRMisconnectOrders - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_migrateDisconnectOrders_confirmation" type="uimthd">
+      <script><![CDATA[return "AW0011";]]></script>
+    </method>
+    <method name="script_migrateInstallFeasOrders" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_migrateInstallFeasOrders_confirmation</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        debugPrintln(stcc.getSysdateForLog() + "migrateInstallFeasOrder - Start");
+        var startTime = new Date();
+
+        var statisticsMigration = crmToSOMMigration.migrateCRMInstallQuotes();
+
+        var endTime = new Date();
+        var totalTime = (endTime.getTime() - startTime.getTime())/1000;
+
+        Global.commitTransaction("ORDER");
+
+        var msg = "Migrate Install Feasibility Orders - Execution Completed\n" + "Statistics:\n" +
+                  "  Orders Found: " + statisticsMigration[0] + "\n" +
+                  "  Total Orders Created: " + statisticsMigration[1] + "\n" +
+                  "  Orders Migrated With Validation Errors: " + statisticsMigration[2] + "\n" +
+                  "  Orders Processed Successfully: " + statisticsMigration[3] + "\n" +
+                  "  Orders Whose Migration Failed: " + statisticsMigration[4] + "\n\n\n" +
+                  "Total Time: " + totalTime + " secs. \n\n\n" +
+                  "**** REMEMBER TO RUN SQL SCRIPT TO VALIDATE RESULT!!!! ****";
+        debugPrintln(stcc.getSysdateForLog() + "migrateInstallFeasOrder - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_migrateInstallFeasOrders_confirmation" type="uimthd">
+      <script><![CDATA[return "AW0012";]]></script>
+    </method>
+    <method name="script_migrateChangeFeasOrders" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_migrateChangeFeasOrders_confirmation</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        debugPrintln(stcc.getSysdateForLog() + "migrateChangeFeasOrder - Start");
+        var startTime = new Date();
+
+        var statisticsMigration = crmToSOMMigration.migrateCRMChangeQuotes();
+
+        var endTime = new Date();
+        var totalTime = (endTime.getTime() - startTime.getTime())/1000;
+
+        Global.commitTransaction("ORDER");
+
+        var msg = "Migrate Change Feasibility Orders - Execution Completed\n" + "Statistics:\n" +
+                  "  Orders Found: " + statisticsMigration[0] + "\n" +
+                  "  Total Orders Created: " + statisticsMigration[1] + "\n" +
+                  "  Orders Migrated With Validation Errors: " + statisticsMigration[2] + "\n" +
+                  "  Orders Processed Successfully: " + statisticsMigration[3] + "\n" +
+                  "  Orders Whose Migration Failed: " + statisticsMigration[4] + "\n\n\n" +
+                  "Total Time: " + totalTime + " secs. \n\n\n" +
+                  "**** REMEMBER TO RUN SQL SCRIPT TO VALIDATE RESULT!!!! ****";
+        debugPrintln(stcc.getSysdateForLog() + "migrateChangeFeasOrder - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_migrateChangeFeasOrders_confirmation" type="uimthd">
+      <script><![CDATA[return "AW0013";]]></script>
+    </method>
+    <method name="script_startProcessForMigratedOrders" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_startProcessForMigratedOrders_confirmation</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        debugPrintln(stcc.getSysdateForLog() + "StartProcessForMigratedOrdersInProv - Start");
+        var startTime = new Date();
+
+        var orderIdsFound = Finder.runFinder("crmToSOMMigration.findMigratedOrderIdsInProvisioning", "select", null);
+        // note: the finder returns a document whose leaf name is "cwDocID" but it contains the cwOrderId!!!!
+
+        var found = 0;
+        var failed = 0;
+        var processedSuccessfully = 0;
+
+        if(orderIdsFound != null) {
+            found = orderIdsFound.length;
+            for(var i=0; i<orderIdsFound.length; i++) {
+                try {
+                    var order = Order.getOrderById(orderIdsFound[i].cwDocID);
+                    if(order!= null) {
+                        debugPrintln(stcc.getSysdateForLog() + "StartProcessForMigratedOrdersInProv - Starting OrchestrationProcess For Order " + orderIdsFound[i].cwDocID);
+                        var processId = Process.startProcess ("stcw.mainSTCWOrchestrationProcess", orderIdsFound[i].cwDocID, orderIdsFound[i].cwDocID);
+                        debugPrintln(stcc.getSysdateForLog() + "StartProcessForMigratedOrdersInProv - Started OrchestrationProcess For Order " + orderIdsFound[i].cwDocID + "; processId = " + processId);
+                        processedSuccessfully++;
+                    }
+                    else {
+                        debugPrintln(stcc.getSysdateForLog() + "StartProcessForMigratedOrdersInProv - Unable to load the order " + orderIdsFound[i].cwDocID + "!");
+                    }
+                }
+                catch(exc) {
+        debugPrintln(stcc.getSysdateForLog() + "StartProcessForMigratedOrdersInProv - Order.id: " + orderIdsFound[i].cwDocID + " - Exc: " + exc.message);
+                    failed++;
+                }
+            }
+        }
+
+        var endTime = new Date();
+        var totalTime = (endTime.getTime() - startTime.getTime())/1000;
+
+        var msg = "Start Process For Migrated Orders In Provisioning - Execution Completed\n" + "Statistics:\n" +
+                  "  Orders Found: " + found + "\n" +
+                  "  Orders Failed to load: " + failed + "\n" +
+                  "  Orders Processed Successfully: " + processedSuccessfully + "\n\n\n" +
+                  "Total Time: " + totalTime + " secs.";
+        debugPrintln(stcc.getSysdateForLog() + " StartProcessForMigratedOrdersInProv - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_sendQSUForSync" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_sendQSU_OSUForSync_confirm</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        var debugMsg = " SendQSUForSync - ";
+        debugPrintln(stcc.getSysdateForLog() + debugMsg + "Start");
+
+        var statistics = crmToSOMMigration.sendQSUForSync();
+
+        var msg = "Send QSU For Sync - Execution Completed\n" + "Statistics:\n" +
+                  "  Records Found: " + statistics[0] + "\n" +
+                  "  Processed Successfully: " + statistics[1] + "\n" +
+                  "  Processed With Failure: " + (statistics[0] - statistics[1]);
+        debugPrintln(stcc.getSysdateForLog() + debugMsg + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_startProcessForMigratedOrders_confirmation" type="uimthd">
+      <script><![CDATA[return "AW0006";]]></script>
+    </method>
+    <method name="script_deleteMigratedOrders" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_deleteMigratedOrders_confirmation</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        debugPrintln(stcc.getSysdateForLog() + " deleteMigratedOrders - Start");
+        var startTime = new Date();
+
+        var inputDoc = new Document("stcw.search_bundleOrder");
+        inputDoc.isMigrated = true;
+
+        var orderListFound = Finder.runFinder("stcw.findAllSTCBundleOrders_Script", "select", inputDoc);
+
+        var countDeleted = 0;
+        if(orderListFound != null && orderListFound.length > 0) {
+            var limit = (orderListFound.length > 5000 ? 5000 : orderListFound.length);
+
+            for(var i=0; i<limit; i++) {
+                var order = Order.getOrderById(orderListFound[i].id);
+                order.deleteOrder();
+
+                var orderOrchestrationList = stcw.findRecordsInOrchTabByOrderId_ParentId(order.id);
+                if(orderOrchestrationList != null && orderOrchestrationList.length > 0) {
+                    for(var j=0; j<orderOrchestrationList.length; j++) {
+                        orderOrchestrationList[j].deleteItem();
+                    }
+                }
+
+                countDeleted++;
+            }
+        }
+
+        var endTime = new Date();
+        var totalTime = (endTime.getTime() - startTime.getTime())/1000;
+
+        var msg = "Delete Migrated Orders - Execution Completed\n" +
+                  "  Deleted: " + countDeleted + "\n\n\n" +
+                  "Total Time: " + totalTime + " secs. ";
+        debugPrintln(stcc.getSysdateForLog() + " deleteMigratedOrders - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_deleteMigratedOrders_confirmation" type="uimthd">
+      <script><![CDATA[return "AW0007";]]></script>
+    </method>
+    <method name="script_terminateProcessesForOrders_Quotes" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_terminateProcessesForOrders_Quotes_confirm</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        debugPrintln(stcc.getSysdateForLog() + "TerminateProcessesForOrders_Quotes - Start");
+        var startTime = new Date();
+
+        var processesFound = Finder.runFinder("crmToSOMMigration.findAllRunningProcessesForOrders_Quotes", "select", null);
+
+        var found = 0;
+        var failed = 0;
+        var processedSuccessfully = 0;
+
+        if(processesFound != null) {
+            found = processesFound.length;
+            for(var i=0; i<processesFound.length; i++) {
+                debugPrintln(stcc.getSysdateForLog() + "TerminateProcessesForOrders_Quotes - Terminating Process " + processesFound[i].id);
+
+                try {
+                    if(processesFound[i].STATUS == 8) {
+                        Process.resumeAllStaleProcesses(processesFound[i].id);
+                    }
+
+                    Process.terminateProcess(processesFound[i].id);
+                    processedSuccessfully++;
+                }
+                catch(exc) {
+        debugPrintln(stcc.getSysdateForLog() + "TerminateProcessesForOrders_Quotes - ProcessId: " + processesFound[i].id + " - Exc: " + exc.message);
+                    failed++;
+                }
+            }
+        }
+
+        var endTime = new Date();
+        var totalTime = (endTime.getTime() - startTime.getTime())/1000;
+
+        var msg = "Terminate Processes For Orders & Quotes - Execution Completed\n" + "Statistics:\n" +
+                  "  Orders Found: " + found + "\n" +
+                  "  Failed to load: " + failed + "\n" +
+                  "  Processed Successfully: " + processedSuccessfully + "\n\n\n" +
+                  "Total Time: " + totalTime + " secs.";
+        debugPrintln(stcc.getSysdateForLog() + " TerminateProcessesForOrders_Quotes - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_terminateProcessesForOrders_Quotes_confirm" type="uimthd">
+      <script><![CDATA[return "AW0015";]]></script>
+    </method>
+    <method name="script_sendQSU_OSUForSync_confirm" type="uimthd">
+      <script><![CDATA[return "AW0004";]]></script>
+    </method>
+    <method name="script_sendOSUForSync" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_sendQSU_OSUForSync_confirm</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        var debugMsg = " SendOSUForSync - ";
+        debugPrintln(stcc.getSysdateForLog() + debugMsg + "Start");
+
+        var statistics = crmToSOMMigration.sendOSUForSync();
+
+        var msg = "Send OSU For Sync - Execution Completed\n" + "Statistics:\n" +
+                  "  Records Found: " + statistics[0] + "\n" +
+                  "  Processed Successfully: " + statistics[1] + "\n" +
+                  "  Processed With Failure: " + (statistics[0] - statistics[1]);
+        debugPrintln(stcc.getSysdateForLog() + debugMsg + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_createMissingOrders" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_createMissingOrders_confirm</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        var debugMsg = " CreateMissingOrders - ";
+        debugPrintln(stcc.getSysdateForLog() + debugMsg + "Start");
+
+        var statistics = crmToSOMMigration.createMissingOrders();
+
+        var msg = "Create Missing Order - Execution Completed\n" + "Statistics:\n" +
+                  "  Records Found: " + statistics[0] + "\n" +
+                  "  Processed Failed : " + statistics[1] + "\n" +
+                  "  Processed With Validation Errors: " + statistics[2] + "\n" +
+                  "  Processed Successfully: " + statistics[3];
+        debugPrintln(stcc.getSysdateForLog() + debugMsg + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_createMissingOrders_confirm" type="uimthd">
+      <script><![CDATA[return "AW0016";]]></script>
+    </method>
+    <method name="finder_blockParametersConfiguration" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findBlockParameterConfiguration</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findBlockParameterConfiguration</valueType>
+    </method>
+    <method name="script_terminateAllVPNBundleProcesses" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_terminateProcessesForOrders_Quotes_confirm</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        debugPrintln(stcc.getSysdateForLog() + "TerminateAllVPNBundleProcesses - Start");
+        var startTime = new Date();
+
+        var processesFound = crmToSOMMigration.terminateProcessesForBundleVPN();
+
+        var endTime = new Date();
+        var totalTime = (endTime.getTime() - startTime.getTime())/1000;
+
+        var msg = "Terminate VPN Bundle Processes For Orders & Quotes - Execution Completed\n" + "Statistics:\n" +
+                  "  Processes Terminated: " + processesFound + "\n" +
+                  "Total Time: " + totalTime + " secs.";
+        debugPrintln(stcc.getSysdateForLog() + " TerminateAllVPNBundleProcesses - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_migrateBundleVPNOrdersToFlat" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_migrateBundleVPNOrdersToFlat_confirm</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        debugPrintln(stcc.getSysdateForLog() + "MigrateBundleVPNOrdersToFlat - Start");
+        var startTime = new Date();
+
+        var ordersCreated = crmToSOMMigration.createFlatOrdersFromBundleForVPN();
+
+        var endTime = new Date();
+        var totalTime = (endTime.getTime() - startTime.getTime())/1000;
+
+        var msg = "Migration of VPN Bundle Orders to Flat - Execution Completed\n" + "Statistics:\n" +
+                  "  Flat Orders Created: " + ordersCreated + "\n" +
+                  "Total Time: " + totalTime + " secs.";
+        debugPrintln(stcc.getSysdateForLog() + " MigrateBundleVPNOrdersToFlat - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="script_migrateBundleVPNOrdersToFlat_confirm" type="uimthd">
+      <script><![CDATA[return "AW0018";]]></script>
+    </method>
+    <method name="script_restartMigratedOrders" type="usrActionMethod">
+      <confirmation>ui_stcw.wholesaleOrderManagement/uimthd_script_startProcessForMigratedOrders_confirmation</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        debugPrintln(stcc.getSysdateForLog() + "RestartMigratedFlatOrders - Start");
+        var startTime = new Date();
+
+        var stats = crmToSOMMigration.restartProcessForMigratedVPNOrders();
+
+        var endTime = new Date();
+        var totalTime = (endTime.getTime() - startTime.getTime())/1000;
+
+        var msg = "Restart Process for Migrated VPN Flat Orders - Execution Completed\n" + "Statistics:\n" +
+                  "  Flat Orders Migrated: " + stats[0] + "\n" +
+                  "  Process Started: " + stats[1] + "\n" +
+                  "Total Time: " + totalTime + " secs.";
+        debugPrintln(stcc.getSysdateForLog() + " RestartMigratedFlatOrders - " + msg);
+        Global.showUserMessage(msg);
+      ]]></script>
+    </method>
+    <method name="finder_serviceTypesHierarchy" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findServiceTypeHierarchyConf</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findServiceTypeHierarchyConf</valueType>
+    </method>
+    <method name="finder_nvPairsForBackupByServType" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findNVPairForBackup</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findNVPairForBackup</valueType>
+    </method>
+    <method name="finder_internalAttributeNameMapping" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findInternalAttributeNameForObject</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findInternalAttributeNameForObject</valueType>
+    </method>
+    <method name="finder_nvPairDependencies" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findNVPairDependencies</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findNVPairDependencies</valueType>
+    </method>
+    <method name="finder_mopsOrderType" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findMOPS_ORDER_TYPE</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findMOPS_ORDER_TYPE</valueType>
+    </method>
+    <method name="finder_stepForLTEProcess" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findOperationForLTEConfiguration</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_stcconf.findOperationForLTEConfiguration</valueType>
+    </method>
+    <method name="finder_mapCOMToLTEData" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.mapCOMToLTEDataFinder</userInterface>
+      <valueType>findDoc_stcconf.mapCOMToLTEDataFinder</valueType>
+    </method>
+    <method name="finder_attributesWithSameValueInUpdate" type="usrActionMethod">
+      <userInterface>findDoc_stcconf.findAttributesWithSameValueInUpdate</userInterface>
+      <valueType>findDoc_stcconf.findAttributesWithSameValueInUpdate</valueType>
+    </method>
+    <method name="finder_findFTTHOrders" type="usrActionMethod">
+      <userInterface>findDoc_failedOrders.findFTTHOrders</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_failedOrders.findFTTHOrders</valueType>
+    </method>
+    <method name="finder_groupConfigurationForFO" type="usrActionMethod">
+      <userInterface>findDoc_failedOrders.findGroupConfigurationForFO</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_failedOrders.findGroupConfigurationForFO</valueType>
+    </method>
+    <method name="finder_findTaskToReprocessBehavior" type="usrActionMethod">
+      <userInterface>findDoc_failedOrders.findTaskToReprocessBehavior</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_failedOrders.findTaskToReprocessBehavior</valueType>
+    </method>
+    <method name="applicationVisible" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>bUManagement</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+  </methodList>
+</userInterface>

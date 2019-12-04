@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="failedOrders.search_userAction">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{9afb3283-d48c-4345-83a3-e3ac9566ffa3}</guid>
+  <label>Search Element: User Action</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="userId" type="leaf">
+      <valueType>dtype_cwf.userId</valueType>
+    </variable>
+    <variable name="today" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="fromDate" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Date</valueType>
+    </variable>
+    <variable name="toDate" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Date</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$today" type="laction">
+      <path>doc_failedOrders.search_userAction/leaf_today</path>
+      <type>initializer</type>
+      <script>this.today = false;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_failedOrders.search_userAction</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="search_UserActionGrid" type="elgrd">
+                    <colWidths>90px,150px,60px,60px,90px,150px,90px,150px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>8</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="search_UserActionHeader" type="elhdr">
+                        <label>Search Element: User Action</label>
+                      </element>
+                      <element name="userId" type="elfld">
+                        <label>User ID [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.search_userAction/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.search_userAction/leaf_userId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="today" type="elchk">
+                        <label>Today</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.search_userAction/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.search_userAction/leaf_today</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="fromDate" type="eldate">
+                        <label>Action Date &gt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.search_userAction/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.search_userAction/leaf_fromDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="toDate" type="eldate">
+                        <label>Action Date &lt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_failedOrders.search_userAction/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_failedOrders.search_userAction/leaf_toDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>10px</height>
+                        <rowSpan>10px</rowSpan>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

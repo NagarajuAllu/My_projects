@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<userInterface name="ds_ws.report">
+  <blockUIOnAction>true</blockUIOnAction>
+  <extends>ui_com.conceptwave.system.Application</extends>
+  <label>Report Functionalities</label>
+  <metaVersion>21</metaVersion>
+  <url>/report</url>
+  <vformList>
+    <vform name="Forms" type="frmui">
+      <extends>ui_com.conceptwave.system.Application/frmui_Forms</extends>
+      <overlayList>
+        <overlay name="Menu" type="exov">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</extends>
+          <label>Menu</label>
+          <overrideList>
+            <override name="HorizontalLayoutForMenuItems" type="elext">
+              <visible type="varPath">
+                <variablePathList>
+                  <variablePath>ui_ds_ws.report/permMethod_reportView</variablePath>
+                </variablePathList>
+              </visible>
+              <elementList>
+                <element name="options" type="elmnu">
+                  <label>Options</label>
+                  <menuType>2</menuType>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <elementList>
+                    <element name="action_createOrderSTC_Home" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_action_createOrderSTC_Home_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Action: Create Order STC &quot;Home&quot;</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_action_createOrderSTC_HomeView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="finder_orderSTC_HOME" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_finder_orderSTC_HOME_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>List &quot;STC Orders&quot; [HOME]</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_finder_orderSTC_HOMEView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="finder_logMessageHBU" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_finder_logMessageHBU_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Log Message [HOME]</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_finder_logMessageHBUView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="finder_graniteEvents" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_finder_graniteEvents_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Show Stored Granite Events</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_finder_graniteEventsView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="ChangePassword" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_ChangePassword_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/key.gif</icon>
+                      <label>Change Password</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/permMethod_ChangePasswordView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="SelectApplication" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_SelectApplication_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/choice.gif</icon>
+                      <label>Select Application</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                    <element name="Logout" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_ds_ws.report/usrActionMethod_Logout_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/MenuIconLogout.gif</icon>
+                      <label>Logout</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </override>
+          </overrideList>
+        </overlay>
+        <overlay name="Page" type="expg">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</extends>
+          <label>Page</label>
+          <stylesheet>/cwf/css/cwf.css</stylesheet>
+          <title>Report Functionalities</title>
+          <visible type="varPath">
+            <variablePathList>
+              <variablePath>ui_ds_ws.report/permMethod_reportView</variablePath>
+            </variablePathList>
+          </visible>
+        </overlay>
+      </overlayList>
+    </vform>
+  </vformList>
+  <methodList>
+    <method name="reportView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Report</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="action_createOrderSTC_Home" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script><![CDATA[
+        var order = new Order("ds_ws:default_orderSTC_HOME");
+        order.orderMessage.actionOnOrder = "Create";
+        order.orderMessage.orderStatus = "New";
+        order.orderMessage.businessUnit = "Home";
+        order.orderMessage.createdBy = "Expediter";
+        order.orderMessage.cctType = "FTTH_LINK";
+        order.orderMessage.creationDate = new Date();
+        // Setting the Service Date as today + 7 days
+        var today = new Date();
+        var todayMS = today.getTime();
+        var weekMS = 604800000;
+        order.orderMessage.serviceDate = new Date(todayMS + weekMS);
+
+        return order;
+      ]]></script>
+    </method>
+    <method name="action_createOrderSTC_Home_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.action_createOrderSTC_Home();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="action_createOrderSTC_HomeView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Report_Dft</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="finder_orderSTC_HOME" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findOrder_ds_ws.findAllSTCOrders_HOME/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findOrder_ds_ws.findAllSTCOrders_HOME</userInterface>
+      <validate>true</validate>
+    </method>
+    <method name="finder_orderSTC_HOME_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.finder_orderSTC_HOME();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="finder_orderSTC_HOMEView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Report_Dft</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="finder_logMessageHBU" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findSql_ds_ws.msgLogFinder_HBU</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_ds_ws.msgLogFinder_HBU</valueType>
+    </method>
+    <method name="finder_logMessageHBU_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.finder_logMessageHBU();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="finder_logMessageHBUView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Report_HBU</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="finder_graniteEvents" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findDoc_ds_ws.findStoredGraniteEvents/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findDoc_ds_ws.findStoredGraniteEvents</userInterface>
+      <validate>true</validate>
+    </method>
+    <method name="finder_graniteEvents_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.finder_graniteEvents();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="finder_graniteEventsView" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Report_HBU</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="ChangePassword" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>doc_cwf_up.chgPwdDoc/ui_UserInterface/frmui_Forms/vform_Default</form>
+      <parameterList>
+        <parameter name="menuObject" type="rifp">
+          <type>doc_cwf_up.chgPwdDoc</type>
+        </parameter>
+        <parameter name="cwDialogParam" type="rifp">
+          <type>ui_com.conceptwave.system.Dialog</type>
+        </parameter>
+      </parameterList>
+      <showInPopup>true</showInPopup>
+      <userInterface>doc_cwf_up.chgPwdDoc</userInterface>
+      <validate>true</validate>
+      <valueType>doc_cwf_up.chgPwdDoc</valueType>
+      <script><![CDATA[cwDialogParam.title = "Change Password";]]></script>
+    </method>
+    <method name="ChangePassword_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.ChangePassword();
+        Global.runContentDisplayScript(this, "displayScript");
+      ]]></script>
+    </method>
+    <method name="ChangePasswordView" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="SelectApplication" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script><![CDATA[return new Document("cwf_oe:SelectApp");]]></script>
+    </method>
+    <method name="SelectApplication_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.SelectApplication();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="Logout" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script>UserProfile._logout();</script>
+    </method>
+    <method name="Logout_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.Logout();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+  </methodList>
+</userInterface>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="tfs.releaseLockForTFRGenerationNumber">
+  <label>Release Lock For TFR Generation Number</label>
+  <metaVersion>25</metaVersion>
+  <script><![CDATA[
+    var resultList = Finder.runFinder("tfs.findTFRNumberGeneratorLock", "select", null);
+
+    if(resultList != null && resultList.length > 0) {
+        resultList[0].deleteFromDB(false);
+    }
+
+    return;
+  ]]></script>
+</script>

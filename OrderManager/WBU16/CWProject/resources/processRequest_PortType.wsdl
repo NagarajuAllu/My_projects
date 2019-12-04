@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<definitions name="siSIUpdate" targetNamespace="http://172.20.66.16/GraniteGW_Site/Inbound/SOAP/Wholesale/InformationUpdate/SOAP/processRequest" xmlns:tns="http://172.20.66.16/GraniteGW_Site/Inbound/SOAP/Wholesale/InformationUpdate/SOAP/processRequest" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:siSIUpdate="http://172.20.66.16/GraniteGW_Site/Inbound/SOAP/Wholesale/InformationUpdate/SOAP/processRequest">
+
+	<types>
+		<schema targetNamespace="http://172.20.66.16/GraniteGW_Site/Inbound/SOAP/Wholesale/InformationUpdate/SOAP/processRequest"
+				xmlns="http://www.w3.org/2001/XMLSchema"
+			xmlns:siSIUpdate="http://172.20.66.16/GraniteGW_Site/Inbound/SOAP/Wholesale/InformationUpdate/SOAP/processRequest"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+
+			<annotation>
+				<documentation>Siebel Site Information Update</documentation>
+				<appinfo>
+					<metadata>STC Order Management</metadata>
+					<created>Wed Jun 10 08:27:53 EDT 2009</created>
+					<updated>Thu May 23 17:12:44 EDT 2013</updated>
+				</appinfo>
+			</annotation>
+
+			<!-- Data types and elements -->
+
+			<!-- Structures -->
+
+			<complexType name="Acknowledgement">
+				<annotation>
+					<documentation>Acknowledgement</documentation>
+				</annotation>
+					<sequence>
+						<element name="Status" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorDescription" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SourceErrorCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="processRequest">
+				<annotation>
+					<documentation>processRequest</documentation>
+				</annotation>
+					<sequence>
+						<element name="Request" minOccurs="1" maxOccurs="1" type="siSIUpdate:Request"/>
+					</sequence>
+				</complexType>
+
+			<element name="processRequest" type="siSIUpdate:processRequest"/>
+
+			<complexType name="processRequestResponse">
+				<annotation>
+					<documentation>processRequestResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="Acknowledgement" minOccurs="1" maxOccurs="1" type="siSIUpdate:Acknowledgement"/>
+					</sequence>
+				</complexType>
+
+			<element name="processRequestResponse" type="siSIUpdate:processRequestResponse"/>
+
+			<complexType name="Request">
+				<annotation>
+					<documentation>Request</documentation>
+				</annotation>
+					<sequence>
+						<element name="BusinessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="CcliCode" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="City" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CityCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Country" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="District" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="DistrictCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Region" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SiteID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SiteName" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="SiteType" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="status" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="CommercialSiteName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Latitude" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Longitude" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+		</schema>
+	</types>
+
+	<message name="processRequest_el">
+		<part name="processRequest_el" element="siSIUpdate:processRequest_el"/>
+	</message>
+
+	<message name="processRequestResponse_el">
+		<part name="processRequestResponse_el" element="siSIUpdate:processRequestResponse_el"/>
+	</message>
+
+	<portType name="processRequest_PortType">
+		<operation name="processRequest">
+			<input message="tns:processRequest_el"/>
+			<output message="tns:processRequestResponse_el"/>
+		</operation>
+	</portType>
+
+	<binding name="GraniteGW_Site_Inbound_SOAP_Wholesale_InformationUpdate_SOAP_processRequest_Binder" type="tns:processRequest_PortType">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+		<operation name="processRequest">
+			<soap:operation soapAction="GraniteGW_Site_Inbound_SOAP_Wholesale_InformationUpdate_SOAP_processRequest_Binder_processRequest"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+
+	<service name="siSIUpdate">
+		<port name="GraniteGW_Site_Inbound_SOAP_Wholesale_InformationUpdate_SOAP_processRequest_Port" binding="tns:GraniteGW_Site_Inbound_SOAP_Wholesale_InformationUpdate_SOAP_processRequest_Binder">
+			<soap:address location="http:// 172.20.66.16:24004/ws/GraniteGW_Site.Inbound.SOAP.Wholesale.InformationUpdate.SOAP:processRequest"/>
+		</port>
+	</service>
+
+</definitions>

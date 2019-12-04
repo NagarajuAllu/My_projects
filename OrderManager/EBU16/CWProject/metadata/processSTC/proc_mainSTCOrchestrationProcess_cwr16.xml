@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="processSTC.mainSTCOrchestrationProcess_cwr16">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>49.0</x>
+    <y>164.0</y>
+    <childList>
+      <child name="setProcessIdInOrchestrationTable" type="scriptActivity">
+        <label>Set ProcessId In Orchestration Table</label>
+        <x>197.0</x>
+        <y>135.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var recordInOrchestrationTable = processSTC.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+              recordInOrchestrationTable.orchestrationProcessId = this.process.id;
+              recordInOrchestrationTable.save();
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="isPermanentOrTempDisconnect" type="switchActivity">
+        <label>Is Permanent Disconnect Or Temporary Disconnect?</label>
+        <x>392.0</x>
+        <y>127.0</y>
+        <childList>
+          <child name="disconnect" type="caseActivity">
+            <label>Disconnect</label>
+            <x>35.0</x>
+            <y>342.0</y>
+            <childList>
+              <child name="startDisconnect" type="seqActivity">
+                <label>Start Disconnect</label>
+                <x>394.0</x>
+                <y>354.0</y>
+                <childList>
+                  <child name="performProvisioningOfAllChildElements_Disconnect" type="subflowActivity">
+                    <element>proc_processSTC.performProvisioningOfAllChildElements_Delete</element>
+                    <label>Perform Provisioning Of All Child Elements - Disconnect</label>
+                    <x>588.0</x>
+                    <y>321.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[this.process.processDocument.elementTypeInOrderTree = 'B';]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var order = this.process.processOrder;
+                  var orderType = order.orderHeader.orderType;
+
+                  // R. 23 HLD document - Tempo & Permanent Disconnect
+                  var isDisconnect = (orderType == "D" || orderType == "O");
+
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - IsDisconnect = " + isDisconnect);
+
+                  return isDisconnect;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="notDisconnect" type="caseActivity">
+            <label>Not Disconnect</label>
+            <x>231.0</x>
+            <y>77.0</y>
+            <childList>
+              <child name="startNormalProcessing" type="seqActivity">
+                <label>Start Normal Processing</label>
+                <x>533.0</x>
+                <y>163.0</y>
+                <childList>
+                  <child name="performProvisioningOfAllChildElements_NoDisconnect" type="subflowActivity">
+                    <element>proc_processSTC.performProvisioningOfAllChildElements_NotDelete</element>
+                    <label>Perform Provisioning Of All Child Elements - No Disconnect</label>
+                    <x>680.0</x>
+                    <y>120.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[this.process.processDocument.elementTypeInOrderTree = 'B';]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="sendWOSUForOrderToEAI" type="scriptActivity">
+        <label>Send WOSU For Order To EAI</label>
+        <x>829.0</x>
+        <y>323.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              if(! processSTC.checkIfExistProcessKOInOrchestrationTable(this.process.processOrder.id)) {
+                  // updating provisioningFlag for all the bundles
+                  var bundleOrder = this.process.processOrder;
+                  for(var i=0; i<bundleOrder.bundles.length; i++) {
+                      var bundleElement = bundleOrder.bundles[i].bundle;
+
+                      var bundleStatusUpperCase = bundleElement.lineItemStatus.toUpperCase();
+                      if(bundleStatusUpperCase != "CANCELLED" && bundleStatusUpperCase != "COMPLETED") {
+                          if(ds_ws.checkThatAllLineItemsInBundleHaveOneOfTheseStatus(["CANCELLED"], bundleElement, bundleOrder, false)) {
+                              bundleElement.lineItemStatus = "CANCELLED";
+                          }
+                          else {
+                              bundleElement.lineItemStatus = "COMPLETED";
+                          }
+                          bundleElement.completionDate = new Date();
+                      }
+
+                      if(bundleElement.isCancel || bundleElement.lineItemStatus == "CANCELLED") {
+                          bundleElement.provisioningFlag = "CANCELLED";
+                      }
+                      else {
+                          var activeLineItems = ds_ws.getAllLineItemsByIdentifierAndProvisioningFlag(bundleElement.lineItemIdentifier, "B", "ACTIVE");
+                          for(var j=0; j<activeLineItems.length; j++) {
+                              activeLineItems[j].provisioningFlag = "OLD";
+                              activeLineItems[j].save();
+                          }
+
+                          bundleElement.provisioningFlag = "ACTIVE";
+                      }
+                      bundleElement.save();
+                  }
+
+                  var orderStatusUpperCase = bundleOrder.orderHeader.orderStatus.toUpperCase();
+                  if(orderStatusUpperCase != "CANCELLED" && orderStatusUpperCase != "COMPLETED") {
+                      // it happens only if there is no lineItem sent to Granite and so no WOSU received
+                      if(ds_ws.checkThatAllLineItemsInOrderHaveOneOfTheseStatus(["CANCELLED"], bundleOrder, false)) {
+                          bundleOrder.orderHeader.orderStatus = "CANCELLED";
+                      }
+                      else {
+                          bundleOrder.orderHeader.orderStatus = "COMPLETED";
+                      }
+                      bundleOrder.orderHeader.completionDate = new Date();
+                  }
+                  bundleOrder.save();
+
+                  if(! processSTC.checkIfExistProvisionProcessInOrchestrationTable(bundleOrder.id)) {
+                      // sending "closing" WOSU to EAI
+                      processSTC.generateLastWOSUForOrder(bundleOrder);
+                  }
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>995.0</x>
+        <y>342.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - End");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="stopProcess" type="onExceptionActivity">
+        <element>excp_cwf.stop</element>
+        <label>Stop Process</label>
+        <x>49.0</x>
+        <y>264.0</y>
+        <childList>
+          <child name="start" type="seqActivity">
+            <label>Start</label>
+            <x>49.0</x>
+            <y>341.0</y>
+            <childList>
+              <child name="stopOrchestrationProcess" type="completeActivity">
+                <label>Stop Orchestration Process</label>
+                <x>207.0</x>
+                <y>329.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Received Stop for this Orchestration process");
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Start");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <description><![CDATA[
+    <p style="margin-top: 0">
+      Main process responsible for the Provisioning orchestration; no
+      orderItem!!!
+    </p>
+    <p style="margin-top: 0">
+      It uses the 2 following subflows to orchestrate provisioning according
+      to the action of the element:
+    </p>
+    <p style="margin-top: 0">
+      - performProvisioningOfAllChildElements_NotDelete
+    </p>
+    <p style="margin-top: 0">
+      - performProvisioningOfAllChildElements_Delete
+    </p>
+  ]]></description>
+  <document>doc_processSTC.stcOrchestrationProcessDocument</document>
+  <label>Main STC Orchestration Process</label>
+  <metaVersion>23</metaVersion>
+  <priority>8</priority>
+  <revision>16</revision>
+  <subflowReferenceList>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_processSTC.performProvisioningOfAllChildElements_Delete</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_processSTC.performProvisioningOfAllChildElements_NotDelete</subflow>
+    </subflowReference>
+  </subflowReferenceList>
+  <type>User</type>
+</process>

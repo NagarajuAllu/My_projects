@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<userInterface name="failedOrders.wholesaleFOOrderManagement">
+  <blockUIOnAction>true</blockUIOnAction>
+  <extends>ui_com.conceptwave.system.Application</extends>
+  <label>Wholesale FO Order Management</label>
+  <metaVersion>25</metaVersion>
+  <url>/wholesaleFOOrderManagement</url>
+  <vformList>
+    <vform name="Forms" type="frmui">
+      <extends>ui_com.conceptwave.system.Application/frmui_Forms</extends>
+      <overlayList>
+        <overlay name="Menu" type="exov">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</extends>
+          <label>Menu</label>
+          <overrideList>
+            <override name="HorizontalLayoutForMenuItems" type="elext">
+              <elementList>
+                <element name="finder_findFTTHOrders" type="elmnu">
+                  <clickMethod type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_failedOrders.wholesaleFOOrderManagement/usrActionMethod_finder_findFTTHOrders</variablePath>
+                    </variablePathList>
+                  </clickMethod>
+                  <label>Search FTTH Orders</label>
+                </element>
+                <element name="finder_findFTTHFailedOrders" type="elmnu">
+                  <clickMethod type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_failedOrders.wholesaleFOOrderManagement/usrActionMethod_finder_findFTTHFailedOrders</variablePath>
+                    </variablePathList>
+                  </clickMethod>
+                  <label>Search FTTH Failed Orders</label>
+                </element>
+                <element name="finder_findStatisticsForUserActions" type="elmnu">
+                  <clickMethod type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_failedOrders.wholesaleFOOrderManagement/usrActionMethod_finder_findStatisticsForUserAction</variablePath>
+                    </variablePathList>
+                  </clickMethod>
+                  <label>Find Statistics For UserActions</label>
+                </element>
+                <element name="utility_menuItem" type="elmnu">
+                  <label>Utilities</label>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <elementList>
+                    <element name="selectApplication" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_failedOrders.wholesaleFOOrderManagement/usrActionMethod_selectApplication</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/choice.gif</icon>
+                      <label>Select Application</label>
+                    </element>
+                    <element name="separator" type="elsep"/>
+                    <element name="logout" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_failedOrders.wholesaleFOOrderManagement/usrActionMethod_logout</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/MenuIconLogout.gif</icon>
+                      <label>Logout</label>
+                      <menuType>5</menuType>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </override>
+          </overrideList>
+        </overlay>
+        <overlay name="Page" type="expg">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</extends>
+          <label>Page</label>
+          <stylesheet>/cwf/css/cwf.css</stylesheet>
+          <title>Wholesale FO Order Management</title>
+          <visible type="varPath">
+            <variablePathList>
+              <variablePath>ui_failedOrders.wholesaleFOOrderManagement/permMethod_applicationVisible</variablePath>
+            </variablePathList>
+          </visible>
+        </overlay>
+      </overlayList>
+    </vform>
+  </vformList>
+  <methodList>
+    <method name="selectApplication" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <userInterface>doc_cwf_oe.SelectApp</userInterface>
+      <validate>true</validate>
+      <valueType>doc_cwf_oe.SelectApp</valueType>
+    </method>
+    <method name="logout" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script>UserProfile.logout ();</script>
+    </method>
+    <method name="finder_findFTTHOrders" type="usrActionMethod">
+      <userInterface>findDoc_failedOrders.findFTTHOrders</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_failedOrders.findFTTHOrders</valueType>
+    </method>
+    <method name="finder_findFTTHFailedOrders" type="usrActionMethod">
+      <confirmation>ui_failedOrders.wholesaleFOOrderManagement/uimthd_finder_findFTTHFailedOrder_confirm</confirmation>
+      <validate>true</validate>
+      <script><![CDATA[
+        var currentUser = UserProfile.userId();
+
+        debugPrintln(stcc.getSysdateForLog() + "finder_findFTTHFailedOrders - currentUser = '" + currentUser + "'");
+
+        var finder = new Finder("failedOrders.findFTTHFailedOrders");
+        finder.searchDocument.userId = currentUser;
+
+        finder.search();
+
+        debugPrintln(stcc.getSysdateForLog() + "finder_findFTTHFailedOrders - finished for user = '" + currentUser + "'");
+
+        return finder;
+      ]]></script>
+    </method>
+    <method name="finder_findFTTHFailedOrder_confirm" type="uimthd">
+      <script><![CDATA[return Global.translateText("AW0019");]]></script>
+    </method>
+    <method name="applicationVisible" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>foActive</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+    </method>
+    <method name="finder_findStatisticsForUserAction" type="usrActionMethod">
+      <userInterface>findSql_failedOrders.findStatisticsForUserActions</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_failedOrders.findStatisticsForUserActions</valueType>
+    </method>
+  </methodList>
+</userInterface>

@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc filenameHash="388cc78ff111539e397e1cd1973bdf72" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.findLineItemValidationMapByOrderType_ServiceType">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc</input>
+  <label>Find LineItem Validation Map By OrderType &amp; ServiceType</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>4</metaVersion>
+  <output>doc_ds_ws.lineItemValidationMapDocument</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_ds_ws.lineItemValidationMapDocument/leaf_orderType</path>
+    </sort>
+    <sort type="stitem">
+      <path>doc_ds_ws.lineItemValidationMapDocument/leaf_serviceType</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <vDetailForm>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc</document>
+      <mappedDocument>doc_ds_ws.lineItemValidationMapDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.lineItemValidationMapDocument/leaf_orderType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc/leaf_orderType</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc</document>
+      <mappedDocument>doc_ds_ws.lineItemValidationMapDocument</mappedDocument>
+      <mappedPath>doc_ds_ws.lineItemValidationMapDocument/leaf_serviceType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc/leaf_serviceType</path>
+    </search>
+  </searchList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.lineItemValidationMapDocument</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_ds_ws.lineItemValidationMapDocument/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findLineItemValidationMapByOrderType_ServiceTypeResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="serviceType" type="elfld">
+                        <label>Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderType" type="elfld">
+                        <label>Order Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfCopy" type="eldel"/>
+            </overrideList>
+          </overlay>
+          <overlay name="resultBck" type="vform">
+            <label>resultBck</label>
+            <root name="table" type="elvlt">
+              <height>100%</height>
+              <width>100%</width>
+              <elementList>
+                <element name="findLineItemValidationMapByOrderType_ServiceTypeResultTable" type="eltabl">
+                  <onSelectChange type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                    </variablePathList>
+                  </onSelectChange>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <elementList>
+                    <element name="serviceType" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_serviceType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="orderType" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_orderType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="lineItemType" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_lineItemType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="oldServiceNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_oldServiceNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="productType" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_productType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="remarks" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_remarks</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="referenceTelNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_referenceTelNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceDescription" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_serviceDescription</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="bandwidth" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_bandwidth</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="accountNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_accountNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="oldAccountNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_oldAccountNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="projectId" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_projectId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationACity" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationACity</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationACCLICode" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationACCLICode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAAccessCircuit" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAAccessCircuit</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAJVCode" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAJVCode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAExchangeSwitchCode" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAExchangeSwitchCode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAAccessType" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAAccessType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAPlateID" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAPlateID</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAOldPlateID" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAOldPlateID</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAContactAddress" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAContactAddress</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAContactName" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAContactName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAContactTel" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAContactTel</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAContactEmail" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAContactEmail</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAUnitNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAUnitNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationAInterface" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationAInterface</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationARemarks" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationARemarks</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBCity" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBCity</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBCCLICode" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBCCLICode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBAccessCircuit" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBAccessCircuit</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBJVCode" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBJVCode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBExchangeSwitchCode" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBExchangeSwitchCode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBAccessType" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBAccessType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBPlateID" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBPlateID</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBOldPlateID" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBOldPlateID</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBContactAddress" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBContactAddress</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBContactName" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBContactName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBContactTel" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBContactTel</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBContactEmail" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBContactEmail</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBUnitNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBUnitNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBInterface" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBInterface</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="locationBRemarks" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_locationBRemarks</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="tbPortNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_tbPortNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="wires" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_wires</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceDate" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_serviceDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="creationDate" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/uivar_result</variablePath>
+                          <variablePath>doc_ds_ws.lineItemValidationMapDocument/leaf_creationDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findLineItemValidationMapByOrderType_ServiceTypeView" type="findVView">
+      <inputOverlay>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find LineItem ValidationMap By ServiceType &amp; OrderType</label>
+      <outputOverlay>findDoc_ds_ws.findLineItemValidationMapByOrderType_ServiceType/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findDoc>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.compareReceivedNV_VASBundleParamsWithExistingOne">
+  <label>Compare Received NV Pair and VAS NV Pair For Bundle With Existing One</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="existingLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="receivedLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="validationErrors" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="lineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // nv check; it loops in existing NV pair and verifies if it exists also in received one
+    var debugMsg = "compareReceivedNV_BlockBundleParamsWithExistingOne (" + lineItemIdentifier + ")";
+
+    // 2016-05-30: adding management for STORE & FORWARD List
+    // checking received attribute:
+    //     is in SKIP_LIST ?
+    //        YES: Then, remove the attribute from WD
+    //        NO: is in STORE_FORWARD_LIST ?
+    //                YES: do nothing
+    //                NO:  is in existing order ?
+    //                        YES: it must have the same value, otherwise, reject
+    //                        NO:  is in NEW_ATTR_LIST ?
+    //                                YES: add because it's a new attribute
+    //                                NO:  reject
+    //
+    // checking existing attribute:
+    //     is in SKIP_LIST ?
+    //        YES: do nothing
+    //        NO: is in received order ?
+    //                YES: does it have the same value?
+    //                    YES: do nothing
+    //                    NO:  is in STORE_FORWARD_LIST ?
+    //                            YES: do nothing
+    //                            NO:  reject
+    //                NO: is in NEW_ATTR_LIST ?
+    //                    YES: do nothing
+    //                    NO:  reject
+
+    var serviceType = receivedLineItemContainer.parentLineItem.receivedServiceType;
+
+    if(receivedLineItemContainer.parentLineItemNameValueParameters != null) {
+        var toBeRemoved = new Array();
+
+        for(var i=0; i<receivedLineItemContainer.parentLineItemNameValueParameters.length; i++) {
+            var receivedNVName = receivedLineItemContainer.parentLineItemNameValueParameters[i].parentLineItemNameValueParameter.name;
+            var found = false;
+            var foundWithError = false;
+            var lastErrorFound = null;
+
+            // check if the NV pair is in the SKIP_LIST
+            var isInSKIPList = stcw.isNameInSkipNVPairList(receivedNVName, serviceType);
+            // check if the NV pair is in the STORE_FORWARD_LIST
+            var isInStoreAndForwardList = stcw.isNameInStoreAndForwardNVPairList(receivedNVName, serviceType);
+            // check if the NV pair is in the NEW_ATTR_LIST
+            var isInNewAttrList = stcw.isNameInNewAttrNVPairList(receivedNVName, serviceType);
+
+            if(isInSKIPList) {
+        debugPrintln(stcc.getSysdateForLog() + " "  + debugMsg + " Removing NV pair: " + receivedNVName + "#" + i + "#" + receivedLineItemContainer.parentLineItemNameValueParameters[i].parentLineItemNameValueParameter.orderDataPath);
+                toBeRemoved.push(i);
+            }
+            else {
+                if(isInStoreAndForwardList) {
+                   // do nothing
+                }
+                else {
+                    // search nv in existing
+                    if(existingLineItemContainer.parentLineItemNameValueParameters != null) {
+                        for(var j=0; j<existingLineItemContainer.parentLineItemNameValueParameters.length && !found; j++) {
+                            if(receivedNVName == existingLineItemContainer.parentLineItemNameValueParameters[j].parentLineItemNameValueParameter.name) {
+                                // found; comparing the values
+                                found = true;
+                                var resultArray = compareValues_(receivedLineItemContainer.parentLineItemNameValueParameters[i].parentLineItemNameValueParameter.value,
+                                                                 existingLineItemContainer.parentLineItemNameValueParameters[j].parentLineItemNameValueParameter.value,
+                                                                 receivedNVName, "NV Pair");
+                                if(resultArray != null) {
+                                    found = false;
+                                    foundWithError = true;
+                                    lastErrorFound = resultArray;
+                                }
+                                else {
+                                    foundWithError = false;
+                                    lastErrorFound = null;
+                                }
+                            }
+                        }
+                    }
+
+                    if(found) {
+                        // it means that it was found with the same value so, nothing to do
+                    }
+                    else {
+                        if(foundWithError) {
+                            // found but it was wrong! adding error
+                            validationErrors = stcw.appendToValidationErrors(lastErrorFound[0], lastErrorFound[1], validationErrors, debugMsg);
+                        }
+                        else {
+                            if(isInNewAttrList) {
+                                // not an issue; it's a new attribute!
+                            }
+                            else {
+                                // not found NV; adding error
+                                validationErrors = stcw.appendToValidationErrors("AE0065", Global.translateText("AE0065", null, ["NV Pair", receivedNVName, "ParentLineItem", lineItemIdentifier, "existing", "received"]), validationErrors);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for(var k=toBeRemoved.length-1; k>=0; k--) {
+            var index = toBeRemoved[k];
+    debugPrintln(stcc.getSysdateForLog() + " "  + debugMsg + " Removing NV pair: " + index + "#" +
+                 receivedLineItemContainer.parentLineItemNameValueParameters[index].parentLineItemNameValueParameter.name + "#" +
+                 receivedLineItemContainer.parentLineItemNameValueParameters[index].parentLineItemNameValueParameter.orderDataPath);
+            receivedLineItemContainer.parentLineItemNameValueParameters[index].parentLineItemNameValueParameter.deleteItem();
+        }
+    }
+
+
+    if(existingLineItemContainer.parentLineItemNameValueParameters != null) {
+
+        for(var i=0; i<existingLineItemContainer.parentLineItemNameValueParameters.length; i++) {
+            var existingNVName = existingLineItemContainer.parentLineItemNameValueParameters[i].parentLineItemNameValueParameter.name;
+            var found = false;
+            var foundWithError = false;
+            var lastErrorFound = null;
+
+            // check if the NV pair is in the SKIP_LIST
+            var isInSKIPList = stcw.isNameInSkipNVPairList(existingNVName, serviceType);
+            // check if the NV pair is in the STORE_FORWARD_LIST
+            var isInStoreAndForwardList = stcw.isNameInStoreAndForwardNVPairList(existingNVName, serviceType);
+            // check if the NV pair is in the NEW_ATTR_LIST
+            var isInNewAttrList = stcw.isNameInNewAttrNVPairList(existingNVName, serviceType);
+
+            if(isInSKIPList) {
+                // do nothing
+            }
+            else {
+                // search nv in received
+                if(receivedLineItemContainer.parentLineItemNameValueParameters != null) {
+                    for(var j=0; j<receivedLineItemContainer.parentLineItemNameValueParameters.length && !found; j++) {
+                        if(existingNVName == receivedLineItemContainer.parentLineItemNameValueParameters[j].parentLineItemNameValueParameter.name) {
+                            // found; comparing the values
+                            found = true;
+                            var resultArray = compareValues_(receivedLineItemContainer.parentLineItemNameValueParameters[j].parentLineItemNameValueParameter.value,
+                                                             existingLineItemContainer.parentLineItemNameValueParameters[i].parentLineItemNameValueParameter.value,
+                                                             existingNVName, "NV Pair");
+                            if(resultArray != null) {
+                                found = false;
+                                foundWithError = true;
+                                lastErrorFound = resultArray;
+                            }
+                            else {
+                                foundWithError = false;
+                                lastErrorFound = null;
+                            }
+                        }
+                    }
+                }
+
+                if(found) {
+                    // it means that it was found with the same value so, nothing to do
+                }
+                else {
+                    if(foundWithError) {
+                        if(isInStoreAndForwardList) {
+                            // do nothing
+                        }
+                        else {
+                            // found but it was wrong and not in Store & Forward list! adding error
+                            validationErrors = stcw.appendToValidationErrors(lastErrorFound[0], lastErrorFound[1], validationErrors, debugMsg);
+                        }
+                    }
+                    else {
+                        if(isInNewAttrList) {
+                            // not an issue; it's a new attribute!
+                        }
+                        else {
+                            // not found NV; adding error
+                            validationErrors = stcw.appendToValidationErrors("AE0065", Global.translateText("AE0065", null, ["NV Pair", existingNVName, "ParentLineItem", lineItemIdentifier, "received", "existing"]), validationErrors);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+    // nv check; it loops in existing NV pair and verifies if it exists also in received one
+    if(existingLineItemContainer.parentLineItemVASNVParameters != null) {
+        var missingReceived = 0;
+        for(var i=0; i<existingLineItemContainer.parentLineItemVASNVParameters.length; i++) {
+            var existingNVName = existingLineItemContainer.parentLineItemVASNVParameters[i].parentLineItemVASNVParameter.name;
+            var found = false;
+            var foundWithError = false;
+            var lastErrorFound = null;
+            // search nv in received
+            if(receivedLineItemContainer.parentLineItemVASNVParameters != null) {
+                for(var j=0; j<receivedLineItemContainer.parentLineItemVASNVParameters.length && !found; j++) {
+                    if(existingNVName == receivedLineItemContainer.parentLineItemVASNVParameters[j].parentLineItemVASNVParameter.name) {
+                        // found; comparing the values
+                        found = true;
+                        var resultArray = compareValues_(receivedLineItemContainer.parentLineItemVASNVParameters[j].parentLineItemVASNVParameter.value,
+                                                         existingLineItemContainer.parentLineItemVASNVParameters[i].parentLineItemVASNVParameter.value,
+                                                         existingNVName, "VAS NV Pair");
+                        if(resultArray != null) {
+                            found = false;
+                            foundWithError = true;
+                            lastErrorFound = resultArray;
+                        }
+                        else {
+                            foundWithError = false;
+                            lastErrorFound = null;
+                        }
+                    }
+                }
+            }
+
+            if(!found) {
+                if(foundWithError) {
+                    // found but it was wrong! adding error
+                    validationErrors = stcw.appendToValidationErrors(lastErrorFound[0], lastErrorFound[1], validationErrors, debugMsg);
+                }
+                else {
+                    // not found NV; adding error
+                    validationErrors = stcw.appendToValidationErrors("AE0065", Global.translateText("AE0065", null, ["VAS NV Pair", existingNVName, "ParentLineItem", lineItemIdentifier, "received", "existing"]), validationErrors);
+                    missingReceived++;
+                }
+            }
+        }
+
+        if(receivedLineItemContainer.parentLineItemVASNVParameters != null) {
+            if((receivedLineItemContainer.parentLineItemVASNVParameters.length + missingReceived) != existingLineItemContainer.parentLineItemVASNVParameters.length) {
+                // it means that there are additional attributes in received that are not in existing! ERROR!
+                validationErrors = stcw.appendToValidationErrors("AE0066", Global.translateText("AE0066", null, ["ParentLineItem", lineItemIdentifier, "VAS NV Pair"]), validationErrors);
+            }
+        }
+    }
+
+
+
+    return validationErrors;
+
+    function compareValues_(receivedAttribute, existingAttribute, attributeName, category) {
+        var resultArray = null;
+
+        if(receivedAttribute == null) {
+            if(existingAttribute != null) {
+                resultArray = ["AE0055", Global.translateText("AE0055", null, [category, attributeName, "existing"])];
+            }
+        }
+        else {
+            if(existingAttribute == null) {
+                resultArray = ["AE0057", Global.translateText("AE0057", null, [category, attributeName, "existing"])];
+            }
+            else {
+                if(! receivedAttribute.toString().equals(existingAttribute.toString())) {
+                    resultArray = ["AE0056", Global.translateText("AE0056", null, [category, attributeName, receivedAttribute, existingAttribute, "existing"])];
+                }
+            }
+        }
+
+        return resultArray;
+    }
+  ]]></script>
+</script>

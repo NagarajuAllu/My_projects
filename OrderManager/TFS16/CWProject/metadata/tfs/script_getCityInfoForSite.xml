@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="tfs.getCityInfoForSite">
+  <label>Get City Information for Site</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="siteA" type="rifp">
+      <type>dtype_granite.siteReference</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var finder = new Finder("configuration.cityDistrictRegionFinder");
+    finder.searchDocument.cityName = siteA.CITY;
+    var result = finder.search();
+
+    var cityInfo = null;
+    if(result && result.length > 0){
+        cityInfo = result[0];
+    }
+    return cityInfo;
+  ]]></script>
+</script>

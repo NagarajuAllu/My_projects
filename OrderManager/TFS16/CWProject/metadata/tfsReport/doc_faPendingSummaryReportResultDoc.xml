@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.faPendingSummaryReportResultDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{29aef7e2-2ef7-4110-bcca-115ca4a4d2d5}</guid>
+  <label>FA Pending Summary Report Result Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="tfrId" type="leaf">
+      <key>1</key>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="tfrNumber" type="leaf">
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="tfrStatus" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="niNumber" type="leaf">
+      <valueType>dtype_common.string9</valueType>
+    </variable>
+    <variable name="creationDate" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="faCompletionDate" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="cancelledDate" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="numberOfDays" type="leaf">
+      <valueType>dtype_common.number5_2</valueType>
+    </variable>
+    <variable name="numberOfWeeks" type="leaf">
+      <valueType>dtype_common.number5_2</valueType>
+    </variable>
+    <variable name="numberOfMonths" type="leaf">
+      <valueType>dtype_common.number5_2</valueType>
+    </variable>
+    <variable name="required" type="leaf">
+      <valueType>dtype_common.integer2</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.faPendingSummaryReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="cba4a63abc70e36867415a417ccf5df3" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.graniteEventStorage">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{01f0a84f-77e0-90b4-f752-c4c43c5f0832}</guid>
+  <highlight>10</highlight>
+  <label>Granite Event Storage</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <guid>{0328a4f3-9f1f-491b-fd26-aee1d92f931b}</guid>
+      <key>1</key>
+      <label>System document ID</label>
+      <propertyElement type="elfld">
+        <label>System document ID</label>
+      </propertyElement>
+      <table>STC_GRANITE_EVENT_STORAGE</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="insertedDate" type="leaf">
+      <column>INSERTED_DATE</column>
+      <guid>{084efa37-9755-3d33-4997-8fa81a10841d}</guid>
+      <label>Inserted Date</label>
+      <propertyElement type="eldatetime">
+        <displayFormat>MM/dd/yyyy HH:mm</displayFormat>
+        <label>Inserted Date</label>
+      </propertyElement>
+      <table>STC_GRANITE_EVENT_STORAGE</table>
+      <valueType>dtype_com.conceptwave.system.DateTime</valueType>
+    </variable>
+    <variable name="lastProcessesDate" type="leaf">
+      <column>LAST_PROC_DATE</column>
+      <guid>{01babade-4ee0-6c56-2f05-06296f21e753}</guid>
+      <label>Last Processed Date</label>
+      <propertyElement type="eldatetime">
+        <displayFormat>MM/dd/yyyy HH:mm</displayFormat>
+        <label>Last Processed Date</label>
+      </propertyElement>
+      <table>STC_GRANITE_EVENT_STORAGE</table>
+      <valueType>dtype_com.conceptwave.system.DateTime</valueType>
+    </variable>
+    <variable name="eventType" type="leaf">
+      <column>EVENT_TYPE</column>
+      <guid>{0f058af3-bd6e-18cb-de9b-f7fd8fbabac1}</guid>
+      <label>Event Type</label>
+      <propertyElement type="elslct">
+        <label>Event Type</label>
+      </propertyElement>
+      <table>STC_GRANITE_EVENT_STORAGE</table>
+      <valueType>dtype_ds_ws.eventType</valueType>
+    </variable>
+    <variable name="eventData" type="leaf">
+      <column>EVENT_DATA</column>
+      <guid>{00173a5f-2f8f-96be-2351-7c44da245dde}</guid>
+      <label>Event Data</label>
+      <propertyElement type="elfld">
+        <label>Event Data</label>
+      </propertyElement>
+      <table>STC_GRANITE_EVENT_STORAGE</table>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.graniteEventStorage</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="default" type="vform">
+            <label>default</label>
+            <root name="defaultGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="graniteEventStorageHeader" type="elhdr">
+                  <label>Granite Event Storage</label>
+                  <showValidation>true</showValidation>
+                  <style>CwFOT</style>
+                </element>
+                <element name="defaultGrid" type="elgrd">
+                  <colWidths>195,195,195,195</colWidths>
+                  <numOfCols>4</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>780px</width>
+                  <elementList>
+                    <element name="Event_Type1" type="elslct">
+                      <columnSpan>1</columnSpan>
+                      <label>Event Type</label>
+                      <sorted>false</sorted>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.graniteEventStorage/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.graniteEventStorage/leaf_eventType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Inserted_Date1" type="eldatetime">
+                      <columnSpan>1</columnSpan>
+                      <label>Inserted Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.graniteEventStorage/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.graniteEventStorage/leaf_insertedDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Last_Processed_Date1" type="eldatetime">
+                      <columnSpan>1</columnSpan>
+                      <label>Last Processed Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.graniteEventStorage/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.graniteEventStorage/leaf_lastProcessesDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="8dd390f3e79b7a6e11a8eb14e3df861" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ifGranite_jms.invokeGraniteIF_QuoteValidation">
+  <guid>{08e6bcb2-20d1-f3c0-c0a4-ff882bc7f374}</guid>
+  <label>[6] Invoke Granite Interface: Quote Validation [JMS]</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = "[[6] INVOKE GRANITE INTERFACE VIA 'JMS': QUOTE VALIDATION] ";
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "START...");
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "INPUT: " + (input != null ? input.toXML() : "") + "...");
+
+          var output = null;
+
+          // Modified on 11.10.2008:
+          // - added logic to retry an invocation against Granite if communication fail happens
+          var retryMax = 3;
+          var retryCounter = 0;
+
+          while (retryCounter < retryMax) {
+                retryCounter++;
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "ATTEMPT # " + retryCounter);
+                try {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "INVOKING INTERFACE...");
+                      output = Global.invokeInterface("ifGranite_jms:XngServicesWR",
+                                                                      "QuoteValidation",
+                                                                      input);
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "RESULT: " + output + "...");
+                      break;
+                }
+                catch (exc){
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "EXCEPTION: " + exc);
+                      // - setting a sleep of 1 min.
+                      if (retryCounter < retryMax){
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "SLEEPING FOR 60 SEC...");
+                            Global.sleep(60*1000);
+                      }
+                }
+          }
+
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "END...");
+          return output;
+  ]]></script>
+</script>

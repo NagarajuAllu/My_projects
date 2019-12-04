@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.performFullValidationOnBundle">
+  <label>Perform Full Validation On Bundle</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderHeader" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // bundle
+    failureArray = ds_ws.validateElementOfOrder(bundleContainer.bundle, bundleContainer.bundle.lineItemIdentifier, isSubmit, failureArray);
+
+    if(ds_ws.isLegacyService(bundleContainer)) {
+        // perform validation for legacy services and for Feasibility orders
+        failureArray = ds_ws.performValidationOfMandatoryAttrsOnBundleForLegacy(bundleContainer, bundleContainer.bundle.lineItemIdentifier, orderHeader.orderType, isSubmit, failureArray);
+
+        if(orderHeader.orderType != null && orderHeader.orderType != "F") {
+            // perform custom validations for Leagacy orders
+            failureArray = ds_ws.performFullValidationOnLineItemWithReservInGranite(orderHeader.orderType, bundleContainer.bundle.serviceNumber, bundleContainer.bundle.reservationNumber, bundleContainer.bundle.lineItemIdentifier, isSubmit, failureArray);
+
+            if(bundleContainer.bundleBlockParameters != null) {
+                //Check Block Params against configuration
+                failureArray = ds_ws.performValidationForBlockParameters(bundleContainer.bundleBlockParameters, 'bundleBlockParameter', orderHeader.orderType, orderHeader.orderStatus, bundleContainer.bundle.serviceType, bundleContainer.bundle.lineItemIdentifier,
+                                                                         failureArray, isSubmit);
+            }
+        }
+    }
+    else {
+        // it's a bundle; if there are blockParameters or NV parameters, it's an error (HLD: OrderRestriction.1.b)
+        if((bundleContainer.bundleParameters != null && bundleContainer.bundleParameters.length > 0) ||
+           (bundleContainer.bundleBlockParameters != null && bundleContainer.bundleBlockParameters.length > 0)) {
+            var validationError = ["AE0042", Global.translateText("AE0042")];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performFullValidationOnBundle (" + bundleContainer.bundle.lineItemIdentifier + "): Found error [" + validationError + "]");
+            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleContainer.bundle.lineItemIdentifier, failureArray, isSubmit);
+        }
+    }
+
+    if(orderHeader.orderType != null && orderHeader.orderType == "F") {
+        // perform custom validations for Feasibility orders
+        failureArray = ds_ws.performFullValidationOnFeasibilityOrder(orderHeader, bundleContainer, isSubmit, failureArray);
+    }
+
+    // check compatibility between OrderType, ParentAction and ItemAction
+    if(!ds_ws.checkIfActionIsOKWithOrderTypeAndParentAction(orderHeader.orderType, orderHeader.orderStatus, null, null, bundleContainer.bundle.action, bundleContainer.bundle.serviceType, bundleContainer.bundle.lineItemStatus, orderHeader.feasibilityFor)) {
+        var validationError = ["AE0044", Global.translateText("AE0044", null, [orderHeader.orderType, bundleContainer.bundle.action, orderHeader.orderStatus])];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performFullValidationOnBundle (" + bundleContainer.bundle.lineItemIdentifier + "): Found error [" + validationError + "]");
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleContainer.bundle.lineItemIdentifier, failureArray, isSubmit);
+    }
+
+    if(isSubmit) {
+        // to contain the instance of the bundleLineItem with provisioningFlag = "ACTIVE"
+        var bundleLineItemActive = null;
+        // to know if there was an error in looking for bundleLineItem "ACTIVE"
+        var errorFoundInSearchingActiveBundle = false;
+
+        // check provisioningFlag
+        if((orderHeader.orderType != "F") ||
+           (orderHeader.orderType == "F" && orderHeader.feasibilityFor != null && orderHeader.feasibilityFor == "CHANGE")) {
+            // 1st request: no other provisioning processes for the lineItemIdentifier
+            var bundleLineItemsProvisioning = ds_ws.getAllLineItemsByIdentifierAndProvisioningFlag(bundleContainer.bundle.lineItemIdentifier, "B", "PROVISIONING");
+            if(bundleLineItemsProvisioning != null && bundleLineItemsProvisioning.length > 0) {
+                errorFoundInSearchingActiveBundle = true;
+
+                var pendingOrder = Order.getOrderById(bundleLineItemsProvisioning[0].orderId);
+                var pendingOrderNumber = ((pendingOrder != null) ? pendingOrder.orderHeader.orderNumber : null);
+                validationError = ["AE0045", Global.translateText("AE0045", null, [bundleContainer.bundle.lineItemIdentifier, pendingOrderNumber])];
+
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performFullValidationOnBundle (" + bundleContainer.bundle.lineItemIdentifier + "): Found error [" + validationError + "]");
+                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleContainer.bundle.lineItemIdentifier, failureArray, isSubmit);
+            }
+            else {
+                // 2nd request: an "ACTIVE" bundle (and only one) has to exist!
+                var bundleLineItemsActive = ds_ws.getAllLineItemsByIdentifierAndProvisioningFlag(bundleContainer.bundle.lineItemIdentifier, "B", "ACTIVE");
+                if(bundleLineItemsActive == null || bundleLineItemsActive.length == 0) {
+                    if(orderHeader.orderType != "I") {
+                        errorFoundInSearchingActiveBundle = true;
+                        validationError = ["AE0046", Global.translateText("AE0046", null, [bundleContainer.bundle.lineItemIdentifier])];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performFullValidationOnBundle (" + bundleContainer.bundle.lineItemIdentifier + "): Found error [" + validationError + "]");
+                        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleContainer.bundle.lineItemIdentifier, failureArray, isSubmit);
+                    }
+                }
+                else if(bundleLineItemsActive.length > 1) {
+                    errorFoundInSearchingActiveBundle = true;
+                    validationError = ["AE0047", Global.translateText("AE0047", null, [bundleContainer.bundle.lineItemIdentifier])];
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performFullValidationOnBundle (" + bundleContainer.bundle.lineItemIdentifier + "): Found error [" + validationError + "]");
+                    failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleContainer.bundle.lineItemIdentifier, failureArray, isSubmit);
+                }
+                else {
+                    bundleLineItemActive = bundleLineItemsActive[0];
+                }
+            }
+        }
+
+        if(!errorFoundInSearchingActiveBundle) {
+            if(isSubmit) {
+                // check lineItemIdentifier existance ds_ws.checkIfActionIsCorrectForLineItemIdentifier(bundleLineItemActive, lineItemToCheck)
+                var validationErrors = ds_ws.checkIfActionIsCorrectForLineItemIdentifier(bundleLineItemActive, bundleContainer.bundle);
+                if(validationErrors != null) {
+                    failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleContainer.bundle.lineItemIdentifier, failureArray, isSubmit);
+                }
+            }
+        }
+
+        if(ds_ws.isLegacyService(bundleContainer)) {
+            if(orderHeader.orderType == "O") {
+                var validationErrors = granite.checkPathChannelUtilization(bundleContainer.bundle.serviceNumber);
+                if(validationErrors != null) {
+                    failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleContainer.bundle.lineItemIdentifier, failureArray, isSubmit);
+                }
+            }
+            else if(orderHeader.orderType == "I" || orderHeader.orderType == "C") {
+                failureArray = ds_ws.performValidationForHeldAttributesInLineItem(bundleContainer.bundle, bundleContainer.bundleParameters, bundleLineItemActive, isSubmit, failureArray);
+            }
+        }
+    }
+
+
+    // bundle NV pair
+    if(bundleContainer.bundleParameters != null) {
+        for(var i=0; i<bundleContainer.bundleParameters.length; i++) {
+            failureArray = ds_ws.validateElementOfOrder(bundleContainer.bundleParameters[i], bundleContainer.bundle.lineItemIdentifier, isSubmit, failureArray);
+            failureArray = ds_ws.validateNVPairValueForServiceTypeInPickList(bundleContainer.bundle.serviceType, bundleContainer.bundle.lineItemIdentifier,
+                                                                             bundleContainer.bundleParameters[i].bundleParameter.name, bundleContainer.bundleParameters[i].bundleParameter.value,
+                                                                             isSubmit, failureArray);
+        }
+
+        if(isSubmit || orderHeader.orderStatus.toUpperCase() != "CANCEL") {
+            // the following checks are skipped in case of cancel
+            failureArray = ds_ws.performValidationOfMandatoryNVPairs(bundleContainer.bundleParameters, orderHeader.orderType, bundleContainer.bundle.serviceType, bundleContainer.bundle.lineItemIdentifier, isSubmit, failureArray);
+            failureArray = ds_ws.performValidationOnNVPairDependency(bundleContainer.bundleParameters, orderHeader.orderType, bundleContainer.bundle.serviceType, bundleContainer.bundle.lineItemIdentifier, isSubmit, failureArray);
+        }
+    }
+
+    // bundle Block NV pair
+    if(bundleContainer.bundleBlockParameters != null) {
+        for(var i=0; i<bundleContainer.bundleBlockParameters.length; i++) {
+            failureArray = ds_ws.validateElementOfOrder(bundleContainer.bundleBlockParameters[i], bundleContainer.bundle.lineItemIdentifier, isSubmit, failureArray);
+        }
+    }
+
+
+    // circuits
+    if(bundleContainer.circuits != null) {
+    /*****
+     * 2019-01-10 - Removed to support R0
+     *
+        if(orderHeader.orderType != null && orderHeader.orderType == "F") {
+            // feasibility orders support only 1 parent LineItem
+            var validationErrors = ["AE0095", Global.translateText("AE0095", null, ["Feasibility Order", "Service"])];
+            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleContainer.bundle.lineItemIdentifier, failureArray, isSubmit);
+        }
+        else if(orderHeader.reservationNumber != null) {
+            // orders linked to reservation support only 1 parent LineItem
+            var validationErrors = ["AE0095", Global.translateText("AE0095", null, ["Order linked to Reservation", "Service"])];
+            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleContainer.bundle.lineItemIdentifier, failureArray, isSubmit);
+        }
+    *****/
+
+        for(var i=0; i<bundleContainer.circuits.length; i++) {
+            var circuitContainer = bundleContainer.circuits[i];
+            failureArray = ds_ws.performFullValidationOnCircuit(circuitContainer, failureArray, orderHeader.orderType, orderHeader.orderStatus, bundleContainer.bundle.action, bundleContainer.bundle.lineItemStatus, bundleLineItemActive, isSubmit, orderHeader.feasibilityFor);
+        }
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

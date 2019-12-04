@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="granite.findCustomerByIdAndNameAndType">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_granite.search_VAL_CUSTOMER</input>
+  <label>Find Customer By Id And Name And Type</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_granite.VAL_CUSTOMER</output>
+  <type>document</type>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_granite.search_VAL_CUSTOMER</document>
+      <mappedDocument>doc_granite.VAL_CUSTOMER</mappedDocument>
+      <mappedPath>doc_granite.VAL_CUSTOMER/leaf_CUSTOMER_ID</mappedPath>
+      <operation>like</operation>
+      <path>doc_granite.search_VAL_CUSTOMER/leaf_CUSTOMER_ID</path>
+    </search>
+    <search type="sitem">
+      <document>doc_granite.search_VAL_CUSTOMER</document>
+      <mappedDocument>doc_granite.VAL_CUSTOMER</mappedDocument>
+      <mappedPath>doc_granite.VAL_CUSTOMER/leaf_CUSTOMER_NAME</mappedPath>
+      <operation>like</operation>
+      <path>doc_granite.search_VAL_CUSTOMER/leaf_CUSTOMER_NAME</path>
+    </search>
+    <search type="sitem">
+      <document>doc_granite.search_VAL_CUSTOMER</document>
+      <mappedDocument>doc_granite.VAL_CUSTOMER</mappedDocument>
+      <mappedPath>doc_granite.VAL_CUSTOMER/leaf_TYPE</mappedPath>
+      <operation>like</operation>
+      <path>doc_granite.search_VAL_CUSTOMER/leaf_TYPE</path>
+    </search>
+  </searchList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_granite.VAL_CUSTOMER</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_granite.search_VAL_CUSTOMER/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_granite.VAL_CUSTOMER/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findCustomerByIdAndNameAndTypeResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="CUST_INST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_CUST_INST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CUSTOMER_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_CUSTOMER_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CUSTOMER_NAME" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_CUSTOMER_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="COMMENTS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_COMMENTS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="TYPE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_TYPE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="PRIMARY_PHONE_NO" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_PRIMARY_PHONE_NO</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="TECH_CONTACTS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_TECH_CONTACTS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="BILLING_CONTACTS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_BILLING_CONTACTS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="BILLING_ADDRESS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_BILLING_ADDRESS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="POST_CODE_1" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_POST_CODE_1</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="POST_CODE_2" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_POST_CODE_2</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CITY" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_CITY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="STATE_PROV" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_STATE_PROV</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="COUNTRY" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_COUNTRY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ROOM" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_ROOM</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="FLOOR" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_FLOOR</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="BILLING_FAX" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_BILLING_FAX</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="BILLING_CODE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_BILLING_CODE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CUST_STATUS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_CUST_STATUS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="PARENT_CUST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_PARENT_CUST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="INST_VER" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_INST_VER</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="COUNTY" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_COUNTY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="NPA_NXX" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_granite.VAL_CUSTOMER/leaf_NPA_NXX</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findCustomerByIdAndNameAndTypeView" type="findVView">
+      <inputOverlay>doc_granite.search_VAL_CUSTOMER/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find Customer By Id and Name and Type</label>
+      <outputOverlay>findDoc_granite.findCustomerByIdAndNameAndType/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findDoc>

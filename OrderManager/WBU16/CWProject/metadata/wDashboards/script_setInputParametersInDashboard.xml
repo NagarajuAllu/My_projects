@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="wDashboards.setInputParametersInDashboard">
+  <label>Set Input Parameters In Dashboard</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="item" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(Global.getSessionParameter("Dashboard_StartTime") != null) {
+        item.searchDocument.startDateTime = Global.getSessionParameter("Dashboard_StartTime");
+    }
+
+    if(Global.getSessionParameter("Dashboard_EndTime") != null) {
+        item.searchDocument.endDateTime = Global.getSessionParameter("Dashboard_EndTime");
+    }
+  ]]></script>
+</script>

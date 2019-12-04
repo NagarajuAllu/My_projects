@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rules>
+<rule filenameHash="80062c8baca4b5260d5c33afeaeedb49" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.getSharedItemRule">
+  <guid>{08197462-bace-4cea-da46-91a09072b27d}</guid>
+  <highlight>32</highlight>
+  <label>Get Shared Task</label>
+  <metaVersion>3</metaVersion>
+  <optional>1</optional>
+  <overrides>rule_cwf_pm.getSharedItemRule</overrides>
+  <parameterMap>
+    <parameter key="input1">doc_cwf_pm.BaseWorklistManagerSearch</parameter>
+  </parameterMap>
+  <ruleDocument>doc_stcw.BaseWorklist</ruleDocument>
+  <ruleType>finder</ruleType>
+  <instanceList>
+    <instance name="Get_Shared_Task" type="rinst">
+      <fieldsListList>
+        <fieldsList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf.userId</datatype>
+          </datatypeList>
+          <index>0</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklist/leaf_userId</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklist</root>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <operation>equal</operation>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <isNull>true</isNull>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <newLineAfter>true</newLineAfter>
+          <operation>and</operation>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <datatypeList>
+            <datatype>dtype_com.conceptwave.system.Boolean</datatype>
+          </datatypeList>
+          <index>0</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklist/leaf_disable</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklist</root>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <operation>equal</operation>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <attribute>false</attribute>
+          <dataType>dtype_com.conceptwave.system.Boolean</dataType>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <newLineAfter>true</newLineAfter>
+          <operation>and</operation>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf_pm.TaskParticipant</datatype>
+          </datatypeList>
+          <function>in</function>
+          <index>0</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklist/leaf_Participant</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklist</root>
+          <ruleItemList>
+            <ruleItem type="ritem">
+              <paramNo>1</paramNo>
+              <ruleItemList>
+                <ruleItem type="ritem">
+                  <gfunction>GetUserParticipants</gfunction>
+                  <ruleItemList>
+                    <ruleItem type="ritem">
+                      <paramNo>1</paramNo>
+                      <ruleItemList>
+                        <ruleItem type="ritem">
+                          <isNull>true</isNull>
+                        </ruleItem>
+                      </ruleItemList>
+                    </ruleItem>
+                  </ruleItemList>
+                </ruleItem>
+              </ruleItemList>
+            </ruleItem>
+          </ruleItemList>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <newLineAfter>true</newLineAfter>
+          <operation>and</operation>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf_pm.distributionType</datatype>
+          </datatypeList>
+          <index>0</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklist/leaf_distributionType</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklist</root>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <operation>equal</operation>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <attribute>1</attribute>
+          <dataType>dtype_cwf_pm.distributionType</dataType>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <newLineAfter>true</newLineAfter>
+          <operation>and</operation>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <attribute>(</attribute>
+          <isBracket>true</isBracket>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf_pm.Flags</datatype>
+          </datatypeList>
+          <index>0</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklist/leaf_Flags</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklist</root>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <operation>equal</operation>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <attribute>0</attribute>
+          <dataType>dtype_cwf_pm.Flags</dataType>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <operation>or</operation>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf_pm.Flags</datatype>
+          </datatypeList>
+          <index>0</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklist/leaf_Flags</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklist</root>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <operation>equal</operation>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <attribute>2</attribute>
+          <dataType>dtype_cwf_pm.Flags</dataType>
+        </fieldsList>
+        <fieldsList type="ritem">
+          <attribute>)</attribute>
+          <isBracket>true</isBracket>
+        </fieldsList>
+      </fieldsListList>
+      <filterListList>
+        <filterList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf_pm.TaskParticipant</datatype>
+          </datatypeList>
+          <index>0</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklist/leaf_Participant</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklist</root>
+        </filterList>
+        <filterList type="ritem">
+          <operation>equal</operation>
+        </filterList>
+        <filterList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf.metaUserParticipants</datatype>
+          </datatypeList>
+          <index>1</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklistManagerSearch/leaf_Participant</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklistManagerSearch</root>
+        </filterList>
+        <filterList type="ritem">
+          <newLineAfter>true</newLineAfter>
+          <operation>and</operation>
+        </filterList>
+        <filterList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf_oe.orderId</datatype>
+          </datatypeList>
+          <index>0</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklist/leaf_OrderId</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklist</root>
+        </filterList>
+        <filterList type="ritem">
+          <operation>equal</operation>
+        </filterList>
+        <filterList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf_oe.orderId</datatype>
+          </datatypeList>
+          <index>1</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklistManagerSearch/leaf_OrderId</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklistManagerSearch</root>
+        </filterList>
+        <filterList type="ritem">
+          <newLineAfter>true</newLineAfter>
+          <operation>and</operation>
+        </filterList>
+        <filterList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf.interOper</datatype>
+          </datatypeList>
+          <index>0</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklist/leaf_Operation</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklist</root>
+        </filterList>
+        <filterList type="ritem">
+          <operation>equal</operation>
+        </filterList>
+        <filterList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf.interOper</datatype>
+          </datatypeList>
+          <index>1</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklistManagerSearch/leaf_Operation</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklistManagerSearch</root>
+        </filterList>
+      </filterListList>
+      <guid>{0d83ca4c-aaa1-82c6-bcc1-8966f3919409}</guid>
+      <label>Get Shared Task</label>
+      <orderByListList>
+        <orderByList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf.dateTimeMin</datatype>
+          </datatypeList>
+          <index>0</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklist/leaf_DueDate</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklist</root>
+          <sort>1</sort>
+        </orderByList>
+        <orderByList type="ritem">
+          <datatypeList>
+            <datatype>dtype_cwf.allPriorities</datatype>
+          </datatypeList>
+          <index>0</index>
+          <pathList>
+            <path>doc_cwf_pm.BaseWorklist/leaf_Priority</path>
+          </pathList>
+          <root>doc_cwf_pm.BaseWorklist</root>
+          <sort>2</sort>
+        </orderByList>
+      </orderByListList>
+    </instance>
+  </instanceList>
+</rule>
+</rules>

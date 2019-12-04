@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.tfrReturned4TimesReportResultDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{20846e14-f47a-47a2-9f94-5e4be627520d}</guid>
+  <label>TFR Returned 4 Times Report Result Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="tfrId" type="leaf">
+      <key>1</key>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="tfrNumber" type="leaf">
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="tfrStatus" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="niNumber" type="leaf">
+      <valueType>dtype_common.string9</valueType>
+    </variable>
+    <variable name="requirementType" type="leaf">
+      <valueType>dtype_tfs.requirementTypePickListReference</valueType>
+    </variable>
+    <variable name="total" type="leaf">
+      <valueType>dtype_common.integer3</valueType>
+    </variable>
+    <variable name="currentUserId" type="leaf">
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="currentDepartment" type="leaf">
+      <valueType>dtype_up_priv.department</valueType>
+    </variable>
+    <variable name="recNoAuditTrail" type="leaf">
+      <key>2</key>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="remarks_auditTrail" type="leaf">
+      <valueType>dtype_common.string512</valueType>
+    </variable>
+    <variable name="remarksBy_auditTrail" type="leaf">
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="remarksDate_auditTrail" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.tfrReturned4TimesReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

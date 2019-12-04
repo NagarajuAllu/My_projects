@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="3e5abb77b214eb2cd098d3128b394875" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.STC_EXPEDITOR_WBU_NINUMBER">
+  <dbSchema>GRANITE</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{8578913c-18fd-4685-be64-74756e0cfc8d}</guid>
+  <label>STC_EXPEDITOR_WBU_NINUMBER</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="RESOURCE_INST_ID" type="leaf">
+      <column>RESOURCE_INST_ID</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>RESOURCE_INST_ID</label>
+      </propertyElement>
+      <table>STC_EXPEDITOR_WBU_NINUMBER</table>
+      <valueType>dtype_granite.INST_ID_16</valueType>
+    </variable>
+    <variable name="NINUMBER" type="leaf">
+      <column>NINUMBER</column>
+      <label>NINUMBER</label>
+      <propertyElement type="elfld">
+        <label>NINUMBER</label>
+      </propertyElement>
+      <table>STC_EXPEDITOR_WBU_NINUMBER</table>
+      <valueType>dtype_granite.NI_NUMBER</valueType>
+    </variable>
+    <variable name="TARGET_INST_ID" type="leaf">
+      <column>TARGET_INST_ID</column>
+      <propertyElement type="elfld">
+        <label>TARGET_INST_ID</label>
+      </propertyElement>
+      <table>STC_EXPEDITOR_WBU_NINUMBER</table>
+      <valueType>dtype_granite.INST_ID_16</valueType>
+    </variable>
+    <variable name="TARGET_SUBTYPE" type="leaf">
+      <column>TARGET_SUBTYPE</column>
+      <propertyElement type="elfld">
+        <label>TARGET_SUBTYPE</label>
+      </propertyElement>
+      <table>STC_EXPEDITOR_WBU_NINUMBER</table>
+      <valueType>dtype_granite.TARGET_SUBTYPE</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_granite.STC_EXPEDITOR_WBU_NINUMBER</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="STC_EXPEDITOR_WBU_NINUMBERGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STC_EXPEDITOR_WBU_NINUMBERGrid" type="elgrd">
+                    <colWidths>160</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>160px</width>
+                    <elementList>
+                      <element name="STC_EXPEDITOR_WBU_NINUMBERHeader" type="elhdr">
+                        <label>STC_EXPEDITOR_WBU_NINUMBER</label>
+                      </element>
+                      <element name="RESOURCE_INST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.STC_EXPEDITOR_WBU_NINUMBER/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.STC_EXPEDITOR_WBU_NINUMBER/leaf_RESOURCE_INST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="NINUMBER" type="eltxtArea">
+                        <height>1150px</height>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.STC_EXPEDITOR_WBU_NINUMBER/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.STC_EXPEDITOR_WBU_NINUMBER/leaf_NINUMBER</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>100%</width>
+                      </element>
+                      <element name="TARGET_INST_ID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.STC_EXPEDITOR_WBU_NINUMBER/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.STC_EXPEDITOR_WBU_NINUMBER/leaf_TARGET_INST_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="TARGET_SUBTYPE" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.STC_EXPEDITOR_WBU_NINUMBER/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.STC_EXPEDITOR_WBU_NINUMBER/leaf_TARGET_SUBTYPE</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

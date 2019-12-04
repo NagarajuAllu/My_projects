@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.deptEscalationReportSearchDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{1fadb050-ef02-4116-8f0d-e2516569b5a8}</guid>
+  <label>Dept. Escalation Report Search Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="customerName" type="leaf">
+      <valueType>dtype_tfs.customerPickListReference</valueType>
+    </variable>
+    <variable name="tfrCreationDateFrom" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="tfrCreationDateTo" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.deptEscalationReportSearchDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultVerticalLayout" type="elvlt">
+                <width>1200px</width>
+                <elementList>
+                  <element name="inputDataLabel" type="elhdr">
+                    <cellAlignment>left,center</cellAlignment>
+                    <height>40px</height>
+                    <label>Dept. Escalation Report Input Data</label>
+                    <width>1200px</width>
+                  </element>
+                  <element name="prnr_prnSummaryReportSearchDocGrid" type="elgrd">
+                    <colWidths>120px,150px,200px,150px,150px,150px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="customerName" type="elslct">
+                        <label>Customer Name</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.deptEscalationReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.deptEscalationReportSearchDoc/leaf_customerName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="tfrCreationDateFrom" type="eldatetime">
+                        <label>TFR Creation Date &gt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.deptEscalationReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.deptEscalationReportSearchDoc/leaf_tfrCreationDateFrom</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="tfrCreationDateTo" type="eldatetime">
+                        <label>TFR Creation Date &lt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.deptEscalationReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.deptEscalationReportSearchDoc/leaf_tfrCreationDateTo</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="LayoutSpacer" type="ellsp">
+                    <height>20px</height>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

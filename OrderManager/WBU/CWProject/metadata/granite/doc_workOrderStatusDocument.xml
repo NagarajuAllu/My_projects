@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="5e5b52ce38c328ba33cec91276a6d81a" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="granite.workOrderStatusDocument">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{00fb5580-b3b7-9cbf-b496-02f176d48bbe}</guid>
+  <label>Work Order Status Document</label>
+  <metaVersion>3</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="WO_STATUS" type="leaf">
+      <guid>{0ddc4e7c-4b03-c003-30ef-20a72a2f16c6}</guid>
+      <key>1</key>
+      <label>WO_STATUS</label>
+      <propertyElement type="elfld">
+        <label>WO_STATUS</label>
+      </propertyElement>
+      <valueType>dtype_granite.WO_STATUS</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_granite.workOrderStatusDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="workOrderStatusDocumentGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="workOrderStatusDocumentGrid" type="elgrd">
+                    <colWidths>160</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>160px</width>
+                    <elementList>
+                      <element name="workOrderStatusDocumentHeader" type="elhdr">
+                        <label>Work Order Status Document</label>
+                      </element>
+                      <element name="WO_STATUS" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.workOrderStatusDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.workOrderStatusDocument/leaf_WO_STATUS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

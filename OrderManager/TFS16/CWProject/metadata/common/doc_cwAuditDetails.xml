@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="common.cwAuditDetails">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{3302819f-4435-470c-9caf-9c802d55cd7c}</guid>
+  <label>Audit Details</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="docId" type="leaf">
+      <label>DOCID</label>
+      <mandatory>true</mandatory>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="updatedBy" type="leaf">
+      <label>UPDATEDBY</label>
+      <mandatory>true</mandatory>
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="lastUpdatedDate" type="leaf">
+      <label>LASTUPDATEDDATE</label>
+      <mandatory>true</mandatory>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="operationType" type="leaf">
+      <label>OPERATIONTYPE</label>
+      <mandatory>true</mandatory>
+      <valueType>dtype_tfs.operationTypeInAudit</valueType>
+    </variable>
+    <variable name="recNoInAudit" type="leaf">
+      <key>2</key>
+      <valueType>dtype_common.string16</valueType>
+    </variable>
+    <variable name="attributeName" type="leaf">
+      <key>1</key>
+      <label>ATTRIBUTENAME</label>
+      <valueType>dtype_common.string128</valueType>
+    </variable>
+    <variable name="newValue" type="leaf">
+      <label>NEWVALUE</label>
+      <valueType>dtype_common.string512</valueType>
+    </variable>
+    <variable name="oldValue" type="leaf">
+      <label>OLDVALUE</label>
+      <valueType>dtype_common.string512</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_common.cwAuditDetails</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

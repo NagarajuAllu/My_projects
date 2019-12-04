@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="9ef9296ef2ae3b2b46ac660728e81792" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ifEAI_WOSU_17122008.isWorkOrderCompleted">
+  <guid>{01a336ba-a73f-8501-fc3b-752121efc12e}</guid>
+  <label>Is WorkOrder Completed</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="workOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var isCompleted = false;
+    var woStatus = workOrder.WorkOrderStatus;
+    if(woStatus != null) {
+          woStatus = woStatus.toUpperCase();
+          isCompleted = (woStatus == "COMPLETED" || woStatus == "CANCELLED" || woStatus == "DECOMMISSIONED");
+    }
+
+    return isCompleted;
+  ]]></script>
+</script>

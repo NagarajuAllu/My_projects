@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="595f8e68200cff993e3070f17462404a" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.updateExistingNV_BlockBundleParamsForResubmit">
+  <label>Update Existing NV Pair and Block Parameters For Bundle For Resubmit</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="existingLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="receivedLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="validationErrors" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="lineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="existingOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // nv check; it loops in existing NV pair and verifies if it exists also in received one
+    if(receivedLineItemContainer.bundleParameters != null) {
+        for(var i=0; i<receivedLineItemContainer.bundleParameters.length; i++) {
+            var receivedNVName = receivedLineItemContainer.bundleParameters[i].bundleParameter.name;
+            var found = false;
+
+            if(existingLineItemContainer.bundleParameters != null) {
+                for(var j=0; j<existingLineItemContainer.bundleParameters.length && !found; j++) {
+                    if(receivedNVName == existingLineItemContainer.bundleParameters[j].bundleParameter.name) {
+                        // found; comparing the values
+                        found = true;
+                        existingLineItemContainer.bundleParameters[j].bundleParameter.value = receivedLineItemContainer.bundleParameters[i].bundleParameter.value;
+                        existingLineItemContainer.bundleParameters[j].bundleParameter.action = receivedLineItemContainer.bundleParameters[i].bundleParameter.action;
+                    }
+                }
+            }
+
+            if(!found) {
+                var position = (existingLineItemContainer.bundleParameters != null ? existingLineItemContainer.bundleParameters.length : 0);
+                var containerItemPath = (existingLineItemContainer.bundleParameters != null ? existingLineItemContainer.bundleParameters.orderDataPath : (existingLineItemContainer.orderDataPath + ".bundleParameters"));
+                var nvDoc = existingOrder.createOrderItemByPath(containerItemPath + "." + (position+1) + ".bundleParameter");
+                nvDoc.name = receivedLineItemContainer.bundleParameters[i].bundleParameter.name;
+                nvDoc.value = receivedLineItemContainer.bundleParameters[i].bundleParameter.value;
+                nvDoc.action = receivedLineItemContainer.bundleParameters[i].bundleParameter.action;
+                nvDoc.parentElementId = existingLineItemContainer.bundle.id;
+            }
+        }
+    }
+
+    // bv check; it loops in existing blockValue pair and verifies if it exists also in received one
+    if(receivedLineItemContainer.bundleBlockParameters != null) {
+        for(var i=0; i<receivedLineItemContainer.bundleBlockParameters.length; i++) {
+            var receivedNVName = receivedLineItemContainer.bundleBlockParameters[i].bundleBlockParameter.name;
+            var found = false;
+
+            if(existingLineItemContainer.bundleBlockParameters != null) {
+                for(var j=0; j<existingLineItemContainer.bundleBlockParameters.length && !found; j++) {
+                    if(receivedNVName == existingLineItemContainer.bundleBlockParameters[j].bundleBlockParameter.name) {
+                        // found; delete the existing
+                        found = true;
+                        ds_ws.deleteAllBlockValuesByParentId(existingLineItemContainer.bundleBlockParameters[j].bundleBlockParameter.id, existingOrder.id);
+
+                        var receivedBlockValuesArray = ds_ws.getBlockValuesAsArray(receivedLineItemContainer.bundleBlockParameters[i].bundleBlockParameter.id);
+                        if(receivedBlockValuesArray != null) {
+                            for(var k=0; k<receivedBlockValuesArray.length; k++) {
+                                 createBlockValue_(receivedBlockValuesArray[k].blockValue, existingLineItemContainer.bundleBlockParameters[j].bundleBlockParameter.id, existingOrder);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(!found) {
+                var position = (existingLineItemContainer.bundleBlockParameters != null ? existingLineItemContainer.bundleBlockParameters.length : 0);
+                var containerItemPath = (existingLineItemContainer.bundleBlockParameters != null ? existingLineItemContainer.bundleBlockParameters.orderDataPath : (existingLineItemContainer.orderDataPath + ".bundleBlockParameters"));
+                var bvDoc = existingOrder.createOrderItemByPath(containerItemPath + "." + (position+1) + ".bundleBlockParameter");
+                bvDoc.name = receivedLineItemContainer.bundleBlockParameters[i].bundleBlockParameter.name;
+                bvDoc.action = receivedLineItemContainer.bundleBlockParameters[i].bundleBlockParameter.action;
+                bvDoc.parentElementId = existingLineItemContainer.bundle.id;
+
+                var receivedBlockValuesArray = ds_ws.getBlockValuesAsArray(receivedLineItemContainer.bundleBlockParameters[i].bundleBlockParameter.id);
+                if(receivedBlockValuesArray != null) {
+                    for(var k=0; k<receivedBlockValuesArray.length; k++) {
+                         createBlockValue_(receivedBlockValuesArray[k].blockValue, bvDoc.id, existingOrder);
+                    }
+                }
+            }
+        }
+    }
+
+    return validationErrors;
+
+
+    function createBlockValue_(value, parentDocId, existingOrder) {
+        var blockValueDoc = new Document("ds_ws:blockValue");
+        blockValueDoc.parentDocId = parentDocId;
+        blockValueDoc.cwOrderId = existingOrder.id;
+        blockValueDoc.blockValue = value;
+        blockValueDoc.save();
+    }
+  ]]></script>
+</script>

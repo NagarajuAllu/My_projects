@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="8762b65bb689f7f22537460884a166b1" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.getAllLineItemsByServiceNumber">
+  <label>Get All LineItems By ServiceNumber</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="serviceNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var searchDoc = new Document("ds_ws.searchLineItemDoc");
+    searchDoc.serviceNumber = serviceNumber;
+
+    var resultList = Finder.runFinder("ds_ws.findLineItem", "select", searchDoc);
+    return resultList;
+  ]]></script>
+</script>

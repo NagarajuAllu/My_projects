@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process filenameHash="ccc98dbc33d3d3fb3e9cba5ce1e77eab" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.syncAllOrderBetweenExpdAndGraniteProcess">
+  <activity name="start" type="seqActivity">
+    <guid>{05df4bef-42ad-2425-4b67-2775e1fed7ef}</guid>
+    <label>Start</label>
+    <x>132.0</x>
+    <y>49.0</y>
+    <childList>
+      <child name="getAllProcessIdForProcessRunning" type="scriptActivity">
+        <guid>{0a7f01c9-a306-f482-9886-023974320e66}</guid>
+        <label>Get All ProcessIds For Processes Running</label>
+        <x>337.0</x>
+        <y>5.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{00527b3a-08d7-5bb5-ac6c-d884fb378fa2}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - getting all processIds");
+
+                    this.process.processDocument.idList = stcw.findProcessIdsForOrderProcessesRunning();
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - processIds found: " + this.process.processDocument.idList);
+
+                    if(this.process.processDocument.idList != null) {
+                          this.process.processDocument.countProcessIdFound = this.process.processDocument.idList.split(";").length;
+                    }
+                    else {
+                          this.process.processDocument.countProcessIdFound = 0;
+                    }
+
+                    this.process.processDocument.processIdCounter = 0;
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="existAnotherProcessToBeChecked" type="switchActivity">
+        <guid>{0e305f0b-4867-5fd8-962c-8ab5417b8483}</guid>
+        <label>Exist Another Process To Be Checked?</label>
+        <x>336.0</x>
+        <y>156.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <guid>{0891156f-7ff3-4b7f-25b0-01bd5ca103e3}</guid>
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <guid>{0a6de3cd-cd74-f428-2089-0e28cf645aa4}</guid>
+                <label>Start</label>
+                <x>344.0</x>
+                <y>361.0</y>
+                <childList>
+                  <child name="syncOrderBetweenExpdAndGranite" type="spawnActivity">
+                    <element>proc_stcw.syncOrderBetweenExpdAndGranite</element>
+                    <guid>{02918807-1d94-4717-db40-8a29ab360a76}</guid>
+                    <label>Sync Order Between Expediter And Granite</label>
+                    <x>671.0</x>
+                    <y>334.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{0009d25d-7de6-ff44-79bb-519b84615a44}</guid>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Start Process SyncOrder for process: " + this.process.processDocument.currentProcessId);
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="waitOnSyncOrderProcess" type="joinActivity">
+                    <element>proc_stcw.syncOrderBetweenExpdAndGranite</element>
+                    <guid>{010e4cda-6be1-230c-a823-e7d6e736d09a}</guid>
+                    <label>Wait On Sync Order Process</label>
+                    <x>673.0</x>
+                    <y>140.0</y>
+                  </child>
+                  <child name="repeat" type="repeatActivity">
+                    <element>proc_stcw.syncAllOrderBetweenExpdAndGraniteProcess/seqActivity_start/switchActivity_existAnotherProcessToBeChecked</element>
+                    <guid>{019f226f-6f4c-6911-6edf-30d33be527d9}</guid>
+                    <label>Repeat</label>
+                    <x>527.0</x>
+                    <y>156.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{0223d9e7-7592-988f-cdaf-1ba214e020c8}</guid>
+                        <system>true</system>
+                        <script>this.process.processDocument.processIdCounter++;</script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{0cc6c16a-49d9-b107-2396-b04f3b12e16e}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      this.process.processDocument.currentProcessId = this.process.processDocument.idList.split(";")[this.process.processDocument.processIdCounter];
+                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Selected another processId => " + this.process.processDocument.currentProcessId);
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{022a52e5-9c89-647d-6433-fd770bcd76f0}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  var result = (this.process.processDocument.processIdCounter < this.process.processDocument.countProcessIdFound);
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Another order to be processed ? (" + this.process.processDocument.processIdCounter + "/" + this.process.processDocument.countProcessIdFound + ") => " + result);
+
+                        return result;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{0fb325a3-e59b-963c-916b-c491433c5281}</guid>
+            <label>No</label>
+            <x>193.0</x>
+            <y>160.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="getAllRejectedOrderIds" type="scriptActivity">
+        <guid>{0d75e1d5-8981-74b0-8160-cc45b703444d}</guid>
+        <label>Get All Rejected OrderIds</label>
+        <x>186.0</x>
+        <y>285.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0faa01bd-023f-0b60-3ab5-205640a6fcc9}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - getting all rejectedOrderIds");
+
+                    this.process.processDocument.idList = stcw.findRejectedOrderIds();
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - orderIds found: " + this.process.processDocument.idList);
+
+                    if(this.process.processDocument.idList != null) {
+                          this.process.processDocument.countRejectedOrderIdFound = this.process.processDocument.idList.split(";").length;
+                    }
+                    else {
+                          this.process.processDocument.countRejectedOrderIdFound = 0;
+                    }
+
+                    this.process.processDocument.rejectedOrderIdCounter = 0;
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="existAnotherRejectedOrderToBeChecked" type="switchActivity">
+        <guid>{0213536d-7496-e5a2-ecc4-c0f202b9eb77}</guid>
+        <label>Exist Another Rejected Order To Be Checked?</label>
+        <x>182.0</x>
+        <y>492.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <guid>{03ddb1db-f172-3beb-7164-4f21b3d0ad48}</guid>
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="startManagingRejectedOrder" type="seqActivity">
+                <guid>{097ce3cb-19da-ef1b-b080-6cb579074c57}</guid>
+                <label>Start Managing Rejected Order</label>
+                <x>330.0</x>
+                <y>540.0</y>
+                <childList>
+                  <child name="syncRejectedOrderBetweenExpdAndGranite" type="spawnActivity">
+                    <element>proc_stcw.syncRejectedOrderBetweenExpdAndGranite</element>
+                    <guid>{0de236d7-0165-b59b-ebf9-5253ae53f304}</guid>
+                    <label>Sync Rejected Order Between Expediter And Granite</label>
+                    <x>583.0</x>
+                    <y>502.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{008246ca-fff4-4bed-3e6f-3b4b774e3451}</guid>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Start Process SyncRejectedOrder for orderId: " + this.process.processDocument.currentRejectedOrderId);
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="waitOnSyncRejectedOrder" type="joinActivity">
+                    <element>proc_stcw.syncRejectedOrderBetweenExpdAndGranite</element>
+                    <guid>{0347d4b5-0964-cd4a-4dc5-fa5c06525815}</guid>
+                    <label>Wait On Sync Rejected Order</label>
+                    <x>592.0</x>
+                    <y>664.0</y>
+                  </child>
+                  <child name="repeat" type="repeatActivity">
+                    <element>proc_stcw.syncAllOrderBetweenExpdAndGraniteProcess/seqActivity_start/switchActivity_existAnotherRejectedOrderToBeChecked</element>
+                    <guid>{088e2d18-38bd-57a3-56c7-3e40eb092eea}</guid>
+                    <label>Repeat</label>
+                    <x>190.0</x>
+                    <y>683.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{0223d9e7-7592-988f-cdaf-1ba214e020c8}</guid>
+                        <system>true</system>
+                        <script>this.process.processDocument.rejectedOrderIdCounter++;</script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{096f8512-01f6-a0b2-85b0-bccd6caa208e}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      this.process.processDocument.currentRejectedOrderId = this.process.processDocument.idList.split(";")[this.process.processDocument.rejectedOrderIdCounter];
+
+                      var order = Order.getOrderById(this.process.processDocument.currentRejectedOrderId);
+                      var rejectedOrderNumber = order.header.orderNumber;
+                      this.process.processDocument.originalOrderNumber = rejectedOrderNumber.substring(0, rejectedOrderNumber.indexOf("_201", 0));
+                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Selected another orderId => " + this.process.processDocument.currentRejectedOrderId + "; originalOrderNumber = " + this.process.processDocument.originalOrderNumber);
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{0d464927-8606-90ec-0f46-20ac330c03ed}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  var result = (this.process.processDocument.rejectedOrderIdCounter < this.process.processDocument.countRejectedOrderIdFound);
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Another order to be processed ? (" + this.process.processDocument.rejectedOrderIdCounter + "/" + this.process.processDocument.countRejectedOrderIdFound + ") => " + result);
+
+                        return result;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{0049117c-8b6d-465c-d033-8b7f53197136}</guid>
+            <label>No</label>
+            <x>102.0</x>
+            <y>537.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{0488675f-0621-786b-dfe8-ddf5cb747f78}</guid>
+        <label>End</label>
+        <x>102.0</x>
+        <y>678.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{068f63ce-a509-3b96-8365-535a045d01eb}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Completed process 'SyncAllOrdersBetweenExpediterAndGranite'");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0c3eddf0-4afc-5837-60a0-35f3f1828988}</guid>
+        <system>true</system>
+        <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Starting");]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_stcw.syncOrderQuoteGlobalProcessDocument</document>
+  <guid>{06c216c8-9d53-4689-63b5-602a05354749}</guid>
+  <highlight>10</highlight>
+  <label>Sync All Orders Between Expediter And Granite</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <revision>2</revision>
+  <type>User</type>
+</process>

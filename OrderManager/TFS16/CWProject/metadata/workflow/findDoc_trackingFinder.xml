@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="workflow.trackingFinder">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_workflow.trackingSearchDoc</input>
+  <label>Tracking Finder</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>21</metaVersion>
+  <output>doc_workflow.tracking</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_workflow.tracking/leaf_assignToUserDateTime</path>
+    </sort>
+    <sort type="stitem">
+      <path>doc_workflow.tracking/leaf_completionDateTime</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <vDetailForm>doc_workflow.tracking/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>5</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_workflow.trackingSearchDoc</document>
+      <mappedDocument>doc_workflow.tracking</mappedDocument>
+      <mappedPath>doc_workflow.tracking/leaf_objectId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_workflow.trackingSearchDoc/leaf_objectId</path>
+    </search>
+    <search type="sitem">
+      <document>doc_workflow.trackingSearchDoc</document>
+      <mappedDocument>doc_workflow.tracking</mappedDocument>
+      <mappedPath>doc_workflow.tracking/leaf_objectType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_workflow.trackingSearchDoc/leaf_objectType</path>
+    </search>
+    <search type="sitem">
+      <document>doc_workflow.trackingSearchDoc</document>
+      <mappedDocument>doc_workflow.tracking</mappedDocument>
+      <mappedPath>doc_workflow.tracking/leaf_operationName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_workflow.trackingSearchDoc/leaf_operationName</path>
+    </search>
+    <search type="sitem">
+      <document>doc_workflow.trackingSearchDoc</document>
+      <mappedDocument>doc_workflow.tracking</mappedDocument>
+      <mappedPath>doc_workflow.tracking/leaf_orderId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_workflow.trackingSearchDoc/leaf_orderId</path>
+    </search>
+    <search type="sitem">
+      <document>doc_workflow.trackingSearchDoc</document>
+      <mappedDocument>doc_workflow.tracking</mappedDocument>
+      <mappedPath>doc_workflow.tracking/leaf_userId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_workflow.trackingSearchDoc/leaf_userId</path>
+    </search>
+    <search type="sitem">
+      <document>doc_workflow.trackingSearchDoc</document>
+      <mappedDocument>doc_workflow.tracking</mappedDocument>
+      <mappedPath>doc_workflow.tracking/leaf_wlId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_workflow.trackingSearchDoc/leaf_wlId</path>
+    </search>
+  </searchList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_workflow.tracking</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_workflow.trackingSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_workflow.tracking/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="trackingFinderResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_workflow.trackingFinder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="objectType" type="elslct">
+                        <label>Object Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_workflow.trackingFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_objectType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>80px</width>
+                      </element>
+                      <element name="operationName" type="elfld">
+                        <label>Operation Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_workflow.trackingFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_operationName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>280px</width>
+                      </element>
+                      <element name="actionPerformed" type="elfld">
+                        <label>Action Performed</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_workflow.trackingFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_actionPerformed</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>280px</width>
+                      </element>
+                      <element name="userId" type="elfld">
+                        <dataLength>30</dataLength>
+                        <label>User Id</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_workflow.trackingFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_userId</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>120px</width>
+                      </element>
+                      <element name="assignToUserDateTime" type="eldate">
+                        <label>Assigned To User Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_workflow.trackingFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_assignToUserDateTime</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="completionDateTime" type="eldate">
+                        <label>Completion Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_workflow.trackingFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_completionDateTime</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="totalTimeInHours" type="elfld">
+                        <label>Total Time (in Hours)</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_workflow.trackingFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_workflow.tracking/leaf_totalTimeInHours</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>120px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_workflow.trackingFinder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_workflow.trackingFinder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfDetail" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="trackingFinderView" type="findVView">
+      <label>Tracking Finder</label>
+      <outputOverlay>findDoc_workflow.trackingFinder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+    </view>
+  </viewList>
+</findDoc>

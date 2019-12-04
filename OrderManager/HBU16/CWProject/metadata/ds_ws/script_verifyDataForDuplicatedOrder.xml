@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.verifyDataForDuplicatedOrder">
+  <label>Verify Data For Duplicated Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="inputDS" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderHeader" type="rifp">
+      <type>order_com.conceptwave.system.Order</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = null;
+
+    // search child orders and check if they have orderAck linked
+    var children = ds_ws.searchOrderMessageHomeByParentOrderNumber(inputDS.message.OrderNumber);
+    if (children == null) {
+        // no child order found!
+        result = ["AE0032", [inputDS.message.OrderNumber]];
+        return result;
+    }
+
+    var existingParentOrder = Order.getOrderById(orderHeader.orderId);
+
+    var foundAckReject = false;
+    for(var i=0; i<children.length; i++) {
+        var childOrder = Order.getOrderById(children[i].orderId);
+
+        var foundAck = childOrder.hasDocuments("ds_ws.OrderAcknowledgementWithFailureDoc");
+        if(! foundAck) {
+            // childOrder doesn't have the orderAck, so it's still in process
+            result = ["AE0033", [inputDS.message.OrderNumber, childOrder.orderMessage.orderNumber]];
+            return result;
+        }
+
+        if(childOrder.orderACK.Status != "SUCCESS") {
+            // it means that the child order has been rejected or still in process
+            result = ["AE0033", [inputDS.message.OrderNumber, childOrder.orderMessage.orderNumber]];
+            return result;
+        }
+    }
+
+    // all the child orders have been accepted
+    // now checking service data
+    if(inputDS.message.ServiceParameters != null && inputDS.message.ServiceParameters.length > 0) {
+        if(existingParentOrder.serviceParametersList != null && existingParentOrder.serviceParametersList.count > 0) {
+
+            // loop on the services
+            for (var i=0; i<inputDS.message.ServiceParameters.length; i++) {
+                var serviceInDS = inputDS.message.ServiceParameters[i];
+                var serviceDataInDS = serviceInDS.ServiceNumber + '#' + serviceInDS.ServiceType + '#' + serviceInDS.PlateID;
+
+                var foundService = false;
+                // searching the service in the order
+                for(var j=0; j<existingParentOrder.serviceParametersList.count && !foundService; j++) {
+                    var serviceInOrder = existingParentOrder.serviceParametersList[j].serviceParameters;
+                    var serviceDataInOrder = serviceInOrder.serviceNumber + '#' + serviceInOrder.serviceType + '#' + serviceInOrder.plateId;
+
+                    if(serviceDataInDS == serviceDataInOrder) {
+                        // service found
+                        foundService = true;
+
+                        // now checking the NV pairs
+                        // getting the names of NV pair to skip
+                        var nvPairsToSkip = refTables.getNVPairToSkipInDuplicateOrder(serviceInOrder.serviceType);
+
+                        // scanning all received
+                        var parametersInServiceInDS = inputDS.message.ServiceParameters[i].NameValue;
+                        if(parametersInServiceInDS.length != null) {
+                            for(var ww=0; ww<parametersInServiceInDS.length; ww++) {
+                                var receivedValue = "null";
+                                var existingValue = "null";
+                                var existingFound = false;
+                                var nvPairNameToCheck = parametersInServiceInDS[ww].Name;
+
+                                if(isContained_(nvPairNameToCheck, nvPairsToSkip)) {
+                                    // skip
+                                }
+                                else {
+                                    receivedValue = parametersInServiceInDS[ww].Value;
+
+                                    var parametersInServiceInOrder = existingParentOrder.serviceParametersList[j].nameValueList;
+                                    if(parametersInServiceInOrder.count != null) {
+                                        for(var zz=0; zz<parametersInServiceInOrder.count; zz++) {
+                                            if(parametersInServiceInOrder[zz].nameValue.name == nvPairNameToCheck) {
+                                                existingFound = true;
+                                                existingValue = parametersInServiceInOrder[zz].nameValue.value;
+                                            }
+                                        }
+                                    }
+
+                                    if(! existingFound) {
+                                        result = ["AE0037", [inputDS.message.OrderNumber, serviceInDS.ServiceNumber, serviceInDS.ServiceType, serviceInDS.PlateID, nvPairNameToCheck, (receivedValue ? receivedValue : "null")]];
+                                        return result;
+                                    }
+                                    else if(receivedValue != existingValue) {
+                                        result = ["AE0036", [inputDS.message.OrderNumber, serviceInDS.ServiceNumber, serviceInDS.ServiceType, serviceInDS.PlateID, nvPairNameToCheck, (receivedValue ? receivedValue : "null"), (existingValue ? existingValue : "null")]];
+                                        return result;
+                                    }
+                                }
+                            }
+                        }
+
+                        // scanning all existing
+                        var parametersInServiceInOrder = existingParentOrder.serviceParametersList[j].nameValueList;
+                        if(parametersInServiceInOrder.count != null) {
+                            for(var zz=0; zz<parametersInServiceInOrder.count; zz++) {
+                                var existingValue = "null";
+                                var receivedValue = "null";
+                                var receivedFound = false;
+                                var nvPairNameToCheck = parametersInServiceInOrder[zz].nameValue.name;
+
+                                if(isContained_(parametersInServiceInOrder[zz].nameValue.name, nvPairsToSkip)) {
+                                    // skip
+                                }
+                                else {
+                                    existingValue = parametersInServiceInOrder[zz].nameValue.value;
+
+                                    var parametersInServiceInDS = inputDS.message.ServiceParameters[i].NameValue;
+                                    if(parametersInServiceInDS.length != null) {
+                                        for(var ww=0; ww<parametersInServiceInDS.length; ww++) {
+                                            if(parametersInServiceInDS[ww].Name == nvPairNameToCheck) {
+                                                receivedFound = true;
+                                                receivedValue = parametersInServiceInDS[ww].Value;
+                                            }
+                                        }
+                                    }
+
+                                    if(! receivedFound) {
+                                        result = ["AE0038", [inputDS.message.OrderNumber, serviceInDS.ServiceNumber, serviceInDS.ServiceType, serviceInDS.PlateID, nvPairNameToCheck, (existingValue ? existingValue : "null")]];
+                                        return result;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if(!foundService) {
+                    // as requested by Majid in email thread "Change in WD behaviour" - 2016/12/08, changed the errorCode from AE0035 to AE0001
+                    // result = ["AE0035", [inputDS.message.OrderNumber, serviceInDS.ServiceNumber, serviceInDS.ServiceType, serviceInDS.PlateID]];
+                    result = ["AE0001", null];
+                    return result;
+                }
+            }
+
+            // as requested by Majid in email thread "Change in WD behaviour" - 2016/12/20, this test has been postponed but still maintain the same errorCode
+            if(inputDS.message.ServiceParameters.length != existingParentOrder.serviceParametersList.count) {
+                // the # of services in the incoming flow is different from the # of services in the stored order
+                result = ["AE0034", [inputDS.message.OrderNumber, inputDS.message.ServiceParameters.length, existingParentOrder.serviceParametersList.count]];
+                return result;
+            }
+
+
+        }
+        else {
+            result = ["AE0034", [inputDS.message.OrderNumber, inputDS.message.ServiceParameters.length, "no"]];
+            return result;
+        }
+    }
+    else {
+        if(existingParentOrder.serviceParametersList != null && existingParentOrder.serviceParametersList.count > 0) {
+            result = ["AE0034", [inputDS.message.OrderNumber, "no", existingParentOrder.serviceParametersList.count]];
+            return result;
+        }
+    }
+
+    return null;
+
+
+    function isContained_(nameToCheck, nvPairsToSkip) {
+        var isContained = false;
+        if(nvPairsToSkip != null && nvPairsToSkip.length > 0) {
+            for(var i=0; i<nvPairsToSkip.length; i++) {
+                if(nvPairsToSkip[i].name == nameToCheck) {
+                    isContained = true;
+                }
+            }
+        }
+        return isContained;
+    }
+  ]]></script>
+</script>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="d7549b839ce52d3730d8dbad23103018" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.updateExistingLineItemForResubmit">
+  <label>Update Existing LineItem For Resubmit</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="existingLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="receivedLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="elementTypeInOrderTree" type="rifp">
+      <type>dtype_ds_ws.elementTypeInOrderTree</type>
+    </parameter>
+    <parameter name="existingOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+
+    // extract existingLineItem and receivedLineItem from the container according to the elementTypeInOrderTree parameter
+    var existingLineItem = null;
+    var receivedLineItem = null;
+
+    var childElementTypeInOrderTree = null;
+    var childExistingLineItemContainer = null;
+    var childReceivedLineItemContainer = null;
+
+    if(elementTypeInOrderTree == "B") {
+        existingLineItem = existingLineItemContainer.bundle;
+        receivedLineItem = receivedLineItemContainer.bundle;
+        childElementTypeInOrderTree = "C";
+        childExistingLineItemContainer = existingLineItemContainer.circuits;
+        childReceivedLineItemContainer = receivedLineItemContainer.circuits;
+    }
+    else if(elementTypeInOrderTree == "C") {
+        existingLineItem = existingLineItemContainer.circuit;
+        receivedLineItem = receivedLineItemContainer.circuit;
+        childElementTypeInOrderTree = "S";
+        childExistingLineItemContainer = existingLineItemContainer.services;
+        childReceivedLineItemContainer = receivedLineItemContainer.services;
+    }
+    else if(elementTypeInOrderTree == "S") {
+        existingLineItem = existingLineItemContainer.service;
+        receivedLineItem = receivedLineItemContainer.service;
+        childElementTypeInOrderTree = "T";
+        childExistingLineItemContainer = existingLineItemContainer.subServices;
+        childReceivedLineItemContainer = receivedLineItemContainer.subServices;
+    }
+    else if(elementTypeInOrderTree == "T") {
+        existingLineItem = existingLineItemContainer.subService;
+        receivedLineItem = receivedLineItemContainer.subService;
+    }
+
+
+    if(existingLineItem != null && receivedLineItem != null) {
+
+        // all line items attributes has to be updated if the status of the existing lineItem != COMPLETED/CANCELLED;
+        // NOTE: if action is different, throws exception
+        var lineItemAttributesToCheck = ["action"];
+
+        if(! processSTC.isLineItemCompleted(existingLineItem.lineItemStatus)) {
+            for(var i=0; i<lineItemAttributesToCheck.length; i++) {
+                var attributeToCheck = lineItemAttributesToCheck[i];
+
+                compareValues_(receivedLineItem[attributeToCheck], existingLineItem[attributeToCheck], attributeToCheck, "Attribute");
+            }
+
+            if(validationErrors != null) {
+                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, existingLineItem.lineItemIdentifier, failureArray, true);
+            }
+            else {
+                var attributesToSkip = ["workOrderNumber", "action", "alreadySentToGranite", "alreadyReceivedCancel", "requestedActionIsA", "provisioningFlag", "completionDate",
+                                        "cwDocId", "cwDocStamp", "cwOrderCreationDate", "cwOrderId", "cwParentId", "lastUpdatedDate", "updatedBy"];
+
+                for(var i=0; i<existingLineItem.getLeafNames().length; i++) {
+                    var attributeToCopy = existingLineItem.getLeafNames()[i];
+
+                    if(notIn_(attributeToCopy, attributesToSkip)) {
+                        existingLineItem[attributeToCopy] = receivedLineItem[attributeToCopy];
+                    }
+                }
+            }
+
+            // checking nvPair & blockParameters
+            validationErrors = null;
+            if(elementTypeInOrderTree == "B") {
+                validationErrors = ds_ws.updateExistingNV_BlockBundleParamsForResubmit(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier, existingOrder);
+            }
+            else if(elementTypeInOrderTree == "C") {
+                validationErrors = ds_ws.updateExistingNV_BlockCircParamsForResubmit(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier, existingOrder);
+            }
+            else if(elementTypeInOrderTree == "S") {
+                validationErrors = ds_ws.updateExistingNV_BlockServParamsForResubmit(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier, existingOrder);
+            }
+            else if(elementTypeInOrderTree == "T") {
+                validationErrors = ds_ws.updateExistingNV_BlockSubSerParamsForResubmit(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier, existingOrder);
+            }
+
+            if(validationErrors != null) {
+                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, existingLineItem.lineItemIdentifier, failureArray, true);
+            }
+        }
+        else {
+            // do nothing because the lineItem is completed
+        }
+
+
+        // processing the child elements
+        validationErrors = null;
+        if(childExistingLineItemContainer != null) {
+            var missingReceived = 0;
+            for(var i=0; i<childExistingLineItemContainer.length; i++) {
+                var existingChildLineItemId = null;
+                if(childElementTypeInOrderTree == "C") {
+                    existingChildLineItemId = childExistingLineItemContainer[i].circuit.lineItemIdentifier;
+                }
+                else if(childElementTypeInOrderTree == "S") {
+                    existingChildLineItemId = childExistingLineItemContainer[i].service.lineItemIdentifier;
+                }
+                else if(childElementTypeInOrderTree == "T") {
+                    existingChildLineItemId = childExistingLineItemContainer[i].subService.lineItemIdentifier;
+                }
+                var found = false;
+
+                // search child in received
+                if(childReceivedLineItemContainer != null) {
+                    for(var j=0; j<childReceivedLineItemContainer.length && !found; j++) {
+                        var receivedChildLineItemId = null;
+                        if(childElementTypeInOrderTree == "C") {
+                            receivedChildLineItemId = childReceivedLineItemContainer[j].circuit.lineItemIdentifier;
+                        }
+                        else if(childElementTypeInOrderTree == "S") {
+                            receivedChildLineItemId = childReceivedLineItemContainer[j].service.lineItemIdentifier;
+                        }
+                        else if(childElementTypeInOrderTree == "T") {
+                            receivedChildLineItemId = childReceivedLineItemContainer[j].subService.lineItemIdentifier;
+                        }
+
+                        if(existingChildLineItemId == receivedChildLineItemId) {
+                            // found; comparing the 2 lineItems and the entire hierarchy
+                            found = true;
+                            failureArray = ds_ws.updateExistingLineItemForResubmit(childExistingLineItemContainer[i], childReceivedLineItemContainer[j], childElementTypeInOrderTree, existingOrder, failureArray);
+                        }
+                    }
+                }
+
+                if(!found) {
+                    // not found child; adding error
+                    validationErrors = ds_ws.appendToValidationErrors("AE0067", Global.translateText("AE0067", null, existingLineItem.lineItemIdentifier), validationErrors, "updateExistingLineItemForResubmit (" + existingChildLineItemId + ")");
+                    missingReceived++;
+                }
+            }
+
+            if(childReceivedLineItemContainer != null) {
+                if((childReceivedLineItemContainer.length + missingReceived) != childExistingLineItemContainer.length) {
+                    // it means that there are additional attributes in received that are not in existing! ERROR!
+                    validationErrors = ds_ws.appendToValidationErrors("AE0059", Global.translateText("AE0059",  null, [childElementTypeInOrderTree, "existing"]), validationErrors, "updateExistingLineItemForResubmit (" + existingChildLineItemId + ")");
+                }
+            }
+        }
+        else {
+            if(childReceivedLineItemContainer != null) {
+                // it means that there are bundles in received that are not in existing! ERROR!
+                validationErrors = ds_ws.appendToValidationErrors("AE0059", Global.translateText("AE0059",  null, [childElementTypeInOrderTree, "existing"]), validationErrors, "updateExistingLineItemForResubmit (" + existingLineItem.lineItemIdentifier + ")");
+            }
+        }
+
+        if(validationErrors != null) {
+            failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, existingLineItem.lineItemIdentifier, failureArray, false);
+        }
+    }
+    else {
+        validationErrors = ["AE0058", Global.translateText("AE0058", null, [(existingLineItem != null ? "Received" : "Existing"), existingLineItem.lineItemIdentifier])];
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, existingLineItem.lineItemIdentifier, failureArray, false);
+    }
+
+    return failureArray;
+
+
+
+    function notIn_(attributeName, attributesToSkipArray) {
+        var exist = false;
+        for(var i=0; i<attributesToSkipArray.length && !exist; i++) {
+            exist = (attributesToSkipArray[i] == attributeName);
+        }
+        return (!exist);
+    }
+
+
+    function compareValues_(receivedAttribute, existingAttribute, attributeName, category) {
+        var debugMsg = "updateExistingLineItemForResubmit (" + existingLineItem.lineItemIdentifier + ")";
+        if(receivedAttribute == null) {
+            if(existingAttribute != null) {
+                validationErrors = ds_ws.appendToValidationErrors("AE0055", Global.translateText("AE0055", null, [category, attributeName, "existing"]), validationErrors, debugMsg);
+            }
+        }
+        else {
+            if(existingAttribute == null) {
+                validationErrors = ds_ws.appendToValidationErrors("AE0057", Global.translateText("AE0057", null, [category, attributeName, "existing"]), validationErrors, debugMsg);
+            }
+            else {
+                 if(attributeName == 'creationDate' || attributeName == 'serviceDate') {
+                    var receivedDate = new Date(receivedAttribute.getFullYear(), receivedAttribute.getMonth(), receivedAttribute.getDate());
+                    var existingDate = new Date(existingAttribute.getFullYear(), existingAttribute.getMonth(), existingAttribute.getDate());
+
+                    if(receivedDate.getTime() != existingDate.getTime()) {
+                        validationErrors = ds_ws.appendToValidationErrors("AE0056", Global.translateText("AE0056", null, [category, attributeName, receivedDate, existingDate, "existing"]), validationErrors, debugMsg);
+                    }
+                }
+                else {
+                    if(! receivedAttribute.toString().equals(existingAttribute.toString())) {
+                        validationErrors = ds_ws.appendToValidationErrors("AE0056", Global.translateText("AE0056", null, [category, attributeName, receivedAttribute, existingAttribute, "existing"]), validationErrors, debugMsg);
+                    }
+                }
+            }
+        }
+    }
+  ]]></script>
+</script>

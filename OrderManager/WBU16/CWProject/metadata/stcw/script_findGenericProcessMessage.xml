@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="92150a1afe02e71bbc20238c4b6e0e57" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.findGenericProcessMessage">
+  <guid>{021bb4d3-42e6-2ee7-3257-291085faf83e}</guid>
+  <label>Find GenericProcess Message</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="activityName" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="dataType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <valueType>nmeta_com.conceptwave.system.Object</valueType>
+  <script><![CDATA[
+    var genericProcessMsgFinder = new Finder ("stcw:findGenericProcessReceivedMsg");
+    genericProcessMsgFinder.searchDocument.processId    = processId;
+    genericProcessMsgFinder.searchDocument.activityName = activityName;
+    genericProcessMsgFinder.search ();
+
+    var msgList = genericProcessMsgFinder.list;
+    if (msgList == null || msgList.size <= 0)
+          return (null);
+
+    return stcw.readStructure (msgList.start.receivedMsg, dataType);
+  ]]></script>
+</script>

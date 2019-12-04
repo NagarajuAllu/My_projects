@@ -1,0 +1,1845 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema targetNamespace="http://www.conceptwave.com/products/up"	
+	xmlns="http://www.w3.org/2001/XMLSchema"	
+	xmlns:cwf_up="http://www.conceptwave.com/products/up"	
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"	
+	xmlns:cwf="http://www.conceptwave.com/system"	
+	xmlns:cwf_oe="http://www.conceptwave.com/products/oe">
+
+
+
+	<import namespace="http://www.conceptwave.com/system" schemaLocation="cwf.xsd"/>
+	<import namespace="http://www.conceptwave.com/products/oe" schemaLocation="cwf_oe.xsd"/>
+
+	<annotation>
+		<documentation>User Profile</documentation>
+		<appinfo>
+			<metadata>STC Project</metadata>
+			<created>Mon Sep 08 11:04:21 CEST 2008</created>
+		</appinfo>
+	</annotation>
+
+	<!-- Data types and elements -->
+
+	<simpleType name="CALENDAR">
+		<annotation>
+			<documentation>CALENDAR</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="80"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="COLOR">
+		<annotation>
+			<documentation>COLOR</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="23"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="DAY">
+		<annotation>
+			<documentation>DAY</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="2"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="DAYTYPE">
+		<annotation>
+			<documentation>DAYTYPE</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="2"/>
+			<enumeration value="0">
+				<annotation>
+					<documentation>Weekend</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1">
+				<annotation>
+					<documentation>Holiday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="2">
+				<annotation>
+					<documentation>Working Holiday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="3">
+				<annotation>
+					<documentation>Vacation</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="4">
+				<annotation>
+					<documentation>Personal</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="5">
+				<annotation>
+					<documentation>Illness</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="6">
+				<annotation>
+					<documentation>Working Day</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="DESCRIPTION">
+		<annotation>
+			<documentation>DESCRIPTION</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="80"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Decimal10_2">
+		<annotation>
+			<documentation>Decimal10_2</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="10"/>
+			<fractionDigits value="2"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Hour">
+		<annotation>
+			<documentation>Hour</documentation>
+		</annotation>
+		<restriction base="cwf_up:Integer3">
+			<enumeration value="0">
+				<annotation>
+					<documentation>00</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1">
+				<annotation>
+					<documentation>01</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="2">
+				<annotation>
+					<documentation>02</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="3">
+				<annotation>
+					<documentation>03</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="4">
+				<annotation>
+					<documentation>04</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="5">
+				<annotation>
+					<documentation>05</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="6">
+				<annotation>
+					<documentation>06</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="7">
+				<annotation>
+					<documentation>07</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="8">
+				<annotation>
+					<documentation>08</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="9">
+				<annotation>
+					<documentation>09</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="10">
+				<annotation>
+					<documentation>10</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="11">
+				<annotation>
+					<documentation>11</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="12">
+				<annotation>
+					<documentation>12</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="13">
+				<annotation>
+					<documentation>13</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="14">
+				<annotation>
+					<documentation>14</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="15">
+				<annotation>
+					<documentation>15</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="16">
+				<annotation>
+					<documentation>16</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="17">
+				<annotation>
+					<documentation>17</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="18">
+				<annotation>
+					<documentation>18</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="19">
+				<annotation>
+					<documentation>19</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="20">
+				<annotation>
+					<documentation>20</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="21">
+				<annotation>
+					<documentation>21</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="22">
+				<annotation>
+					<documentation>22</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="23">
+				<annotation>
+					<documentation>23</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Hours">
+		<annotation>
+			<documentation>hours</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Integer3">
+		<annotation>
+			<documentation>Integer3</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="3"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Integer9">
+		<annotation>
+			<documentation>Integer9</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="9"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="MONTH">
+		<annotation>
+			<documentation>MONTH</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="2"/>
+			<enumeration value="0">
+				<annotation>
+					<documentation>January</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1">
+				<annotation>
+					<documentation>February</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="2">
+				<annotation>
+					<documentation>March</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="3">
+				<annotation>
+					<documentation>April</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="4">
+				<annotation>
+					<documentation>May</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="5">
+				<annotation>
+					<documentation>June</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="6">
+				<annotation>
+					<documentation>July</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="7">
+				<annotation>
+					<documentation>August</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="8">
+				<annotation>
+					<documentation>September</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="9">
+				<annotation>
+					<documentation>October</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="10">
+				<annotation>
+					<documentation>November</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="11">
+				<annotation>
+					<documentation>December</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Minute">
+		<annotation>
+			<documentation>minute</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Minutes">
+		<annotation>
+			<documentation>Minutes</documentation>
+		</annotation>
+		<restriction base="cwf_up:Integer3">
+			<enumeration value="0">
+				<annotation>
+					<documentation>00</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="15">
+				<annotation>
+					<documentation>15</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="30">
+				<annotation>
+					<documentation>30</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="45">
+				<annotation>
+					<documentation>45</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="TEMPLATE">
+		<annotation>
+			<documentation>TEMPLATE</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="80"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="TYPE">
+		<annotation>
+			<documentation>TYPE</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="2"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="UserId">
+		<annotation>
+			<documentation>User ID</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="64"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="WEEKDAY">
+		<annotation>
+			<documentation>WEEKDAY</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="2"/>
+			<enumeration value="0">
+				<annotation>
+					<documentation>Sunday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1">
+				<annotation>
+					<documentation>Monday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="2">
+				<annotation>
+					<documentation>Tuesday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="3">
+				<annotation>
+					<documentation>Wednesday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="4">
+				<annotation>
+					<documentation>Thursday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="5">
+				<annotation>
+					<documentation>Friday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="6">
+				<annotation>
+					<documentation>Saturday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="7">
+				<annotation>
+					<documentation>&lt;day&gt;</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="WORK_FROM">
+		<annotation>
+			<documentation>WORK_FROM</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="4"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="WORK_TO">
+		<annotation>
+			<documentation>WORK_TO</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="4"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="YEAR">
+		<annotation>
+			<documentation>YEAR</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="4"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="available">
+		<annotation>
+			<documentation>Available</documentation>
+		</annotation>
+		<restriction base="xsd:boolean">
+		</restriction>
+	</simpleType>
+
+	<simpleType name="calendarReference">
+		<annotation>
+			<documentation>Calendar Reference</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="80"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="calendarScriptReference">
+		<annotation>
+			<documentation>Calendar Script Reference</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="calendarTemplateReference">
+		<annotation>
+			<documentation>Calendar Template Reference</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="80"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="createdByRef">
+		<annotation>
+			<documentation>System Created By Reference</documentation>
+		</annotation>
+		<restriction base="cwf:cwCreatedBy">
+			<maxLength value="64"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="curTasks">
+		<annotation>
+			<documentation>Current Tasks</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="9"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="dayOfEveryMonth">
+		<annotation>
+			<documentation>Day Of Every Month</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="3"/>
+			<enumeration value="0">
+				<annotation>
+					<documentation>1</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1">
+				<annotation>
+					<documentation>2</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="2">
+				<annotation>
+					<documentation>3</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="3">
+				<annotation>
+					<documentation>4</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="4">
+				<annotation>
+					<documentation>5</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="5">
+				<annotation>
+					<documentation>6</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="6">
+				<annotation>
+					<documentation>7</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="7">
+				<annotation>
+					<documentation>8</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="8">
+				<annotation>
+					<documentation>9</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="9">
+				<annotation>
+					<documentation>10</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="10">
+				<annotation>
+					<documentation>11</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="11">
+				<annotation>
+					<documentation>12</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="12">
+				<annotation>
+					<documentation>13</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="13">
+				<annotation>
+					<documentation>14</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="14">
+				<annotation>
+					<documentation>15</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="15">
+				<annotation>
+					<documentation>16</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="16">
+				<annotation>
+					<documentation>17</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="17">
+				<annotation>
+					<documentation>18</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="18">
+				<annotation>
+					<documentation>19</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="19">
+				<annotation>
+					<documentation>20</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="20">
+				<annotation>
+					<documentation>21</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="21">
+				<annotation>
+					<documentation>22</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="22">
+				<annotation>
+					<documentation>23</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="23">
+				<annotation>
+					<documentation>24</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="24">
+				<annotation>
+					<documentation>25</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="25">
+				<annotation>
+					<documentation>26</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="26">
+				<annotation>
+					<documentation>27</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="27">
+				<annotation>
+					<documentation>28</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="dayTypeReference">
+		<annotation>
+			<documentation>Day Type Reference</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="80"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="domain">
+		<annotation>
+			<documentation>Domain</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="32"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="durationType">
+		<annotation>
+			<documentation>Duration Type</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="9"/>
+			<enumeration value="0">
+				<annotation>
+					<documentation>Second</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1">
+				<annotation>
+					<documentation>Minute</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="2">
+				<annotation>
+					<documentation>Hour</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="3">
+				<annotation>
+					<documentation>Day</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="email">
+		<annotation>
+			<documentation>E-mail</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="50"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="extensionName">
+		<annotation>
+			<documentation>Extension Name</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="firstDay">
+		<annotation>
+			<documentation>First Day</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="3"/>
+			<enumeration value="0">
+				<annotation>
+					<documentation>&lt;Default&gt;</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1">
+				<annotation>
+					<documentation>Sunday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="2">
+				<annotation>
+					<documentation>Monday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="3">
+				<annotation>
+					<documentation>Tuesday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="4">
+				<annotation>
+					<documentation>Wednesday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="5">
+				<annotation>
+					<documentation>Thursday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="6">
+				<annotation>
+					<documentation>Friday</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="7">
+				<annotation>
+					<documentation>Saturday</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="groupDesc">
+		<annotation>
+			<documentation>Group Description</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="512"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="groupName">
+		<annotation>
+			<documentation>Group Name</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="groupPrivileges">
+		<annotation>
+			<documentation>Group Privileges (Reference)</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="16"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="groupUsers">
+		<annotation>
+			<documentation>Group&#39;s Users (Reference)</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="groups">
+		<annotation>
+			<documentation>Groups (Reference)</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="host">
+		<annotation>
+			<documentation>Host</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="maxTasks">
+		<annotation>
+			<documentation>Maximum Tasks</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="9"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="minTasks">
+		<annotation>
+			<documentation>Minimum Tasks</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="9"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="orgChartRef">
+		<annotation>
+			<documentation>Org Chart (Reference)</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="32"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="password">
+		<annotation>
+			<documentation>Password</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="32"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="pastYearsCovered">
+		<annotation>
+			<documentation>No. of past years covered</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="2"/>
+			<minInclusive value="1"/>
+			<maxInclusive value="9"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="privilegeDesc">
+		<annotation>
+			<documentation>privilegeDesc</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="512"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="privilegeGroups">
+		<annotation>
+			<documentation>Privilege Groups (Reference)</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="privileges">
+		<annotation>
+			<documentation>Privileges</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="16"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="profileId">
+		<annotation>
+			<documentation>Profile ID</documentation>
+		</annotation>
+		<restriction base="cwf:userId">
+		</restriction>
+	</simpleType>
+
+	<simpleType name="recurrenceType">
+		<annotation>
+			<documentation>Recurrence Type</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="2"/>
+			<enumeration value="0">
+				<annotation>
+					<documentation>Weekly</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1">
+				<annotation>
+					<documentation>Monthly Every</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="2">
+				<annotation>
+					<documentation>Monthly The</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="3">
+				<annotation>
+					<documentation>Yearly Every</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="4">
+				<annotation>
+					<documentation>Yearly The</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="5">
+				<annotation>
+					<documentation>Script</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="script">
+		<annotation>
+			<documentation>Calendar Script</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="securityPrivoderEnum">
+		<annotation>
+			<documentation>securityPrivoderEnum</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<enumeration value="Other">
+				<annotation>
+					<documentation>Other</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="com.conceptwave.userprofile.CwfDBProvider">
+				<annotation>
+					<documentation>ConceptWave</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="com.conceptwave.userprofile.CwfNTProvider">
+				<annotation>
+					<documentation>Windows NT</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="com.conceptwave.userprofile.CwfJaasProvider">
+				<annotation>
+					<documentation>Java Authentication</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="com.conceptwave.userprofile.CwfLdapProvider">
+				<annotation>
+					<documentation>LDAP</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="com.conceptwave.userprofile.CwfSambaProvider">
+				<annotation>
+					<documentation>SMB</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="serviceProviderEnum">
+		<annotation>
+			<documentation>serviceProviderEnum</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<enumeration value="Other">
+				<annotation>
+					<documentation>Other</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="com.conceptwave.userprofile.CwfProfileProvider">
+				<annotation>
+					<documentation>ConceptWave</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="specType">
+		<annotation>
+			<documentation>Spec Type</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="2"/>
+			<enumeration value="0">
+				<annotation>
+					<documentation>first</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1">
+				<annotation>
+					<documentation>second</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="2">
+				<annotation>
+					<documentation>third</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="3">
+				<annotation>
+					<documentation>fourth</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="4">
+				<annotation>
+					<documentation>last</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="templateDAY">
+		<annotation>
+			<documentation>Template DAY</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="3"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="timeHour">
+		<annotation>
+			<documentation>timeHour</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="2"/>
+			<maxInclusive value="24"/>
+			<pattern value="\d\d"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="timeMinute">
+		<annotation>
+			<documentation>timeMinute</documentation>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="2"/>
+			<maxInclusive value="60"/>
+			<pattern value="\d\d"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="totalYearsCovered">
+		<annotation>
+			<documentation>Total no. of years covered by the calendar.
+(Default is 3: current, previous and next year)</documentation>
+			<appinfo>
+				<label>Total no. of years covered</label>
+			</appinfo>
+		</annotation>
+		<restriction base="xsd:integer">
+			<totalDigits value="2"/>
+			<minInclusive value="3"/>
+			<maxInclusive value="10"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="updatedByRef">
+		<annotation>
+			<documentation>System Updated By Reference</documentation>
+		</annotation>
+		<restriction base="cwf:updatedBy">
+			<maxLength value="64"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="userExtensionRef">
+		<annotation>
+			<documentation>User Extension (Reference)</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="userGroups">
+		<annotation>
+			<documentation>User&#39;s Groups</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="128"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="userName">
+		<annotation>
+			<documentation>User Name</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="80"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="usersByPrivilege">
+		<annotation>
+			<documentation>Users By Privilege</documentation>
+		</annotation>
+		<restriction base="cwf:sReference">
+			<maxLength value="64"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="weekDayCheckBox">
+		<annotation>
+			<documentation>Week Day (CheckBox)</documentation>
+		</annotation>
+		<restriction base="xsd:boolean">
+		</restriction>
+	</simpleType>
+
+	<simpleType name="workTime">
+		<annotation>
+			<documentation>Work Time</documentation>
+		</annotation>
+		<restriction base="xsd:string">
+			<maxLength value="4"/>
+			<pattern value="\d\d\d\d"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="work_hours1">
+		<annotation>
+			<documentation>work_hours1</documentation>
+		</annotation>
+		<restriction base="xsd:decimal">
+			<totalDigits value="20"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="yearlyEvery">
+		<annotation>
+			<documentation>Yearly Every</documentation>
+		</annotation>
+		<restriction base="cwf:date">
+		</restriction>
+	</simpleType>
+
+	<!-- Structures -->
+
+	<complexType name="ConceptWaveExportData">
+		<annotation>
+			<documentation>ConceptWave Export Data</documentation>
+		</annotation>
+			<sequence>
+				<element name="header" minOccurs="0" maxOccurs="1">
+					<annotation>
+						<documentation>Export Header</documentation>
+					</annotation>
+					<complexType>
+						<sequence>
+							<element name="exportDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+							<element name="exportUser" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+							<element name="exportSchema" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+							<element name="privilege" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+							<element name="signature" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+							<element name="exportType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="object" minOccurs="0" maxOccurs="unbounded" type="cwf_up:object"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="object">
+		<annotation>
+			<documentation>Object</documentation>
+		</annotation>
+			<sequence>
+				<element name="value" minOccurs="0" maxOccurs="unbounded">
+					<annotation>
+						<documentation>Value</documentation>
+					</annotation>
+					<complexType>
+						<sequence>
+						</sequence>
+						<attribute name="name" type="xsd:string" use="required"/>
+						<attribute name="language" type="xsd:string"/>
+						<attribute name="notMapped" type="xsd:boolean"/>
+					</complexType>
+				</element>
+			</sequence>
+			<attribute name="type" type="xsd:string" use="required"/>
+			<attribute name="id" type="xsd:string"/>
+		</complexType>
+
+	<!-- Documents -->
+
+	<complexType name="GroupIDSearch">
+		<annotation>
+			<documentation>Group ID Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="groupName" type="cwf_up:groupName"/>
+				<element name="privilege" type="cwf:privilege"/>
+				<element name="userId" type="cwf:userId"/>
+				<element name="userName" type="cwf_up:userName"/>
+				<element name="email" type="cwf_up:email"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="GroupIDSearchForAddingUsersToGroup">
+		<annotation>
+			<documentation>Group ID Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="groupName" type="cwf_up:groupName"/>
+				<element name="privilege" type="cwf:privilege"/>
+				<element name="userId" type="cwf:userId"/>
+				<element name="userName" type="cwf_up:userName"/>
+				<element name="email" type="cwf_up:email"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="GroupIDSearchForPrivileges">
+		<annotation>
+			<documentation>Group ID Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="groupName" type="cwf_up:groupName"/>
+				<element name="privilege" type="cwf:privilegeDescription"/>
+				<element name="userId" type="cwf:userId"/>
+				<element name="userName" type="cwf_up:userName"/>
+				<element name="email" type="cwf_up:email"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="OrderStaticResult">
+		<annotation>
+			<documentation>order Statics Result</documentation>
+		</annotation>
+			<sequence>
+				<element name="MetadataTypeO" type="cwf:metadataIntId"/>
+				<element name="KindOfOrder" type="xsd:string"/>
+				<element name="OrderPhase" type="xsd:string"/>
+				<element name="OriginalOrderID" type="xsd:string"/>
+				<element name="MetadataTypeI" type="xsd:string"/>
+				<element name="ParentOrder" type="xsd:string"/>
+				<element name="Ago12" type="xsd:string"/>
+				<element name="Ago11" type="xsd:string"/>
+				<element name="Ago10" type="xsd:string"/>
+				<element name="Ago09" type="xsd:string"/>
+				<element name="Ago08" type="xsd:string"/>
+				<element name="Ago07" type="xsd:string"/>
+				<element name="Ago06" type="xsd:string"/>
+				<element name="Ago05" type="xsd:string"/>
+				<element name="Ago04" type="xsd:string"/>
+				<element name="Ago03" type="xsd:string"/>
+				<element name="Ago02" type="xsd:string"/>
+				<element name="Ago01" type="xsd:string"/>
+				<element name="ThisMonth" type="xsd:string"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="OrderStaticSearch">
+		<annotation>
+			<documentation>Order Static Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="dt" type="xsd:dateTime"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="PrivilegeIDSearch">
+		<annotation>
+			<documentation>Privilege ID Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="privilege" type="cwf:privilege"/>
+				<element name="groupName" type="cwf_up:groupName"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="PrivilegeIDSearchForPrivilege">
+		<annotation>
+			<documentation>Privilege ID Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="privilege" type="cwf:privilege"/>
+				<element name="groupName" type="cwf_up:groupName"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="Provider">
+		<annotation>
+			<documentation>Provider</documentation>
+		</annotation>
+			<sequence>
+				<element name="securityProvider" type="cwf_up:securityPrivoderEnum"/>
+				<element name="securityOther" type="xsd:string"/>
+				<element name="serviceOther" type="xsd:string"/>
+				<element name="serviceProvider" type="cwf_up:serviceProviderEnum"/>
+				<element name="securityProviderData" type="xsd:string"/>
+				<element name="serviceProviderData" type="xsd:string"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="UserEmail">
+		<annotation>
+			<documentation>User Email</documentation>
+		</annotation>
+			<sequence>
+				<element name="from" type="cwf_oe:string128"/>
+				<element name="user" type="cwf_oe:string128"/>
+				<element name="subject" type="cwf_oe:string128"/>
+				<element name="msg" type="cwf_oe:string4000"/>
+				<element name="host" type="cwf_oe:string128"/>
+				<element name="mime" type="cwf_oe:string128"/>
+				<element name="port" type="cwf_up:Integer9"/>
+				<element name="secure" type="xsd:boolean"/>
+				<element name="password" type="cwf_oe:string128"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="UserGroupSearch">
+		<annotation>
+			<documentation>User Group Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="userId" type="cwf_up:UserId"/>
+				<element name="groups" type="xsd:string"/>
+				<element name="groupName" type="xsd:string"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="UserIDSearch">
+		<annotation>
+			<documentation>User ID Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="userId" type="cwf_up:UserId"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="UserProfileAdministrator">
+		<annotation>
+			<documentation>User Profile Administrator</documentation>
+		</annotation>
+			<sequence>
+				<element name="UserProfileAdministrator" type="xsd:string"/>
+				<element name="cwDocId" type="cwf:cwDocId"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendar">
+		<annotation>
+			<documentation>Calendar</documentation>
+		</annotation>
+			<sequence>
+				<element name="YEAR" type="cwf_up:YEAR"/>
+				<element name="MONTH" type="cwf_up:MONTH"/>
+				<element name="DAY" type="cwf_up:DAY"/>
+				<element name="DESCRIPTION" type="cwf_up:DESCRIPTION"/>
+				<element name="CALENDAR" type="cwf_up:CALENDAR"/>
+				<element name="DAYTYPE" type="cwf_up:DAYTYPE"/>
+				<element name="workhours1" type="cwf_up:work_hours1"/>
+				<element name="workhours2" type="xsd:integer"/>
+				<element name="from1" type="cwf:dateTimeMin"/>
+				<element name="to1" type="cwf:dateTimeMin"/>
+				<element name="from2" type="cwf:dateTimeMin"/>
+				<element name="to2" type="cwf:dateTimeMin"/>
+				<element name="from3" type="cwf:dateTimeMin"/>
+				<element name="to3" type="cwf:dateTimeMin"/>
+				<element name="dayTypeReference" type="cwf_up:dayTypeReference"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendarScript">
+		<annotation>
+			<documentation>Calendar Script</documentation>
+		</annotation>
+			<sequence>
+				<element name="script" type="cwf_up:script"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendarSearchByType">
+		<annotation>
+			<documentation>Calendar Search By Type</documentation>
+		</annotation>
+			<sequence>
+				<element name="CALENDAR" type="cwf_up:CALENDAR"/>
+				<element name="TEMPLATE" type="cwf_up:TEMPLATE"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendarSearchByYear">
+		<annotation>
+			<documentation>Calendar Search By Year</documentation>
+		</annotation>
+			<sequence>
+				<element name="CALENDAR" type="cwf_up:CALENDAR"/>
+				<element name="YEAR" type="cwf_up:YEAR"/>
+				<element name="DAY" type="cwf_up:DAY"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendarTemplate">
+		<annotation>
+			<documentation>Calendar Template</documentation>
+		</annotation>
+			<sequence>
+				<element name="TEMPLATE" type="cwf_up:TEMPLATE"/>
+				<element name="NAME" type="cwf_up:DESCRIPTION"/>
+				<element name="RECURRENCETYPE" type="cwf_up:recurrenceType"/>
+				<element name="DAY" type="cwf_up:templateDAY"/>
+				<element name="MONTH" type="cwf_up:MONTH"/>
+				<element name="WEEKDAY" type="cwf_up:WEEKDAY"/>
+				<element name="SPEC" type="cwf_up:specType"/>
+				<element name="DAYTYPE" type="cwf_up:DAYTYPE"/>
+				<element name="SCRIPT" type="cwf:metadataId"/>
+				<element name="WORK_HOUR1" type="cwf_up:work_hours1"/>
+				<element name="WORK_HOUR2" type="xsd:integer"/>
+				<element name="WORKING" type="xsd:boolean"/>
+				<element name="Sunday" type="cwf_up:weekDayCheckBox"/>
+				<element name="Monday" type="cwf_up:weekDayCheckBox"/>
+				<element name="Tuesday" type="cwf_up:weekDayCheckBox"/>
+				<element name="Wednesday" type="cwf_up:weekDayCheckBox"/>
+				<element name="Thursday" type="cwf_up:weekDayCheckBox"/>
+				<element name="Friday" type="cwf_up:weekDayCheckBox"/>
+				<element name="Saturday" type="cwf_up:weekDayCheckBox"/>
+				<element name="dayOfEveryMonth" type="cwf_up:dayOfEveryMonth"/>
+				<element name="yearlyEvery" type="cwf_up:yearlyEvery"/>
+				<element name="from1" type="cwf:dateTimeMin"/>
+				<element name="to1" type="cwf:dateTimeMin"/>
+				<element name="from2" type="cwf:dateTimeMin"/>
+				<element name="to2" type="cwf:dateTimeMin"/>
+				<element name="from3" type="cwf:dateTimeMin"/>
+				<element name="to3" type="cwf:dateTimeMin"/>
+				<element name="DAYTYPEREFERENCE" type="cwf_up:dayTypeReference"/>
+				<element name="calendarScriptReference" type="cwf_up:calendarScriptReference"/>
+				<element name="dayOfEveryMonth1" type="cwf_up:dayOfEveryMonth"/>
+				<element name="m_from1" type="cwf_up:Minute"/>
+				<element name="m_from2" type="cwf_up:Minute"/>
+				<element name="m_from3" type="cwf_up:Minute"/>
+				<element name="m_to1" type="cwf_up:Minute"/>
+				<element name="m_to2" type="cwf_up:Minute"/>
+				<element name="m_to3" type="cwf_up:Minute"/>
+				<element name="H_from1" type="cwf_up:Hours"/>
+				<element name="H_from2" type="cwf_up:Hours"/>
+				<element name="H_from3" type="cwf_up:Hours"/>
+				<element name="H_to1" type="cwf_up:Hours"/>
+				<element name="H_to2" type="cwf_up:Hours"/>
+				<element name="H_to3" type="cwf_up:Hours"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendarTemplateSearchByType">
+		<annotation>
+			<documentation>Calendar Template Search By Type</documentation>
+		</annotation>
+			<sequence>
+				<element name="TEMPLATE" type="cwf_up:TEMPLATE"/>
+				<element name="recurrenceType" type="cwf_up:recurrenceType"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendarTemplateType">
+		<annotation>
+			<documentation>Calendar Template Type</documentation>
+		</annotation>
+			<sequence>
+				<element name="TEMPLATE" type="cwf_up:TEMPLATE"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendarTemplateTypeSearch">
+		<annotation>
+			<documentation>Calendar Template Type Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="TEMPLATE" type="cwf_up:TEMPLATE"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendarType">
+		<annotation>
+			<documentation>Calendar Type</documentation>
+		</annotation>
+			<sequence>
+				<element name="CALENDAR" type="cwf_up:CALENDAR"/>
+				<element name="TEMPLATE" type="cwf_up:calendarTemplateReference"/>
+				<element name="WORK_FROM" type="cwf_up:WORK_FROM"/>
+				<element name="WORK_TO" type="cwf_up:WORK_TO"/>
+				<element name="firstday" type="cwf_up:firstDay"/>
+				<element name="LABEL" type="cwf_up:DESCRIPTION"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendarTypeSearch">
+		<annotation>
+			<documentation>Calendar Type Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="CALENDAR" type="cwf_up:CALENDAR"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendarTypeUI">
+		<annotation>
+			<documentation>Calendar Type UI</documentation>
+		</annotation>
+			<sequence>
+				<element name="CALENDAR" type="cwf_up:CALENDAR"/>
+				<element name="TEMPLATE" type="cwf_up:calendarTemplateReference"/>
+				<element name="WORK_FROM" type="cwf_up:WORK_FROM"/>
+				<element name="WORK_TO" type="cwf_up:WORK_TO"/>
+				<element name="firstday" type="cwf_up:firstDay"/>
+				<element name="LABEL" type="cwf_up:DESCRIPTION"/>
+				<element name="totalYearsCovered" type="cwf_up:totalYearsCovered"/>
+				<element name="pastYearsCovered" type="cwf_up:pastYearsCovered"/>
+				<element name="workFromHour" type="cwf_up:Hour"/>
+				<element name="workFromMinute" type="cwf_up:Minutes"/>
+				<element name="workToHour" type="cwf_up:Hour"/>
+				<element name="workToMinute" type="cwf_up:Minutes"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="calendarYearByType">
+		<annotation>
+			<documentation>Calendar Year By Type</documentation>
+		</annotation>
+			<sequence>
+				<element name="YEAR" type="cwf_up:YEAR"/>
+				<element name="CALENDAR" type="cwf_up:CALENDAR"/>
+				<element name="DAY" type="cwf:date"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="chgPwdDoc">
+		<annotation>
+			<documentation>Change Password</documentation>
+		</annotation>
+			<sequence>
+				<element name="password" type="cwf_up:password"/>
+				<element name="newPassword" type="cwf_up:password"/>
+				<element name="newPasswordVerify" type="cwf_up:password"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="dayType">
+		<annotation>
+			<documentation>Day Type</documentation>
+		</annotation>
+			<sequence>
+				<element name="TYPE" type="cwf_up:TYPE"/>
+				<element name="DESCRIPTION" type="cwf_up:DESCRIPTION"/>
+				<element name="bold" type="xsd:boolean"/>
+				<element name="COLOR" type="cwf_up:COLOR"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="domainDoc">
+		<annotation>
+			<documentation>DomainDoc</documentation>
+		</annotation>
+			<sequence>
+				<element name="domainInfo" type="xsd:string"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="extUserProfile">
+		<annotation>
+			<documentation>External User Profile</documentation>
+		</annotation>
+			<sequence>
+				<element name="profileId" type="cwf_up:profileId"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="group">
+		<annotation>
+			<documentation>Group</documentation>
+		</annotation>
+			<sequence>
+				<element name="groupName" type="cwf_up:groupName"/>
+				<element name="groupDesc" type="cwf_up:groupDesc"/>
+				<element name="calendar" type="cwf_up:calendarReference"/>
+				<element name="groupUsers" type="cwf_up:groupUsers"/>
+				<element name="groupPrivileges" type="cwf_up:groupPrivileges"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="networkInfo">
+		<annotation>
+			<documentation>Network Info</documentation>
+		</annotation>
+			<sequence>
+				<element name="domain" type="cwf_up:domain"/>
+				<element name="dc" type="cwf_up:host"/>
+				<element name="active" type="xsd:boolean"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="oprionsDoc">
+		<annotation>
+			<documentation>Options Document</documentation>
+		</annotation>
+			<sequence>
+				<element name="cwDocId" type="cwf:cwDocId"/>
+				<element name="option" type="xsd:string"/>
+				<element name="description" type="xsd:string"/>
+				<element name="value" type="xsd:boolean"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="optionsSearch">
+		<annotation>
+			<documentation>Option Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="path" type="xsd:string"/>
+				<element name="isImport" type="xsd:boolean"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="orgChart">
+		<annotation>
+			<documentation>Organizational Chart</documentation>
+		</annotation>
+			<sequence>
+				<element name="id" type="cwf:sysGuid"/>
+				<element name="parentId" type="cwf:guid"/>
+				<element name="name" type="cwf_up:DESCRIPTION"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="orgChartSerach">
+		<annotation>
+			<documentation>Organizational Chart Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="id" type="cwf:guid"/>
+				<element name="parentId" type="cwf:guid"/>
+				<element name="root" type="xsd:boolean"/>
+				<element name="path" type="xsd:string"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="orgChartSerachForPositionInUserProfile">
+		<annotation>
+			<documentation>Organizational Chart Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="id" type="cwf:guid"/>
+				<element name="parentId" type="cwf:guid"/>
+				<element name="root" type="xsd:boolean"/>
+				<element name="path" type="xsd:string"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="privilege">
+		<annotation>
+			<documentation>Privilege</documentation>
+		</annotation>
+			<sequence>
+				<element name="privilegeCode" type="cwf:privilege"/>
+				<element name="DESCRIPTION" type="cwf_up:privilegeDesc"/>
+				<element name="privilegeGroups" type="cwf_up:privilegeGroups"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="resetPwdDoc">
+		<annotation>
+			<documentation>Reset Password</documentation>
+		</annotation>
+			<sequence>
+				<element name="password" type="cwf_up:password"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="userExtension">
+		<annotation>
+			<documentation>User Profile Extension</documentation>
+		</annotation>
+			<sequence>
+				<element name="userId" type="cwf:userId"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="userExtensionResult">
+		<annotation>
+			<documentation>User Extension Result</documentation>
+		</annotation>
+			<sequence>
+				<element name="metadataId" type="cwf_up:extensionName"/>
+				<element name="description" type="cwf_up:DESCRIPTION"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="userGroup">
+		<annotation>
+			<documentation>User Group</documentation>
+		</annotation>
+			<sequence>
+				<element name="userId" type="cwf:userId"/>
+				<element name="groupName" type="cwf_up:groupName"/>
+				<element name="active" type="xsd:boolean"/>
+				<element name="manager" type="xsd:boolean"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="userGroupPrivilege">
+		<annotation>
+			<documentation>User Group Privilege</documentation>
+		</annotation>
+			<sequence>
+				<element name="privilegeCode" type="cwf:privilege"/>
+				<element name="groupName" type="cwf_up:groupName"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="userLogDocument">
+		<annotation>
+			<documentation>userLogDocument</documentation>
+		</annotation>
+			<sequence>
+				<element name="NodeId" type="cwf_oe:NodeId"/>
+				<element name="userName" type="cwf_up:userName"/>
+				<element name="loginTime" type="cwf:dateTimeSec"/>
+				<element name="Email" type="cwf_oe:string128"/>
+				<element name="totalUser" type="cwf_up:Integer9"/>
+				<element name="Minute" type="cwf_up:Integer9"/>
+				<element name="cwDocId" type="cwf:cwDocId"/>
+				<element name="nodeFinderRef" type="cwf_oe:nodeFinderRef"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="userProfile">
+		<annotation>
+			<documentation>User Profile</documentation>
+		</annotation>
+			<sequence>
+				<element name="userId" type="cwf:userId"/>
+				<element name="userName" type="cwf_up:userName"/>
+				<element name="domain" type="cwf_up:domain"/>
+				<element name="email" type="cwf_up:email"/>
+				<element name="active" type="xsd:boolean"/>
+				<element name="available" type="cwf_up:available"/>
+				<element name="profileId" type="cwf_up:profileId"/>
+				<element name="minTasks" type="cwf_up:minTasks"/>
+				<element name="maxTasks" type="cwf_up:maxTasks"/>
+				<element name="curTasks" type="cwf_up:curTasks"/>
+				<element name="userGroups" type="cwf_up:userGroups"/>
+				<element name="externalUser" type="xsd:boolean"/>
+				<element name="userExtensionRef" type="cwf_up:userExtensionRef"/>
+				<element name="positionId" type="cwf_up:orgChartRef"/>
+				<element name="externalUserPWD" type="cwf_up:password"/>
+				<element name="isUserValid" type="xsd:string"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="userProfileSaveAs">
+		<annotation>
+			<documentation>User Profile Save As</documentation>
+		</annotation>
+			<sequence>
+				<element name="userId" type="cwf:userId"/>
+				<element name="userName" type="cwf_up:userName"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="userProfileSearch">
+		<annotation>
+			<documentation>User Profile Search</documentation>
+		</annotation>
+			<sequence>
+				<element name="userId" type="cwf:userId"/>
+				<element name="userName" type="cwf_up:userName"/>
+				<element name="email" type="cwf_up:email"/>
+				<element name="active" type="xsd:boolean"/>
+				<element name="profileId" type="cwf_up:profileId"/>
+				<element name="minTasks" type="cwf_up:minTasks"/>
+				<element name="maxTasks" type="cwf_up:maxTasks"/>
+				<element name="groups" type="xsd:string"/>
+				<element name="positionId" type="cwf:guid"/>
+			</sequence>
+		</complexType>
+
+	<complexType name="user_group">
+		<annotation>
+			<documentation>User or Group</documentation>
+		</annotation>
+			<sequence>
+				<element name="userId" type="cwf_up:groupName"/>
+				<element name="userName" type="cwf_up:groupDesc"/>
+				<element name="active" type="xsd:boolean"/>
+				<element name="manager" type="xsd:boolean"/>
+			</sequence>
+		</complexType>
+
+</schema>

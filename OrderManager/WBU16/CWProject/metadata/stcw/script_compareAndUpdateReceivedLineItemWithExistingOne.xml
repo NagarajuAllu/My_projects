@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.compareAndUpdateReceivedLineItemWithExistingOne">
+  <label>Compare And Update Received LineItem With Existing One</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="existingLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="receivedLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="elementTypeInOrderTree" type="rifp">
+      <type>dtype_stcw.elementTypeInOrderTree</type>
+    </parameter>
+    <parameter name="isCancel" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="orderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="existingOrderWasKO" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="versionNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+    <parameter name="parentLineItemProductCode" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+
+    // extract existingLineItem and receivedLineItem from the container according to the elementTypeInOrderTree parameter
+    var existingLineItem = null;
+    var receivedLineItem = null;
+    var isLegacy = false;
+
+    var childElementTypeInOrderTree = null;
+    var childExistingLineItemContainer = null;
+    var childReceivedLineItemContainer = null;
+
+    if(elementTypeInOrderTree == "B") {
+        existingLineItem = existingLineItemContainer.parentLineItem;
+        receivedLineItem = receivedLineItemContainer.parentLineItem;
+        childElementTypeInOrderTree = "C";
+        childExistingLineItemContainer = existingLineItemContainer.services;
+        childReceivedLineItemContainer = receivedLineItemContainer.services;
+        isLegacy = stcw.isLegacyService(receivedLineItemContainer, true);
+        versionNumber = existingLineItem.versionNumber;
+    }
+    else if(elementTypeInOrderTree == "C") {
+        existingLineItem = existingLineItemContainer.serviceLineItem;
+        receivedLineItem = receivedLineItemContainer.serviceLineItem;
+        childElementTypeInOrderTree = "S";
+        childExistingLineItemContainer = existingLineItemContainer.subServices;
+        childReceivedLineItemContainer = receivedLineItemContainer.subServices;
+        isLegacy = false;
+    }
+    else if(elementTypeInOrderTree == "S") {
+        existingLineItem = existingLineItemContainer.subServiceLineItem;
+        receivedLineItem = receivedLineItemContainer.subServiceLineItem;
+        childElementTypeInOrderTree = "T";
+        childExistingLineItemContainer = existingLineItemContainer.subSubServices;
+        childReceivedLineItemContainer = receivedLineItemContainer.subSubServices;
+        isLegacy = false;
+    }
+    else if(elementTypeInOrderTree == "T") {
+        existingLineItem = existingLineItemContainer.subSubServiceLineItems;
+        receivedLineItem = receivedLineItemContainer.subSubServiceLineItems;
+        isLegacy = false;
+    }
+
+
+    if(existingLineItem != null && receivedLineItem != null) {
+        // the function scans the configuration table STCW_SAME_ATTRIBUTES_IN_UPDATE to find all the attribues in "LineItem" ('LI') for Cancel or for Revise
+        var attributesToCheck = stcw.getAttributesToCheckInUpdate('LI', isCancel);
+
+        for(var i=0; i<attributesToCheck.length; i++) {
+            var attributeToCheck = attributesToCheck[i];
+            compareValues_(receivedLineItem[attributeToCheck], existingLineItem[attributeToCheck], attributeToCheck, "Attribute");
+        }
+
+
+        if(validationErrors == null) {
+            // copy processing attributes from existingLineItem to received one
+            receivedLineItem.workOrderNumber = existingLineItem.workOrderNumber;
+            receivedLineItem.workOrderType = existingLineItem.workOrderType;
+            receivedLineItem.alreadySentToGranite = existingLineItem.alreadySentToGranite;
+            receivedLineItem.sentAnytimeToGranite = existingLineItem.sentAnytimeToGranite;
+            receivedLineItem.alreadyReceivedCancel = existingLineItem.alreadyReceivedCancel;
+            receivedLineItem.requestedActionIsA = existingLineItem.requestedActionIsA;
+            receivedLineItem.provisioningFlag = existingLineItem.provisioningFlag;
+            receivedLineItem.provisioningBU = existingLineItem.provisioningBU;
+            receivedLineItem.completionDate = existingLineItem.completionDate;
+            receivedLineItem.isPONRReviseSet = existingLineItem.isPONRReviseSet;
+            receivedLineItem.isPONRCancelSet = existingLineItem.isPONRCancelSet;
+            receivedLineItem.previousActiveDocId = existingLineItem.previousActiveDocId;
+
+            if(elementTypeInOrderTree == "B") {
+                versionNumber = (existingLineItem.versionNumber != null ? (existingLineItem.versionNumber + 1) : 1);
+                receivedLineItem.versionNumber = versionNumber;
+            }
+
+            // setting new action according
+            if(orderType != null && orderType == "F") {
+                // it's a feasibility
+                if(isCancel) {
+                    validationErrors = stcw.updateLineItemActionForCancelFeasibility(receivedLineItem, existingLineItem, existingOrderWasKO, isLegacy, parentLineItemProductCode, validationErrors);
+                }
+                else {
+                    if(receivedLineItem.action != "N") {
+                        receivedLineItem.workOrderNumber = stcw.createChildQuoteNumber(orderNumber, receivedLineItem.orderRowItemId, versionNumber);
+                        if(existingLineItem.reservationNumber == null) {
+                            // generate the reservation number
+                            receivedLineItem.reservationNumber = stcw.createReservationNumber(orderNumber, receivedLineItem.orderRowItemId);
+                        }
+                    }
+                    validationErrors = stcw.updateLineItemActionForReviseFeasibility(receivedLineItem, existingLineItem, existingOrderWasKO, validationErrors);
+                }
+            }
+            else {
+                // it's a "normal" order
+                if(isCancel) {
+                    validationErrors = stcw.updateLineItemActionForCancelOrder(receivedLineItem, existingLineItem, existingOrderWasKO, parentLineItemProductCode, validationErrors);
+                }
+                else {
+                    validationErrors = stcw.updateLineItemActionForReviseOrder(receivedLineItem, existingLineItem, existingOrderWasKO, validationErrors);
+                }
+            }
+            if(validationErrors != null) {
+                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, existingLineItem.lineItemIdentifier, failureArray, false);
+            }
+        }
+        else {
+            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, existingLineItem.lineItemIdentifier, failureArray, false);
+        }
+
+        // 2016-05-30: in case of Cancel, NV pairs and VAS NV pairs have not to be checked
+        if(!isCancel) {
+            // checking nvPair & VAS NV pairs
+            validationErrors = null;
+            if(elementTypeInOrderTree == "B") {
+                validationErrors = stcw.compareReceivedNV_VASBundleParamsWithExistingOne(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier);
+                validationErrors = stcw.compareReceivedBundleBlockParamsWithExistingOne(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier);
+            }
+            else if(elementTypeInOrderTree == "C") {
+                validationErrors = stcw.compareReceivedNV_VASServParamsWithExistingOne(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier);
+                validationErrors = stcw.compareReceivedServBlockParamsWithExistingOne(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier);
+            }
+            else if(elementTypeInOrderTree == "S") {
+                validationErrors = stcw.compareReceivedNV_VASSubServParamsWithExistingOne(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier);
+                validationErrors = stcw.compareReceivedSubServBlockParamsWithExistingOne(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier);
+            }
+            else if(elementTypeInOrderTree == "T") {
+                validationErrors = stcw.compareReceivedNV_VASSubSubSerParamsWithExistingOne(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier);
+                validationErrors = stcw.compareReceivedSSubServBlockParamsWithExistingOne(existingLineItemContainer, receivedLineItemContainer, validationErrors, existingLineItem.lineItemIdentifier);
+            }
+
+            if(validationErrors != null) {
+                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, existingLineItem.lineItemIdentifier, failureArray, false);
+            }
+        }
+
+        // processing the child elements
+        validationErrors = null;
+        if(childExistingLineItemContainer != null) {
+            var missingReceived = 0;
+            for(var i=0; i<childExistingLineItemContainer.length; i++) {
+                var existingChildLineItemId = null;
+                if(childElementTypeInOrderTree == "C") {
+                    existingChildLineItemId = childExistingLineItemContainer[i].serviceLineItem.lineItemIdentifier;
+                }
+                else if(childElementTypeInOrderTree == "S") {
+                    existingChildLineItemId = childExistingLineItemContainer[i].subServiceLineItem.lineItemIdentifier;
+                }
+                else if(childElementTypeInOrderTree == "T") {
+                    existingChildLineItemId = childExistingLineItemContainer[i].subSubServiceLineItem.lineItemIdentifier;
+                }
+                var found = false;
+
+                // search child in received
+                if(childReceivedLineItemContainer != null) {
+                    for(var j=0; j<childReceivedLineItemContainer.length && !found; j++) {
+                        var receivedChildLineItemId = null;
+                        if(childElementTypeInOrderTree == "C") {
+                            receivedChildLineItemId = childReceivedLineItemContainer[j].serviceLineItem.lineItemIdentifier;
+                        }
+                        else if(childElementTypeInOrderTree == "S") {
+                            receivedChildLineItemId = childReceivedLineItemContainer[j].subServiceLineItem.lineItemIdentifier;
+                        }
+                        else if(childElementTypeInOrderTree == "T") {
+                            receivedChildLineItemId = childReceivedLineItemContainer[j].subSubServiceLineItem.lineItemIdentifier;
+                        }
+
+                        if(existingChildLineItemId == receivedChildLineItemId) {
+                            // found; comparing the 2 lineItems and the entire hierarchy
+                            found = true;
+                            failureArray = stcw.compareAndUpdateReceivedLineItemWithExistingOne(childExistingLineItemContainer[i], childReceivedLineItemContainer[j], childElementTypeInOrderTree, isCancel,
+                                                                                                orderNumber, orderType, existingOrderWasKO, versionNumber, parentLineItemProductCode, failureArray);
+                        }
+                    }
+                }
+
+                if(!found) {
+                    // not found child; adding error
+                    validationErrors = stcw.appendToValidationErrors("AE0067", Global.translateText("AE0067", null, existingChildLineItemId), validationErrors, "compareAndUpdateReceivedLineItemWithExistingOne (" + existingChildLineItemId + ")");
+                    missingReceived++;
+                }
+            }
+
+            if(childReceivedLineItemContainer != null) {
+                if((childReceivedLineItemContainer.length + missingReceived) != childExistingLineItemContainer.length) {
+                    // it means that there are additional attributes in received that are not in existing! ERROR!
+                    validationErrors = stcw.appendToValidationErrors("AE0059", Global.translateText("AE0059",  null, [childElementTypeInOrderTree, "existing"]), validationErrors, "compareAndUpdateReceivedLineItemWithExistingOne (" + existingChildLineItemId + ")");
+                }
+            }
+        }
+        else {
+            if(childReceivedLineItemContainer != null) {
+                // it means that there are parentLineItems in received that are not in existing! ERROR!
+                validationErrors = stcw.appendToValidationErrors("AE0059", Global.translateText("AE0059",  null, [childElementTypeInOrderTree, "existing"]), validationErrors, "compareAndUpdateReceivedLineItemWithExistingOne (" + existingLineItem.lineItemIdentifier + ")");
+            }
+        }
+
+        if(validationErrors != null) {
+            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, existingLineItem.lineItemIdentifier, failureArray, false);
+        }
+    }
+    else {
+        validationErrors = ["AE0058", Global.translateText("AE0058", null, [(existingLineItem != null ? "Received" : "Existing"), existingLineItem.lineItemIdentifier])];
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, existingLineItem.lineItemIdentifier, failureArray, false);
+    }
+
+    return failureArray;
+
+
+    function notIn_(attributeName, attributesToSkipArray) {
+        var exist = false;
+        for(var i=0; i<attributesToSkipArray.length && !exist; i++) {
+            exist = (attributesToSkipArray[i] == attributeName);
+        }
+        return (!exist);
+    }
+
+    function compareValues_(receivedAttribute, existingAttribute, attributeName, category) {
+        var debugMsg = "compareAndUpdateReceivedLineItemWithExistingOne (" + existingLineItem.lineItemIdentifier + ")";
+        if(receivedAttribute == null) {
+            if(existingAttribute != null) {
+                validationErrors = stcw.appendToValidationErrors("AE0055", Global.translateText("AE0055", null, [category, attributeName, "existing"]), validationErrors, debugMsg);
+            }
+        }
+        else {
+            if(existingAttribute == null) {
+                validationErrors = stcw.appendToValidationErrors("AE0057", Global.translateText("AE0057", null, [category, attributeName, "existing"]), validationErrors, debugMsg);
+            }
+            else {
+                if(attributeName == 'creationDate' || attributeName == 'serviceDate') {
+                    var receivedDate = new Date(receivedAttribute.getFullYear(), receivedAttribute.getMonth(), receivedAttribute.getDate());
+                    var existingDate = new Date(existingAttribute.getFullYear(), existingAttribute.getMonth(), existingAttribute.getDate());
+
+                    if(receivedDate.getTime() != existingDate.getTime()) {
+                        validationErrors = stcw.appendToValidationErrors("AE0056", Global.translateText("AE0056", null, [category, attributeName, receivedDate, existingDate, "existing"]), validationErrors, debugMsg);
+                    }
+                }
+                else {
+                    if(! receivedAttribute.toString().equals(existingAttribute.toString())) {
+                        validationErrors = stcw.appendToValidationErrors("AE0056", Global.translateText("AE0056", null, [category, attributeName, receivedAttribute, existingAttribute, "existing"]), validationErrors, debugMsg);
+                    }
+                }
+            }
+        }
+    }
+  ]]></script>
+</script>

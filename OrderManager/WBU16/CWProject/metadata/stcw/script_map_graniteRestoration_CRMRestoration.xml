@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.map_graniteRestoration_CRMRestoration">
+  <label>(map) map_graniteRestoration_CRMRestoration</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="output" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="input" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    if (output == null || output.metadataType != "sirestor:processRequest_el") {
+          Global.logDebug ("map_graniteRestoration_CRMRestoration - nonexistant/wrong output: " + output);
+          return (false);
+    }
+
+    if (input == null || input.metadataType != "wgws:restoration") {
+          Global.logDebug ("map_graniteRestoration_CRMRestoration - nonexistant/wrong input: " + input);
+          return (false);
+    }
+
+    var outputRequest = output.Request;
+
+    outputRequest.BusinessUnit   = input.businessUnit;
+    outputRequest.NewAssetNumber = input.newAssetNumber;
+    outputRequest.NewAssetStatus = input.newAssetStatus;
+    outputRequest.OldAssetNumber = input.oldAssetNumber;
+    outputRequest.OrderNumber    = input.orderNumber;
+    outputRequest.ProductCode    = input.productCode;
+    outputRequest.AccountNumber  = input.accountNumber;
+
+    if (input.nameValue  != null) {
+          for (var index = 0; index < input.nameValue.length; index++) {
+                outputRequest.NameValueList.ArrayOfNameValueListItem[index]  = new DataStructure("sirestor:NameValueList");
+                mapNameValue_ (outputRequest.NameValueList.ArrayOfNameValueListItem[index], input.nameValue[index]);
+          }
+    }
+    return (true);
+
+    //
+    //  mapNameValue_
+    //
+    function mapNameValue_ (output, input) {
+          // output.Name  = input.name;
+          // output.Value = input.value;
+          output.Name  = stcw.convertCOMNameToGraniteOne(input.name);
+          output.Value = stcw.convertCOMValueToGraniteOne(input.name, input.value);
+    }            // m a p N a m e V a l u e _
+  ]]></script>
+</script>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="ca1f5b748163d66906cb558eaec48fa9" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="common.genericOutput">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0c1d6353-d7a4-773d-6e65-b4f8b3dbc4fe}</guid>
+  <label>Generic Output [SQL query]</label>
+  <metaVersion>4</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="result" type="leaf">
+      <guid>{0d0b6efd-2d3b-976a-47d9-c753384eb6ca}</guid>
+      <key>1</key>
+      <label>result</label>
+      <propertyElement type="elfld">
+        <label>result</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_common.genericOutput</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="genericOutputGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="genericOutputGrid" type="elgrd">
+                    <colWidths>160</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>160px</width>
+                    <elementList>
+                      <element name="genericOutputHeader" type="elhdr">
+                        <label>Generic Output [SQL query]</label>
+                      </element>
+                      <element name="result" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_common.genericOutput/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_common.genericOutput/leaf_result</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

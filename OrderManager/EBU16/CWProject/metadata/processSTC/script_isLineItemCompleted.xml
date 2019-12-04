@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="10a042d41d77f4ae4bf44c13d451b23a" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.isLineItemCompleted">
+  <label>Is LineItem Completed</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="lineItemStatus" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = false;
+
+    if(lineItemStatus != null) {
+        result = (lineItemStatus.toUpperCase() == "COMPLETED" || lineItemStatus.toUpperCase() == "CANCELLED");
+    }
+
+    return result;
+  ]]></script>
+</script>

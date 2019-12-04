@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="2553ff302fd2e673d270f38d4515f035" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.findRejectedQuoteIds">
+  <guid>{0ecb3709-6873-a4a6-045a-e13d3bca2e7c}</guid>
+  <label>Find Rejected QuoteIds</label>
+  <metaVersion>3</metaVersion>
+  <script><![CDATA[
+    var rejectedQuoteIdFinder = new Finder ("stcw:rejectedQuoteIdFinder");
+    rejectedQuoteIdFinder.search ();
+
+    var quoteIdList = rejectedQuoteIdFinder.list;
+    if (quoteIdList == null || quoteIdList.size <= 0)
+          return (null);
+
+    var quoteIds = null;
+    for (var i = 0; i <  quoteIdList.size; i++) {
+          quoteIds = (quoteIds == null ? "" : quoteIds + ";") +  quoteIdList[i].orderId;
+    }
+
+    return quoteIds;
+  ]]></script>
+</script>

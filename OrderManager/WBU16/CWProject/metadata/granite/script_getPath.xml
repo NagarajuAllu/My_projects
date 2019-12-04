@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="granite.getPath">
+  <label>Get Path</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="pathInstId" type="rifp">
+      <type>dtype_granite.INST_ID_10</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var path = null;
+
+    if(pathInstId != null) {
+        var pathFinder = new Finder("granite.pathFinder");
+        pathFinder.searchDocument.INST_ID = pathInstId;
+
+        var pathList = pathFinder.search();
+        if(pathList != null && pathList.size > 0) {
+            path = pathList[0];
+        }
+    }
+
+    return path;
+  ]]></script>
+</script>

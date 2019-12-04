@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getMappingFromCOMToGraniteData">
+  <label>Get Mapping From COM To Granite Data</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="cim" type="rifp">
+      <type>dtype_stcw.cimType</type>
+    </parameter>
+    <parameter name="orderQuote" type="rifp">
+      <type>dtype_stcw.orderQuote</type>
+    </parameter>
+    <parameter name="comElement" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="giElement" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("stcconf.search_COMToGraniteData");
+    inputDoc.cim = cim;
+    inputDoc.orderQuote = orderQuote;
+    inputDoc.comElement = comElement;
+    inputDoc.giElement = giElement;
+
+    var mappingFound = Finder.runFinder("stcconf.mapCOMToGraniteDataFinder", "select", inputDoc);
+
+    return mappingFound;
+  ]]></script>
+</script>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.departmentProductivityReportResultDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{5e97bb7b-9edb-4bde-a773-c914eba3fb2e}</guid>
+  <label>Department Productivity Report Result Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="userId" type="leaf">
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="department" type="leaf">
+      <valueType>dtype_up_priv.department</valueType>
+    </variable>
+    <variable name="activityTrackingId" type="leaf">
+      <key>1</key>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="interOper" type="leaf">
+      <valueType>dtype_cwf.interOper</valueType>
+    </variable>
+    <variable name="actionPerformed" type="leaf">
+      <valueType>dtype_common.string256</valueType>
+    </variable>
+    <variable name="assignToUserDateTime" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="completionDateTime" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="durationInHours" type="leaf">
+      <valueType>dtype_common.number5_2</valueType>
+    </variable>
+    <variable name="durationInDays" type="leaf">
+      <valueType>dtype_common.number5_2</valueType>
+    </variable>
+    <variable name="tfrId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="tfrNumber" type="leaf">
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="tfrStatus" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="niNumber" type="leaf">
+      <valueType>dtype_common.string9</valueType>
+    </variable>
+    <variable name="tfrProject" type="leaf">
+      <valueType>dtype_tfs.projectPickListReference</valueType>
+    </variable>
+    <variable name="requirementType" type="leaf">
+      <valueType>dtype_tfs.requirementTypePickListReference</valueType>
+    </variable>
+    <variable name="required" type="leaf">
+      <valueType>dtype_common.integer2</valueType>
+    </variable>
+    <variable name="currentUserId" type="leaf">
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="currentDepartment" type="leaf">
+      <valueType>dtype_up_priv.department</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.departmentProductivityReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.map_CRMCustomerInfo_GraniteCustomerInfo">
+  <label>(map) map_CRMCustomerInfo_GraniteCustomerInfo</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="output" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="input" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    if (output == null || output.metadataType != "grws:customerInformationUpdate") {
+          Global.logDebug ("map_CRMCustomerInfo_GraniteCustomerInfo - nonexistant/wrong output: " + output);
+          return (false);
+    }
+
+    if (input == null || input.metadataType != "wsws:customerInformationUpdate") {
+          Global.logDebug ("map_CRMCustomerInfo_GraniteCustomerInfo - nonexistant/wrong input: " + input);
+          return (false);
+    }
+
+    output.customer.AccountNumber   = input.accountNumber;
+    output.customer.AccountRegion   = input.accountRegion;
+    output.customer.AccountStatus   = input.accountStatus;
+    output.customer.AccountSubType  = input.accountSubType;
+    output.customer.AccountType     = input.accountType;
+    output.customer.AccountTypeCode = input.accountTypeCode;
+    output.customer.BusinessUnit    = input.businessUnit ;
+    output.customer.Name            = input.name;
+    output.customer.StreetAddress   = input.streetAddress;
+
+    if(input.nameValue != null) {
+        for (var index = 0; index < input.nameValue.length; index++) {
+            mapNameValue_ (output.customer.NameValuePair [index], input.nameValue [index]);
+        }
+    }
+
+    return (true);
+
+    //
+    //  mapNameValue_
+    //
+    function mapNameValue_ (output, input) {
+        output.Name  = input.name;
+        output.Value = input.value;
+    }            // m a p N a m e V a l u e _
+  ]]></script>
+</script>

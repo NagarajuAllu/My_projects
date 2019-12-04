@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="processSTC.hasLineItemToSkipWOSU">
+  <label>Has LineItem To Skip WOSU</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="lineItem" type="rifp">
+      <type>doc_ds_ws.lineItemDocument</type>
+    </parameter>
+    <parameter name="isFlat" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="taskOperationInWOSU" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="isB2BOrder" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var hasToSkipWOSU = false;
+
+    if(lineItem != null) {
+        var searchDoc = new Document("ds_ws.search_SkipWOSUDoc");
+        searchDoc.serviceType = lineItem.serviceType;
+        searchDoc.isFlat = (isFlat != null ? isFlat : true);
+
+        var resultList = Finder.runFinder("ds_ws.findSkipWOSUConfiguration", "select", searchDoc);
+        if(resultList != null && resultList.length > 0) {
+            var recordFound = resultList[0];
+
+            if(recordFound.nvPairName == null) {
+                // nvPair name not configured; checking taskOperation
+                if(recordFound.taskOperation == null) {
+                    // nvPair name and taskOperation are both not configured; so always skip!
+                    hasToSkipWOSU = true;
+                }
+                else {
+                    if(taskOperationInWOSU != null && recordFound.taskOperation == taskOperationInWOSU) {
+                        hasToSkipWOSU = true;
+                    }
+                    else {
+                        hasToSkipWOSU = false;
+                    }
+                }
+            }
+            else {
+                // there is the nvPair configured
+                var nvPairNameConfigured = recordFound.nvPairName;
+                var nvPairValueConfigured = recordFound.nvPairValue;
+
+                var allNVPairs = ds_ws.getAllNameValuesByParentElementId(lineItem.id);
+                if(allNVPairs != null) {
+                    for(var i=0; i<allNVPairs.length && !hasToSkipWOSU; i++) {
+                        if(allNVPairs[i].name == nvPairNameConfigured) {
+                            // nvpair found; checking the value
+                            if(nvPairValueConfigured == null) {
+                                // no value configured, so always skip!
+                                hasToSkipWOSU = true;
+                            }
+                            else {
+                                // value configured; skip only if the value is the same
+                                hasToSkipWOSU = (nvPairValueConfigured == allNVPairs[i].value);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(hasToSkipWOSU) {
+                // checking if the source is configured
+                hasToSkipWOSU = (isB2BOrder ? recordFound.crmB2B : recordFound.crmBAU);
+            }
+        }
+    }
+
+    return hasToSkipWOSU;
+  ]]></script>
+</script>

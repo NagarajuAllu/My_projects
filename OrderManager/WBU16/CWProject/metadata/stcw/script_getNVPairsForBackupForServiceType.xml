@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getNVPairsForBackupForServiceType">
+  <label>Get NV Pairs For Backup For ServiceType</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="receivedServiceType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var searchDoc = new Document("stcconf.search_ValidationMap_COMServiceType");
+    searchDoc.serviceType = receivedServiceType;
+
+    var resultFound = Finder.runFinder("stcconf.findNVPairForBackup", "select", searchDoc);
+
+    var resultArray = null;
+    if(resultFound != null && resultFound.length > 0) {
+        resultArray = new Array();
+        for(var i=0; i<resultFound.length; i++) {
+            resultArray.push(resultFound[i].nvPairNameForBck);
+        }
+    }
+
+    return resultArray;
+  ]]></script>
+</script>

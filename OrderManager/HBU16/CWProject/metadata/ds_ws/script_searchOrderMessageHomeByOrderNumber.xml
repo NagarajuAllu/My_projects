@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="57cea43dcbfa26807b1cacde1ac9c9b4" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.searchOrderMessageHomeByOrderNumber">
+  <guid>{0be53040-20d3-3f5c-bb05-13d32f7438f1}</guid>
+  <highlight>36</highlight>
+  <label>Search Order Message Home By Order #</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="orderNumber" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_ds_ws.string12</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = null;
+
+    if (orderNumber != null) {
+
+          var input = new Document("ds_ws:search_orderMessage");
+          input.orderNumber = orderNumber;
+
+          var output = Finder.runFinder("ds_ws:findOrderMessageHomeByOrderNumber", "select", input);
+
+          if (output != null && output.size == 1) {
+                result = output[0];
+          }
+          else if(output != null && output.size > 1){
+                // Customized exception AE0002:
+                // - Inconsistent environment: found more then one "?" document with the same "?" key!
+                Global.throwException("AE0002", ["Order Message", "Order #"]);
+          }
+    }
+
+    return result;
+  ]]></script>
+</script>

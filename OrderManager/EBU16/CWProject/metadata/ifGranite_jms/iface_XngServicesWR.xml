@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<interface filenameHash="cf0acc5c0161a1a9be4242b0b601c1f3" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ifGranite_jms.XngServicesWR">
+  <guid>{0f7805b7-25fa-5a9e-491c-01c75bc70c16}</guid>
+  <label>toGranite GraniteServices_Interface (Writer-Reader)</label>
+  <metaVersion>3</metaVersion>
+  <operationList>
+    <operation name="CustomerInformationUpdate" type="oper">
+      <guid>{0c9a967d-84a8-4204-d107-73e130dafe6d}</guid>
+      <input>dstruct_ds_jms.customerInformationUpdate_el</input>
+      <label>Operation [1]: Customer Information Update</label>
+      <output>dstruct_ds_jms.customerInformationUpdateAckWithFailure_el</output>
+      <type>Request-Response</type>
+    </operation>
+    <operation name="SiteInformationUpdate" type="oper">
+      <guid>{08a269d1-90a3-fc49-9100-d7e472a2dd3a}</guid>
+      <input>dstruct_ds_jms.siteInformationUpdate_el</input>
+      <label>Operation [2]: Site Information Update</label>
+      <output>dstruct_ds_jms.siteInformationUpdateAcknowledgementWithFailure_el</output>
+      <type>Request-Response</type>
+    </operation>
+    <operation name="WorkOrderStatusUpdate" type="oper">
+      <guid>{0d4c9fe7-a031-b84d-19be-9382154265c8}</guid>
+      <input>dstruct_ds_jms.workOrderStatusUpdate_el</input>
+      <label>Operation [3]: Work Order Status Update</label>
+      <output>dstruct_ds_jms.workOrderStatusUpdateWithFailure_el</output>
+      <type>Request-Response</type>
+    </operation>
+    <operation name="SubmitOrder" type="oper">
+      <guid>{060c43cc-a7c3-d4bd-40d1-e314d9f5309b}</guid>
+      <input>dstruct_ds_jms.bundleOrderMessage_el</input>
+      <label>Operation [4]: Submit Order</label>
+      <type>One-Way</type>
+    </operation>
+    <operation name="UpdateOrder" type="oper">
+      <guid>{0cf2369a-25d5-53c8-16e1-df42463893b9}</guid>
+      <input>dstruct_ds_jms.bundleOrderMessage_el</input>
+      <label>Operation [5]: Update Order</label>
+      <type>One-Way</type>
+    </operation>
+    <operation name="QuoteValidation" type="oper">
+      <guid>{0320ee66-54b5-e369-aae5-9e2ef1f168e0}</guid>
+      <input>dstruct_ds_jms.orderMessage_el</input>
+      <label>Operation [6]: Quote Validation</label>
+      <output>dstruct_ds_jms.quoteAcknowledgementWithFailure_el</output>
+      <type>Request-Response</type>
+    </operation>
+  </operationList>
+  <revision>1</revision>
+</interface>

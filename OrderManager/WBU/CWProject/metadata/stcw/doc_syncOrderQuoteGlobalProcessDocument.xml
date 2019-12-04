@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="78383f799538727cc63d541733e5b6ea" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.syncOrderQuoteGlobalProcessDocument">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{019252ff-ffea-aa51-1892-567b17ce1bf5}</guid>
+  <label>SyncOrderQuote Global Process Document</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="processIdCounter" type="leaf">
+      <guid>{0d8f8c36-ddc1-0205-fe2c-ee6e7bf5e96f}</guid>
+      <label>ProcessId Counter</label>
+      <propertyElement type="elfld">
+        <label>ProcessId Counter</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="countProcessIdFound" type="leaf">
+      <guid>{093ece55-588b-3371-070b-643697170aaf}</guid>
+      <label>Count ProcessId Found</label>
+      <propertyElement type="elfld">
+        <label>Count ProcessId Found</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="currentProcessId" type="leaf">
+      <guid>{0e10f865-13f2-d852-e81c-440a408d87fa}</guid>
+      <label>Current ProcessId</label>
+      <propertyElement type="elfld">
+        <label>Current ProcessId</label>
+      </propertyElement>
+      <valueType>dtype_cwf_pm.PROCESS_ID</valueType>
+    </variable>
+    <variable name="idList" type="leaf">
+      <guid>{05550fb3-2565-626a-8bfe-33b95b54284f}</guid>
+      <label>Id List</label>
+      <propertyElement type="elfld">
+        <label>Id List</label>
+      </propertyElement>
+      <valueType>dtype_stcw.orderIdList</valueType>
+    </variable>
+    <variable name="rejectedOrderIdCounter" type="leaf">
+      <guid>{06f20244-d879-458a-1a7c-f2dfbbb36381}</guid>
+      <label>Rejected OrderId Counter</label>
+      <propertyElement type="elfld">
+        <label>Rejected OrderId Counter</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="countRejectedOrderIdFound" type="leaf">
+      <guid>{0abd06f1-32e6-7785-bfb8-f0be4c88849a}</guid>
+      <label>Count Rejected OrderId Found</label>
+      <propertyElement type="elfld">
+        <label>Count Rejected OrderId Found</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="currentRejectedOrderId" type="leaf">
+      <guid>{0350ecb3-669b-76e9-bb26-88016acfd715}</guid>
+      <label>Current Rejected OrderId</label>
+      <propertyElement type="elref">
+        <label>Current Rejected OrderId</label>
+      </propertyElement>
+      <valueType>dtype_cwf_oe.OrderIdNonRef</valueType>
+    </variable>
+    <variable name="originalOrderNumber" type="leaf">
+      <guid>{064b186e-1d45-4712-419c-686caf84306f}</guid>
+      <label>Original OrderNumber</label>
+      <propertyElement type="elfld">
+        <label>Original OrderNumber</label>
+      </propertyElement>
+      <valueType>dtype_orb.OrderNumber</valueType>
+    </variable>
+    <variable name="originalOrderRowItemId" type="leaf">
+      <guid>{034b72ab-a871-b2db-7dc6-55874ec7253c}</guid>
+      <label>Original OrderRowItemId</label>
+      <propertyElement type="elfld">
+        <label>Original OrderRowItemId</label>
+      </propertyElement>
+      <valueType>dtype_stcw.orderRowItemId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.syncOrderQuoteGlobalProcessDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

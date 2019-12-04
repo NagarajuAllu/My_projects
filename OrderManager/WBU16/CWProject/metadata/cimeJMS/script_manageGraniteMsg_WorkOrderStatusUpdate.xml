@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="cimeJMS.manageGraniteMsg_WorkOrderStatusUpdate">
+  <label>Manage Granite Message: Work Order Status Update [JMS]</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = "[CIM-E JMS MESSAGE: WOSU] ";
+
+    debugPrintln(stcc.getSysdateForLog() + debug + "Received: " + (input != null ? input.toXML() : "'NULL'") + "...");
+
+    var logDoc = UserProfile.getMsgLogDoc();
+
+    if (input != null) {
+        if(input.workOrderNumber != null && input.crmOrderNumber != null) {
+            var wosuUnifiedModel = stcw.convertEBUWOSUToUnifiedModel(input);
+
+            var lineItem = stcw.getLineItemByCOMOrderNumberAndWONumber(input.crmOrderNumber, input.workOrderNumber);
+
+            if(lineItem != null) {
+                wosuUnifiedModel.lineItemIdentifier = lineItem.id;
+
+                var orchestrationRecord = stcw.getRecordInOrchestrationTableByLineItemId(lineItem.id);
+                if(orchestrationRecord != null) {
+                    var provisioningProcessId = orchestrationRecord.provisioningProcessId;
+                    if(provisioningProcessId != null) {
+
+                        var processInstance = Process.getProcessInfo(provisioningProcessId);
+                        if(processInstance != null) {
+                            if(processInstance.processStatus == 8) {
+                                // the process is in status 8, so STALE; resume it
+                                debugPrintln(stcc.getSysdateForLog() + debug + "Resuming Stale process " + provisioningProcessId);
+                                Process.resumeAllStaleProcesses(provisioningProcessId);
+                            }
+                        }
+
+                        var wosuId = stcw.writeGraniteWOSUIntoDB(provisioningProcessId, wosuUnifiedModel);
+
+                        var wosuNotificationDS = new DataStructure("stcw.wosuNotificationDS");
+                        wosuNotificationDS.wosuId = wosuId;
+
+                        debugPrintln(stcc.getSysdateForLog() + debug + "Sending WOSU Notification for <" + input.crmOrderNumber + "," + input.workOrderNumber + "> to process " + provisioningProcessId);
+                        Process.sendMessageToProcess(provisioningProcessId, null, "stcw.xngServicesNotificationToProcesses/workOrderStatusUpdateNotification", wosuNotificationDS);
+                    }
+                    else {
+                        debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Unable to find Provisioning Process for received granite WOSU for <" + input.crmOrderNumber + "," + input.workOrderNumber + ">; starting standalone process");
+
+                        var wosuId = stcw.writeGraniteWOSUIntoDB(-1, wosuUnifiedModel);
+
+                        var processDocument = new Document("stcw.STCW_PROCESS_DOCUMENT");
+                        processDocument.firstPassWOSU = "Y";
+                        processDocument.latestWOSUId = wosuId;
+
+                        var processId = Process.startProcess ("stcw.sendWOSUToCOM", processDocument);
+                        debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Started sendWOSUToCOM <" + input.crmOrderNumber + "," + input.workOrderNumber + ">: processId = " + processId);
+                    }
+                }
+                else {
+                    debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Unable to find process for <" + input.crmOrderNumber + "," + input.workOrderNumber + ">");
+                }
+            }
+            else {
+                debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Unable to find LineItem for received granite WOSU for <" + input.crmOrderNumber + "," + input.workOrderNumber + ">; starting standalone process");
+
+                var wosuId = stcw.writeGraniteWOSUIntoDB("-1", wosuUnifiedModel);
+
+                var processDocument = new Document("stcw.STCW_PROCESS_DOCUMENT");
+                processDocument.firstPassWOSU = "Y";
+                processDocument.latestWOSUId = wosuId;
+
+                var processId = Process.startProcess ("stcw.sendWOSUToCOM", processDocument);
+
+                debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Started sendWOSUToCOM <" + input.crmOrderNumber + "," + input.workOrderNumber + ">; started standalone process with PID " + processId);
+            }
+        }
+        else {
+            debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Received CIME WOSU JMS message with crmOrderNumber NULL or workOrderNumber NULL!!!");
+        }
+
+        if(logDoc != null) {
+            logDoc.userData1 = input.crmOrderNumber;
+            logDoc.userData2 = input.workOrderNumber;
+            logDoc.save();
+        }
+
+    }
+    else{
+        debugPrintln(stcc.getSysdateForLog() + debug + "WARNING - Interface invoked with input NULL...");
+    }
+  ]]></script>
+</script>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.receiveRestorationAckFromCRM">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>304.0</x>
+    <y>68.70117</y>
+    <childList>
+      <child name="receiveRestorationAck" type="opActivity">
+        <element>iface_wsws.ifExpedtier_WHOLESALE/oper_operation_RestorationAcknowledgement</element>
+        <label>Receive RestorationAck</label>
+        <participant>part_stcw.eaiInputInterface</participant>
+        <x>285.65656</x>
+        <y>160.40234</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.updateHistoryEvent (this, "eaiReceiveRestorationAck");
+
+              stcw.storeGenericProcessMessage (this.process.id, "CRM_ACK", this.activityData);
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="done" type="scriptActivity">
+        <label>Done</label>
+        <x>310.0</x>
+        <y>274.70117</y>
+      </child>
+      <child name="eaiInputInterface" type="participantActivity">
+        <label>EAI Input Interface</label>
+        <participant>part_stcw.eaiInputInterface</participant>
+        <x>17.0</x>
+        <y>151.0</y>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Receive RestorationAck From CRM</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

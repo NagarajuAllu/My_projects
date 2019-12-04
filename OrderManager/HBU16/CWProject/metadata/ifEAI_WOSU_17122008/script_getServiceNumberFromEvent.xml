@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="d7a4037f8042883d564b62ecb575ac8f" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ifEAI_WOSU_17122008.getServiceNumberFromEvent">
+  <label>Get ServiceNumber From Event</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="receivedEvent" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var foundServiceNumber = null;
+
+          if(receivedEvent.parameters != null) {
+                var getElementNameForServiceNumber = ifEAI_WOSU_17122008.getElementNameForServiceNumber();
+                var parametersLength = receivedEvent.parameters.length;
+                for(var i=0; i<parametersLength; i++) {
+                      var nameValuePair = receivedEvent.parameters[i];
+                      if(nameValuePair.name == getElementNameForServiceNumber) {
+                            foundServiceNumber = nameValuePair.value;
+                      }
+                }
+          }
+
+    return foundServiceNumber;
+  ]]></script>
+</script>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.extractServiceFromReceivedQuote">
+  <label>Extract Service From Received Quote</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="receivedQuote" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderRowItemId" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(receivedQuote == null || receivedQuote == "undefined") {
+          return null;
+    }
+
+    if(receivedQuote.lineItems == null) {
+          return null;
+    }
+
+    if(orderRowItemId == null || orderRowItemId == "undefined") {
+          return null;
+    }
+
+    var service = null;
+    for(var i=0; i<receivedQuote.lineItems.length && service == null; i++) {
+          var item = receivedQuote.lineItems[i];
+          if(item.orderRowItemId == orderRowItemId) {
+                service = item;
+          }
+    }
+
+    return service;
+  ]]></script>
+</script>

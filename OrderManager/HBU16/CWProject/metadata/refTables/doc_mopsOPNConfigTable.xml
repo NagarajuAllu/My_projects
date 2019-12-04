@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="refTables.mopsOPNConfigTable">
+  <dbSchema>CIM</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0e9ae301-98ea-55e0-e757-04532724a4bf}</guid>
+  <label>MOPS OPN Config Table</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="orderType" type="leaf">
+      <column>ORDER_TYPE</column>
+      <key>1</key>
+      <label>Order Type</label>
+      <propertyElement type="elfld">
+        <label>Order Type</label>
+      </propertyElement>
+      <table>MOPS_OPN_CONFIG</table>
+      <valueType>dtype_refTables.orderType</valueType>
+    </variable>
+    <variable name="serviceType" type="leaf">
+      <column>SERVICE_TYPE</column>
+      <key>2</key>
+      <label>Service Type</label>
+      <propertyElement type="elfld">
+        <label>Service Type</label>
+      </propertyElement>
+      <table>MOPS_OPN_CONFIG</table>
+      <valueType>dtype_refTables.serviceType</valueType>
+    </variable>
+    <variable name="operationType" type="leaf">
+      <column>OPERATION_TYPE</column>
+      <label>Operation Type</label>
+      <propertyElement type="elslct">
+        <label>Operation Type</label>
+      </propertyElement>
+      <table>MOPS_OPN_CONFIG</table>
+      <valueType>dtype_refTables.operationType</valueType>
+    </variable>
+    <variable name="sequenceNumber" type="leaf">
+      <column>SEQ_NUM</column>
+      <key>3</key>
+      <label>Sequence Number</label>
+      <propertyElement type="elfld">
+        <label>Sequence Number</label>
+      </propertyElement>
+      <table>MOPS_OPN_CONFIG</table>
+      <valueType>dtype_refTables.sequenceNumber</valueType>
+    </variable>
+    <variable name="wimOperationType" type="leaf">
+      <column>WIM_OPN_TYPE</column>
+      <label>WIM Operation Type</label>
+      <propertyElement type="elslct">
+        <label>WIM Operation Type</label>
+      </propertyElement>
+      <table>MOPS_OPN_CONFIG</table>
+      <valueType>dtype_refTables.wimOperationType</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_refTables.mopsOPNConfigTable</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="mopsOPNConfigTableGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="mopsOPNConfigTableGrid" type="elgrd">
+                    <colWidths>160</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>160px</width>
+                    <elementList>
+                      <element name="mopsOPNConfigTableHeader" type="elhdr">
+                        <label>MOPS OPN Config Table</label>
+                      </element>
+                      <element name="orderType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_refTables.mopsOPNConfigTable/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_refTables.mopsOPNConfigTable/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_refTables.mopsOPNConfigTable/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_refTables.mopsOPNConfigTable/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="operationType" type="elslct">
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_refTables.mopsOPNConfigTable/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_refTables.mopsOPNConfigTable/leaf_operationType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sequenceNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_refTables.mopsOPNConfigTable/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_refTables.mopsOPNConfigTable/leaf_sequenceNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="wimOperationType" type="elslct">
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_refTables.mopsOPNConfigTable/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_refTables.mopsOPNConfigTable/leaf_wimOperationType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Generated" type="vform">
+            <label>Generated</label>
+            <root name="mopsOPNConfigTableGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="mopsOPNConfigTableGrid" type="elgrd">
+                  <colWidths>160,160,160,160</colWidths>
+                  <numOfCols>4</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>640px</width>
+                  <elementList>
+                    <element name="mopsOPNConfigTableHeader" type="elhdr">
+                      <label>MOPS OPN Config Table</label>
+                    </element>
+                    <element name="orderType" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_refTables.mopsOPNConfigTable/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_refTables.mopsOPNConfigTable/leaf_orderType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceType" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_refTables.mopsOPNConfigTable/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_refTables.mopsOPNConfigTable/leaf_serviceType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="operationType" type="elslct">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_refTables.mopsOPNConfigTable/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_refTables.mopsOPNConfigTable/leaf_operationType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="sequenceNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_refTables.mopsOPNConfigTable/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_refTables.mopsOPNConfigTable/leaf_sequenceNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="wimOperationType" type="elslct">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_refTables.mopsOPNConfigTable/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_refTables.mopsOPNConfigTable/leaf_wimOperationType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

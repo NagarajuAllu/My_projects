@@ -1,0 +1,1255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<order name="stcw.wholesaleBundleOrderSTC">
+  <extends>order_com.conceptwave.system.Order</extends>
+  <label>Wholesale Bundle Order STC</label>
+  <metaVersion>25</metaVersion>
+  <childList>
+    <child name="orderHeader" type="order">
+      <label>Order Header</label>
+      <mandatory>true</mandatory>
+      <orderItem>doc_stcw.bundleOrderHeaderDocument</orderItem>
+      <orderType>document</orderType>
+      <xmlMap type="xmap">
+        <path>order_stcw.wholesaleBundleOrderSTC/order_orderHeader</path>
+        <xmlName>orderHeader</xmlName>
+      </xmlMap>
+    </child>
+    <child name="orderHeaderParameters" type="order">
+      <label>Order Header Parameters</label>
+      <maxInstances>999</maxInstances>
+      <orderType>collection</orderType>
+      <childList>
+        <child name="orderHeaderParameter" type="order">
+          <label>Order Header Parameter</label>
+          <mandatory>true</mandatory>
+          <orderItem>doc_stcw.nameValueDocument</orderItem>
+          <orderType>document</orderType>
+          <xmlMap type="xmap">
+            <path>order_stcw.wholesaleBundleOrderSTC/order_orderHeaderParameters/order_orderHeaderParameter</path>
+            <xmlName>orderHeaderParameter</xmlName>
+          </xmlMap>
+        </child>
+      </childList>
+    </child>
+    <child name="parentLineItems" type="order">
+      <label>Parent LineItems</label>
+      <maxInstances>999</maxInstances>
+      <minInstances>1</minInstances>
+      <orderType>collection</orderType>
+      <childList>
+        <child name="parentLineItem" type="order">
+          <label>Parent LineItem</label>
+          <mandatory>true</mandatory>
+          <orderItem>doc_stcw.lineItemDocument</orderItem>
+          <orderType>document</orderType>
+          <xmlMap type="xmap">
+            <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItem</path>
+            <xmlName>parentLineItem</xmlName>
+          </xmlMap>
+        </child>
+        <child name="parentLineItemNameValueParameters" type="order">
+          <label>Parent LineItem NameValue Parameters</label>
+          <maxInstances>999</maxInstances>
+          <orderType>collection</orderType>
+          <childList>
+            <child name="parentLineItemNameValueParameter" type="order">
+              <label>Parent LineItem NameValue Parameter</label>
+              <mandatory>true</mandatory>
+              <orderItem>doc_stcw.nameValueDocument</orderItem>
+              <orderType>document</orderType>
+              <xmlMap type="xmap">
+                <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemNameValueParameters/order_parentLineItemNameValueParameter</path>
+                <xmlName>parentLineItemNameValueParameter</xmlName>
+              </xmlMap>
+            </child>
+          </childList>
+        </child>
+        <child name="parentLineItemVASNVParameters" type="order">
+          <label>Parent LineItem VAS NV Parameters</label>
+          <maxInstances>999</maxInstances>
+          <orderType>collection</orderType>
+          <childList>
+            <child name="parentLineItemVASNVParameter" type="order">
+              <label>Parent LineItem VAS NV Parameter</label>
+              <mandatory>true</mandatory>
+              <orderItem>doc_stcw.nameValueDocument</orderItem>
+              <orderType>document</orderType>
+              <xmlMap type="xmap">
+                <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemVASNVParameters/order_parentLineItemVASNVParameter</path>
+                <xmlName>parentLineItemVASNVParameter</xmlName>
+              </xmlMap>
+            </child>
+          </childList>
+        </child>
+        <child name="parentLineItemBlockParameters" type="order">
+          <label>Parent LineItem Block Parameters</label>
+          <maxInstances>999</maxInstances>
+          <orderType>collection</orderType>
+          <childList>
+            <child name="parentLineItemBlockParameter" type="order">
+              <label>ParentLineItem BlockParameter</label>
+              <mandatory>true</mandatory>
+              <orderItem>doc_stcw.blockNameValueDocument</orderItem>
+              <orderType>document</orderType>
+              <xmlMap type="xmap">
+                <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemBlockParameters/order_parentLineItemBlockParameter</path>
+                <xmlName>parentLineItemBlockParameter</xmlName>
+              </xmlMap>
+            </child>
+          </childList>
+        </child>
+        <child name="services" type="order">
+          <label>Services</label>
+          <maxInstances>999</maxInstances>
+          <orderType>collection</orderType>
+          <childList>
+            <child name="serviceLineItem" type="order">
+              <label>Service LineItem</label>
+              <mandatory>true</mandatory>
+              <orderItem>doc_stcw.lineItemDocument</orderItem>
+              <orderType>document</orderType>
+              <xmlMap type="xmap">
+                <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItem</path>
+                <xmlName>serviceLineItem</xmlName>
+              </xmlMap>
+            </child>
+            <child name="serviceLineItemNameValueParameters" type="order">
+              <label>Service LineItem NameValue Parameters</label>
+              <maxInstances>999</maxInstances>
+              <orderType>collection</orderType>
+              <childList>
+                <child name="serviceLineItemNameValueParameter" type="order">
+                  <label>Service LineItem NameValue Parameter</label>
+                  <mandatory>true</mandatory>
+                  <orderItem>doc_stcw.nameValueDocument</orderItem>
+                  <orderType>document</orderType>
+                  <xmlMap type="xmap">
+                    <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemNameValueParameters/order_serviceLineItemNameValueParameter</path>
+                    <xmlName>serviceLineItemNameValueParameter</xmlName>
+                  </xmlMap>
+                </child>
+              </childList>
+            </child>
+            <child name="serviceLineItemVASNVParameters" type="order">
+              <label>Service LineItem VAS NV Parameters</label>
+              <maxInstances>999</maxInstances>
+              <orderType>collection</orderType>
+              <childList>
+                <child name="serviceLineItemVASNVParameter" type="order">
+                  <label>Service LineItem VAS NV Parameter</label>
+                  <mandatory>true</mandatory>
+                  <orderItem>doc_stcw.nameValueDocument</orderItem>
+                  <orderType>document</orderType>
+                  <xmlMap type="xmap">
+                    <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemVASNVParameters/order_serviceLineItemVASNVParameter</path>
+                    <xmlName>serviceLineItemVASNVParameter</xmlName>
+                  </xmlMap>
+                </child>
+              </childList>
+            </child>
+            <child name="serviceLineItemBlockParameters" type="order">
+              <label>Service LineItem Block Parameters</label>
+              <maxInstances>999</maxInstances>
+              <orderType>collection</orderType>
+              <childList>
+                <child name="serviceLineItemBlockParameter" type="order">
+                  <label>Service LineItem Block Parameter</label>
+                  <mandatory>true</mandatory>
+                  <orderItem>doc_stcw.blockNameValueDocument</orderItem>
+                  <orderType>document</orderType>
+                  <xmlMap type="xmap">
+                    <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemBlockParameters/order_serviceLineItemBlockParameter</path>
+                    <xmlName>serviceLineItemBlockParameter</xmlName>
+                  </xmlMap>
+                </child>
+              </childList>
+            </child>
+            <child name="subServices" type="order">
+              <label>Sub-Services</label>
+              <maxInstances>999</maxInstances>
+              <orderType>collection</orderType>
+              <childList>
+                <child name="subServiceLineItem" type="order">
+                  <label>SubService LineItem</label>
+                  <mandatory>true</mandatory>
+                  <orderItem>doc_stcw.lineItemDocument</orderItem>
+                  <orderType>document</orderType>
+                  <xmlMap type="xmap">
+                    <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItem</path>
+                    <xmlName>subServiceLineItem</xmlName>
+                  </xmlMap>
+                </child>
+                <child name="subServiceLineItemNameValueParameters" type="order">
+                  <label>SubService LineItem NameValue Parameters</label>
+                  <maxInstances>999</maxInstances>
+                  <orderType>collection</orderType>
+                  <childList>
+                    <child name="subServiceLineItemNameValueParameter" type="order">
+                      <label>SubService LineItem NameValue Parameter</label>
+                      <mandatory>true</mandatory>
+                      <orderItem>doc_stcw.nameValueDocument</orderItem>
+                      <orderType>document</orderType>
+                      <xmlMap type="xmap">
+                        <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemNameValueParameters/order_subServiceLineItemNameValueParameter</path>
+                        <xmlName>subServiceLineItemNameValueParameter</xmlName>
+                      </xmlMap>
+                    </child>
+                  </childList>
+                </child>
+                <child name="subServiceLineItemVASNVParameters" type="order">
+                  <label>SubService LineItem VAS NV Parameters</label>
+                  <maxInstances>999</maxInstances>
+                  <orderType>collection</orderType>
+                  <childList>
+                    <child name="subServiceLineItemVASNVParameter" type="order">
+                      <label>SubService LineItem VAS NameValue Parameter</label>
+                      <mandatory>true</mandatory>
+                      <orderItem>doc_stcw.nameValueDocument</orderItem>
+                      <orderType>document</orderType>
+                      <xmlMap type="xmap">
+                        <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemVASNVParameters/order_subServiceLineItemVASNVParameter</path>
+                        <xmlName>subServiceLineItemVASNVParameter</xmlName>
+                      </xmlMap>
+                    </child>
+                  </childList>
+                </child>
+                <child name="subServiceLineItemBlockParameters" type="order">
+                  <label>SubService LineItem Block Parameters</label>
+                  <maxInstances>999</maxInstances>
+                  <orderType>collection</orderType>
+                  <childList>
+                    <child name="subServiceLineItemBlockParameter" type="order">
+                      <label>SubService LineItem Block Parameter</label>
+                      <mandatory>true</mandatory>
+                      <orderItem>doc_stcw.blockNameValueDocument</orderItem>
+                      <orderType>document</orderType>
+                      <xmlMap type="xmap">
+                        <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemBlockParameters/order_subServiceLineItemBlockParameter</path>
+                        <xmlName>subServiceLineItemBlockParameter</xmlName>
+                      </xmlMap>
+                    </child>
+                  </childList>
+                </child>
+                <child name="subSubServices" type="order">
+                  <label>Sub-SubServices</label>
+                  <maxInstances>999</maxInstances>
+                  <orderType>collection</orderType>
+                  <childList>
+                    <child name="subSubServiceLineItem" type="order">
+                      <label>SubSubService LineItem</label>
+                      <mandatory>true</mandatory>
+                      <orderItem>doc_stcw.lineItemDocument</orderItem>
+                      <orderType>document</orderType>
+                      <xmlMap type="xmap">
+                        <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItem</path>
+                        <xmlName>subSubServiceLineItem</xmlName>
+                      </xmlMap>
+                    </child>
+                    <child name="subSubServiceLineItemNameValueParameters" type="order">
+                      <label>SubSubService LineItem NameValue Parameters</label>
+                      <maxInstances>999</maxInstances>
+                      <orderType>collection</orderType>
+                      <childList>
+                        <child name="subSubServiceLineItemNameValueParameter" type="order">
+                          <label>SubSubService LineItem NameValue Parameter</label>
+                          <mandatory>true</mandatory>
+                          <orderItem>doc_stcw.nameValueDocument</orderItem>
+                          <orderType>document</orderType>
+                          <xmlMap type="xmap">
+                            <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemNameValueParameters/order_subSubServiceLineItemNameValueParameter</path>
+                            <xmlName>subSubServiceLineItemNameValueParameter</xmlName>
+                          </xmlMap>
+                        </child>
+                      </childList>
+                    </child>
+                    <child name="subSubServiceLineItemVASNVParameters" type="order">
+                      <label>SubSubService LineItem VAS NV Parameters</label>
+                      <maxInstances>999</maxInstances>
+                      <orderType>collection</orderType>
+                      <childList>
+                        <child name="subSubServiceLineItemVASNVParameter" type="order">
+                          <label>SubSubService LineItem VAS NameValue Parameter</label>
+                          <mandatory>true</mandatory>
+                          <orderItem>doc_stcw.nameValueDocument</orderItem>
+                          <orderType>document</orderType>
+                          <xmlMap type="xmap">
+                            <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemVASNVParameters/order_subSubServiceLineItemVASNVParameter</path>
+                            <xmlName>subSubServiceLineItemVASNVParameter</xmlName>
+                          </xmlMap>
+                        </child>
+                      </childList>
+                    </child>
+                    <child name="subSubServiceLineItemBlockParameters" type="order">
+                      <label>SubSubService LineItem Block Parameters</label>
+                      <maxInstances>999</maxInstances>
+                      <orderType>collection</orderType>
+                      <childList>
+                        <child name="subSubServiceLineItemBlockParameter" type="order">
+                          <label>SubSubService LineItem Block Parameter</label>
+                          <mandatory>true</mandatory>
+                          <orderItem>doc_stcw.blockNameValueDocument</orderItem>
+                          <orderType>document</orderType>
+                          <xmlMap type="xmap">
+                            <path>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemBlockParameters/order_subSubServiceLineItemBlockParameter</path>
+                            <xmlName>subSubServiceLineItemBlockParameter</xmlName>
+                          </xmlMap>
+                        </child>
+                      </childList>
+                    </child>
+                  </childList>
+                </child>
+              </childList>
+            </child>
+          </childList>
+        </child>
+      </childList>
+    </child>
+  </childList>
+  <UserInterface name="UserInterface" type="tree">
+    <autoExpand>true</autoExpand>
+    <defaultFolderImage>undefined</defaultFolderImage>
+    <defaultLeafImage>undefined</defaultLeafImage>
+    <element>order_stcw.wholesaleBundleOrderSTC</element>
+    <extends>tree_com.conceptwave.system.OrderUserInterface</extends>
+    <label>Wholesale Bundle Order STC</label>
+    <tableDoc>doc_com.conceptwave.system.TreeDocument</tableDoc>
+    <childList>
+      <child name="orderHeader" type="tnOi">
+        <autoExpand>true</autoExpand>
+        <autoSave>true</autoSave>
+        <detailForm>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+        <detailUI>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface</detailUI>
+        <element>doc_stcw.bundleOrderHeaderDocument</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <label>Order Header</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_orderHeader</orderItem>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </child>
+      <child name="orderHeaderParameters" type="tnOi">
+        <autoSave>true</autoSave>
+        <element>order_stcw.wholesaleBundleOrderSTC/order_orderHeaderParameters</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <hideExpandIcon>true</hideExpandIcon>
+        <hideWhenEmpty>true</hideWhenEmpty>
+        <label>Order Header Parameters</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_orderHeaderParameters</orderItem>
+        <showChildrenCount>true</showChildrenCount>
+        <childList>
+          <child name="orderHeaderParametersInstance" type="tnOi">
+            <autoSave>true</autoSave>
+            <collectionInstance>true</collectionInstance>
+            <element>order_stcw.wholesaleBundleOrderSTC/order_orderHeaderParameters</element>
+            <extends>tn_com.conceptwave.system.TreeNode</extends>
+            <hideExpandIcon>true</hideExpandIcon>
+            <hideWhenEmpty>true</hideWhenEmpty>
+            <label>Order Header Parameters</label>
+            <nodeType>4</nodeType>
+            <orderItem>order_stcw.wholesaleBundleOrderSTC/order_orderHeaderParameters</orderItem>
+            <childList>
+              <child name="orderHeaderParameter" type="tnOi">
+                <autoExpand>true</autoExpand>
+                <autoSave>true</autoSave>
+                <detailForm>doc_stcw.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                <detailUI>doc_stcw.nameValueDocument/ui_UserInterface</detailUI>
+                <element>doc_stcw.nameValueDocument</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <label>Order Header Parameter</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_orderHeaderParameters/order_orderHeaderParameter</orderItem>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+            </childList>
+            <vformList>
+              <vform name="Forms" type="frmui">
+                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+              </vform>
+            </vformList>
+          </child>
+        </childList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </child>
+      <child name="parentLineItems" type="tnOi">
+        <autoExpand>true</autoExpand>
+        <autoSave>true</autoSave>
+        <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <hideExpandIcon>true</hideExpandIcon>
+        <hideWhenEmpty>true</hideWhenEmpty>
+        <label>Parent LineItems</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems</orderItem>
+        <showChildrenCount>true</showChildrenCount>
+        <childList>
+          <child name="parentLineItemsInstance" type="tnOi">
+            <autoExpand>true</autoExpand>
+            <autoSave>true</autoSave>
+            <collectionInstance>true</collectionInstance>
+            <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems</element>
+            <extends>tn_com.conceptwave.system.TreeNode</extends>
+            <hideExpandIcon>true</hideExpandIcon>
+            <hideWhenEmpty>true</hideWhenEmpty>
+            <label>Parent LineItems</label>
+            <nodeType>4</nodeType>
+            <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems</orderItem>
+            <childList>
+              <child name="parentLineItem" type="tnOi">
+                <autoExpand>true</autoExpand>
+                <autoSave>true</autoSave>
+                <detailForm>doc_stcw.lineItemDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                <detailUI>doc_stcw.lineItemDocument/ui_UserInterface</detailUI>
+                <element>doc_stcw.lineItemDocument</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <label>Parent LineItem</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItem</orderItem>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+              <child name="parentLineItemNameValueParameters" type="tnOi">
+                <autoSave>true</autoSave>
+                <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemNameValueParameters</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <hideExpandIcon>true</hideExpandIcon>
+                <hideWhenEmpty>true</hideWhenEmpty>
+                <label>Parent LineItem NameValue Parameters</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemNameValueParameters</orderItem>
+                <showChildrenCount>true</showChildrenCount>
+                <childList>
+                  <child name="parentLineItemNameValueParametersInstance" type="tnOi">
+                    <autoSave>true</autoSave>
+                    <collectionInstance>true</collectionInstance>
+                    <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemNameValueParameters</element>
+                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                    <hideExpandIcon>true</hideExpandIcon>
+                    <hideWhenEmpty>true</hideWhenEmpty>
+                    <label>Parent LineItem NameValue Parameters</label>
+                    <nodeType>4</nodeType>
+                    <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemNameValueParameters</orderItem>
+                    <childList>
+                      <child name="parentLineItemNameValueParameter" type="tnOi">
+                        <autoExpand>true</autoExpand>
+                        <autoSave>true</autoSave>
+                        <detailForm>doc_stcw.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                        <detailUI>doc_stcw.nameValueDocument/ui_UserInterface</detailUI>
+                        <element>doc_stcw.nameValueDocument</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <label>Parent LineItem NameValue Parameter</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemNameValueParameters/order_parentLineItemNameValueParameter</orderItem>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                    </childList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </child>
+                </childList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+              <child name="parentLineItemVASNVParameters" type="tnOi">
+                <autoSave>true</autoSave>
+                <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemVASNVParameters</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <hideExpandIcon>true</hideExpandIcon>
+                <hideWhenEmpty>true</hideWhenEmpty>
+                <label>Parent LineItem VAS NV Parameters</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemVASNVParameters</orderItem>
+                <showChildrenCount>true</showChildrenCount>
+                <childList>
+                  <child name="parentLineItemVASNVParametersInstance" type="tnOi">
+                    <autoSave>true</autoSave>
+                    <collectionInstance>true</collectionInstance>
+                    <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemVASNVParameters</element>
+                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                    <hideExpandIcon>true</hideExpandIcon>
+                    <hideWhenEmpty>true</hideWhenEmpty>
+                    <label>Parent LineItem VAS NV Parameters</label>
+                    <nodeType>4</nodeType>
+                    <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemVASNVParameters</orderItem>
+                    <childList>
+                      <child name="parentLineItemVASNVParameter" type="tnOi">
+                        <autoExpand>true</autoExpand>
+                        <autoSave>true</autoSave>
+                        <detailForm>doc_stcw.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                        <detailUI>doc_stcw.nameValueDocument/ui_UserInterface</detailUI>
+                        <element>doc_stcw.nameValueDocument</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <label>Parent LineItem VAS NV Parameter</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemVASNVParameters/order_parentLineItemVASNVParameter</orderItem>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                    </childList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </child>
+                </childList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+              <child name="parentLineItemBlockParameters" type="tnOi">
+                <autoSave>true</autoSave>
+                <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemBlockParameters</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <hideExpandIcon>true</hideExpandIcon>
+                <hideWhenEmpty>true</hideWhenEmpty>
+                <label>Parent LineItem Block Parameters</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemBlockParameters</orderItem>
+                <showChildrenCount>true</showChildrenCount>
+                <childList>
+                  <child name="parentLineItemBlockParametersInstance" type="tnOi">
+                    <autoSave>true</autoSave>
+                    <collectionInstance>true</collectionInstance>
+                    <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemBlockParameters</element>
+                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                    <hideExpandIcon>true</hideExpandIcon>
+                    <hideWhenEmpty>true</hideWhenEmpty>
+                    <label>Parent LineItem Block Parameters</label>
+                    <nodeType>4</nodeType>
+                    <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemBlockParameters</orderItem>
+                    <showChildrenCount>true</showChildrenCount>
+                    <childList>
+                      <child name="parentLineItemBlockParameter" type="tnOi">
+                        <autoExpand>true</autoExpand>
+                        <autoSave>true</autoSave>
+                        <detailForm>doc_stcw.blockNameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                        <detailUI>doc_stcw.blockNameValueDocument/ui_UserInterface</detailUI>
+                        <element>doc_stcw.blockNameValueDocument</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <label>ParentLineItem BlockParameter</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_parentLineItemBlockParameters/order_parentLineItemBlockParameter</orderItem>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                    </childList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </child>
+                </childList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+              <child name="services" type="tnOi">
+                <autoExpand>true</autoExpand>
+                <autoSave>true</autoSave>
+                <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <hideExpandIcon>true</hideExpandIcon>
+                <hideWhenEmpty>true</hideWhenEmpty>
+                <label>Services</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services</orderItem>
+                <showChildrenCount>true</showChildrenCount>
+                <childList>
+                  <child name="servicesInstance" type="tnOi">
+                    <autoExpand>true</autoExpand>
+                    <autoSave>true</autoSave>
+                    <collectionInstance>true</collectionInstance>
+                    <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services</element>
+                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                    <hideExpandIcon>true</hideExpandIcon>
+                    <hideWhenEmpty>true</hideWhenEmpty>
+                    <label>Services</label>
+                    <nodeType>4</nodeType>
+                    <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services</orderItem>
+                    <childList>
+                      <child name="serviceLineItem" type="tnOi">
+                        <autoExpand>true</autoExpand>
+                        <autoSave>true</autoSave>
+                        <detailForm>doc_stcw.lineItemDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                        <detailUI>doc_stcw.lineItemDocument/ui_UserInterface</detailUI>
+                        <element>doc_stcw.lineItemDocument</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <label>Service LineItem</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItem</orderItem>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                      <child name="serviceLineItemNameValueParameters" type="tnOi">
+                        <autoSave>true</autoSave>
+                        <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemNameValueParameters</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <hideExpandIcon>true</hideExpandIcon>
+                        <hideWhenEmpty>true</hideWhenEmpty>
+                        <label>Service LineItem NameValue Parameters</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemNameValueParameters</orderItem>
+                        <showChildrenCount>true</showChildrenCount>
+                        <childList>
+                          <child name="serviceLineItemNameValueParametersInstance" type="tnOi">
+                            <autoSave>true</autoSave>
+                            <collectionInstance>true</collectionInstance>
+                            <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemNameValueParameters</element>
+                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                            <hideExpandIcon>true</hideExpandIcon>
+                            <hideWhenEmpty>true</hideWhenEmpty>
+                            <label>Service LineItem NameValue Parameters</label>
+                            <nodeType>4</nodeType>
+                            <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemNameValueParameters</orderItem>
+                            <childList>
+                              <child name="serviceLineItemNameValueParameter" type="tnOi">
+                                <autoExpand>true</autoExpand>
+                                <autoSave>true</autoSave>
+                                <detailForm>doc_stcw.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                <detailUI>doc_stcw.nameValueDocument/ui_UserInterface</detailUI>
+                                <element>doc_stcw.nameValueDocument</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <label>Service LineItem NameValue Parameter</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemNameValueParameters/order_serviceLineItemNameValueParameter</orderItem>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                            </childList>
+                            <vformList>
+                              <vform name="Forms" type="frmui">
+                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                              </vform>
+                            </vformList>
+                          </child>
+                        </childList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                      <child name="serviceLineItemVASNVParameters" type="tnOi">
+                        <autoSave>true</autoSave>
+                        <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemVASNVParameters</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <hideExpandIcon>true</hideExpandIcon>
+                        <hideWhenEmpty>true</hideWhenEmpty>
+                        <label>Service LineItem VAS NV Parameters</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemVASNVParameters</orderItem>
+                        <showChildrenCount>true</showChildrenCount>
+                        <childList>
+                          <child name="serviceLineItemVASNVParametersInstance" type="tnOi">
+                            <autoSave>true</autoSave>
+                            <collectionInstance>true</collectionInstance>
+                            <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemVASNVParameters</element>
+                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                            <hideExpandIcon>true</hideExpandIcon>
+                            <hideWhenEmpty>true</hideWhenEmpty>
+                            <label>Service LineItem VAS NV Parameters</label>
+                            <nodeType>4</nodeType>
+                            <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemVASNVParameters</orderItem>
+                            <childList>
+                              <child name="serviceLineItemVASNVParameter" type="tnOi">
+                                <autoExpand>true</autoExpand>
+                                <autoSave>true</autoSave>
+                                <detailForm>doc_stcw.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                <detailUI>doc_stcw.nameValueDocument/ui_UserInterface</detailUI>
+                                <element>doc_stcw.nameValueDocument</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <label>Service LineItem VAS NV Parameter</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemVASNVParameters/order_serviceLineItemVASNVParameter</orderItem>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                            </childList>
+                            <vformList>
+                              <vform name="Forms" type="frmui">
+                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                              </vform>
+                            </vformList>
+                          </child>
+                        </childList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                      <child name="serviceLineItemBlockParameters" type="tnOi">
+                        <autoSave>true</autoSave>
+                        <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemBlockParameters</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <hideExpandIcon>true</hideExpandIcon>
+                        <hideWhenEmpty>true</hideWhenEmpty>
+                        <label>Service LineItem Block Parameters</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemBlockParameters</orderItem>
+                        <showChildrenCount>true</showChildrenCount>
+                        <childList>
+                          <child name="serviceLineItemBlockParametersInstance" type="tnOi">
+                            <autoSave>true</autoSave>
+                            <collectionInstance>true</collectionInstance>
+                            <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemBlockParameters</element>
+                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                            <hideExpandIcon>true</hideExpandIcon>
+                            <hideWhenEmpty>true</hideWhenEmpty>
+                            <label>Service LineItem Block Parameters</label>
+                            <nodeType>4</nodeType>
+                            <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemBlockParameters</orderItem>
+                            <showChildrenCount>true</showChildrenCount>
+                            <childList>
+                              <child name="serviceLineItemBlockParameter" type="tnOi">
+                                <autoExpand>true</autoExpand>
+                                <autoSave>true</autoSave>
+                                <detailForm>doc_stcw.blockNameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                <detailUI>doc_stcw.blockNameValueDocument/ui_UserInterface</detailUI>
+                                <element>doc_stcw.blockNameValueDocument</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <label>Service LineItem Block Parameter</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_serviceLineItemBlockParameters/order_serviceLineItemBlockParameter</orderItem>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                            </childList>
+                            <vformList>
+                              <vform name="Forms" type="frmui">
+                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                              </vform>
+                            </vformList>
+                          </child>
+                        </childList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                      <child name="subServices" type="tnOi">
+                        <autoExpand>true</autoExpand>
+                        <autoSave>true</autoSave>
+                        <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <hideExpandIcon>true</hideExpandIcon>
+                        <hideWhenEmpty>true</hideWhenEmpty>
+                        <label>Sub-Services</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices</orderItem>
+                        <showChildrenCount>true</showChildrenCount>
+                        <childList>
+                          <child name="subServicesInstance" type="tnOi">
+                            <autoExpand>true</autoExpand>
+                            <autoSave>true</autoSave>
+                            <collectionInstance>true</collectionInstance>
+                            <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices</element>
+                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                            <hideExpandIcon>true</hideExpandIcon>
+                            <hideWhenEmpty>true</hideWhenEmpty>
+                            <label>Sub-Services</label>
+                            <nodeType>4</nodeType>
+                            <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices</orderItem>
+                            <childList>
+                              <child name="subServiceLineItem" type="tnOi">
+                                <autoExpand>true</autoExpand>
+                                <autoSave>true</autoSave>
+                                <detailForm>doc_stcw.lineItemDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                <detailUI>doc_stcw.lineItemDocument/ui_UserInterface</detailUI>
+                                <element>doc_stcw.lineItemDocument</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <label>SubService LineItem</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItem</orderItem>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                              <child name="subServiceLineItemNameValueParameters" type="tnOi">
+                                <autoSave>true</autoSave>
+                                <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemNameValueParameters</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <hideExpandIcon>true</hideExpandIcon>
+                                <hideWhenEmpty>true</hideWhenEmpty>
+                                <label>SubService LineItem NameValue Parameters</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemNameValueParameters</orderItem>
+                                <showChildrenCount>true</showChildrenCount>
+                                <childList>
+                                  <child name="subServiceLineItemNameValueParametersInstance" type="tnOi">
+                                    <autoSave>true</autoSave>
+                                    <collectionInstance>true</collectionInstance>
+                                    <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemNameValueParameters</element>
+                                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                    <hideExpandIcon>true</hideExpandIcon>
+                                    <hideWhenEmpty>true</hideWhenEmpty>
+                                    <label>SubService LineItem NameValue Parameters</label>
+                                    <nodeType>4</nodeType>
+                                    <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemNameValueParameters</orderItem>
+                                    <childList>
+                                      <child name="subServiceLineItemNameValueParameter" type="tnOi">
+                                        <autoExpand>true</autoExpand>
+                                        <autoSave>true</autoSave>
+                                        <detailForm>doc_stcw.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                        <detailUI>doc_stcw.nameValueDocument/ui_UserInterface</detailUI>
+                                        <element>doc_stcw.nameValueDocument</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <label>SubService LineItem NameValue Parameter</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemNameValueParameters/order_subServiceLineItemNameValueParameter</orderItem>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                    </childList>
+                                    <vformList>
+                                      <vform name="Forms" type="frmui">
+                                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                      </vform>
+                                    </vformList>
+                                  </child>
+                                </childList>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                              <child name="subServiceLineItemVASNVParameters" type="tnOi">
+                                <autoSave>true</autoSave>
+                                <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemVASNVParameters</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <hideExpandIcon>true</hideExpandIcon>
+                                <hideWhenEmpty>true</hideWhenEmpty>
+                                <label>SubService LineItem VAS NV Parameters</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemVASNVParameters</orderItem>
+                                <showChildrenCount>true</showChildrenCount>
+                                <childList>
+                                  <child name="subServiceLineItemVASNVParametersInstance" type="tnOi">
+                                    <autoSave>true</autoSave>
+                                    <collectionInstance>true</collectionInstance>
+                                    <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemVASNVParameters</element>
+                                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                    <hideExpandIcon>true</hideExpandIcon>
+                                    <hideWhenEmpty>true</hideWhenEmpty>
+                                    <label>SubService LineItem VAS NV Parameters</label>
+                                    <nodeType>4</nodeType>
+                                    <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemVASNVParameters</orderItem>
+                                    <childList>
+                                      <child name="subServiceLineItemVASNVParameter" type="tnOi">
+                                        <autoExpand>true</autoExpand>
+                                        <autoSave>true</autoSave>
+                                        <detailForm>doc_stcw.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                        <detailUI>doc_stcw.nameValueDocument/ui_UserInterface</detailUI>
+                                        <element>doc_stcw.nameValueDocument</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <label>SubService LineItem VAS NameValue Parameter</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemVASNVParameters/order_subServiceLineItemVASNVParameter</orderItem>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                    </childList>
+                                    <vformList>
+                                      <vform name="Forms" type="frmui">
+                                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                      </vform>
+                                    </vformList>
+                                  </child>
+                                </childList>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                              <child name="subServiceLineItemBlockParameters" type="tnOi">
+                                <autoSave>true</autoSave>
+                                <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemBlockParameters</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <hideExpandIcon>true</hideExpandIcon>
+                                <hideWhenEmpty>true</hideWhenEmpty>
+                                <label>SubService LineItem Block Parameters</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemBlockParameters</orderItem>
+                                <showChildrenCount>true</showChildrenCount>
+                                <childList>
+                                  <child name="subServiceLineItemBlockParametersInstance" type="tnOi">
+                                    <autoSave>true</autoSave>
+                                    <collectionInstance>true</collectionInstance>
+                                    <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemBlockParameters</element>
+                                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                    <hideExpandIcon>true</hideExpandIcon>
+                                    <hideWhenEmpty>true</hideWhenEmpty>
+                                    <label>SubService LineItem Block Parameters</label>
+                                    <nodeType>4</nodeType>
+                                    <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemBlockParameters</orderItem>
+                                    <showChildrenCount>true</showChildrenCount>
+                                    <childList>
+                                      <child name="subServiceLineItemBlockParameter" type="tnOi">
+                                        <autoExpand>true</autoExpand>
+                                        <autoSave>true</autoSave>
+                                        <detailForm>doc_stcw.blockNameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                        <detailUI>doc_stcw.blockNameValueDocument/ui_UserInterface</detailUI>
+                                        <element>doc_stcw.blockNameValueDocument</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <label>SubService LineItem Block Parameter</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subServiceLineItemBlockParameters/order_subServiceLineItemBlockParameter</orderItem>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                    </childList>
+                                    <vformList>
+                                      <vform name="Forms" type="frmui">
+                                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                      </vform>
+                                    </vformList>
+                                  </child>
+                                </childList>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                              <child name="subSubServices" type="tnOi">
+                                <autoExpand>true</autoExpand>
+                                <autoSave>true</autoSave>
+                                <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices</element>
+                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                <hideExpandIcon>true</hideExpandIcon>
+                                <hideWhenEmpty>true</hideWhenEmpty>
+                                <label>Sub-SubServices</label>
+                                <nodeType>4</nodeType>
+                                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices</orderItem>
+                                <showChildrenCount>true</showChildrenCount>
+                                <childList>
+                                  <child name="subSubServicesInstance" type="tnOi">
+                                    <autoExpand>true</autoExpand>
+                                    <autoSave>true</autoSave>
+                                    <collectionInstance>true</collectionInstance>
+                                    <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices</element>
+                                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                    <hideExpandIcon>true</hideExpandIcon>
+                                    <hideWhenEmpty>true</hideWhenEmpty>
+                                    <label>Sub-SubServices</label>
+                                    <nodeType>4</nodeType>
+                                    <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices</orderItem>
+                                    <childList>
+                                      <child name="subSubServiceLineItem" type="tnOi">
+                                        <autoExpand>true</autoExpand>
+                                        <autoSave>true</autoSave>
+                                        <detailForm>doc_stcw.lineItemDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                        <detailUI>doc_stcw.lineItemDocument/ui_UserInterface</detailUI>
+                                        <element>doc_stcw.lineItemDocument</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <label>SubSubService LineItem</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItem</orderItem>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                      <child name="subSubServiceLineItemNameValueParameters" type="tnOi">
+                                        <autoSave>true</autoSave>
+                                        <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemNameValueParameters</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <hideExpandIcon>true</hideExpandIcon>
+                                        <hideWhenEmpty>true</hideWhenEmpty>
+                                        <label>SubSubService LineItem NameValue Parameters</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemNameValueParameters</orderItem>
+                                        <showChildrenCount>true</showChildrenCount>
+                                        <childList>
+                                          <child name="subSubServiceLineItemNameValueParametersInstance" type="tnOi">
+                                            <autoSave>true</autoSave>
+                                            <collectionInstance>true</collectionInstance>
+                                            <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemNameValueParameters</element>
+                                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                            <hideExpandIcon>true</hideExpandIcon>
+                                            <hideWhenEmpty>true</hideWhenEmpty>
+                                            <label>SubSubService LineItem NameValue Parameters</label>
+                                            <nodeType>4</nodeType>
+                                            <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemNameValueParameters</orderItem>
+                                            <childList>
+                                              <child name="subSubServiceLineItemNameValueParameter" type="tnOi">
+                                                <autoExpand>true</autoExpand>
+                                                <autoSave>true</autoSave>
+                                                <detailForm>doc_stcw.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                                <detailUI>doc_stcw.nameValueDocument/ui_UserInterface</detailUI>
+                                                <element>doc_stcw.nameValueDocument</element>
+                                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                                <label>SubSubService LineItem NameValue Parameter</label>
+                                                <nodeType>4</nodeType>
+                                                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemNameValueParameters/order_subSubServiceLineItemNameValueParameter</orderItem>
+                                                <vformList>
+                                                  <vform name="Forms" type="frmui">
+                                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                                  </vform>
+                                                </vformList>
+                                              </child>
+                                            </childList>
+                                            <vformList>
+                                              <vform name="Forms" type="frmui">
+                                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                              </vform>
+                                            </vformList>
+                                          </child>
+                                        </childList>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                      <child name="subSubServiceLineItemVASNVParameters" type="tnOi">
+                                        <autoSave>true</autoSave>
+                                        <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemVASNVParameters</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <hideExpandIcon>true</hideExpandIcon>
+                                        <hideWhenEmpty>true</hideWhenEmpty>
+                                        <label>SubSubService LineItem VAS NV Parameters</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemVASNVParameters</orderItem>
+                                        <showChildrenCount>true</showChildrenCount>
+                                        <childList>
+                                          <child name="subSubServiceLineItemVASNVParametersInstance" type="tnOi">
+                                            <autoSave>true</autoSave>
+                                            <collectionInstance>true</collectionInstance>
+                                            <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemVASNVParameters</element>
+                                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                            <hideExpandIcon>true</hideExpandIcon>
+                                            <hideWhenEmpty>true</hideWhenEmpty>
+                                            <label>SubSubService LineItem VAS NV Parameters</label>
+                                            <nodeType>4</nodeType>
+                                            <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemVASNVParameters</orderItem>
+                                            <childList>
+                                              <child name="subSubServiceLineItemVASNVParameter" type="tnOi">
+                                                <autoExpand>true</autoExpand>
+                                                <autoSave>true</autoSave>
+                                                <detailForm>doc_stcw.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                                <detailUI>doc_stcw.nameValueDocument/ui_UserInterface</detailUI>
+                                                <element>doc_stcw.nameValueDocument</element>
+                                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                                <label>SubSubService LineItem VAS NameValue Parameter</label>
+                                                <nodeType>4</nodeType>
+                                                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemVASNVParameters/order_subSubServiceLineItemVASNVParameter</orderItem>
+                                                <vformList>
+                                                  <vform name="Forms" type="frmui">
+                                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                                  </vform>
+                                                </vformList>
+                                              </child>
+                                            </childList>
+                                            <vformList>
+                                              <vform name="Forms" type="frmui">
+                                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                              </vform>
+                                            </vformList>
+                                          </child>
+                                        </childList>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                      <child name="subSubServiceLineItemBlockParameters" type="tnOi">
+                                        <autoSave>true</autoSave>
+                                        <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemBlockParameters</element>
+                                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                        <hideExpandIcon>true</hideExpandIcon>
+                                        <hideWhenEmpty>true</hideWhenEmpty>
+                                        <label>SubSubService LineItem Block Parameters</label>
+                                        <nodeType>4</nodeType>
+                                        <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemBlockParameters</orderItem>
+                                        <showChildrenCount>true</showChildrenCount>
+                                        <childList>
+                                          <child name="subSubServiceLineItemBlockParametersInstance" type="tnOi">
+                                            <autoSave>true</autoSave>
+                                            <collectionInstance>true</collectionInstance>
+                                            <element>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemBlockParameters</element>
+                                            <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                            <hideExpandIcon>true</hideExpandIcon>
+                                            <hideWhenEmpty>true</hideWhenEmpty>
+                                            <label>SubSubService LineItem Block Parameters</label>
+                                            <nodeType>4</nodeType>
+                                            <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemBlockParameters</orderItem>
+                                            <showChildrenCount>true</showChildrenCount>
+                                            <childList>
+                                              <child name="subSubServiceLineItemBlockParameter" type="tnOi">
+                                                <autoExpand>true</autoExpand>
+                                                <autoSave>true</autoSave>
+                                                <detailForm>doc_stcw.blockNameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                                                <detailUI>doc_stcw.blockNameValueDocument/ui_UserInterface</detailUI>
+                                                <element>doc_stcw.blockNameValueDocument</element>
+                                                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                                                <label>SubSubService LineItem Block Parameter</label>
+                                                <nodeType>4</nodeType>
+                                                <orderItem>order_stcw.wholesaleBundleOrderSTC/order_parentLineItems/order_services/order_subServices/order_subSubServices/order_subSubServiceLineItemBlockParameters/order_subSubServiceLineItemBlockParameter</orderItem>
+                                                <vformList>
+                                                  <vform name="Forms" type="frmui">
+                                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                                  </vform>
+                                                </vformList>
+                                              </child>
+                                            </childList>
+                                            <vformList>
+                                              <vform name="Forms" type="frmui">
+                                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                              </vform>
+                                            </vformList>
+                                          </child>
+                                        </childList>
+                                        <vformList>
+                                          <vform name="Forms" type="frmui">
+                                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                          </vform>
+                                        </vformList>
+                                      </child>
+                                    </childList>
+                                    <vformList>
+                                      <vform name="Forms" type="frmui">
+                                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                      </vform>
+                                    </vformList>
+                                  </child>
+                                </childList>
+                                <vformList>
+                                  <vform name="Forms" type="frmui">
+                                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                                  </vform>
+                                </vformList>
+                              </child>
+                            </childList>
+                            <vformList>
+                              <vform name="Forms" type="frmui">
+                                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                              </vform>
+                            </vformList>
+                          </child>
+                        </childList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                      </child>
+                    </childList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </child>
+                </childList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+            </childList>
+            <vformList>
+              <vform name="Forms" type="frmui">
+                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+              </vform>
+            </vformList>
+          </child>
+        </childList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </child>
+    </childList>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>order_stcw.wholesaleBundleOrderSTC</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Menu" type="exov">
+            <base>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfAttach" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</order>

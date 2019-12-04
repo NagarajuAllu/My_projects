@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="5d80235156006323dc343349d2497602" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcc.sendMailForApplicationError">
+  <guid>{0dddbeaf-4e34-98cc-0734-0172f5f9b9f4}</guid>
+  <label>Send Mail For Application Error</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_cwf_pm.PROCESS_ID</type>
+    </parameter>
+    <parameter name="elementType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debugHeader = " Send E-Mail alert for Application Error - ";
+
+    debugPrintln(stcc.getSysdateForLog() + debugHeader + "Check to Send E-Mail");
+
+          var receiversForInterfaceError = Global.getConfigVariable("RECEIVERS_FOR_APPLICATION_ERROR");
+
+          if(stcc.stringHasValue(receiversForInterfaceError)) {
+
+    debugPrintln(stcc.getSysdateForLog() + debugHeader + "Sending E-Mail");
+
+                var from     = Global.getConfigVariable("SENDER_FOR_APPLICATION_ERROR"); // mail address sender
+                var subject  = Global.translateText("SUBJECT_FOR_APPLICATION_ERROR", null, [processId, elementType]);  //"Application Error for Process " + processId + " for " + elementType
+                var message  = Global.translateText("MESSAGE_FOR_APPLICATION_ERROR");
+                var host     = Global.getConfigVariable("MAIL_SERVER"); // mail address sender
+                var mimeType = "text/plain"; // mail plain text
+                var user     = null;
+                if(stcc.stringHasValue(Global.getConfigVariable("USER_ID_SENDER_FOR_APPLICATION_ERROR"))) {
+                      user     = Global.getConfigVariable("USER_ID_SENDER_FOR_APPLICATION_ERROR"); // sending user id into mail server
+                }
+
+                var password = null;
+                if(stcc.stringHasValue(Global.getConfigPassword("PASSWORD_SENDER_FOR_APPLICATION_ERROR"))) {
+                      password = Global.getConfigPassword("PASSWORD_SENDER_FOR_APPLICATION_ERROR"); // sending user password into mail server
+                }
+
+                var port     = null;
+                if(stcc.stringHasValue(Global.getConfigVariable("PORT_MAIL_SERVER"))) {
+                      port     = Global.getConfigVariable("PORT_MAIL_SERVER"); // sending user password into mail server
+                }
+
+                var secure   = null;
+                if(stcc.stringHasValue(Global.getConfigVariable("SECURE_MAIL_SERVER"))) {
+                      secure   = (Global.getConfigVariable("SECURE_MAIL_SERVER") == "YES"); // mail server requires SSL
+                }
+
+                try {
+    debugPrintln(stcc.getSysdateForLog() + debugHeader + "Sending to " + receiversForInterfaceError);
+                      Global.sendEmail(from, receiversForInterfaceError, subject, message, host, mimeType, user, password, port, secure);
+    debugPrintln(stcc.getSysdateForLog() + debugHeader + "Sent!");
+                }
+                catch(exc) {
+                      Global.logDebug("Error in sending E-Mail for Interface Error - msg = " + exc.message);
+    debugPrintln(stcc.getSysdateForLog() + debugHeader + "Error in sending E-Mail for Interface Error - msg = " + exc.message);
+                }
+          }
+  ]]></script>
+</script>

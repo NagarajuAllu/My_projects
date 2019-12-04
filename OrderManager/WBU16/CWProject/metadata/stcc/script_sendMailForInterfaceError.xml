@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcc.sendMailForInterfaceError">
+  <label>Send Mail For Interface Error</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_cwf_pm.PROCESS_ID</type>
+    </parameter>
+    <parameter name="elementType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    stcc.sendMailForError(Global.translateText("MESSAGE_FOR_INTERFACE_ERROR"), Global.getConfigVariable("RECEIVERS_FOR_INTERFACE_ERROR"));
+  ]]></script>
+</script>

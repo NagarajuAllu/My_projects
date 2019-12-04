@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure name="wsws.quotableService">
+  <container>true</container>
+  <extends>dstruct_wsws.service</extends>
+  <label>quotableService</label>
+  <metaVersion>3</metaVersion>
+  <childList>
+    <child name="action" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>action</label>
+    </child>
+    <child name="feasibilityStatus" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_wsws.feasibilityStatus</element>
+      <label>feasibilityStatus</label>
+    </child>
+    <child name="orderRowItemId" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.Integer</element>
+      <label>orderRowItemId</label>
+      <mandatory>true</mandatory>
+      <xmlMap type="xmap">
+        <xmlName>orderRowItemId</xmlName>
+      </xmlMap>
+    </child>
+    <child name="quantity" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>quantity</label>
+    </child>
+    <child name="reservationDays" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <label>reservationDays</label>
+    </child>
+    <child name="restoration" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_wsws.restoration</element>
+      <label>restoration</label>
+      <xmlMap type="xmap">
+        <xmlName>restoration</xmlName>
+      </xmlMap>
+    </child>
+    <child name="serviceStatus" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_wsws.serviceStatus</element>
+      <label>serviceStatus</label>
+      <mandatory>true</mandatory>
+      <xmlMap type="xmap">
+        <xmlName>serviceStatus</xmlName>
+      </xmlMap>
+    </child>
+  </childList>
+</dataStructure>

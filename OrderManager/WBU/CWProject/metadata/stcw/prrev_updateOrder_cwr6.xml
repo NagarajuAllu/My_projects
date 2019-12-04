@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="faba8cd38d6c4a18929c6a8c34f0ae39" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.updateOrder_cwr6">
+  <activity name="start" type="seqActivity">
+    <guid>{035ee992-a035-4d75-e065-3535f4f0fa7f}</guid>
+    <label>Start</label>
+    <x>30.347656</x>
+    <y>31.0</y>
+    <childList>
+      <child name="receiveUpdateOrder" type="subflowActivity">
+        <element>proc_stcw.receiveUpdateOrder</element>
+        <guid>{048e629e-3994-5b55-4d16-f8a5c383e162}</guid>
+        <label>Receive Update Order</label>
+        <x>139.6709</x>
+        <y>14.0</y>
+      </child>
+      <child name="updateOrderInGranite" type="subflowActivity">
+        <element>proc_stcw.updateOrderInGranite</element>
+        <guid>{09882bb5-8290-a503-d76b-73c44c5c715a}</guid>
+        <label>Update Order In Granite</label>
+        <x>261.33984</x>
+        <y>14.103516</y>
+      </child>
+      <child name="terminateOldProcesses" type="scriptActivity">
+        <guid>{06ff260f-eaaf-cea5-4454-6ab7763b5c64}</guid>
+        <label>Terminate Old Processes</label>
+        <x>367.34766</x>
+        <y>14.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{09837599-a61c-b1dd-f231-e0a2f4b0443f}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              if(this.process.processDocument.ackResult == "SUCCESS") {
+                    var updateOrder = this.process.processOrder;
+
+                    var processCount = stcc.terminateAllProcesses (this.process.processOrder.header.cwOrderId, null, this.process.id);
+
+                    debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - UpdateOrder - terminated " + processCount + " processes");
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="forwardOrderAckToCrm" type="subflowActivity">
+        <element>proc_stcw.forwardOrderAckToCrm</element>
+        <guid>{04388f60-c002-8a7a-1272-31a286196fac}</guid>
+        <label>Forward Order Ack To CRM</label>
+        <x>470.34766</x>
+        <y>14.0</y>
+      </child>
+      <child name="hasAckSuccess" type="switchActivity">
+        <guid>{0150416a-b0d7-a37d-e8e6-82060f09b0dc}</guid>
+        <label>Has Ack Success?</label>
+        <x>586.34766</x>
+        <y>22.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <guid>{0b94edc8-7455-0b1b-660d-9709a2608650}</guid>
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <guid>{0f65eb8b-2389-e73d-5fdd-378e4b2da1bf}</guid>
+                <label>Start</label>
+                <x>590.34766</x>
+                <y>150.0</y>
+                <childList>
+                  <child name="handleGraniteStatusUpdates" type="subflowActivity">
+                    <element>proc_stcw.handleGraniteOrderStatusUpdates</element>
+                    <guid>{0238470f-ced6-a61b-8a3e-c31f0f413f31}</guid>
+                    <label>Handle Granite Status Updates</label>
+                    <x>590.0</x>
+                    <y>248.20703</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{07b2595a-7dac-aad4-fd10-fd32b486a516}</guid>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.ackResult == "SUCCESS");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{091cf3df-8e62-b32c-e9b4-f6e3ccea6a68}</guid>
+            <label>No</label>
+            <x>676.34766</x>
+            <y>26.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <guid>{05f20b9d-125f-3da2-dbbf-5ae99d817c6e}</guid>
+                <label>Start</label>
+                <x>763.34766</x>
+                <y>23.0</y>
+                <childList>
+                  <child name="manageRejectedUpdateOrder" type="scriptActivity">
+                    <guid>{0b59e932-dff4-f251-369f-92c57a189dcc}</guid>
+                    <label>Manage Rejected Update Order</label>
+                    <x>761.34766</x>
+                    <y>123.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{0e2ec29b-e81e-d801-baf6-000041d87ebd}</guid>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var debugHeader = "[" + this.process.id + "] - UpdateOrder - ";
+                          debugPrintln(stcc.getSysdateForLog() + debugHeader + "Start UpdateOrder ... removing last version...");
+
+                          stcw.createRejectedOrder(this.process.processOrder.header.orderNumber,
+                                                               "Granite",
+                                                               this.process.processDocument.errorText);
+
+                          var updateOrder = this.process.processOrder;
+                          stcw.deleteLastVersionFolder(updateOrder);
+                          updateOrder.save();
+
+                          debugPrintln(stcc.getSysdateForLog() + debugHeader + "UpdateOrder Archived...");
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="closeOrder" type="scriptActivity">
+        <guid>{0ca2cb5b-842e-7bea-3f04-b3dc1550ecfe}</guid>
+        <label>Close Order</label>
+        <x>769.34766</x>
+        <y>270.01172</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{01f9b403-15a6-d509-e10d-6639d81610b4}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - SubmitOrder - Setting Complete Date");
+
+              var order = this.process.processOrder;
+              order.header.completedDate = new Date();
+              order.save();
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0e35ee19-d7ea-388b-c687-befd6256eef1}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{05fd900f-4008-1713-29a8-412a5df0c708}</guid>
+        <label>End</label>
+        <x>913.34766</x>
+        <y>276.41406</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{092d5f7b-8080-82db-202b-9143a7f3d31b}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.updateHistoryEvent (this);
+
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - UpdateOrder - COMPLETED!!!");
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0e438ccf-fd40-964b-0714-9ab9768a69c8}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0d16c4ed-357c-d28e-ef6e-96d7c6af73cd}</guid>
+        <system>true</system>
+        <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - UpdateOrder - Start ...");]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_stcw.orderProcess</document>
+  <label>Update Order</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_stcw.updateOrder</process>
+  <revision>6</revision>
+  <type>User</type>
+</process__revision>

@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<project name="graniteWSForEOC" default="all">
+
+   <property name="src.dir" value="src"/>
+   <property name="config.dir" value="config"/>
+   <property name="build.dir" value="build"/>
+   <property name="deployment.dir" value="deployment"/>
+
+   <!-- property name="lib.asi.dir" value="lib/asi81"/ -->
+   <property name="lib.asi.dir" value="lib/asi"/>
+   <property name="lib.log4j.dir" value="lib/log4j"/>
+   <property name="lib.wl.dir" value="lib/wl"/>
+   <property name="lib.wlServer.dir" value="lib/wlServer"/>
+
+   <property name="compile.debug" value="true"/>
+   <property name="compile.deprecation" value="false"/>
+   <property name="compile.optimize" value="true"/>
+
+   <property name="deployment.env" value="PT"/>
+
+   <property name="library.name" value="${ant.project.name}"/>
+
+   <loadfile property="project.version" srcFile="version.txt"/>
+
+   <taskdef name="jwsc" classname="weblogic.wsee.tools.anttasks.JwscTask"/>
+
+   <path id="project.classpath">
+      <pathelement location="${build.dir}"/>
+      <pathelement location="${config.dir}"/>
+      <fileset dir="${lib.asi.dir}">
+         <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${lib.log4j.dir}">
+         <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${lib.wl.dir}">
+         <include name="*.jar"/>
+      </fileset>
+   </path>
+   <property name="project.classpath" refid="project.classpath"/>
+
+   <target name="init" description="Create classes dir">
+      <mkdir dir="${deployment.dir}"/>
+      <mkdir dir="${deployment.dir}/${deployment.env}"/>
+      <mkdir dir="${build.dir}"/>
+   </target>
+
+   <target name="buildWebService" description="Parse the JWS file" depends="clean, init">
+      <copy file="${config.dir}/graniteWSForEOC.properties - For ${deployment.env}" tofile="${config.dir}/graniteWSForEOC.properties"/>
+      <jwsc srcdir="${src.dir}" destdir="${build.dir}" verbose="on"
+            debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+         <classpath refid="project.classpath"/>
+         <jws file="com/ericsson/stc/granitews4eoc/webService/GraniteServiceForEOCImpl.java"
+              name="${library.name}"
+              generateWsdl="true"
+              type="JAXWS">
+            <zipfileset dir="${lib.asi.dir}" prefix="WEB-INF/lib" >
+               <include name="*.jar" />
+            </zipfileset>
+            <zipfileset dir="${lib.log4j.dir}" prefix="WEB-INF/lib" >
+               <include name="*.jar"/>
+            </zipfileset>
+            <zipfileset dir="${config.dir}" prefix="WEB-INF/classes" >
+               <include name="*.properties"/>
+            </zipfileset>
+         </jws>
+      </jwsc>
+   </target>
+
+   <target name="all" depends="clean, buildWebService"/>
+
+   <target name="copyInDeployment" depends="all">
+      <move file="${build.dir}/${library.name}.war" todir="${deployment.dir}/${deployment.env}" />
+   </target>
+
+   <target name="clean">
+      <delete dir="${build.dir}"/>
+      <delete dir="${deployment.dir}"/>
+   </target>
+
+</project>

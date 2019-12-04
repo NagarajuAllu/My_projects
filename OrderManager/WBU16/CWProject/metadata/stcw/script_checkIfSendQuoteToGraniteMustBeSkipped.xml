@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="284bb3c1151856d219fa73e082e5941e" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.checkIfSendQuoteToGraniteMustBeSkipped">
+  <guid>{064ed562-af63-18ff-82df-cec2d73b79aa}</guid>
+  <label>Check Is Send Quote To Granite Must Be Skipped</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="quoteOrder" type="rifp">
+      <type>order_com.conceptwave.system.Order</type>
+    </parameter>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var existQuoteInGranite = false;
+    if(stcw.existUpdateVersion(quoteOrder)) {
+          if(stcw.isQuoteCancelled(quoteOrder)) {
+
+                var woStatus = stcw.getWOStatusInGranite(quoteOrder.header.quoteNumber);
+                if(woStatus != null && (woStatus == '7' || woStatus == '8')) {
+                      existQuoteInGranite = stcw.isAMOForGivenWorkOrderDeleted(quoteOrder.header.quoteNumber);
+                }
+    debugPrintln(stcc.getSysdateForLog() + "[" + processId + "] - checkIfSendQuoteToGraniteMustBeSkipped - CancelQuote: " + existQuoteInGranite);
+                }
+                else {
+    debugPrintln(stcc.getSysdateForLog() + "[" + processId + "] - checkIfSendQuoteToGraniteMustBeSkipped - ReviseQuote: " + existQuoteInGranite);
+                }
+          }
+          else {
+                // it means the quote is Add
+                existQuoteInGranite = stcw.checkQuoteExistInGranite(quoteOrder.header.quoteNumber);
+    debugPrintln(stcc.getSysdateForLog() + "[" + processId + "] - checkIfSendQuoteToGraniteMustBeSkipped - NewQuote: " + existQuoteInGranite);
+          }
+
+          return existQuoteInGranite;
+  ]]></script>
+</script>

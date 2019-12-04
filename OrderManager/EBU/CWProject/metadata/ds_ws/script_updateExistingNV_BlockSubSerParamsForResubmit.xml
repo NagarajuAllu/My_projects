@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="899ad9b3c9635dd35b2d5164422f06bd" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.updateExistingNV_BlockSubSerParamsForResubmit">
+  <label>Update Existing NV Pair and Block Parameters For SubService For Resubmit</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="existingLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="receivedLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="validationErrors" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="lineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="existingOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // nv check; it loops in existing NV pair and verifies if it exists also in received one
+    if(receivedLineItemContainer.subServiceParameters != null) {
+        for(var i=0; i<receivedLineItemContainer.subServiceParameters.length; i++) {
+            var receivedNVName = receivedLineItemContainer.subServiceParameters[i].subServiceParameter.name;
+            var found = false;
+
+            if(existingLineItemContainer.subServiceParameters != null) {
+                for(var j=0; j<existingLineItemContainer.subServiceParameters.length && !found; j++) {
+                    if(receivedNVName == existingLineItemContainer.subServiceParameters[j].subServiceParameter.name) {
+                        // found; comparing the values
+                        found = true;
+                        existingLineItemContainer.subServiceParameters[j].subServiceParameter.value = receivedLineItemContainer.subServiceParameters[i].subServiceParameter.value;
+                        existingLineItemContainer.subServiceParameters[j].subServiceParameter.action = receivedLineItemContainer.subServiceParameters[i].subServiceParameter.action;
+                    }
+                }
+            }
+
+            if(!found) {
+                var position = (existingLineItemContainer.subServiceParameters != null ? existingLineItemContainer.subServiceParameters.length : 0);
+                var containerItemPath = (existingLineItemContainer.subServiceParameters != null ? existingLineItemContainer.subServiceParameters.orderDataPath : (existingLineItemContainer.orderDataPath + ".subServiceParameters"));
+                var nvDoc = existingOrder.createOrderItemByPath(containerItemPath + "." + (position+1) + ".subServiceParameter");
+                nvDoc.name = receivedLineItemContainer.subServiceParameters[i].subServiceParameter.name;
+                nvDoc.value = receivedLineItemContainer.subServiceParameters[i].subServiceParameter.value;
+                nvDoc.action = receivedLineItemContainer.subServiceParameters[i].subServiceParameter.action;
+                nvDoc.parentElementId = existingLineItemContainer.subService.id;
+            }
+        }
+    }
+
+    // bv check; it loops in existing blockValue pair and verifies if it exists also in received one
+    if(receivedLineItemContainer.subServiceBlockParameters != null) {
+        for(var i=0; i<receivedLineItemContainer.subServiceBlockParameters.length; i++) {
+            var receivedNVName = receivedLineItemContainer.subServiceBlockParameters[i].subServiceBlockParameter.name;
+            var found = false;
+
+            if(existingLineItemContainer.subServiceBlockParameters != null) {
+                for(var j=0; j<existingLineItemContainer.subServiceBlockParameters.length && !found; j++) {
+                    if(receivedNVName == existingLineItemContainer.subServiceBlockParameters[j].subServiceBlockParameter.name) {
+                        // found; delete the existing
+                        found = true;
+                        ds_ws.deleteAllBlockValuesByParentId(existingLineItemContainer.subServiceBlockParameters[j].subServiceBlockParameter.id, existingOrder.id);
+
+                        var receivedBlockValuesArray = ds_ws.getBlockValuesAsArray(receivedLineItemContainer.subServiceBlockParameters[i].subServiceBlockParameter.id);
+                        if(receivedBlockValuesArray != null) {
+                            for(var k=0; k<receivedBlockValuesArray.length; k++) {
+                                 createBlockValue_(receivedBlockValuesArray[k].blockValue, existingLineItemContainer.subServiceBlockParameters[j].subServiceBlockParameter.id, existingOrder);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(!found) {
+                var position = (existingLineItemContainer.subServiceBlockParameters != null ? existingLineItemContainer.subServiceBlockParameters.length : 0);
+                var containerItemPath = (existingLineItemContainer.subServiceBlockParameters != null ? existingLineItemContainer.subServiceBlockParameters.orderDataPath : (existingLineItemContainer.orderDataPath + ".subServiceBlockParameters"));
+                var bvDoc = existingOrder.createOrderItemByPath(containerItemPath + "." + (position+1) + ".subServiceBlockParameter");
+                bvDoc.name = receivedLineItemContainer.subServiceBlockParameters[i].subServiceBlockParameter.name;
+                bvDoc.action = receivedLineItemContainer.subServiceBlockParameters[i].subServiceBlockParameter.action;
+                bvDoc.parentElementId = existingLineItemContainer.subService.id;
+
+                var receivedBlockValuesArray = ds_ws.getBlockValuesAsArray(receivedLineItemContainer.subServiceBlockParameters[i].subServiceBlockParameter.id);
+                if(receivedBlockValuesArray != null) {
+                    for(var k=0; k<receivedBlockValuesArray.length; k++) {
+                         createBlockValue_(receivedBlockValuesArray[k].blockValue, bvDoc.id, existingOrder);
+                    }
+                }
+            }
+        }
+    }
+
+    return validationErrors;
+
+
+    function createBlockValue_(value, parentDocId, existingOrder) {
+        var blockValueDoc = new Document("ds_ws:blockValue");
+        blockValueDoc.parentDocId = parentDocId;
+        blockValueDoc.cwOrderId = existingOrder.id;
+        blockValueDoc.blockValue = value;
+        blockValueDoc.save();
+    }
+  ]]></script>
+</script>

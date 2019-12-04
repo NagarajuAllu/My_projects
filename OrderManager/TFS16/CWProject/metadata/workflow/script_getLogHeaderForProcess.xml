@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.getLogHeaderForProcess">
+  <label>Get Log Header For Process</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[return "[" + Calendar.formatDate(new Date(), "yyyy/MM/dd HH:mm:ss") + "][" + processId + "]";]]></script>
+</script>

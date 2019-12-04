@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="granite.findOLTEquipmentDetailsByPathInstId">
+  <dbSchema>GRANITE</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_granite.graniteInstId_10_SearchDoc</input>
+  <label>Find OLT Equipment Details By PathInstId</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_granite.oltEquipmentDetails</output>
+  <type>SQL</type>
+  <volatility>0</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select ei.equip_inst_id, ei.descr, ei.type, ei.vendor, ei.model,
+               ei.status, ei.installed, ei.in_service, ei.decommission,
+               (select pas.attr_value
+                  from port_attr_settings pas, val_attr_name van
+                 where pas.port_inst_id = p.port_inst_id
+                   and pas.val_attr_inst_id = van.val_attr_inst_id
+                   and van.attr_name = 'OLT Name'
+                   and van.group_name = 'OLT Attributes Information') oltNameUDA,
+               (select pas.attr_value
+                  from port_attr_settings pas, val_attr_name van
+                 where pas.port_inst_id = p.port_inst_id
+                   and pas.val_attr_inst_id = van.val_attr_inst_id
+                   and van.attr_name = 'OLT Physical Slot'
+                   and van.group_name = 'OLT Attributes Information') oltSlot,
+               (select pas.attr_value
+                  from port_attr_settings pas, val_attr_name van
+                 where pas.port_inst_id = p.port_inst_id
+                   and pas.val_attr_inst_id = van.val_attr_inst_id
+                   and van.attr_name = 'OLT Physical Port'
+                   and van.group_name = 'OLT Attributes Information') oltPort,
+               p.port_inst_id, p.port_hum_id, c.slot
+          from circ_path_element cpe, epa p, card_inst c, equip_inst ei
+         where p.port_inst_id = cpe.port_inst_id
+           and c.card_inst_id = p.card_inst_id
+           and c.equip_inst_id = p.equip_inst_id
+           and ei.equip_inst_id = p.equip_inst_id
+           and ei.type = 'FTTH-OLT'
+        {[0] and cpe.circ_path_inst_id = ?}
+      ]]></script>
+    </method>
+  </methodList>
+</findSql>

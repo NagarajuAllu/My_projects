@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="crmToSOMMigration.findAllOrbOrderHeaderToBeMigratedByOrderType">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_crmToSOMMigration.search_crmOrderByOrderType</input>
+  <label>Find All ORB OrderHeader To Be Migrated By OrderType</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_orb.orderHeader</output>
+  <type>SQL</type>
+  <volatility>5</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select {+*+}
+          from orb_order_header
+         where cwdocid in (select h.cwdocid
+                             from orb_order_header h, stcw_order_header s
+                            where h.order_number not like '%ErrGr%'
+                              and h.order_number not like '1-8543312_DELETE' -- strange case in PROD
+                              and s.order_status != 'REJECTED'
+                              and s.migrated = 0
+                              and h.cwdocid = s.cwdocid
+                         {[0] and s.ordertype =  ?})
+      ]]></script>
+    </method>
+  </methodList>
+</findSql>

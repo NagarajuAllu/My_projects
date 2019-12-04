@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="tfsReport.biSummaryReportFinder">
+  <dbSchema>INTERFACE</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_tfsReport.biSummaryReportSearchDoc</input>
+  <label>BI Summary Report Finder</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_tfsReport.biSummaryReportResultDoc</output>
+  <rtConfigurable>true</rtConfigurable>
+  <type>SQL</type>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select v.prn_name,
+               v.customer_name,
+               v.customer_project,
+               v.requirement_type,
+               v.quantity,
+               v.site_a_name,
+               v.site_a_if,
+               v.site_z_name,
+               v.site_z_if,
+               v.traffic_type,
+               v.remarks,
+               v.tfr_id,
+               v.tfr_number,
+               v.project,
+               v.bi_id,
+               v.bi_status,
+               v.ring_name,
+               v.site_name,
+               v.network_type,
+               v.details,
+               v.category,
+               v.mop_number,
+               v.mop1_status,
+               v.mop2_status,
+               v.mop3_status,
+               v.mop_issue_date,
+               v.mop_impl_status,
+               v.mop_impl_compl_date,
+               v.mop_impl_estim_date,
+               v.contractor1,
+               v.contractor2,
+               v.contractor3,
+               v.last_fwd_dept,
+               v.last_fwd_eng,
+               v.creation_date,
+               v.sow_number,
+               v.sow1_status,
+               v.sow2_status,
+               v.sow3_status,
+               v.sow_issue_date
+          from stc_bi_summary_report_v v
+         where 1 = 1
+           {[0] and v.creation_date >= ?}
+           {[1] and v.creation_date <= ?}
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_tfsReport.biSummaryReportResultDoc</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_tfsReport.biSummaryReportSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_tfsReport.biSummaryReportResultDoc/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="biSummaryReportFinderResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="prnName" type="elfld">
+                        <label>PRN Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_prnName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="customerName" type="elfld">
+                        <label>Customer Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_customerName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="customerProject" type="elfld">
+                        <label>Customer Project</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_customerProject</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="requirementType" type="elfld">
+                        <label>Requirement Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_requirementType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="quantity" type="elfld">
+                        <label>Quantity</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_quantity</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>100px</width>
+                      </element>
+                      <element name="siteAName" type="elref">
+                        <label>Site A</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_siteAName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="siteAIF" type="elfld">
+                        <label>Site A IF</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_siteAIF</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="siteZName" type="elref">
+                        <label>Site Z</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_siteZName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="siteZIF" type="elfld">
+                        <label>SIte Z IF</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_siteZIF</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="trafficType" type="elfld">
+                        <label>Traffic Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_trafficType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnRemarks" type="elfld">
+                        <label>PRN Remarks</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_prnRemarks</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>300px</width>
+                      </element>
+                      <element name="tfrNumber" type="elfld">
+                        <label>TFR Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_tfrNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="tfrProject" type="elfld">
+                        <label>TFR Project</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_tfrProject</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="biId" type="elfld">
+                        <label>BI Id</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_biId</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="biStatus" type="elfld">
+                        <label>BI Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_biStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="ringName" type="elfld">
+                        <label>Ring Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_ringName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="siteName" type="elref">
+                        <label>BI Site Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_siteName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="networkType" type="elfld">
+                        <label>Network Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_networkType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="details" type="elfld">
+                        <label>BI Details</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_details</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="category" type="elfld">
+                        <label>BI Category</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_category</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="mopNumber" type="elfld">
+                        <label>MoP Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_mopNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>100px</width>
+                      </element>
+                      <element name="mop1Status" type="elfld">
+                        <label>MoP 1 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_mop1Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="mop2Status" type="elfld">
+                        <label>MoP 2 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_mop2Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="mop3Status" type="elfld">
+                        <label>MoP 3 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_mop3Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="mopIssueDate" type="eldate">
+                        <label>MoP Issue Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_mopIssueDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="mopImplStatus" type="elfld">
+                        <label>MoP Impl Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_mopImplStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="mopImplComplDate" type="eldate">
+                        <label>MoP Impl Completion Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_mopImplComplDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="mopImplEstimDate" type="eldate">
+                        <label>MoP Impl Estimation Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_mopImplEstimDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="contractor1" type="elfld">
+                        <label>Contractor 1</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_contractor1</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="contractor2" type="elfld">
+                        <label>Contractor 2</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_contractor2</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="contractor3" type="elfld">
+                        <label>Contractor 3</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_contractor3</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="lastFwdDept" type="elfld">
+                        <label>Last Forward Dept.</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_lastFwdDept</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>250px</width>
+                      </element>
+                      <element name="lastFwdEng" type="elref">
+                        <label>Last Forward Eng.</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_lastFwdEng</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="creationDate" type="eldate">
+                        <label>BI Creation Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_creationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="sowNumber" type="elfld">
+                        <label>SoW Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_sowNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="sow1Status" type="elfld">
+                        <label>SoW 1 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_sow1Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="sow2Status" type="elfld">
+                        <label>SoW 2 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_sow2Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="sow3Status" type="elfld">
+                        <label>SoW 3 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_sow3Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="sowIssueDate" type="eldate">
+                        <label>SoW Issue Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.biSummaryReportResultDoc/leaf_sowIssueDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfDetail" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="biSummaryReportFinderView" type="findVView">
+      <inputOverlay>doc_tfsReport.biSummaryReportSearchDoc/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>BI Summary Report</label>
+      <outputOverlay>findSql_tfsReport.biSummaryReportFinder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findSql>

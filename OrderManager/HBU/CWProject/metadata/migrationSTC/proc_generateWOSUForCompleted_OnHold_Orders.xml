@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process filenameHash="f435915ba7836180c1ae1bf675a88f4f" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="migrationSTC.generateWOSUForCompleted_OnHold_Orders">
+  <activity name="start" type="seqActivity">
+    <guid>{accca879-2082-48c6-aaa9-b853341ea612}</guid>
+    <label>Start</label>
+    <schedule type="sched">
+      <day>-1</day>
+      <instance>Daily</instance>
+      <time>23:55:00</time>
+    </schedule>
+    <x>138.0</x>
+    <y>66.0</y>
+    <childList>
+      <child name="checkConfig_GLOBAL_WO_SYNC_ENABLED" type="switchActivity">
+        <guid>{dbbe8414-5e04-4503-8c31-4a4bb153a5b8}</guid>
+        <label>Check Config GLOBAL_WO_SYNC_ENABLED</label>
+        <x>338.0</x>
+        <y>14.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <guid>{740f4b9f-ac6e-4458-9b3b-3abf37dcf4f2}</guid>
+            <label>Yes</label>
+            <x>521.0</x>
+            <y>121.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <guid>{06249d97-7941-48f2-958b-ba080398b65e}</guid>
+                <label>Start</label>
+                <x>344.0</x>
+                <y>286.0</y>
+                <childList>
+                  <child name="generateWOSUForOrdersCompletedInGraniteButNotInOM" type="scriptActivity">
+                    <guid>{ddcebd68-0baf-493d-8ab6-50409bd6c3d7}</guid>
+                    <label>Generate WOSU For Orders Completed In Granite But Not In OM</label>
+                    <x>521.0</x>
+                    <y>247.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateWOSUForCompleted_OnHold_Orders - Start migrationSTC.generateWOSUForCompleted_OnHold_Orders");
+
+                          migrationSTC.generateWOSUForCompleted_OnHoldOrdersInGranite(this.process.id);
+
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateWOSUForCompleted_OnHold_Orders - Completed migrationSTC.generateWOSUForCompleted_OnHold_Orders");
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  // STCSUP-21 && STCSUP-24 - Check if Global process for ALL order is enabled
+                  var globalWOSyncEnabled = Global.getConfigVariable("GLOBAL_WO_SYNC_ENABLED", "N");
+
+                  return(globalWOSyncEnabled == "Y");
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{93f87f64-0f0f-491c-a983-b5080c51a377}</guid>
+            <label>No</label>
+            <x>709.0</x>
+            <y>57.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{cadaada6-329d-4b22-99eb-57ef41671bd0}</guid>
+        <label>End</label>
+        <x>709.0</x>
+        <y>279.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateWOSUForCompleted_OnHold_Orders - END");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders - START");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <guid>{d4f6142a-6bc8-4d74-b8d5-2cd16464e8f8}</guid>
+  <label>Generate Complete WOSU For Completed, Cancelled and OnHold Orders</label>
+  <metaVersion>4</metaVersion>
+  <priority>8</priority>
+  <type>Global</type>
+</process>

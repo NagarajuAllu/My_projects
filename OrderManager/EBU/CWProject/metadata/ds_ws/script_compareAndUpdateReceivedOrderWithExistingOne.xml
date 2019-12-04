@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="fb6f7cc04e58c4df0ebedbaa78bdba46" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.compareAndUpdateReceivedOrderWithExistingOne">
+  <label>Compare And Update Received Order With Existing One</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="existingOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+    <parameter name="receivedOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+    <parameter name="isCancel" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="existingOrderWasKO" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+
+    failureArray = ds_ws.compareAndUpdateReceivedOrderHeaderWithExistingOne(existingOrder, receivedOrder, isCancel, existingOrderWasKO, failureArray);
+
+    // bundle check; it loops in bundle of existing order and verifies if it exists also in received one
+    if(existingOrder.bundles != null) {
+        var missingReceived = 0;
+        for(var i=0; i<existingOrder.bundles.length; i++) {
+            var existingLineItem = existingOrder.bundles[i].bundle.lineItemIdentifier;
+            var found = false;
+            // search bundle in received
+            if(receivedOrder.bundles != null) {
+                for(var j=0; j<receivedOrder.bundles.length && !found; j++) {
+                    if(existingLineItem == receivedOrder.bundles[j].bundle.lineItemIdentifier) {
+                        // found; comparing the 2 lineItems and the entire hierarchy
+                        found = true;
+                        failureArray = ds_ws.compareAndUpdateReceivedLineItemWithExistingOne(existingOrder.bundles[i], receivedOrder.bundles[j], "B", isCancel, receivedOrder.orderHeader.orderType, existingOrderWasKO, failureArray);
+                    }
+                }
+            }
+
+            if(!found) {
+                // not found bundle; adding error
+                validationErrors = ds_ws.appendToValidationErrors("AE0067", Global.translateText("AE0067", null, existingLineItem), validationErrors, "compareAndUpdateReceivedOrderWithExistingOne (" + existingOrder.orderHeader.orderNumber + ")");
+                missingReceived++;
+            }
+        }
+
+        if(receivedOrder.bundles != null) {
+            if((receivedOrder.bundles.length + missingReceived) != existingOrder.bundles.length) {
+                // it means that there are additional bundles in received that are not in existing! ERROR!
+                validationErrors = ds_ws.appendToValidationErrors("AE0059", Global.translateText("AE0059",  null, ["B", "existing"]), validationErrors, "compareAndUpdateReceivedOrderWithExistingOne (" + existingOrder.orderHeader.orderNumber + ")");
+            }
+        }
+    }
+    else {
+        if(receivedOrder.bundles != null) {
+            // it means that there are bundles in received that are not in existing! ERROR!
+            validationErrors = ds_ws.appendToValidationErrors("AE0059", Global.translateText("AE0059",  null, ["B", "existing"]), validationErrors, "compareAndUpdateReceivedOrderWithExistingOne (" + existingOrder.orderHeader.orderNumber + ")");
+        }
+    }
+
+
+    if(validationErrors != null) {
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, existingOrder.orderHeader.orderNumber, failureArray, false);
+    }
+
+
+    return failureArray;
+  ]]></script>
+</script>

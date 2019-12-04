@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.copyReservationNumberFromActiveOrder">
+  <label>Copy ReservationNumber From Active Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="receivedOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if((receivedOrder.orderHeader.orderType == "I" || receivedOrder.orderHeader.orderType == "C") && isSubmit) {
+        for(var i=0; i<receivedOrder.bundles.length; i++) {
+            var bundleContainer = receivedOrder.bundles[i];
+            var bundleIdentifier = bundleContainer.bundle.lineItemIdentifier;
+            var activeBundle = ds_ws.getAllLineItemsByIdentifierAndProvisioningFlag(bundleIdentifier, "B", "ACTIVE");
+            if(activeBundle != null && activeBundle.length > 0) {
+                // found the active version of the bundle; checking if it's an "F" order
+
+                var activeBundleOrder = Order.getOrderById(activeBundle[0].cwOrderId);
+                if(activeBundleOrder != null) {
+                    if(activeBundleOrder.orderHeader.orderType == "F") {
+                        // the active version is an "F" order; copying the reservationNumber for all the lineItems; but not in held otherwise issue
+                        if(!activeBundle[0].onHeld && activeBundle[0].feasible) {
+                            bundleContainer.bundle.reservationNumber = activeBundle[0].reservationNumber;
+                        }
+
+                        if(bundleContainer.circuits != null) {
+                            for(var j=0; j<bundleContainer.circuits.length; j++) {
+                                var circuitContainer = bundleContainer.circuits[j];
+
+                                var activeCircuitLineItem = ds_ws.getLineItemInBundleWithIdentifier(activeBundle[0], circuitContainer.circuit.lineItemIdentifier);
+                                if(activeCircuitLineItem != null && !activeCircuitLineItem.onHeld && activeCircuitLineItem.feasible) {
+                                    circuitContainer.circuit.reservationNumber = activeCircuitLineItem.reservationNumber;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return receivedOrder;
+  ]]></script>
+</script>

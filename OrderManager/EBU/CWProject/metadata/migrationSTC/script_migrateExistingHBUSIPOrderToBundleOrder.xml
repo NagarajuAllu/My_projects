@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="c52e222626271a5b888fd04f52cacd0b" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="migrationSTC.migrateExistingHBUSIPOrderToBundleOrder">
+  <label>Migrate Existing HBUSIPOrder To BundleOrder</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="foundOrderHeader" type="rifp">
+      <type>doc_migrationSTC.STC_OM_HOME_SIP</type>
+    </parameter>
+    <parameter name="crmProductTypeForSIP" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="crmServiceTypeForPrimarySIP" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var bundleOrder = null;
+
+    if(foundOrderHeader != null) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] migrateExistingHBUSIPOrderToBundleOrder - OrderNumber: " + foundOrderHeader.PARENTORDERNUMBER);
+
+        var existingBundleOrder = ds_ws.getBundleOrderByOrderNumber(foundOrderHeader.PARENTORDERNUMBER);
+
+        if(existingBundleOrder == null) {
+
+            // loading serviceParameters for SIP HOME order
+            var allSPDocs = migrationSTC.getAllSTC_SP_HOME_SIP_By_CwOrderId(foundOrderHeader.cwOrderId);
+            if(allSPDocs != null && allSPDocs.length > 0) {
+
+                // checking the status of the WO in Granite to verify that the status of the Order in WD is in sync
+                if(foundOrderHeader.ORDERSTATUS != "COMPLETED" &&foundOrderHeader.ORDERSTATUS != "CANCELLED") {
+                    var woStatusInGranite = granite.getStatusInGraniteForWO(foundOrderHeader.ORDERNUMBER);
+                    if(woStatusInGranite == 7 || woStatusInGranite == 9) {
+                        foundOrderHeader.ORDERSTATUS = "COMPLETED";
+                        foundOrderHeader.save();
+                    }
+                }
+
+                // convert foundOrderHeader in bundleOrder
+                bundleOrder = new Order("ds_ws:bundleOrderSTC");
+
+                // mapping orderHeader
+                foundOrderHeader.mapTo(bundleOrder.orderHeader);
+                bundleOrder.orderHeader.isMigrated = true;
+                bundleOrder.orderHeader.completionDate = granite.getWOCompletionDate(foundOrderHeader.ORDERNUMBER);
+                var latestMsgForSIPOHFromCRM = migrationSTC.getLatestMsgForSIPOHFromCRMByParentOrderNumber(foundOrderHeader.PARENTORDERNUMBER);
+                var bundleOrderStatusInUpperCase = bundleOrder.orderHeader.orderStatus.toUpperCase();
+
+                // mapping bundle
+                var bundleDoc = bundleOrder.createOrderItemByPath("bundles.1.bundle");
+
+                // Revise if:
+                // 1. orderStatus = "REVISE"
+                // 2. latestMsgForSIPOHFromCRM.receivedOrderStatus = "REVISE"
+                var isRevise = (bundleOrderStatusInUpperCase == "REVISE" ||
+                                (latestMsgForSIPOHFromCRM != null && latestMsgForSIPOHFromCRM.receivedOrderStatus.toUpperCase() == "REVISE"));
+                // Cancel if:
+                // 1. orderStatus = "CANCEL" or "CANCELLED"
+                // 2. latestMsgForSIPOHFromCRM.receivedOrderStatus = "CANCEL"
+                // 3. serviceParameters.toBeCancelled = TRUE
+                var isCancel = (bundleOrderStatusInUpperCase == "CANCEL" ||  bundleOrderStatusInUpperCase == "CANCELLED" ||
+                                (latestMsgForSIPOHFromCRM != null && latestMsgForSIPOHFromCRM.receivedOrderStatus.toUpperCase() == "CANCEL") ||
+                                allSPDocs[0].TOBECANCELLED);
+
+                // Submit if:
+                // all other situation
+                var isSubmit = !(isCancel || isRevise);
+
+                // all items action
+                var itemAction = decodeActionOfServiceParameter_(bundleOrder.orderHeader, isSubmit, isCancel);
+
+                bundleDoc.action = itemAction;
+                bundleDoc.alreadyReceivedCancel = isCancel;
+                bundleDoc.alreadySentToGranite = false;
+                bundleDoc.completionDate = bundleOrder.orderHeader.completionDate;
+                bundleDoc.creationDate = bundleOrder.orderHeader.creationDate;
+                bundleDoc.elementTypeInOrderTree = "B";
+                bundleDoc.fictBillingNumber = foundOrderHeader.FICTBILLINGNUMBER;
+                bundleDoc.icmsSONumber = foundOrderHeader.ICMSSONUMBER;
+                bundleDoc.isCancel = isCancel;
+                bundleDoc.isSubmit = isSubmit;
+                bundleDoc.lineItemIdentifier = foundOrderHeader.CIRCUITNUMBER;
+                bundleDoc.lineItemType = "Bundle";
+                bundleDoc.priority = 1;
+                bundleDoc.productType = crmProductTypeForSIP;
+                bundleDoc.serviceType = crmProductTypeForSIP;
+                bundleDoc.requestedActionIsA = (bundleOrder.orderHeader.orderType == "I");
+                bundleDoc.serviceDate = foundOrderHeader.SERVICEDATE;
+                bundleDoc.serviceNumber = foundOrderHeader.CIRCUITNUMBER;
+
+                // remapping the empty attributes getting them from the first SP document found
+                mapServiceParametersOnLineItem_(bundleDoc, "creationDate", allSPDocs[0], "CREATIONDATE");
+                mapServiceParametersOnLineItem_(bundleDoc, "lineItemIdentifier", allSPDocs[0], "SERVICENUMBER");
+                mapServiceParametersOnLineItem_(bundleDoc, "serviceNumber", allSPDocs[0], "SERVICENUMBER");
+
+                // compute provisioningFlag & lineItemStatus
+                if(bundleOrderStatusInUpperCase == "COMPLETED") {
+                    if(isCancel) {
+                        bundleDoc.provisioningFlag = "CANCELLED";
+                    }
+                    else {
+                        bundleDoc.provisioningFlag = "ACTIVE";
+                    }
+                    bundleDoc.lineItemStatus = "COMPLETED";
+                }
+                else if(bundleOrderStatusInUpperCase == "CANCELLED") {
+                    bundleDoc.provisioningFlag = "CANCELLED";
+                    bundleDoc.lineItemStatus = "CANCELLED";
+                }
+                else {
+                    bundleDoc.provisioningFlag = "PROVISIONING";
+                    bundleDoc.lineItemStatus = "ORDERED";
+                }
+
+
+                // mapping circuit
+                var circuitDoc = bundleOrder.createOrderItemByPath("bundles.1.circuits.1.circuit");
+                foundOrderHeader.mapTo(circuitDoc);
+
+                circuitDoc.action = itemAction;
+                circuitDoc.alreadyReceivedCancel = isCancel;
+                circuitDoc.alreadySentToGranite = (bundleOrderStatusInUpperCase != "NEW" && bundleOrderStatusInUpperCase != "CANCEL" && bundleOrderStatusInUpperCase != "REVISE");
+                circuitDoc.completionDate = bundleOrder.orderHeader.completionDate;
+                circuitDoc.isCancel = isCancel;
+                circuitDoc.isSubmit = isSubmit;
+                circuitDoc.lineItemType = "Circuit";
+                circuitDoc.requestedActionIsA = (bundleOrder.orderHeader.orderType == "I");
+                circuitDoc.serviceType = crmServiceTypeForPrimarySIP;
+
+                mapServiceParametersOnLineItem_(circuitDoc, "creationDate",  allSPDocs[0], "CREATIONDATE");
+                mapServiceParametersOnLineItem_(circuitDoc, "locationAOldPlateID", allSPDocs[0], "OLDPLATEID");
+                mapServiceParametersOnLineItem_(circuitDoc, "locationAPlateID", allSPDocs[0], "PLATEID");
+                mapServiceParametersOnLineItem_(circuitDoc, "locationAUnitNumber", allSPDocs[0], "UNITNUMBER");
+                mapServiceParametersOnLineItem_(circuitDoc, "locationBOldPlateID", allSPDocs[0], "OLDPLATEID");
+                mapServiceParametersOnLineItem_(circuitDoc, "locationBPlateID", allSPDocs[0], "PLATEID");
+                mapServiceParametersOnLineItem_(circuitDoc, "locationBUnitNumber", allSPDocs[0], "UNITNUMBER");
+                mapServiceParametersOnLineItem_(circuitDoc, "serviceDate", allSPDocs[0], "SERVICEDATE");
+                mapServiceParametersOnLineItem_(circuitDoc, "serviceDescription", allSPDocs[0], "SERVICEDESCRIPTION");
+
+                // mapping all NV Pairs of all the services of the order
+                var allNVDocList = migrationSTC.getAllSTC_NV_HOME_SIP_By_CwOrderId_ParentId(foundOrderHeader.cwOrderId);
+                if(allNVDocList != null) {
+                    for(var j=0; j<allNVDocList.length; j++) {
+                        var nvDoc = bundleOrder.createOrderItemByPath("bundles.1.circuits.1.circuitParameters." + (j+1) + ".circuitParameter");
+                        nvDoc.name = allNVDocList[j].NAME;
+                        nvDoc.value = allNVDocList[j].VALUE;
+                        nvDoc.action = getNVAction_(itemAction);
+                        nvDoc.parentElementId = circuitDoc.id;
+                    }
+                }
+
+                for(var i=0; i<allSPDocs.length; i++) {
+                    // mapping service
+                    var serviceDoc = bundleOrder.createOrderItemByPath("bundles.1.circuits.1.services." + (i+1) + ".service");
+                    foundOrderHeader.mapTo(serviceDoc);
+
+                    serviceDoc.action = itemAction;
+                    serviceDoc.alreadyReceivedCancel = isCancel;
+                    serviceDoc.alreadySentToGranite = (bundleOrderStatusInUpperCase != "NEW" && bundleOrderStatusInUpperCase != "CANCEL" && bundleOrderStatusInUpperCase != "REVISE");
+                    serviceDoc.completionDate = bundleOrder.orderHeader.completionDate;
+                    serviceDoc.elementTypeInOrderTree = "S";
+                    serviceDoc.isCancel = isCancel;
+                    serviceDoc.isSubmit = isSubmit;
+                    serviceDoc.lineItemIdentifier = circuitDoc.lineItemIdentifier + "#" +  allSPDocs[i].ORDERROWITEMID;
+                    serviceDoc.lineItemType = "Service";
+                    serviceDoc.oldServiceNumber = allSPDocs[i].OLDSERVICENUMBER;
+                    serviceDoc.requestedActionIsA = (bundleOrder.orderHeader.orderType == "I");
+                    serviceDoc.serviceNumber = allSPDocs[i].SERVICENUMBER;
+                    serviceDoc.serviceType = allSPDocs[i].SERVICETYPE;
+
+                    mapServiceParametersOnLineItem_(serviceDoc, "creationDate",  allSPDocs[i], "CREATIONDATE");
+                    mapServiceParametersOnLineItem_(serviceDoc, "locationAOldPlateID", allSPDocs[i], "OLDPLATEID");
+                    mapServiceParametersOnLineItem_(serviceDoc, "locationAPlateID", allSPDocs[i], "PLATEID");
+                    mapServiceParametersOnLineItem_(serviceDoc, "locationAUnitNumber", allSPDocs[i], "UNITNUMBER");
+                    mapServiceParametersOnLineItem_(serviceDoc, "locationBOldPlateID", allSPDocs[i], "OLDPLATEID");
+                    mapServiceParametersOnLineItem_(serviceDoc, "locationBPlateID", allSPDocs[i], "PLATEID");
+                    mapServiceParametersOnLineItem_(serviceDoc, "locationBUnitNumber", allSPDocs[i], "UNITNUMBER");
+                    mapServiceParametersOnLineItem_(serviceDoc, "serviceDate", allSPDocs[i], "SERVICEDATE");
+                    mapServiceParametersOnLineItem_(serviceDoc, "serviceDescription", allSPDocs[i], "SERVICEDESCRIPTION");
+
+                    // mapping NV Pairs of the service under management
+                    var allNVDocList = migrationSTC.getAllSTC_NV_HOME_SIP_By_CwOrderId_ParentId(foundOrderHeader.cwOrderId, allSPDocs[i].cwDocId);
+                    if(allNVDocList != null) {
+                        for(var j=0; j<allNVDocList.length; j++) {
+                            var nvDoc = bundleOrder.createOrderItemByPath("bundles.1.circuits.1.services." + (i+1) + ".serviceParameters." + (j+1) + ".serviceParameter");
+                            nvDoc.name = allNVDocList[j].NAME;
+                            nvDoc.value = allNVDocList[j].VALUE;
+                            nvDoc.action = getNVAction_(itemAction);
+                            nvDoc.parentElementId = serviceDoc.id;
+                        }
+                    }
+                }
+            }
+            else {
+                debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] migrateExistingHBUSIPOrderToBundleOrder - Unable to find services for order <" + foundOrderHeader.PARENTORDERNUMBER + "," +
+                             foundOrderHeader.ORDERNUMBER + "," + foundOrderHeader.cwOrderId + ">");
+            }
+        }
+        else {
+            debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] migrateExistingHBUSIPOrderToBundleOrder - already exist a BundleOrder with OrderNumber: " + foundOrderHeader.PARENTORDERNUMBER);
+            bundleOrder = existingBundleOrder;
+        }
+    }
+    else {
+        debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] migrateExistingHBUSIPOrderToBundleOrder - received NULL Order");
+    }
+
+    return bundleOrder;
+
+
+
+
+    function decodeActionOfServiceParameter_(orderHeader, isSubmit, isCancel) {
+        var orderStatus = orderHeader.orderStatus.toUpperCase();
+
+        var action = getActionByOrderStatusAndOrderType_(orderStatus, orderHeader.orderType);
+
+        if(action == null) {
+            if(isSubmit) {
+                action = getActionByOrderStatusAndOrderType_("NEW", orderHeader.orderType);
+            }
+            else if(isCancel) {
+                action = getActionByOrderStatusAndOrderType_("CANCEL", orderHeader.orderType);
+            }
+            else {
+                action = getActionByOrderStatusAndOrderType_("REVISE", orderHeader.orderType);
+            }
+        }
+
+        return action;
+    }
+
+    function getActionByOrderStatusAndOrderType_(orderStatus, orderType) {
+        if(orderStatus == "NEW") {
+            if(orderType == "I") {
+                return "A";
+            }
+            if(orderType == "C" || orderType == "T") {
+                return "M";
+            }
+            if(orderType == "D") {
+                return "S";
+            }
+            if(orderType == "E") {
+                return "R";
+            }
+            if(orderType == "O") {
+                return "D";
+            }
+        }
+
+        if(orderStatus == "CANCEL" || orderStatus == "CANCELLED") {
+            return "C";
+        }
+
+        if(orderStatus == "REVISE") {
+            return "M";
+        }
+    }
+
+
+
+    function mapServiceParametersOnLineItem_(lineItemDoc, lineItemDocAttribute, serviceParametersDoc, serviceParametersDocAttribute) {
+        if(lineItemDoc[lineItemDocAttribute] == null) {
+            lineItemDoc[lineItemDocAttribute] = serviceParametersDoc[serviceParametersDocAttribute];
+        }
+    }
+
+
+
+    function getNVAction_(itemAction) {
+        if(itemAction == "A") {
+            return "Add";
+        }
+
+        if(itemAction == "D" || itemAction == "S") {
+            return "Remove";
+        }
+
+        if(itemAction == "M" || itemAction == "R" || itemAction == "C") {
+            return "Modify";
+        }
+
+        if(itemAction == "N") {
+            return "No-Change";
+        }
+    }
+  ]]></script>
+</script>

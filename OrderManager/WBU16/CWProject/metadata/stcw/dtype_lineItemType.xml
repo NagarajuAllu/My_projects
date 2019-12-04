@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataType name="stcw.lineItemType">
+  <extends>dtype_com.conceptwave.system.String</extends>
+  <label>LineItem Type</label>
+  <length>10</length>
+  <metaVersion>25</metaVersion>
+  <methodList>
+    <method name="validatePickListValue" type="crule">
+      <message>LineItemType: Invalid value in enumeration</message>
+      <severity>error</severity>
+      <type>validator</type>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+      <script><![CDATA[return  !(stcw.validatePickListValue("lineItemType", itemData));]]></script>
+    </method>
+  </methodList>
+</dataType>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.advancedReportResultDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{7b37da29-906a-4dfa-9db5-e0346d0a511f}</guid>
+  <label>Advanced Report Result Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="tfrId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="tfrNumber" type="leaf">
+      <key>3</key>
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="niNumber" type="leaf">
+      <valueType>dtype_common.string9</valueType>
+    </variable>
+    <variable name="prnId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="prnName" type="leaf">
+      <key>2</key>
+      <valueType>dtype_common.string16</valueType>
+    </variable>
+    <variable name="prnStatus" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="biId" type="leaf">
+      <key>1</key>
+      <valueType>dtype_common.string16</valueType>
+    </variable>
+    <variable name="biStatus" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="icmsNumber" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="districtName" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="regionCode" type="leaf">
+      <valueType>dtype_common.string3</valueType>
+    </variable>
+    <variable name="priority" type="leaf">
+      <valueType>dtype_tfs.priorityPickList</valueType>
+    </variable>
+    <variable name="project" type="leaf">
+      <valueType>dtype_tfs.projectPickListReference</valueType>
+    </variable>
+    <variable name="tfrType" type="leaf">
+      <valueType>dtype_tfs.tfrTypePickListReference</valueType>
+    </variable>
+    <variable name="tfrStatus" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="currentUserId" type="leaf">
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="tfrMappingStatus" type="leaf">
+      <valueType>dtype_tfs.tfrMappingStatusPickListReference</valueType>
+    </variable>
+    <variable name="departmentCreatedBy" type="leaf">
+      <valueType>dtype_up_priv.department</valueType>
+    </variable>
+    <variable name="updatedBy" type="leaf">
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="requirementType" type="leaf">
+      <valueType>dtype_tfs.requirementTypePickListReference</valueType>
+    </variable>
+    <variable name="siteAName" type="leaf">
+      <valueType>dtype_granite.siteReference</valueType>
+    </variable>
+    <variable name="siteZName" type="leaf">
+      <valueType>dtype_granite.siteReference</valueType>
+    </variable>
+    <variable name="siteAJVCode" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="siteZJVCode" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="siteAExchangeType" type="leaf">
+      <valueType>dtype_tfs.siteExchangeTypePickListReference</valueType>
+    </variable>
+    <variable name="siteZExchangeType" type="leaf">
+      <valueType>dtype_tfs.siteExchangeTypePickListReference</valueType>
+    </variable>
+    <variable name="cwoType" type="leaf">
+      <valueType>dtype_tfs.cwoTypePickListReference</valueType>
+    </variable>
+    <variable name="businessUnit_Requester" type="leaf">
+      <valueType>dtype_common.string128</valueType>
+    </variable>
+    <variable name="reasonForIssue" type="leaf">
+      <valueType>dtype_tfs.reasonForIssuePickListReference</valueType>
+    </variable>
+    <variable name="hajjCommittment" type="leaf">
+      <valueType>dtype_tfs.hajjCommittmentPickListReference</valueType>
+    </variable>
+    <variable name="groupRequester" type="leaf">
+      <valueType>dtype_common.string128</valueType>
+    </variable>
+    <variable name="customerName" type="leaf">
+      <valueType>dtype_tfs.customerPickListReference</valueType>
+    </variable>
+    <variable name="siteAInterface" type="leaf">
+      <valueType>dtype_tfs.siteInterfacePickListReference</valueType>
+    </variable>
+    <variable name="siteZInterface" type="leaf">
+      <valueType>dtype_tfs.siteInterfacePickListReference</valueType>
+    </variable>
+    <variable name="existing" type="leaf">
+      <valueType>dtype_common.integer3</valueType>
+    </variable>
+    <variable name="required" type="leaf">
+      <valueType>dtype_common.integer2</valueType>
+    </variable>
+    <variable name="total" type="leaf">
+      <valueType>dtype_common.integer3</valueType>
+    </variable>
+    <variable name="orderNumber" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="circuitNumber" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="creationDate" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="plannedRFSDate" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="customerExpectedDate" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="faCompletionDate" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="tfrRemarks" type="leaf">
+      <valueType>dtype_common.string4000</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.advancedReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

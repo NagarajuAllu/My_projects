@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcc.checkSameValue">
+  <label>Check Same Value</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="newValue" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="oldValue" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = false;
+
+    if(newValue == null) {
+          result = (oldValue == null);
+    }
+    else {
+          if(oldValue == null) {
+                result = false;
+          }
+          else {
+                result = (oldValue == newValue);
+          }
+    }
+
+    return result;
+  ]]></script>
+</script>

@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="stcw.custInfoUpdateHistory">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_stcw.searchCustInfoUpdateData</input>
+  <label>Customer Information Update History</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>21</metaVersion>
+  <output>doc_stcw.custInfoUpdateHistoryResult</output>
+  <type>SQL</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <volatility>1</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        SELECT h.cwdocid, c.accountnumber, c.accountname, p.process_id, p.status, p.process_metadatype, p.metadatatype_ver, p.revision, h.activity_path, e.activity_description,
+               msgid, m.creation_time, m.receive_time, m.send_time
+          FROM stcw_custinfoupdate_data c, rpt_history_event h, cwmessagelog m, cwprocess p, ref_history_events e
+         WHERE h.process_id = c.processid
+           AND m.msgid (+) = h.message_id
+           AND p.process_id = h.process_id
+           AND h.activity_path like e.activity_path
+        {[0] AND c.accountnumber = ?}
+        {[1] AND c.accountname = ?}
+        {[2] AND p.starttime >= ?}
+         ORDER BY NVL(m.creation_time, h.lastupdateddate) , h.process_id, h.cwdocid
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script>return this.enabled;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findSql_stcw.custInfoUpdateHistory</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_stcw.searchCustInfoUpdateData/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_stcw.custInfoUpdateHistoryResult</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_stcw.custInfoUpdateHistoryResult/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext">
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="searchResult" type="vform">
+            <label>searchResult</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Account_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_accountNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Account_Name" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_accountName</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Process_Id" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_processId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>126px</width>
+                </element>
+                <element name="Process_Type_Name" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_PROCESS_METADATYPE</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>216px</width>
+                </element>
+                <element name="Process_Status" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <label>Process Status</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/action_cwOnGetFormFieldValue_searchResult_Process_Status</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Activity_Description" type="ellab">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_activityDescription</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>360px</width>
+                </element>
+                <element name="Message_Creation_Time" type="eldatetime">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_messageCreationTime</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>162px</width>
+                </element>
+                <element name="Message_Received_Time" type="eldatetime">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_messageReceivedTime</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>162px</width>
+                </element>
+                <element name="Message_Sent_Time" type="eldatetime">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.custInfoUpdateHistoryResult/leaf_messageSentTime</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_addAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <icon>/cwf/MenuIconAdd.gif</icon>
+                <tooltip>Add</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfAddView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfCopy" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_copyAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <enable type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfCopyEnabled</variablePath>
+                  </variablePathList>
+                </enable>
+                <icon>/cwf/MenuIconCopy.gif</icon>
+                <tooltip>Copy</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfCopyView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfDelete" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_deleteAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <enable type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfDeleteEnabled</variablePath>
+                  </variablePathList>
+                </enable>
+                <icon>/cwf/MenuIconDelete.gif</icon>
+                <tooltip>Delete</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfDeleteView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfUpdate" type="elmnu">
+                <menuAccel type="mAccelP"/>
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_updateAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <icon>/cwf/MenuIconEdit.gif</icon>
+                <tooltip>Edit</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfUpdateView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="detailMenu" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="processActivities" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/usrActionMethod_processActivities_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Process Activities</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                  </element>
+                  <element name="showOrder" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/usrActionMethod_showOrder_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show Order</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="receivedData" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/usrActionMethod_receivedData_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/consume.gif</icon>
+                    <label>Received Data</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                  </element>
+                  <element name="sentData" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/usrActionMethod_sentData_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/produce.gif</icon>
+                    <label>Sent Data</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                  </element>
+                  <element name="detailMenuEx" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Menu</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <overflow>visible</overflow>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <width>1px</width>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="cwOnGetFormFieldValue_searchResult_Process_Status" type="action">
+        <parameterList>
+          <parameter name="document" type="rifp">
+            <mandatory>true</mandatory>
+            <type>doc_stcw.custInfoUpdateHistoryResult</type>
+          </parameter>
+        </parameterList>
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          var status = null;
+          switch(document.processStatus) {
+                case 1:
+                      status = "Executing";
+                      break;
+                case 2:
+                      status = "Suspended";
+                      break;
+                case 3:
+                      status = "Completed";
+                      break;
+                case 4:
+                      status = "Aborted";
+                      break;
+                case 5:
+                      status = "Error";
+                      break;
+                case 6:
+                      status = "Terminated";
+                      break;
+                default:
+                      status = "Not Started";
+                      break;
+          }
+
+          return status;
+        ]]></script>
+      </method>
+      <method name="processActivities" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <confirmation>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/action_processActivities_confirm</confirmation>
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>800</dialogWidth>
+        <parameterList>
+          <parameter name="cwDialogParam" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          cwDialogParam.title = "Process Activities";
+
+          var selectList = this.result.selected;
+                var f = new Finder("cwf_pm:ActivityFinder");
+
+                if(selectList[0].processStatus == 3 || selectList[0].processStatus == 6) {
+                      f = new Finder("cwf_pm:ActivityArchiveFinder");
+                }
+                f.searchDocument.PROCESS_ID = selectList[0].processId;
+                f.search();
+                return f;
+        ]]></script>
+      </method>
+      <method name="processActivities_confirm" type="action">
+        <script><![CDATA[
+          var selectList = this.result.selected;
+                if (selectList != null) {
+                      if (selectList.length > 1) {
+                            Global.throwException("UU0116");
+                      }
+                      return null;
+                }
+                else {
+                      Global.throwException("UU0111");
+                }
+        ]]></script>
+      </method>
+      <method name="processActivities_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.processActivities();
+          Global.runContentDisplayScript(this, "displayScript");
+          return result;
+        ]]></script>
+      </method>
+      <method name="cwAutosaveConfirmation" type="action">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if (!this.isValid && Global.isAutosaveEnabled()) {
+            return "UU0256:YN";
+          }
+          return null;
+        ]]></script>
+      </method>
+      <method name="showOrder" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <confirmation>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/action_showOrder_confirm</confirmation>
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>800</dialogWidth>
+        <parameterList>
+          <parameter name="cwDialogParam" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          cwDialogParam.title = "Show Order";
+
+          var selectList = this.result.selected;
+                if(selectList[0].isChild("cwOrderId")) {
+                      return Order.getOrderById(selectList[0].cwOrderId);
+                }
+                else {
+                      return null;
+                }
+        ]]></script>
+      </method>
+      <method name="showOrder_confirm" type="action">
+        <script><![CDATA[
+          var selectList = this.result.selected;
+                if (selectList != null) {
+                      if (selectList.length > 1) {
+                            Global.throwException("UU0116");
+                      }
+                      return null;
+                }
+                else {
+                      Global.throwException("UU0111");
+                }
+        ]]></script>
+      </method>
+      <method name="showOrder_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.showOrder();
+          Global.runContentDisplayScript(this, "displayScript");
+          return result;
+        ]]></script>
+      </method>
+      <method name="receivedData" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <confirmation>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/action_receivedData_confirm</confirmation>
+        <script><![CDATA[
+          var selectList = this.result.selected;
+                var data = Global.getMessage(selectList[0].messageId,false);
+                if (data) {
+                      Global.showModelessDialog(data,600,720,'text/xml');
+                }
+        ]]></script>
+      </method>
+      <method name="receivedData_confirm" type="action">
+        <script><![CDATA[
+          var selectList = this.result.selected;
+                if (selectList != null) {
+                      if (selectList.length > 1) {
+                            Global.throwException("UU0116");
+                      }
+                      return null;
+                }
+                else {
+                      Global.throwException("UU0111");
+                }
+        ]]></script>
+      </method>
+      <method name="receivedData_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.receivedData();
+          if(result instanceof Finder) {
+            Global.runContentDisplayScript(result.searchDocument, "displayScript");
+          } else {
+            Global.runContentDisplayScript(this, "displayScript");
+          }
+
+          return result;
+        ]]></script>
+      </method>
+      <method name="sentData" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <confirmation>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/action_sentData_confirm</confirmation>
+        <script><![CDATA[
+          var selectList = this.result.selected;
+                var data = Global.getMessage(selectList[0].messageId,true);
+                if (data) {
+                      Global.showModelessDialog(data,600,720,'text/xml');
+                }
+        ]]></script>
+      </method>
+      <method name="sentData_confirm" type="action">
+        <script><![CDATA[
+          var selectList = this.result.selected;
+                if (selectList != null) {
+                      if (selectList.length > 1) {
+                            Global.throwException("UU0116");
+                      }
+                      return null;
+                }
+                else {
+                      Global.throwException("UU0111");
+                }
+        ]]></script>
+      </method>
+      <method name="sentData_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.sentData();
+          if(result instanceof Finder) {
+            Global.runContentDisplayScript(result.searchDocument, "displayScript");
+          } else {
+            Global.runContentDisplayScript(this, "displayScript");
+          }
+
+          return result;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="default" type="findVView">
+      <inputOverlay>doc_stcw.searchCustInfoUpdateData/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Customer Information Update History</label>
+      <outputOverlay>findSql_stcw.custInfoUpdateHistory/ui_UserInterface/frmui_Forms/vform_searchResult</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findSql>

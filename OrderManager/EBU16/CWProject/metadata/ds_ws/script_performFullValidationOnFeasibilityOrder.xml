@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.performFullValidationOnFeasibilityOrder">
+  <label>Perform Full Validation On Feasibility Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderHeader" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="bundleContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // check the correctness of the existance and of the status of the corresponding path in Granite
+    if(ds_ws.isLegacyService(bundleContainer)) {
+        if(isSubmit) {
+            failureArray = ds_ws.performValidationOnGranitePathForFeasibilityOrder(orderHeader.feasibilityFor, bundleContainer.bundle.serviceNumber, bundleContainer.bundle.lineItemIdentifier, isSubmit, failureArray);
+
+            if(bundleContainer.bundle.feasibilityType == null) {
+                var validationError = ["DE0030", "No value in mandatory field \"feasibilityType\""];
+                failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, bundleContainer.bundle.lineItemIdentifier, failureArray, isSubmit);
+            }
+        }
+        else {
+            //check if it's an update and OM has already received an order for such reservation
+            failureArray = performCheckForReservationNumber_(bundleContainer.bundle.reservationNumber, bundleContainer.bundle.lineItemIdentifier);
+        }
+    }
+    else {
+        for(var c=0; c<bundleContainer.circuits.length; c++) {
+            var circuitContainer = bundleContainer.circuits[c];
+            if(isSubmit) {
+                failureArray = ds_ws.performValidationOnGranitePathForFeasibilityOrder(orderHeader.feasibilityFor, circuitContainer.circuit.serviceNumber, circuitContainer.circuit.lineItemIdentifier, isSubmit, failureArray);
+
+                if(circuitContainer.circuit.feasibilityType == null) {
+                    var validationError = ["DE0030", "No value in mandatory field \"feasibilityType\""];
+                    failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, circuitContainer.circuit.lineItemIdentifier, failureArray, isSubmit);
+                }
+            }
+            else {
+                //check if it's an update and OM has already received an order for such reservation
+                failureArray = performCheckForReservationNumber_(circuitContainer.circuit.reservationNumber, circuitContainer.circuit.lineItemIdentifier);
+            }
+        }
+    }
+
+    return failureArray;
+
+
+    function performCheckForReservationNumber_(lineItemReservationNumber, lineItemIdentifier) {
+        if(lineItemReservationNumber != null && lineItemReservationNumber.trim().length > 0) {
+            var allOrdersWithReservationNumber = ds_ws.getAllBundleOrdersByReservationNumber(lineItemReservationNumber);
+            if(allOrdersWithReservationNumber != null) {
+                var foundOrderNumber = null;
+                for(var i=0; i<allOrdersWithReservationNumber.length && (foundOrderNumber == null); i++) {
+                    var orderWithReservation = Order.getOrderById(allOrdersWithReservationNumber[i].orderId);
+                    if(orderWithReservation != null) {
+                       if(orderWithReservation.orderHeader.orderType != 'F' &&
+                          !orderWithReservation.bundles[0].bundle.alreadyReceivedCancel &&
+                          orderWithReservation.bundles[0].bundle.provisioningFlag != "OLD" &&
+                          orderWithReservation.bundles[0].bundle.provisioningFlag != "CANCELLED" &&
+                          orderWithReservation.orderHeader.orderNumber.indexOf("_REVI") == 0  &&
+                          orderWithReservation.orderHeader.orderNumber.indexOf("_CANC_") == 0) {
+                            foundOrderNumber = orderWithReservation.orderHeader.orderNumber;
+                        }
+                    }
+                }
+
+                if(foundOrderNumber != null) {
+                    // there is another order that is already usning the reservation
+                    var validationErrors = ["AE0094", Global.translateText("AE0094", null, foundOrderNumber)];
+                    failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, lineItemIdentifier, failureArray, isSubmit);
+                }
+            }
+        }
+
+        return failureArray;
+    }
+  ]]></script>
+</script>

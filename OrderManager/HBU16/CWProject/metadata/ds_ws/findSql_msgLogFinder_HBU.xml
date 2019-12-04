@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="ds_ws.msgLogFinder_HBU">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_ds_ws.search_ML</input>
+  <label>Message Log Finder [HBU]</label>
+  <maxRowsLimit>1000</maxRowsLimit>
+  <metaVersion>21</metaVersion>
+  <output>doc_cwf.messageLog</output>
+  <rtConfigurable>true</rtConfigurable>
+  <type>SQL</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <methodList>
+    <method name="cwOnFilter" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        var result = true;
+
+        // Modified on 16.11.2009:
+        // - check if IF's name is equal to 'ifExpedtier' [returns 'true' to accept the record]
+        if (input.operation != null) {
+              // - search the position of ':' in the operation field
+              var p_colon = input.operation.indexOf(":");
+              // - search the position of '/' in the operation field
+              var p_slash = input.operation.indexOf("/");
+              var if_name = input.operation.substring(p_colon + 1, p_slash);
+              var operation_name = input.operation.substr(p_slash + 1);
+              result = ((if_name == "ifExpedtier_HOME") &&
+                            (operation_name == "operation_SubmitOrder" ||
+                             operation_name == "operation_UpdateOrder" ||
+                             operation_name == "operation_QuoteValidation"));
+        }
+
+        return result;
+      ]]></script>
+    </method>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        SELECT {[T1]/*+INDEX (cwmessagelog MSGLOG_CREATION)*/} {+*+}
+        FROM cwmessagelog
+        WHERE 1=1
+        {[0] and USER_ID = ?}
+        {[1,S1] and CREATION_TIME >= ?}
+        {[2,S1] and CREATION_TIME <= ?}
+        {[3] and USER_DATA1 = ?}
+      ]]></script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        if(!this.enabled)
+        return false;
+        return $psCondition;
+      ]]></script>
+    </method>
+    <method name="attachPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findSql_ds_ws.msgLogFinder_HBU</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_ds_ws.search_ML/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_cwf.messageLog</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_cwf.messageLog/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext">
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="result" type="vform">
+            <label>result</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Message_ID" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf.messageLog/leaf_messageID</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>126px</width>
+                </element>
+                <element name="AVM" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf.messageLog/leaf_avm</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>66px</width>
+                </element>
+                <element name="Interface" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf.messageLog/leaf_interType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>174px</width>
+                </element>
+                <element name="Operation" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf.messageLog/leaf_operation</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>174px</width>
+                </element>
+                <element name="User_ID" type="elref">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf.messageLog/leaf_userId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>462px</width>
+                </element>
+                <element name="Send_Time" type="eldatetime">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf.messageLog/leaf_sendTime</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Receive_Time" type="eldatetime">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf.messageLog/leaf_receiveTime</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="User_Data_1" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf.messageLog/leaf_userData1</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="User_Data_2" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf.messageLog/leaf_userData2</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="User_Data_3" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_cwf.messageLog/leaf_userData3</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_addAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <icon>/cwf/MenuIconAdd.gif</icon>
+                <tooltip>Add</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfAddView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfCopy" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_copyAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <enable type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfCopyEnabled</variablePath>
+                  </variablePathList>
+                </enable>
+                <icon>/cwf/MenuIconCopy.gif</icon>
+                <tooltip>Copy</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfCopyView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfDelete" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_deleteAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <enable type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfDeleteEnabled</variablePath>
+                  </variablePathList>
+                </enable>
+                <icon>/cwf/MenuIconDelete.gif</icon>
+                <tooltip>Delete</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfDeleteView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfUpdate" type="elmnu">
+                <menuAccel type="mAccelP"/>
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_updateAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <icon>/cwf/MenuIconEdit.gif</icon>
+                <tooltip>Edit</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfUpdateView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="detailMenu" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="datasent" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/usrActionMethod_datasent_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/produce.gif</icon>
+                    <label>Sent Data</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                  </element>
+                  <element name="datarecv" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/usrActionMethod_datarecv_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/consume.gif</icon>
+                    <label>Recv Data</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                  </element>
+                  <element name="detailMenuEx" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Menu</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <overflow>visible</overflow>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <width>1px</width>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="datasent" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <confirmation>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/action_datasent_confirm</confirmation>
+        <script><![CDATA[
+          var menuOwner = this.model;
+          var m = menuOwner.selected[0];
+          var data = Global.getMessage(m.messageID,true);
+          if (data) {
+                Global.showModelessDialog(data,600,720,'text/xml');
+          }
+        ]]></script>
+      </method>
+      <method name="datasent_confirm" type="action">
+        <script><![CDATA[
+          var menuOwner = this.model;
+          var m = menuOwner.selected;
+          if (m != null) {
+                if (m.length > 1)
+                      Global.throwException("UU0116");
+                return null;
+          }
+          else
+                Global.throwException("UU0111");
+        ]]></script>
+      </method>
+      <method name="datasent_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.datasent();
+          if(result instanceof Finder) {
+            Global.runContentDisplayScript(result.searchDocument, "displayScript");
+          } else {
+            Global.runContentDisplayScript(this, "displayScript");
+          }
+
+          return result;
+        ]]></script>
+      </method>
+      <method name="cwAutosaveConfirmation" type="action">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if (!this.isValid && Global.isAutosaveEnabled()) {
+            return "UU0256:YN";
+          }
+          return null;
+        ]]></script>
+      </method>
+      <method name="datarecv" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <confirmation>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/action_datarecv_confirm</confirmation>
+        <script><![CDATA[
+          var menuOwner = this.model;
+          var m = menuOwner.selected[0];
+          var data = Global.getMessage(m.messageID,false);
+          if (data) {
+                Global.showModelessDialog(data,600,720,'text/xml');
+          }
+        ]]></script>
+      </method>
+      <method name="datarecv_confirm" type="action">
+        <script><![CDATA[
+          var menuOwner = this.model;
+          var m = menuOwner.selected;
+          if (m != null) {
+                if (m.length > 1)
+                      Global.throwException("UU0116");
+                return null;
+          }
+          else
+                Global.throwException("UU0111");
+        ]]></script>
+      </method>
+      <method name="datarecv_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.datarecv();
+          if(result instanceof Finder) {
+            Global.runContentDisplayScript(result.searchDocument, "displayScript");
+          } else {
+            Global.runContentDisplayScript(this, "displayScript");
+          }
+
+          return result;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="default" type="findVView">
+      <inputOverlay>doc_ds_ws.search_ML/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Message Log Finder [HBU]</label>
+      <outputOverlay>findSql_ds_ws.msgLogFinder_HBU/ui_UserInterface/frmui_Forms/vform_result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findSql>

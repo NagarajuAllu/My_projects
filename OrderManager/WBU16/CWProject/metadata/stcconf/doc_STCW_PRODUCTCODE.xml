@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcconf.STCW_PRODUCTCODE">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{6234328e-22ee-4224-9c11-63237dcfff18}</guid>
+  <label>Configured ProductCodes</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="productCode" type="leaf">
+      <column>PRODUCTCODE</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>Product Code</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_PRODUCTCODE</table>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="sendDisconnectForCancel" type="leaf">
+      <column>SEND_DISCONNECT_FOR_CANCEL</column>
+      <propertyElement type="elchk">
+        <label>Send Disconnect For Cancel</label>
+      </propertyElement>
+      <table>STCW_PRODUCTCODE</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="feasibilityApproach" type="leaf">
+      <column>FEAS_APPROACH</column>
+      <propertyElement type="elslct">
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STCW_PRODUCTCODE</table>
+      <valueType>dtype_stcconf.feasibilityApproach</valueType>
+    </variable>
+    <variable name="requireValidationForBoS" type="leaf">
+      <column>REQUIRE_VALIDATION_BOS</column>
+      <propertyElement type="elchk">
+        <label>Require Validation For BoS</label>
+      </propertyElement>
+      <table>STCW_PRODUCTCODE</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="isVPN" type="leaf">
+      <column>IS_VPN</column>
+      <propertyElement type="elchk">
+        <label>Is VPN?</label>
+      </propertyElement>
+      <table>STCW_PRODUCTCODE</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="isProvisionable" type="leaf">
+      <column>IS_PROVISIONABLE</column>
+      <propertyElement type="elchk">
+        <label>Is Provisionable?</label>
+      </propertyElement>
+      <table>STCW_PRODUCTCODE</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$requireValidationForBoS" type="laction">
+      <path>doc_stcconf.STCW_PRODUCTCODE/leaf_requireValidationForBoS</path>
+      <type>initializer</type>
+      <script>return false;</script>
+    </method>
+    <method name="cwLeafInitAction$isVPN" type="laction">
+      <path>doc_stcconf.STCW_PRODUCTCODE/leaf_isVPN</path>
+      <type>initializer</type>
+      <script>return false;</script>
+    </method>
+    <method name="cwLeafInitAction$isProvisionable" type="laction">
+      <path>doc_stcconf.STCW_PRODUCTCODE/leaf_isProvisionable</path>
+      <type>initializer</type>
+      <script>return true;</script>
+    </method>
+    <method name="cwLeafInitAction$sendDisconnectForCancel" type="laction">
+      <path>doc_stcconf.STCW_PRODUCTCODE/leaf_sendDisconnectForCancel</path>
+      <type>initializer</type>
+      <valueType>doc_stcconf.STCW_PRODUCTCODE/leaf_sendDisconnectForCancel</valueType>
+      <script>return false;</script>
+    </method>
+    <method name="cwLeafInitAction$feasibilityApproach" type="laction">
+      <path>doc_stcconf.STCW_PRODUCTCODE/leaf_feasibilityApproach</path>
+      <type>initializer</type>
+      <script><![CDATA[document.feasibilityApproach = 'DEFAULT';]]></script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        // validating data
+        var productCodeFinder = new Finder ("stcconf.findAllProductCodes");
+        productCodeFinder.searchDocument.productCode  = this.productCode;
+        var resultList = productCodeFinder.search();
+
+        if(resultList != null && resultList.length > 0) {
+            if(! this.isStored) {
+                Global.throwException("AE0085");
+            }
+        }
+
+        if(this.isStored) {
+            Global.showUserMessage(Global.translateText("AI0002"));
+        }
+        else {
+            Global.showUserMessage(Global.translateText("AI0001"));
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcconf.STCW_PRODUCTCODE</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STCW_PRODUCTCODEGrid" type="elgrd">
+                    <colWidths>110px,160px,200px,60px,150px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>720px</width>
+                    <elementList>
+                      <element name="STCW_PRODUCTCODEHeader" type="elhdr">
+                        <label>Configured Product Codes</label>
+                      </element>
+                      <element name="productCode" type="elfld">
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/ui_UserInterface/permMethod_productCodeEditablePerm</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <label>Product Code</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/leaf_productCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sendDisconnectForCancel" type="elchk">
+                        <label>Send Disconnect For Cancel</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/leaf_sendDisconnectForCancel</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="feasibilityApproach" type="elslct">
+                        <label>Feasibility Approach</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/leaf_feasibilityApproach</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="isVPN" type="elchk">
+                        <label>Is VPN?</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/leaf_isVPN</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="isProvisionable" type="elchk">
+                        <label>Is Provisionable?</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/leaf_isProvisionable</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="requireValidationForBoS" type="elchk">
+                        <label>Require Validation For BoS</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcconf.STCW_PRODUCTCODE/leaf_requireValidationForBoS</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0009";
+          }
+
+          return "AW0008";
+        ]]></script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <confirmation>doc_stcconf.STCW_PRODUCTCODE/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+      <method name="productCodeEditablePerm" type="permMethod">
+        <script>return (this.model.productCode == null);</script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

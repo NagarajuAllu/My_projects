@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="processSTC.generateSIUEventsFromReport">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <schedule type="sched">
+      <duration type="dur">
+        <length>P0Y0M0DT0H2M0S</length>
+      </duration>
+    </schedule>
+    <x>52.0</x>
+    <y>33.0</y>
+    <childList>
+      <child name="generateSIUEventFromReportEnabled" type="switchActivity">
+        <label>Is &quot;Generate SIU Event From Report&quot; Enabled?</label>
+        <x>191.0</x>
+        <y>13.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>191.0</x>
+            <y>113.0</y>
+            <childList>
+              <child name="startProcessingAllRecords" type="seqActivity">
+                <label>Start Processing All Records</label>
+                <x>187.0</x>
+                <y>196.0</y>
+                <childList>
+                  <child name="processAllRecordsFound" type="scriptActivity">
+                    <label>Process All Records Found</label>
+                    <x>586.0</x>
+                    <y>180.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var allGeneratedSIUFoundList = Finder.runFinder("graniteReport.findSIUDataForHBU", "select", null);
+
+                          if(allGeneratedSIUFoundList != null && allGeneratedSIUFoundList.length > 0) {
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] GenerateSIUEVENTSFromReport - Found " + allGeneratedSIUFoundList.length + " records to process");
+
+                              for(var i=0; i<allGeneratedSIUFoundList.length; i++) {
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] GenerateSIUEVENTSFromReport - Processing record #" + i);
+
+                                  var siuEvent = new DataStructure("ds_jms.siteInformationUpdate_el");
+                                  siuEvent.businessUnit = "Home";
+                                  siuEvent.ccliCode = allGeneratedSIUFoundList[i].ccliCode;
+                                  siuEvent.city = allGeneratedSIUFoundList[i].city;
+                                  siuEvent.country = allGeneratedSIUFoundList[i].country;
+                                  siuEvent.district = allGeneratedSIUFoundList[i].district;
+                                  siuEvent.region = allGeneratedSIUFoundList[i].region;
+                                  siuEvent.siteID = allGeneratedSIUFoundList[i].siteID;
+                                  siuEvent.siteName = allGeneratedSIUFoundList[i].siteName;
+                                  siuEvent.siteType = allGeneratedSIUFoundList[i].siteType;
+                                  siuEvent.status = allGeneratedSIUFoundList[i].status;
+                                  siuEvent.cityCode = allGeneratedSIUFoundList[i].cityCode;
+                                  siuEvent.districtCode = allGeneratedSIUFoundList[i].districtCode;
+                                  siuEvent.exchangeCode = allGeneratedSIUFoundList[i].exchangeCode;
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] GenerateSIUEVENTSFromReport - generated event " + siuEvent.toXML());
+
+                                  ifGranite_jms.manageGraniteMsg_SiteInformationUpdate(siuEvent);
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] GenerateSIUEVENTSFromReport - sent event to Granite");
+                              }
+
+                              for(var i=0; i<allGeneratedSIUFoundList.length; i++) {
+                                  allGeneratedSIUFoundList[i].deleteItem();
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] GenerateSIUEVENTSFromReport - Deleted record #" + i);
+                              }
+                          }
+                          else {
+                              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] GenerateSIUEVENTSFromReport - No Records Found");
+                          }
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var configExecuteGlobal = Global.getConfigVariable("EXECUTE_GLOBAL_GENERATE_SIU", "FALSE").toUpperCase();
+
+                  debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] GenerateSIUEVENTSFromReport - EXECUTE_GLOBAL_GENERATE_SIU = " + configExecuteGlobal);
+
+                  return (configExecuteGlobal == "TRUE");
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>355.0</x>
+            <y>28.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>600.0</x>
+        <y>28.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] GenerateSIUEVENTSFromReport - End...");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] GenerateSIUEVENTSFromReport - Start ...");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Generate SIU Events From Report</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>Global</type>
+</process>

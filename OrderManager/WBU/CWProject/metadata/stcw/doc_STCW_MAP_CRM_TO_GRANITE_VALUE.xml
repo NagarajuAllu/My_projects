@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="c13b8903f6922a6f7990172db0eb58db" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.STCW_MAP_CRM_TO_GRANITE_VALUE">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0b072bf2-d432-3b81-5a3f-33a7a9a735b9}</guid>
+  <label>MapCRMToGraniteValue</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="attributeName" type="leaf">
+      <column>ATTRIBUTENAME</column>
+      <guid>{01ae20bb-562e-6c6b-fd63-191c573707ae}</guid>
+      <key>1</key>
+      <label>Attribute Name</label>
+      <propertyElement type="elfld">
+        <label>Attribute Name</label>
+      </propertyElement>
+      <table>STCW_CRM_TO_GRANITE_VALUE</table>
+      <valueType>dtype_stcw.attributeName</valueType>
+    </variable>
+    <variable name="crmAttributeValue" type="leaf">
+      <column>CRMATTRIBUTEVALUE</column>
+      <guid>{0388af82-cb68-a7b3-3286-2e5e81f5b8ef}</guid>
+      <key>2</key>
+      <label>CRM Attribute Value</label>
+      <propertyElement type="elfld">
+        <label>CRM Attribute Value</label>
+      </propertyElement>
+      <table>STCW_CRM_TO_GRANITE_VALUE</table>
+      <valueType>dtype_stcw.attributeValue</valueType>
+    </variable>
+    <variable name="graniteAttributeValue" type="leaf">
+      <column>GRANITEATTRIBUTEVALUE</column>
+      <guid>{0a850e61-9b3a-791c-1153-3e07ee889b38}</guid>
+      <label>Granite Attribute Value</label>
+      <propertyElement type="elfld">
+        <label>Granite Attribute Value</label>
+      </propertyElement>
+      <table>STCW_CRM_TO_GRANITE_VALUE</table>
+      <valueType>dtype_stcw.attributeValue</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="defaultGrid" type="elgrd">
+                    <colWidths>195,195,195,195</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>780px</width>
+                    <elementList>
+                      <element name="attributeName1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE/leaf_attributeName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="crmAttributeValue1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE/leaf_crmAttributeValue</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="graniteAttributeValue1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE/leaf_graniteAttributeValue</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

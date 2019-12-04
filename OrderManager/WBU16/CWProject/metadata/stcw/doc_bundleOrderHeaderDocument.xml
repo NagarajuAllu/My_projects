@@ -1,0 +1,1142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcw.bundleOrderHeaderDocument">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{2d7b51e0-31c0-4fcd-a2a5-8189aa75cf6d}</guid>
+  <label>Bundle Order Header</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="customerIdNumber" type="leaf">
+      <column>CUSTOMERIDNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Customer ID #</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="accountNumber" type="leaf">
+      <column>ACCOUNTNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Account Number</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="customerType" type="leaf">
+      <column>CUSTOMERTYPE</column>
+      <propertyElement type="elfld">
+        <label>Customer Type</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="customerIDType" type="leaf">
+      <column>CUSTOMERIDTYPE</column>
+      <propertyElement type="elfld">
+        <label>Customer ID Type</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="customerContact" type="leaf">
+      <column>CUSTOMERCONTACT</column>
+      <propertyElement type="elfld">
+        <label>Customer Contact</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string256</valueType>
+    </variable>
+    <variable name="customerContactName" type="leaf">
+      <column>CUSTOMERCONTACTNAME</column>
+      <propertyElement type="elfld">
+        <label>Customer Contact Name</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="customerName" type="leaf">
+      <column>CUSTOMERNAME</column>
+      <propertyElement type="elfld">
+        <label>Customer Name</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="customerNumber" type="leaf">
+      <column>CUSTOMERNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Customer Number</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="orderNumber" type="leaf">
+      <column>ORDERNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Order Number</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="orderType" type="leaf">
+      <column>ORDERTYPE</column>
+      <propertyElement type="elslct">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_wsws.orderType</valueType>
+    </variable>
+    <variable name="orderStatus" type="leaf">
+      <column>ORDERSTATUS</column>
+      <propertyElement type="elfld">
+        <label>Order Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.OrderStatus</valueType>
+    </variable>
+    <variable name="creationDate" type="leaf">
+      <column>CREATIONDATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Creation Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="createdBy" type="leaf">
+      <column>CREATEDBY</column>
+      <propertyElement type="elfld">
+        <label>Created By</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="createdByName" type="leaf">
+      <column>CREATEDBYNAME</column>
+      <propertyElement type="elfld">
+        <label>Created By Name</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="createdByContactName" type="leaf">
+      <column>CREATEDBYCONTACTNAME</column>
+      <propertyElement type="elfld">
+        <label>Created By Contact Name</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="serviceDate" type="leaf">
+      <column>SERVICEDATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Service Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="priority" type="leaf">
+      <column>PRIORITY</column>
+      <propertyElement type="elfld">
+        <label>Priority</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string25</valueType>
+    </variable>
+    <variable name="customerSegmentation" type="leaf">
+      <column>CUSTOMERSEGMENTATION</column>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string30</valueType>
+    </variable>
+    <variable name="feasibilityFor" type="leaf">
+      <column>FEASIBILITYFOR</column>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.feasibilityFor</valueType>
+    </variable>
+    <variable name="reservation" type="leaf">
+      <column>RESERVATION</column>
+      <propertyElement type="elslct">
+        <label>Reservation</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.nY_pickList</valueType>
+    </variable>
+    <variable name="businessUnit" type="leaf">
+      <column>BUSINESSUNIT</column>
+      <propertyElement type="elfld">
+        <label>Business Unit</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.businessUnit</valueType>
+    </variable>
+    <variable name="icmsSalesOrderNumber" type="leaf">
+      <column>ICMSSALESORDERNUMBER</column>
+      <propertyElement type="elfld">
+        <label>ICMS Sales Order Number</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+    <variable name="referenceTelNumber" type="leaf">
+      <column>REFERENCETELNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Reference Tel. Number</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+    <variable name="salesRepresentative" type="leaf">
+      <column>SALESREPRESENTATIVE</column>
+      <propertyElement type="elfld">
+        <label>Sales Representative</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+    <variable name="completionDate" type="leaf">
+      <column>COMPLETIONDATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Completion Date</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="receiveDate" type="leaf">
+      <column>RECEIVEDATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Receive Date</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="isMigrated" type="leaf">
+      <column>ISMIGRATED</column>
+      <propertyElement type="elchk">
+        <label>Is Migrated</label>
+      </propertyElement>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="cwDocStamp" type="leaf">
+      <column>CWDOCSTAMP</column>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.cwDocStamp</valueType>
+    </variable>
+    <variable name="cwOrderCreationDate" type="leaf">
+      <column>CWORDERCREATIONDATE</column>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.cwOrderCreationDate</valueType>
+    </variable>
+    <variable name="cwOrderId" type="leaf">
+      <column>CWORDERID</column>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.cwOrderId</valueType>
+    </variable>
+    <variable name="cwParentId" type="leaf">
+      <column>CWPARENTID</column>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.cwParentId</valueType>
+    </variable>
+    <variable name="lastUpdatedDate" type="leaf">
+      <column>LASTUPDATEDDATE</column>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.lastUpdatedDate</valueType>
+    </variable>
+    <variable name="updatedBy" type="leaf">
+      <column>UPDATEDBY</column>
+      <table>STCW_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.updatedBy</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="deletePerm" type="permMethod">
+      <script><![CDATA[
+        this.cw$super_deletePerm($psCondition);
+
+        return false;
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script><![CDATA[
+        this.cw$super_editablePerm($psCondition);
+
+        return false;
+      ]]></script>
+    </method>
+    <method name="cwOnDocVisualKey" type="action">
+      <system>true</system>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+      <script>return this.orderNumber;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.bundleOrderHeaderDocument</valueType>
+      </variable>
+      <variable name="nameValuesList" type="leaf">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_stcw.nameValueDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="bundleOrderHeader" type="vform">
+            <label>bundleOrderHeader</label>
+            <root name="output_mainInformationGrid_vCenteringGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>1</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="details_orderMessageHeader" type="elhdr">
+                  <height>30px</height>
+                  <label>Bundle Order Information</label>
+                  <showValidation>true</showValidation>
+                </element>
+                <element name="LayoutSpacer2" type="ellsp">
+                  <height>10px</height>
+                  <width>100px</width>
+                </element>
+                <element name="details_orderInfo" type="elhdr">
+                  <label>General Info</label>
+                  <showValidation>true</showValidation>
+                </element>
+                <element name="orderInfoGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <fixedColWidths>true</fixedColWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <width>1000px</width>
+                  <wrapLabel>true</wrapLabel>
+                  <elementList>
+                    <element name="orderNumber" type="elfld">
+                      <label>Order Number</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_orderNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="orderType" type="elslct">
+                      <label>Order Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_orderType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="orderStatus" type="elfld">
+                      <label>Order Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_orderStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="businessUnit" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_businessUnit</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="priority" type="elfld">
+                      <label>Priority</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_priority</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="completionDate" type="eldatetime">
+                      <label>Completion Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_completionDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="isMigrated" type="elchk">
+                      <label>Is Migrated</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_isMigrated</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer" type="elrsp">
+                      <height>20px</height>
+                      <rowSpan>20px</rowSpan>
+                    </element>
+                    <element name="createdBy" type="elfld">
+                      <label>Created By</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_createdBy</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="createdByName" type="elfld">
+                      <label>Created By Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_createdByName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="createdByContactName" type="elfld">
+                      <label>Created By Contact Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_createdByContactName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="creationDate" type="eldate">
+                      <label>Creation Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_creationDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="receiveDate" type="eldatetime">
+                      <label>Receive Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_receiveDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceDate" type="eldate">
+                      <label>Service Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_serviceDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="accountNumber" type="elfld">
+                      <label>Account Number</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_accountNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="referenceTelNumber" type="elfld">
+                      <label>Reference Tel. Number</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_referenceTelNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer1" type="elrsp">
+                      <height>20px</height>
+                      <rowSpan>20px</rowSpan>
+                    </element>
+                    <element name="feasibilityFor" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_feasibilityFor</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="reservation" type="elslct">
+                      <label>Reservation</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_reservation</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="salesRepresentative" type="elfld">
+                      <label>Sales Representative</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_salesRepresentative</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="icmsSalesOrderNumber" type="elfld">
+                      <label>ICMS Sales Order Number</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_icmsSalesOrderNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="LayoutSpacer" type="ellsp">
+                  <height>20px</height>
+                  <width>100px</width>
+                </element>
+                <element name="details_customerInfo" type="elhdr">
+                  <label>Customer Info</label>
+                </element>
+                <element name="customerInfoGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <fixedColWidths>true</fixedColWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>1000px</width>
+                  <wrapLabel>true</wrapLabel>
+                  <elementList>
+                    <element name="customerNumber" type="elfld">
+                      <label>Customer Number</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_customerNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerName" type="elfld">
+                      <label>Customer Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_customerName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerType" type="elfld">
+                      <label>Customer Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_customerType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerIdNumber" type="elfld">
+                      <label>Customer ID #</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_customerIdNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerIDType" type="elfld">
+                      <label>Customer ID Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_customerIDType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerSegmentation" type="elfld">
+                      <label>Customer Segmentation</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_customerSegmentation</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerContact" type="elfld">
+                      <label>Customer Contact</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_customerContact</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerContactName" type="elfld">
+                      <label>Customer Contact Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_customerContactName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="LayoutSpacer1" type="ellsp">
+                  <height>20px</height>
+                  <width>100px</width>
+                </element>
+                <element name="cwOrderDataGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <fixedColWidths>true</fixedColWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="updatedBy" type="elfld">
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_updatedBy</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="lastUpdatedDate" type="eldatetime">
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_lastUpdatedDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="cwParentId" type="elfld">
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_cwParentId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="cwOrderId" type="elfld">
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_cwOrderId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="cwOrderCreationDate" type="eldatetime">
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_cwOrderCreationDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="cwDocStamp" type="elfld">
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_cwDocStamp</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="cwDocId" type="elfld">
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/leaf_cwDocId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="Tabset" type="eltset">
+                <elementList>
+                  <element name="TabFrameOrderHeader" type="eltab">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/frmui_Forms/vform_bundleOrderHeader</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <label>Bundle Order Header Details</label>
+                  </element>
+                  <element name="TabFrameNVPair" type="eltab">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/frmui_Forms/vform_orderHeaderParameters</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <label>Order Header Parameters</label>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="orderHeaderParameters" type="vform">
+            <label>orderHeaderParameters</label>
+            <root name="topStack" type="elsectnstck">
+              <height>100%</height>
+              <visibilityMode>multiple</visibilityMode>
+              <visible type="varPath">
+                <variablePathList>
+                  <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                  <variablePath>doc_com.conceptwave.system.Document/permMethod_visiblePerm</variablePath>
+                </variablePathList>
+              </visible>
+              <width>100%</width>
+              <elementList>
+                <element name="topSection" type="elsect">
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="finderHeader" type="elsecth">
+                      <elementList>
+                        <element name="pref" type="elmnu">
+                          <icon>/cwt/images/16/preferences.png</icon>
+                          <showMenuDropDown>true</showMenuDropDown>
+                          <elementList>
+                            <element name="cwfXLS" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uimthd_downloadNVPairAsXLS</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <icon>/cwf/excel.gif</icon>
+                              <label>Download as XLS</label>
+                            </element>
+                            <element name="cwfCSV" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uimthd_downloadNVPairAsCSV</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <icon>/cwfv/text_marked.png</icon>
+                              <label>Download as CSV</label>
+                            </element>
+                          </elementList>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="details_nameValueHeader" type="elhdr">
+                      <height>30px</height>
+                      <label>Name Value Order Header</label>
+                    </element>
+                    <element name="Table" type="eltabl">
+                      <canReOrder type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                        </variablePathList>
+                      </canReOrder>
+                      <cellWidth>300</cellWidth>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <height>100%</height>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/leaf_nameValuesList</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <width>915px</width>
+                      <elementList>
+                        <element name="name" type="elfld">
+                          <label>Name</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/leaf_nameValuesList</variablePath>
+                              <variablePath>doc_stcw.nameValueDocument/leaf_name</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                        <element name="value" type="elfld">
+                          <label>Value</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/leaf_nameValuesList</variablePath>
+                              <variablePath>doc_stcw.nameValueDocument/leaf_value</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                        <element name="nvAction" type="elfld">
+                          <label>Action</label>
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/leaf_nameValuesList</variablePath>
+                              <variablePath>doc_stcw.nameValueDocument/leaf_nvAction</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                      </elementList>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="eldel"/>
+              <override name="hl1" type="elext">
+                <elementList>
+                  <element name="showMessageLogs" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/usrActionMethod_showMessages</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show Messages for the entire Order</label>
+                  </element>
+                  <element name="showOrchestrationTable" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/usrActionMethod_showOrchestrationTable</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show Orchestration Table for the Order</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/permMethod_orchestrationView</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="generateOrchestrationTable" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/usrActionMethod_generateOrchestrationTable</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Generate Orchestration Table for the Order</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/permMethod_generateOrchestrationView</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="restartProvisioningProcess" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/usrActionMethod_restartProvisioningProcess</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/avms.gif</icon>
+                    <label>Restart Provisioning Process</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/permMethod_restartProcessPerm</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="refresh" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/usrActionMethod_refreshUI</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/repeat.gif</icon>
+                    <label>Refresh UI</label>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="downloadNVPairAsXLS" type="uimthd">
+        <script><![CDATA[this.downloadFinderResult("ds_ws.findNameValueByParentElementId", false, "nameValueList");]]></script>
+      </method>
+      <method name="downloadNVPairAsCSV" type="uimthd">
+        <script><![CDATA[this.downloadFinderResult("ds_ws.findNameValueByParentElementId", true, "nameValueList");]]></script>
+      </method>
+      <method name="downloadFinderResult" type="uimthd">
+        <parameterList>
+          <parameter name="finderName" type="rifp">
+            <type>dtype_com.conceptwave.system.String</type>
+          </parameter>
+          <parameter name="isCSV" type="rifp">
+            <type>dtype_com.conceptwave.system.Boolean</type>
+          </parameter>
+          <parameter name="headerFileName" type="rifp">
+            <type>dtype_com.conceptwave.system.String</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          var finder = new Finder(finderName);
+          finder.searchDocument.cwDocID = this.model.id;
+          finder.searchDocument.isVAS = 'N';
+          finder.search();
+
+          var finderUI = new stcw.findNameValueByParentElementIdAndType.UserInterface(finder, this);
+          var download = (isCSV ? new com.conceptwave.system.DownloadCsv(null, this) : new com.conceptwave.system.DownloadXls(null, this));
+          download.fileName = headerFileName + "-" + this.model.orderNumber + (isCSV ? ".csv" : ".xls");
+          download.objectToPrint = finderUI;
+          download.mimeType = (isCSV ? "text/csv" : "text/xsl");
+          Global.doDownload(download);
+
+
+
+          return finderUI;
+        ]]></script>
+      </method>
+      <method name="onInit" type="action">
+        <valueType>nmeta_com.conceptwave.system.Object</valueType>
+        <script><![CDATA[
+          var res = this.cw$super_onInit();
+
+          this.nameValuesList = stcw.getAllNameValuesByParentElementIdAndNameAndVASFlag(this.model.id, false, null);
+
+          return res;
+        ]]></script>
+      </method>
+      <method name="showMessages" type="usrActionMethod">
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>1200</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var finder = new Finder("stcc.msgLogFinderNoShowInput");
+          finder.searchDocument.orderNumber = this.model.orderNumber;
+          finder.searchDocument.fromTime = null;
+          finder.search();
+          debugPrintln("finder.list.length = " + finder.list.length);
+          return finder;
+        ]]></script>
+      </method>
+      <method name="showOrchestrationTable" type="usrActionMethod">
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>1200</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var finder = new Finder("stcw.findSTCW_ORDER_ORCHESTRATION");
+          finder.searchDocument.cwOrderId = this.model.cwOrderId;
+          finder.search();
+          return finder;
+        ]]></script>
+      </method>
+      <method name="orchestrationView" type="permMethod">
+        <script><![CDATA[
+          var finder = new Finder("stcw.findSTCW_ORDER_ORCHESTRATION");
+          finder.searchDocument.cwOrderId = this.model.cwOrderId;
+          var resultList = finder.search();
+
+          return (resultList != null && resultList.length > 0);
+        ]]></script>
+      </method>
+      <method name="generateOrchestrationView" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>UPAdmin</privilege>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+        <script><![CDATA[
+          var finder = new Finder("stcw.findSTCW_ORDER_ORCHESTRATION");
+          finder.searchDocument.cwOrderId = this.model.cwOrderId;
+          var resultList = finder.search();
+
+          return (resultList == null || resultList.length == 0 && $psCondition);
+        ]]></script>
+      </method>
+      <method name="generateOrchestrationTable" type="usrActionMethod">
+        <script><![CDATA[
+          var bundleOrder = Order.getOrderById(this.model.cwOrderId);
+          var orchestrationError = stcw.writeSequenceForOrder(bundleOrder);
+
+          var msg = "Orchestration Table for Order '" + this.model.orderNumber + "' created!";
+
+          if(orchestrationError != null) {
+              msg = "Error in generating Orchestration Table for Order '" +  this.model.orderNumber + "': " + orchestrationError.ErrorDescription;
+          }
+
+          debugPrintln("[" + stcc.getSysdateInYYYYMMDD_HH24MMSS() + "] generateOrchestrationTable - " + msg);
+          Global.showUserMessage(msg);
+        ]]></script>
+      </method>
+      <method name="restartProcessPerm" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>stcwRestartProc</privilege>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+      </method>
+      <method name="restartProvisioningProcess_confirm" type="uimthd">
+        <script><![CDATA[return "AW0017";]]></script>
+      </method>
+      <method name="restartProvisioningProcess" type="usrActionMethod">
+        <confirmation>doc_stcw.bundleOrderHeaderDocument/ui_UserInterface/uimthd_restartProvisioningProcess_confirm</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          // checking if the status is already completed or cancelled
+          var isOrderCompleted = stcw.isOrderCompleted(this.model.orderStatus);
+          if(isOrderCompleted) {
+              Global.throwException("AE0165", this.model.orderStatus);
+          }
+
+          var orderUnderMgmt = Order.getOrderById(this.model.orderId);
+          // checking if provisioningFlag is different from PROVISIONING
+          if(orderUnderMgmt.parentLineItems[0].parentLineItem.provisioningFlag != "PROVISIONING") {
+              Global.throwException("AE0166", orderUnderMgmt.parentLineItems[0].parentLineItem.provisioningFlag);
+          }
+
+          var existProcessKO = stcw.checkIfExistProcessKOInOrchestrationTable(this.model.orderId);
+          if(!existProcessKO) {
+              // there are no processes in KO status in Orchestration table, so rejecting the order
+              Global.throwException("AE0167");
+          }
+
+          var areProcessesCompleted = stcw.checkAllProcessesInOrchestrationTableAreCompleted(orderUnderMgmt.id);
+          if(! areProcessesCompleted) {
+              Global.throwException("AE0088");
+          }
+
+          if(orderUnderMgmt.parentLineItems[0].parentLineItem.provisioningBU == "M") {
+              // not working for mobile orders
+              Global.throwException("AE0195", orderUnderMgmt.parentLineItems[0].parentLineItem.provisioningBU);
+          }
+
+          stcw.deleteOrchestrationTableForOrder(orderUnderMgmt.id);
+          var orchestrationErrors = stcw.writeSequenceForOrder(orderUnderMgmt);
+
+          if(orchestrationErrors != null && orchestrationErrors.length > 0) {
+              for(var m=0; m<orchestrationErrors.length; m++) {
+          debugPrintln(stcc.getSysdateForLog() + " restartProvisioningProcess - Error in creating orchestration record: <" + orchestrationErrors[m].ErrorCode + "," + orchestrationErrors[m].ErrorDescription + ">");
+              }
+              Global.throwException("Error in creating orchestration record: <" + orchestrationErrors[0].ErrorCode + "," + orchestrationErrors[0].ErrorDescription + ">");
+          }
+
+
+          var processId = Process.startProcess ("stcw.mainSTCWOrchestrationProcess_3", orderUnderMgmt.id, orderUnderMgmt.id);
+          debugPrintln(stcc.getSysdateForLog() + " Provisioning process for order number: " + this.model.orderNumber + " has been started with id:" + processId);
+          Global.showUserMessage("Provisioning process for the order has been started with id: " + processId);
+        ]]></script>
+      </method>
+      <method name="refreshUI" type="usrActionMethod">
+        <script><![CDATA[
+          if(this.model.parent != null) {
+              var documents = this.model.parent.allChildren;
+              if(documents != null) {
+                  for(var i=0; i<documents.length; i++) {
+                      documents[i].read(documents[i].id);
+                  }
+              }
+          }
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

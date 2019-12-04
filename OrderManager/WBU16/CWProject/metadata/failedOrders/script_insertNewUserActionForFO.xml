@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="failedOrders.insertNewUserActionForFO">
+  <label>Insert New UserAction For FO</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="userId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="userAction" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var document = new Document("failedOrders.STCW_FO_USER_ACTION");
+    document.userId = userId;
+    document.userAction = userAction;
+    document.when = new Date();
+    document.save();
+  ]]></script>
+</script>

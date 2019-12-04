@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.biReportResultDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{2f6813b0-3270-42b1-9e6d-153300f42636}</guid>
+  <label>BI Report Result Document</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="biId" type="leaf">
+      <key>1</key>
+      <valueType>dtype_common.string20</valueType>
+    </variable>
+    <variable name="biCreationDate" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="biCloseDate" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="biDurationInHours" type="leaf">
+      <valueType>dtype_common.number5_2</valueType>
+    </variable>
+    <variable name="biDurationInDays" type="leaf">
+      <valueType>dtype_common.number5_2</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.biReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

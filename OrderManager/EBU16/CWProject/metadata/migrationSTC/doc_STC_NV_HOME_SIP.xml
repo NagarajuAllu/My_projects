@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="migrationSTC.STC_NV_HOME_SIP">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{52a10ea7-6789-496f-9172-7392ef7534c7}</guid>
+  <label>STC_NV_HOME_SIP</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_NV_HOME_SIP</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="NAME" type="leaf">
+      <column>NAME</column>
+      <label>NAME</label>
+      <table>STC_NV_HOME_SIP</table>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+    <variable name="VALUE" type="leaf">
+      <column>VALUE</column>
+      <label>VALUE</label>
+      <table>STC_NV_HOME_SIP</table>
+      <valueType>dtype_cwf_oe.string4000</valueType>
+    </variable>
+    <variable name="cwOrderId" type="leaf">
+      <column>CWORDERID</column>
+      <table>STC_NV_HOME_SIP</table>
+      <valueType>dtype_cwf.cwOrderId</valueType>
+    </variable>
+    <variable name="SERVICEDOCID" type="leaf">
+      <column>SERVICEDOCID</column>
+      <table>STC_NV_HOME_SIP</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_migrationSTC.STC_NV_HOME_SIP</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

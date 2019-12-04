@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="granite.existsPathInGraniteWithNameAndStatus">
+  <label>Exists Path In Granite With Name And Status</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="pathName" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_granite.CIRC_PATH_HUM_ID</type>
+    </parameter>
+    <parameter name="pathStatus" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var found = false;
+
+    if (pathName != null) {
+
+        var input = new Document("granite:search_CIRC_PATH_INST");
+        input.CIRC_PATH_HUM_ID = pathName;
+
+        var output = Finder.runFinder("granite:findPathByPathName", "select", input);
+
+        if(output != null) {
+            for(var i=0; i<output.size && !found; i++) {
+                found = output[i].STATUS.toUpperCase().equals(pathStatus.toUpperCase());
+            }
+        }
+    }
+
+    return found;
+  ]]></script>
+</script>

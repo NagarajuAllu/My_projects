@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="29ba7873c210b111a399f49c8fca5786" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.performBaseValidationForIncomingDSForUpdateOrder">
+  <label>Perform Base Validation For Incoming DS For UpdateOrder</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="inputDS" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+
+    var orderStatus = inputDS.message.OrderStatus;
+    var orderType = inputDS.message.OrderType;
+    if(orderStatus == null) {
+        validationErrors = ds_ws.appendToValidationErrors("AE0008", Global.translateText("AE0008", null, ["Bundle Order STC", "'NULL'", "Submit Order"]), validationErrors);
+    }
+    else {
+        var orderStatusUpperCase = orderStatus.toUpperCase();
+        var isValid = (orderStatusUpperCase == "CANCEL" || orderStatusUpperCase == "REVISE");
+
+        if(!isValid) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performBaseValidationForIncomingDSForUpdateOrder (" + inputDS.message.OrderNumber + ") - Invalid OrderStatus for UpdateOrder: " + orderStatusUpperCase);
+            validationErrors = ds_ws.appendToValidationErrors("AE0008", Global.translateText("AE0008", null, ["Bundle Order STC", inputDS.message.OrderStatus, "Update Order"]), validationErrors);
+        }
+    }
+
+    if(orderType == null) {
+         validationErrors = ds_ws.appendToValidationErrors("AE0006", Global.translateText("AE0006", null, ["OrderType", inputDS.message.OrderNumber]), validationErrors);
+    }
+    else {
+        /***
+         *
+         * Commented due to introduction of SMR 3836
+         *
+        if(orderType == 'F') {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performBaseValidationForIncomingDSForUpdateOrder (" + inputDS.message.OrderNumber + ") - Invalid OrderType for UpdateOrder: " + orderType);
+            validationErrors = ds_ws.appendToValidationErrors("AE0040", Global.translateText("AE0040", null, orderType), validationErrors);
+        }
+     */
+
+        if(orderStatusUpperCase == "REVISE") {
+            //SMR 8194: Removed D, E, O
+            if(orderType.toUpperCase() == 'T' || orderType.toUpperCase() == 'F') {
+                validationErrors = ds_ws.appendToValidationErrors("AE0074", Global.translateText("AE0074", null, ["Revise", orderType]), validationErrors);
+            }
+        }
+        else {
+            if(orderType.toUpperCase() == 'T') {
+                validationErrors = ds_ws.appendToValidationErrors("AE0074", Global.translateText("AE0074", null, ["Cancel", orderType]), validationErrors);
+            }
+        }
+    }
+
+    // checking that the order exists
+    var searchDoc = new Document("ds_ws.search_bundleOrder");
+    searchDoc.orderNumber = inputDS.message.OrderNumber;
+    var orderListFound = Finder.runFinder("ds_ws.findAllSTCBundleOrders", "select", searchDoc);
+    if(orderListFound == null || orderListFound.length == 0) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performBaseValidationForIncomingDSForUpdateOrder (" + inputDS.message.OrderNumber + ") - Unable to find existing order with Order#: " + inputDS.message.OrderNumber);
+        validationErrors = ds_ws.appendToValidationErrors("AE0004", Global.translateText("AE0004", null, ["Bundle Order STC", inputDS.message.OrderNumber]), validationErrors);
+    }
+    else if(orderListFound.length > 1) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performBaseValidationForIncomingDSForUpdateOrder (" + inputDS.message.OrderNumber + ") - Found too many existing instances ( " +
+                 orderListFound.length + ") for Order#: " + inputDS.message.OrderNumber);
+        validationErrors = ds_ws.appendToValidationErrors("AE0002", Global.translateText("AE0002", null, ["Bundle Order STC", inputDS.message.OrderNumber]), validationErrors);
+    }
+    else {
+        var orderFound = Order.getOrderById(orderListFound[0].id);
+        if(orderFound.orderHeader.internalOrder == "Y") {
+            // SMR 8478 - the order is an internal order so no flow can be received from CRM related to this order
+            validationErrors = ds_ws.appendToValidationErrors("AE0120", Global.translateText("AE0120"), validationErrors);
+        }
+    }
+
+    // 2015-12-03: adding check to reject the update if it has been received before the MIN_TIME configured. It uses the MIN_TIME_FOR_UPDATE configu variable
+    var configMIN_TIME_FOR_UPDATE = new Number(Global.getConfigVariable("MIN_TIME_FOR_UPDATE", "60"));
+    if(configMIN_TIME_FOR_UPDATE.toString().equals("NaN")) {
+        validationErrors = ds_ws.appendToValidationErrors("AE0110", Global.translateText("AE0110", null, ["MIN_TIME_FOR_UPDATE", 'The configuration parameter is not a valid number']), validationErrors);
+    }
+    else if(configMIN_TIME_FOR_UPDATE < 10) {
+        validationErrors = ds_ws.appendToValidationErrors("AE0110", Global.translateText("AE0110", null, ["MIN_TIME_FOR_UPDATE", 'The configuration parameter value '+ configMIN_TIME_FOR_UPDATE + ' is not valid; min value is 10']), validationErrors);
+    }
+    else {
+        if(orderListFound.length == 1) {
+            var previousReceivedDateTime = (orderListFound[0].receivedDate != null ? orderListFound[0].receivedDate : new Date(2015, 9, 17)).getTime();
+            var currentDateTime = new Date().getTime();
+            var difference = (currentDateTime - previousReceivedDateTime)/1000;
+            if(difference < configMIN_TIME_FOR_UPDATE) {
+                validationErrors = ds_ws.appendToValidationErrors("AE0111", Global.translateText("AE0111", null, ["" + difference, "" + configMIN_TIME_FOR_UPDATE]), validationErrors);
+            }
+        }
+    }
+
+
+    if(inputDS.message.ParentLineItems == null || inputDS.message.ParentLineItems.length == 0) {
+        validationErrors = ds_ws.appendToValidationErrors("DE0292", Global.translateText("DE0292", null, "ParentLineItems"), validationErrors);
+    }
+
+    // 2015-09-10: filter for SIP orders
+    var configSUPPORT_FOR_SIP = Global.getConfigVariable("SUPPORT_FOR_SIP", "FALSE").toUpperCase();
+
+    var bundleSIPProductTypes  = ds_ws.getAllCRMProductTypesForOMInternalProductType("Bundle SIP");
+    if(bundleSIPProductTypes == null || bundleSIPProductTypes.length == 0) {
+        validationErrors = ds_ws.appendToValidationErrors("AE0083", Global.translateText("AE0083", null, "Bundle SIP"), validationErrors);
+    }
+    else {
+        if(inputDS.message.ParentLineItems != null) {
+            for(var i=0; i<inputDS.message.ParentLineItems.length; i++) {
+                var receivedBundleProductType = inputDS.message.ParentLineItems[i].ProductType;
+                if(isSIPProductType_(receivedBundleProductType) && (configSUPPORT_FOR_SIP != "TRUE")) {
+                    validationErrors = ds_ws.appendToValidationErrors("AE0089", Global.translateText("AE0089", null, [receivedBundleProductType, "Bundle SIP"]), validationErrors);
+                }
+            }
+        }
+    }
+
+
+    // 2015-09-10: filter for MATM orders
+    var configSUPPORT_FOR_MATM = Global.getConfigVariable("SUPPORT_FOR_MATM", "FALSE").toUpperCase();
+
+    var bundleMATMProductTypes  = ds_ws.getAllCRMProductTypesForOMInternalProductType("Bundle MATM");
+    if(bundleMATMProductTypes == null || bundleMATMProductTypes.length == 0) {
+        validationErrors = ds_ws.appendToValidationErrors("AE0083", Global.translateText("AE0083", null, "Bundle MATM"), validationErrors);
+    }
+    else {
+        if(inputDS.message.ParentLineItems != null) {
+            for(var i=0; i<inputDS.message.ParentLineItems.length; i++) {
+                var receivedBundleProductType = inputDS.message.ParentLineItems[i].ProductType;
+                if(isMATMProductType_(receivedBundleProductType) && (configSUPPORT_FOR_MATM != "TRUE")) {
+                    validationErrors = ds_ws.appendToValidationErrors("AE0089", Global.translateText("AE0089", null, [receivedBundleProductType, "Bundle MATM"]), validationErrors);
+                }
+            }
+        }
+    }
+
+
+    return validationErrors;
+
+
+    function isSIPProductType_(foundProductType) {
+        var found = false;
+        for(var i=0; i<bundleSIPProductTypes.length && !found; i++) {
+            found = (foundProductType == bundleSIPProductTypes[i]);
+        }
+
+        return found;
+    }
+
+
+    function isMATMProductType_(foundProductType) {
+        var found = false;
+        for(var i=0; i<bundleMATMProductTypes.length && !found; i++) {
+            found = (foundProductType == bundleMATMProductTypes[i]);
+        }
+
+        return found;
+    }
+  ]]></script>
+</script>

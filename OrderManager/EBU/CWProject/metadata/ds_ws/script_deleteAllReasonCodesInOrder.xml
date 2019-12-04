@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="7972d45bcaff1b3d626934f8e6d54199" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.deleteAllReasonCodesInOrder">
+  <label>Delete All Reason Codes In Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("ds_ws:reasonCode");
+    inputDoc.cwDocId = null;
+    inputDoc.cwOrderId = orderId;
+
+    var resultList = Finder.runFinder("ds_ws:reasonCodeFinder", "select", inputDoc);
+
+    var resultArray = null;
+
+    if(resultList != null) {
+        for(var i=0; i<resultList.length; i++) {
+            resultList[i].deleteItem();
+        }
+    }
+  ]]></script>
+</script>

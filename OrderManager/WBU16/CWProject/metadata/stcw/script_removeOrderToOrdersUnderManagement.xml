@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.removeOrderToOrdersUnderManagement">
+  <label>Remove Order To OrdersUnderManagement</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var searchDoc = new Document("stcw.orderUnderManagementDoc");
+    searchDoc.orderNumber = orderNumber;
+
+    var resultList = Finder.runFinder("stcw.findOrderUnderManagement", "select", searchDoc);
+
+    if(resultList != null && resultList.length > 0) {
+        resultList[0].deleteItem();
+    }
+  ]]></script>
+</script>

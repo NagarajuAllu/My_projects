@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="workflow.processAdditionalInfo">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{6797b103-fed5-4c1c-81e6-e6430d84dcc4}</guid>
+  <label>Process Additional Info</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="processId" type="leaf">
+      <column>PROCESS_ID</column>
+      <key>1</key>
+      <table>STC_PROCESS_ADDITIONALINFO</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="emailNotification" type="leaf">
+      <column>EMAIL_NOTIFICATION</column>
+      <table>STC_PROCESS_ADDITIONALINFO</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$emailNotification" type="laction">
+      <path>doc_workflow.processAdditionalInfo/leaf_emailNotification</path>
+      <type>initializer</type>
+      <script>return false;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_workflow.processAdditionalInfo</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

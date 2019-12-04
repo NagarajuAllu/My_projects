@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="6af011ec2b1ac65a1057d59f2b2873c2" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.writeSequenceForOrder">
+  <label>Write Sequence For Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // adding record for orderHeader
+    processSTC.writeRecordForOrderHeaderInOrchestrationTable(bundleOrder.orderHeader, false);
+    var errorFound = processSTC.writeSequenceForBundlesInOrder(bundleOrder);
+
+    return errorFound;
+  ]]></script>
+</script>

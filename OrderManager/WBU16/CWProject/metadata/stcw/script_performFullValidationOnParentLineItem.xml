@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.performFullValidationOnParentLineItem">
+  <label>Perform Full Validation On ParentLineItem</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="parentLineItemContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderHeader" type="rifp">
+      <type>doc_com.conceptwave.system.Document</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // validate parentLineItem
+    failureArray = stcw.validateElementOfOrder(parentLineItemContainer.parentLineItem, parentLineItemContainer.parentLineItem.lineItemIdentifier, isSubmit, failureArray);
+
+    // checking if the attributes configured as mandatory in the table STCW_LINEITEM_VALIDATION_MAP are set
+    failureArray  = stcw.performValidationOfMandatoryAttributesInLineItem(parentLineItemContainer.parentLineItem, orderHeader, stcw.isLegacyService(parentLineItemContainer, true), isSubmit, failureArray);
+
+    // check compatibility between OrderType, ParentAction and receivedAction
+    if(!stcw.checkIfActionIsCompatibleWithOrdType_ParentAction(orderHeader.orderType, orderHeader.orderStatus, orderHeader.feasibilityFor, null, parentLineItemContainer.parentLineItem.receivedAction, true, parentLineItemContainer.parentLineItem.provisioningBU)) {
+        var validationError = ["AE0044", Global.translateText("AE0044", null, [orderHeader.orderType, parentLineItemContainer.parentLineItem.receivedAction, orderHeader.orderStatus])];
+    debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+    }
+
+    // check compatibility between OrderType, ParentAction and Action of the item
+    if(!stcw.checkIfActionIsCompatibleWithOrdType_ParentAction(orderHeader.orderType, orderHeader.orderStatus, orderHeader.feasibilityFor, null, parentLineItemContainer.parentLineItem.action, false, parentLineItemContainer.parentLineItem.provisioningBU)) {
+        var validationError = ["AE0044", Global.translateText("AE0044", null, [orderHeader.orderType, parentLineItemContainer.parentLineItem.action, orderHeader.orderStatus])];
+    debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+    }
+
+    // check PONR
+    if(!isSubmit) {
+        if(orderHeader.orderStatus.toUpperCase() == "CANCEL") {
+            if(parentLineItemContainer.parentLineItem.isPONRCancelSet) {
+                var validationError = ["AE0183", Global.translateText("AE0183", null, ["CancelOrder", "Cancel"])];
+                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+            }
+        }
+        else {
+            if(parentLineItemContainer.parentLineItem.isPONRReviseSet) {
+                var validationError = ["AE0183", Global.translateText("AE0183", null, ["ReviseOrder", "Revise"])];
+                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+            }
+        }
+    }
+
+    if(parentLineItemContainer.parentLineItem.quantity > 1) {
+        var validationError = ["AE0159", Global.translateText("AE0159", null, [orderHeader.orderType, parentLineItemContainer.parentLineItem.quantity])];
+    debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+    }
+
+    if(parentLineItemContainer.parentLineItem.isVAS == true) {
+        var validationError = ["AE0177", Global.translateText("AE0177")];
+    debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+    }
+
+    // to contain the instance of the bundleLineItem with provisioningFlag = "ACTIVE"
+    var parentLineItemActive = null;
+
+    if(isSubmit) {
+        // to know if there was an error in looking for bundleLineItem "ACTIVE"
+        var errorFoundInSearchingActiveBundle = false;
+
+        // check provisioningFlag
+        if((orderHeader.orderType != "I" && orderHeader.orderType != "F") ||
+            (orderHeader.orderType == "F" && orderHeader.feasibilityFor != null && orderHeader.feasibilityFor == "CHANGE")) {
+            // 1st check: no other provisioning processes for the lineItemIdentifier
+            var parentLineItemsProvisioning = stcw.getAllLineItemsByIdentifierAndProvisioningFlag(parentLineItemContainer.parentLineItem.lineItemIdentifier, "B", "PROVISIONING");
+            if(parentLineItemsProvisioning != null && parentLineItemsProvisioning.length > 0) {
+                errorFoundInSearchingActiveBundle = true;
+                var pendingOrder = Order.getOrderById(parentLineItemsProvisioning[0].orderId);
+                var pendingOrderNumber = ((pendingOrder != null) ? pendingOrder.orderHeader.orderNumber : null);
+                var validationError = ["AE0045", Global.translateText("AE0045", null, [parentLineItemContainer.parentLineItem.lineItemIdentifier, pendingOrderNumber])];
+    debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+            }
+            else {
+                // 2nd check: an "ACTIVE" bundle (and only one) has to exist!
+                var parentLineItemsActive = stcw.getAllLineItemsByIdentifierAndProvisioningFlag(parentLineItemContainer.parentLineItem.lineItemIdentifier, "B", "ACTIVE");
+                if(parentLineItemsActive == null || parentLineItemsActive.length == 0) {
+                    errorFoundInSearchingActiveBundle = true;
+                    var validationError = ["AE0046", Global.translateText("AE0046", null, [parentLineItemContainer.parentLineItem.lineItemIdentifier])];
+    debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+                    failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+                }
+                else if(parentLineItemsActive.length > 1) {
+                    errorFoundInSearchingActiveBundle = true;
+                    var validationError = ["AE0047", Global.translateText("AE0047", null, [parentLineItemContainer.parentLineItem.lineItemIdentifier])];
+    debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+                    failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+                }
+                else {
+                    parentLineItemActive = parentLineItemsActive[0];
+                }
+            }
+        }
+
+        if(orderHeader.orderType == "I") {
+            var parentLineItemsActive = stcw.getAllLineItemsByIdentifierAndProvisioningFlag(parentLineItemContainer.parentLineItem.lineItemIdentifier, "B", "ACTIVE");
+            if(parentLineItemsActive != null || parentLineItemsActive.length > 0) {
+                parentLineItemActive = parentLineItemsActive[0];
+            }
+        }
+
+
+        if(!errorFoundInSearchingActiveBundle && parentLineItemActive != null) {
+            if(stcw.isLegacyService(parentLineItemContainer, true)) {
+                // checking if the active lineItem is a Feasibility and reservationNumber is set
+                var activeOrder = Order.getOrderById(parentLineItemActive.orderId);
+                if(activeOrder != null && activeOrder.orderHeader.orderType == "F") {
+                    // activeOrder is a Feasibility; checking correctness of reservation number
+                    if(stcc.stringHasValue(parentLineItemContainer.parentLineItem.reservationNumber)) {
+                        if(parentLineItemContainer.parentLineItem.reservationNumber != parentLineItemActive.reservationNumber) {
+                            // different reservationNumber
+                            var validationError = ["AE0160", Global.translateText("AE0160", null, [parentLineItemContainer.parentLineItem.lineItemIdentifier, parentLineItemContainer.parentLineItem.reservationNumber, parentLineItemActive.reservationNumber])];
+        debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+                            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+                        }
+                    }
+                    else {
+                        // lineItem has not reservationNumber
+                        var validationError = ["AE0161", Global.translateText("AE0161", null, [parentLineItemContainer.parentLineItem.lineItemIdentifier])];
+        debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+                        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+                    }
+                }
+            }
+        }
+
+        if(!errorFoundInSearchingActiveBundle) {
+            // check lineItemIdentifier existance stcw.checkIfActionIsCorrectForLineItemIdentifier(parentLineItemActive, lineItemToCheck, orderType, parentLineItemContainer)
+            var validationErrors = stcw.checkIfActionIsCorrectForLineItemIdentifier(parentLineItemActive, parentLineItemContainer.parentLineItem, orderHeader.orderType, parentLineItemContainer);
+            if(validationErrors != null) {
+                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+            }
+        }
+
+        if(parentLineItemContainer.parentLineItem.provisioningBU == "E" && stcw.isLegacyService(parentLineItemContainer, true) && orderHeader.orderType == "O") {
+            // it's a legacy, provisioned by CIM-E and it's a disconnect order; checking the path channel utilization
+            var validationErrors = granite.checkPathChannelUtilization(parentLineItemContainer.parentLineItem.serviceNumber);
+            if(validationErrors != null) {
+                failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+            }
+        }
+    }
+
+    if(stcw.isLegacyService(parentLineItemContainer, true)) {
+        // productCode and serviceCode have to be the same value
+        if(parentLineItemContainer.parentLineItem.productCode != parentLineItemContainer.parentLineItem.receivedServiceType) {
+            var validationError = ["AE0149", Global.translateText("AE0149", null, [parentLineItemContainer.parentLineItem.productCode, parentLineItemContainer.parentLineItem.receivedServiceType])];
+    debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+        }
+    }
+
+    // ParentLineItem NV pair
+    if(parentLineItemContainer.parentLineItemNameValueParameters != null) {
+        for(var i=0; i<parentLineItemContainer.parentLineItemNameValueParameters.length; i++) {
+            failureArray = stcw.validateElementOfOrder(parentLineItemContainer.parentLineItemNameValueParameters[i], parentLineItemContainer.parentLineItem.lineItemIdentifier, isSubmit, failureArray);
+        }
+
+        failureArray = stcw.performValidationOfMandatoryNVPairs(parentLineItemContainer.parentLineItemNameValueParameters, orderHeader.orderType, parentLineItemContainer.parentLineItem.receivedServiceType,
+                                                                parentLineItemContainer.parentLineItem.lineItemIdentifier, isSubmit, failureArray);
+
+        failureArray = stcw.performValidationOnNVPairDependency(parentLineItemContainer.parentLineItemNameValueParameters, orderHeader.orderType, parentLineItemContainer.parentLineItem.receivedServiceType,
+                                                                parentLineItemContainer.parentLineItem.lineItemIdentifier, isSubmit, failureArray);
+    }
+
+    // Check NV pair for backup
+    if(stcw.isLegacyService(parentLineItemContainer, true)) {
+        var nvPairsForBackup = stcw.getNVPairsForBackupForServiceType(parentLineItemContainer.parentLineItem.receivedServiceType);
+        if(nvPairsForBackup != null) {
+            for(var i=0; i<nvPairsForBackup.length; i++) {
+                var found = false;
+                if(parentLineItemContainer.parentLineItemNameValueParameters != null) {
+                    for(var j=0; j<parentLineItemContainer.parentLineItemNameValueParameters.length && !found; j++) {
+                        if(parentLineItemContainer.parentLineItemNameValueParameters[j].parentLineItemNameValueParameter.name == nvPairsForBackup[i]) {
+                            found = stcc.stringHasValue(parentLineItemContainer.parentLineItemNameValueParameters[j].parentLineItemNameValueParameter.value);
+                        }
+                    }
+                }
+
+                if(!found) {
+                    var validationError = ["AE0171", Global.translateText("AE0171", null, [nvPairsForBackup[i], parentLineItemContainer.parentLineItem.receivedServiceType])];
+    debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+                    failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+                }
+            }
+        }
+    }
+
+    // to perform the validation for VPN service to check the existance of the NNI parent element
+    if(parentLineItemContainer.parentLineItemNameValueParameters != null) {
+        failureArray = stcw.performValidationForNNILink(parentLineItemContainer, "B", isSubmit, failureArray);
+    }
+
+    // to perform validation about the correctness of the action of the lineItem under management
+    failureArray = stcw.performValidationForParentServiceInHierarchy(orderHeader.orderType, (! stcw.isLegacyService(parentLineItemContainer, true)), parentLineItemContainer.parentLineItem, isSubmit, failureArray);
+
+
+    // ParentLineItem VAS NV pair
+    if(parentLineItemContainer.parentLineItemVASNVParameters != null) {
+        for(var i=0; i<parentLineItemContainer.parentLineItemVASNVParameters.length; i++) {
+            failureArray = stcw.validateElementOfOrder(parentLineItemContainer.parentLineItemVASNVParameters[i], parentLineItemContainer.parentLineItem.lineItemIdentifier, isSubmit, failureArray);
+        }
+    }
+
+    // ParentLineItem Block parameters NV pair
+    if(parentLineItemContainer.parentLineItemBlockParameters != null) {
+        if(parentLineItemContainer.parentLineItem.provisioningBU == "W") {
+            var validationError = ["AE0170", Global.translateText("AE0170")];
+    debugPrintln(stcc.getSysdateForLog() + " performFullValidationOnParentLineItem (" + parentLineItemContainer.parentLineItem.lineItemIdentifier + "): Found error [" + validationError + "]");
+            failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, parentLineItemContainer.parentLineItem.lineItemIdentifier, failureArray, isSubmit);
+        }
+
+        failureArray = stcw.performValidationForBlockParameters(parentLineItemContainer.parentLineItemBlockParameters, "B", orderHeader.orderType,
+                                                                parentLineItemContainer.parentLineItem.receivedServiceType, parentLineItemContainer.parentLineItem.lineItemIdentifier, isSubmit, failureArray);
+    }
+
+
+    // services
+    if(parentLineItemContainer.services != null) {
+        var isBundle = !stcw.isLegacyService(parentLineItemContainer, true);
+
+        for(var i=0; i<parentLineItemContainer.services.length; i++) {
+            var serviceContainer = parentLineItemContainer.services[i];
+            failureArray = stcw.performFullValidationOnServiceLI(serviceContainer, failureArray, orderHeader, parentLineItemContainer.parentLineItem.action, parentLineItemActive, isSubmit, isBundle);
+        }
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

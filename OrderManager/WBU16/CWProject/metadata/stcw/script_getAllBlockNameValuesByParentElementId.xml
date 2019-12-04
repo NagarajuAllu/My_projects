@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getAllBlockNameValuesByParentElementId">
+  <label>Get All Block NameValues By ParentElementId</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="parentElementId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputSearchDoc = new Document("cwt_common.docID");
+    inputSearchDoc.cwDocID = parentElementId;
+
+    var resultList = Finder.runFinder("stcw.findBlockNameValuesByParentElementId", "select", inputSearchDoc);
+
+    return resultList;
+  ]]></script>
+</script>

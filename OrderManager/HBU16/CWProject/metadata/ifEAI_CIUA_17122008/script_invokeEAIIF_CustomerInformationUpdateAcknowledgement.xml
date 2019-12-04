@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="1e4d3d0043d9f5a57c26476d563254bb" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ifEAI_CIUA_17122008.invokeEAIIF_CustomerInformationUpdateAcknowledgement">
+  <guid>{0c240d23-6917-e4f2-f0bc-b38c8f078694}</guid>
+  <label>[17.12.2008] Invoke EAI Interface: Customer Information Update Acknowledgement [SOAP]</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = "[INVOKE EAI INTERFACE VIA 'SOAP': CUSTOMER INFORMATION UPDATE ACKNOWLEDGEMENT] ";
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "START...");
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "INPUT: " + (input != null ? input.toXML() : "") + "...");
+
+          var output = null;
+          try {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "INVOKING INTERFACE...");
+                output = Global.invokeInterface("ifEAI_CIUA_17122008:CIUA",
+                                                                "receiveRequest",
+                                                                input);
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "RESULT: " + output + "...");
+          }
+          catch (exc){
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "EXCEPTION: " + exc);
+          }
+
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "END...");
+          return output;
+  ]]></script>
+</script>

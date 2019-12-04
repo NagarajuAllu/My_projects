@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.txMappingSummaryReportSearchDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{01586b31-3161-4d10-abcc-83fd4c62411c}</guid>
+  <label>TX Mapping Summary Report Search Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="customerName" type="leaf">
+      <valueType>dtype_tfs.customerPickListReference</valueType>
+    </variable>
+    <variable name="customerProject" type="leaf">
+      <valueType>dtype_tfs.customerProjectPickListReference</valueType>
+    </variable>
+    <variable name="customerProjectPhase" type="leaf">
+      <valueType>dtype_tfs.customerProjectPhasePickListReference</valueType>
+    </variable>
+    <variable name="siteA" type="leaf">
+      <valueType>dtype_granite.siteReference</valueType>
+    </variable>
+    <variable name="siteZ" type="leaf">
+      <valueType>dtype_granite.siteReference</valueType>
+    </variable>
+    <variable name="planType" type="leaf">
+      <valueType>dtype_tfs.planTypePickListReference</valueType>
+    </variable>
+    <variable name="issuePRN" type="leaf">
+      <valueType>dtype_tfs.issuePRNPickListReference</valueType>
+    </variable>
+    <variable name="faCompletionDateFrom" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="faCompletionDateTo" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="prnrCreationDateFrom" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="prnrCreationDateTo" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.txMappingSummaryReportSearchDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultVerticalLayout" type="elvlt">
+                <width>1200px</width>
+                <elementList>
+                  <element name="inputDataLabel" type="elhdr">
+                    <cellAlignment>left,center</cellAlignment>
+                    <height>40px</height>
+                    <label>Tx Mapping Report Input Data</label>
+                    <width>1200px</width>
+                  </element>
+                  <element name="txMappingReportSearchDocGrid" type="elgrd">
+                    <colWidths>120px,150px,120px,150px,120px,150px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="customerName" type="elslct">
+                        <label>PRNR Customer Name</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/leaf_customerName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerProject" type="elslct">
+                        <label>PRNR Customer Project</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/leaf_customerProject</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerProjectPhase" type="elslct">
+                        <label>PRNR Customer Project Phase</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/leaf_customerProjectPhase</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteA" type="elref">
+                        <label>Site A Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/leaf_siteA</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteZ" type="elref">
+                        <label>Site Z Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/leaf_siteZ</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CellSpacer" type="elcsp"/>
+                      <element name="prnrCreationDateFrom" type="eldatetime">
+                        <label>PRNR Creation Date &gt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/leaf_prnrCreationDateFrom</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnrCreationDateTo" type="eldatetime">
+                        <label>PRNR Creation Date &lt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/leaf_prnrCreationDateTo</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer2" type="elrsp">
+                        <height>15px</height>
+                        <rowSpan>15px</rowSpan>
+                      </element>
+                      <element name="planType" type="elslct">
+                        <label>PRN Plan Type</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/leaf_planType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="issuePRN" type="elslct">
+                        <label>PRN Issue</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/leaf_issuePRN</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer1" type="elrsp">
+                        <height>15px</height>
+                        <rowSpan>15px</rowSpan>
+                      </element>
+                      <element name="faCompletionDateFrom" type="eldatetime">
+                        <label>TFR FA Completion Date &gt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/leaf_faCompletionDateFrom</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="faCompletionDateTo" type="eldatetime">
+                        <label>TFR FA Completion Date &lt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.txMappingSummaryReportSearchDoc/leaf_faCompletionDateTo</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="LayoutSpacer" type="ellsp">
+                    <height>20px</height>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

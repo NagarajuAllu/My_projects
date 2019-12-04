@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="65dfbb3a4376699b19603a01ed83150" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.findRejectedOrderIds">
+  <guid>{0e0b26e4-5808-fbef-7c62-b05baa439fdb}</guid>
+  <label>Find Rejected OrderIds</label>
+  <metaVersion>3</metaVersion>
+  <script><![CDATA[
+    var rejectedOrderIdFinder = new Finder ("stcw:rejectedOrderIdFinder");
+    rejectedOrderIdFinder.search ();
+
+    var orderIdList = rejectedOrderIdFinder.list;
+    if (orderIdList == null || orderIdList.size <= 0)
+          return (null);
+
+    var orderIds = null;
+    for (var i = 0; i < orderIdList.size; i++) {
+          orderIds = (orderIds == null ? "" : orderIds + ";") + orderIdList[i].orderId;
+    }
+
+    return orderIds;
+  ]]></script>
+</script>

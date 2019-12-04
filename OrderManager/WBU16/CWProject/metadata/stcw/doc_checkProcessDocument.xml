@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcw.checkProcessDocument">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0421c4e0-8b89-5c68-f831-bd2351742c0f}</guid>
+  <label>Check Process Document</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="numServices" type="leaf">
+      <label>Num Services</label>
+      <propertyElement type="elfld">
+        <label>Num Services</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="processedServices" type="leaf">
+      <label>Processed Services</label>
+      <propertyElement type="elfld">
+        <label>Processed Services</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="ErrorCode" type="leaf">
+      <label>ErrorCode</label>
+      <propertyElement type="elfld">
+        <label>ErrorCode</label>
+      </propertyElement>
+      <valueType>dtype_xcutl.ErrorCode</valueType>
+    </variable>
+    <variable name="ErrorText" type="leaf">
+      <label>ErrorText</label>
+      <propertyElement type="elfld">
+        <label>ErrorText</label>
+      </propertyElement>
+      <valueType>dtype_stcw.errorText</valueType>
+    </variable>
+    <variable name="ackResult" type="leaf">
+      <label>Ack Result</label>
+      <propertyElement type="elfld">
+        <label>Ack Result</label>
+      </propertyElement>
+      <valueType>dtype_stcw.ackResult</valueType>
+    </variable>
+    <variable name="serviceStatus" type="leaf">
+      <label>Service Status</label>
+      <propertyElement type="elfld">
+        <label>Service Status</label>
+      </propertyElement>
+      <valueType>dtype_stcw.serviceStatus</valueType>
+    </variable>
+    <variable name="orderId" type="leaf">
+      <label>Order Id</label>
+      <propertyElement type="elref">
+        <label>Order Id</label>
+      </propertyElement>
+      <valueType>dtype_cwf_oe.OrderIdNonRef</valueType>
+    </variable>
+    <variable name="quoteNumber" type="leaf">
+      <label>Quote Number</label>
+      <propertyElement type="elfld">
+        <label>Quote Number</label>
+      </propertyElement>
+      <valueType>dtype_stcw.quoteNumber</valueType>
+    </variable>
+    <variable name="orderRowItemId" type="leaf">
+      <label>OrderRowItemId</label>
+      <propertyElement type="elfld">
+        <label>OrderRowItemId</label>
+      </propertyElement>
+      <valueType>dtype_wsws.orderRowItemId</valueType>
+    </variable>
+    <variable name="genericProcessMsgDocId" type="leaf">
+      <label>Generic Process Msg DocId</label>
+      <propertyElement type="elfld">
+        <label>Generic Process Msg DocId</label>
+      </propertyElement>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="orderNumber" type="leaf">
+      <label>OrderNumber</label>
+      <propertyElement type="elfld">
+        <label>OrderNumber</label>
+      </propertyElement>
+      <valueType>dtype_orb.OrderNumber</valueType>
+    </variable>
+    <variable name="restorationFlag" type="leaf">
+      <label>Restoration Flag</label>
+      <propertyElement type="elfld">
+        <label>Restoration Flag</label>
+      </propertyElement>
+      <valueType>dtype_stcw.restorationFlag</valueType>
+    </variable>
+    <variable name="cwMsgId" type="leaf">
+      <label>CW Message Id</label>
+      <propertyElement type="elfld">
+        <label>CW Message Id</label>
+      </propertyElement>
+      <valueType>dtype_stcw.messageId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.checkProcessDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

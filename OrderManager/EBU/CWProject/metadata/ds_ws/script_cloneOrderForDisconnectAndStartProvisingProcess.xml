@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="bfea9cd12bde184d2967031e8dc5a13f" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.cloneOrderForDisconnectAndStartProvisingProcess">
+  <label>Clone Order For Disconnect And Start Provisioning Process for Cloned Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderToBeCloned" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+    <parameter name="primaryOrderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="reasonCodeValue" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="errorArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var processId = null;
+
+    var debugString = "cloneOrderForDisconnectAndStartProvisingProcess - OrderNumber: " + orderToBeCloned.orderHeader.orderNumber;
+
+    var clonedOrder = orderToBeCloned.copyOrder(false);
+    clonedOrder.orderHeader.orderNumber = "DIS-" + clonedOrder.orderHeader.orderNumber;
+    clonedOrder.orderHeader.orderStatus = "New";
+    clonedOrder.orderHeader.orderType = "O";
+    clonedOrder.orderHeader.primaryOrderNumber = primaryOrderNumber;
+    clonedOrder.orderHeader.completionDate = null;
+
+    if(clonedOrder.orderHeaderParameters != null) {
+        for(var z=0; z<clonedOrder.orderHeaderParameters.length; z++) {
+            clonedOrder.orderHeaderParameters[z].orderHeaderParameter.parentElementId = clonedOrder.orderHeader.id;
+        }
+    }
+
+    for(var i=0; i<clonedOrder.bundles.length; i++) {
+        var bundleContainer = clonedOrder.bundles[i];
+        bundleContainer.bundle.action = "D";
+
+        if(bundleContainer.bundleParameters != null) {
+            for(var z=0; z<bundleContainer.bundleParameters.length; z++) {
+                bundleContainer.bundleParameters[z].bundleParameter.parentElementId = bundleContainer.bundle.id;
+            }
+        }
+
+        if(bundleContainer.bundleBlockParameters != null) {
+            for(var z=0; z<bundleContainer.bundleBlockParameters.length; z++) {
+                bundleContainer.bundleBlockParameters[z].bundleBlockParameter.parentElementId = bundleContainer.bundle.id;
+            }
+        }
+
+
+        if(bundleContainer.circuits != null) {
+            for(var j=0; j<bundleContainer.circuits.length; j++) {
+                var circuitContainer = bundleContainer.circuits[j];
+                circuitContainer.circuit = updateLineItemForDisconnect_(circuitContainer.circuit);
+
+                if(circuitContainer.circuitParameters != null) {
+                    for(var z=0; z<circuitContainer.circuitParameters.length; z++) {
+                        circuitContainer.circuitParameters[z].circuitParameter.parentElementId = circuitContainer.circuit.id;
+                    }
+                }
+
+                if(circuitContainer.circuitBlockParameters != null) {
+                    for(var z=0; z<circuitContainer.circuitBlockParameters.length; z++) {
+                        circuitContainer.circuitBlockParameters[z].circuitBlockParameter.parentElementId = circuitContainer.circuit.id;
+                    }
+                }
+
+
+                if(circuitContainer.services != null) {
+                    for(var k=0; k<circuitContainer.services.length; k++) {
+                        var serviceContainer = circuitContainer.services[k];
+                        serviceContainer.service = updateLineItemForDisconnect_(serviceContainer.service);
+
+                        if(serviceContainer.serviceParameters != null) {
+                            for(var z=0; z<serviceContainer.serviceParameters.length; z++) {
+                                serviceContainer.serviceParameters[z].serviceParameter.parentElementId = serviceContainer.service.id;
+                            }
+                        }
+
+                        if(serviceContainer.serviceBlockParameters != null) {
+                            for(var z=0; z<serviceContainer.serviceBlockParameters.length; z++) {
+                                serviceContainer.serviceBlockParameters[z].serviceBlockParameter.parentElementId = serviceContainer.service.id;
+                            }
+                        }
+
+
+                        if(serviceContainer.subServices != null) {
+                            for(var l=0; l<serviceContainer.subServices.length; l++) {
+                                var subServiceContainer = serviceContainer.subServices[l];
+                                subServiceContainer.subService = updateLineItemForDisconnect_(subServiceContainer.subService);
+
+                                if(subServiceContainer.subServiceParameters != null) {
+                                    for(var z=0; z<subServiceContainer.subServiceParameters.length; z++) {
+                                        subServiceContainer.subServiceParameters[z].subServiceParameter.parentElementId = subServiceContainer.subService.id;
+                                    }
+                                }
+
+                                if(subServiceContainer.subServiceBlockParameters != null) {
+                                    for(var z=0; z<subServiceContainer.subServiceBlockParameters.length; z++) {
+                                        subServiceContainer.subServiceBlockParameters[z].subServiceBlockParameter.parentElementId = subServiceContainer.subService.id;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    var orchestrationErrors = processSTC.writeSequenceForOrder(clonedOrder);
+    if(orchestrationErrors != null) {
+        for(var m=0; m<orchestrationErrors.length; m++) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] " + debugString + " - Error in creating orchestration record: " +
+                 "<" + orchestrationErrors[k].ErrorCode + "," + orchestrationErrors[k].ErrorDescription + ">");
+            errorArray.push(orchestrationErrors[k]);
+        }
+        clonedOrder.deleteOrder();
+    }
+    else {
+        clonedOrder.save();
+
+        processId = Process.startProcess ("processSTC.mainSTCOrchestrationProcess", clonedOrder.id, clonedOrder.id);
+    }
+
+    return processId;
+
+
+
+
+    function updateLineItemForDisconnect_(lineItem) {
+        lineItem.action = "D";
+        lineItem.alreadyReceivedCancel = false;
+        lineItem.alreadySentToGranite = false;
+        lineItem.completionDate = null;
+        lineItem.isSubmit = true;
+        lineItem.isCancel = false;
+        lineItem.lineItemStatus = "Hold";
+        if(lineItem.elementTypeInOrderTree == "B") {
+            lineItem.provisioningFlag = "PROVISIONING";
+        }
+        lineItem.requestedActionIsA = false;
+        lineItem.sentAnytimeToGranite = false;
+        lineItem.workOrderNumber = null;
+
+        if(lineItem.elementTypeInOrderTree == "S") {
+            createReasonCode_(lineItem.id);
+        }
+
+        return lineItem;
+    }
+
+    function createReasonCode_(parentDocId) {
+        var reasonCodeDoc = new Document("ds_ws:reasonCode");
+        reasonCodeDoc.parentDocId = parentDocId;
+        reasonCodeDoc.cwOrderId = clonedOrder.id;
+        reasonCodeDoc.reasonCode = reasonCodeValue;
+        reasonCodeDoc.save();
+    }
+  ]]></script>
+</script>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="ea24c8a35d637755a3d4f62d6782d9ba" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.STC_ORDER_ORCHESTRATION">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{5fa89661-8563-422e-8255-f3f00ffa06c1}</guid>
+  <label>STC_ORDER_ORCHESTRATION</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="orderNumber" type="leaf">
+      <column>ORDERNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Order Number</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="cwOrderId" type="leaf">
+      <column>CWORDERID</column>
+      <propertyElement type="elfld">
+        <label>System Order Id.</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="cwParentObjectId" type="leaf">
+      <column>CWPARENTOBJECTID</column>
+      <propertyElement type="elfld">
+        <label>Parent Object Id.</label>
+      </propertyElement>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="sequence" type="leaf">
+      <column>SEQUENCE</column>
+      <propertyElement type="elfld">
+        <label>Sequence</label>
+      </propertyElement>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_ds_ws.integer3</valueType>
+    </variable>
+    <variable name="cwOrderItemPath" type="leaf">
+      <column>CWORDERITEMPATH</column>
+      <propertyElement type="elfld">
+        <label>CW OrderItem Path</label>
+      </propertyElement>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_ds_ws.string1000</valueType>
+    </variable>
+    <variable name="provisionable" type="leaf">
+      <column>PROVISIONABLE</column>
+      <propertyElement type="elchk">
+        <label>provisionable</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="lineItemIdentifier" type="leaf">
+      <column>LINEITEMIDENTIFIER</column>
+      <propertyElement type="elfld">
+        <label>lineItemIdentifier</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_ds_ws.string255</valueType>
+    </variable>
+    <variable name="elementTypeInOrchestration" type="leaf">
+      <column>ELEMENTTYPEINORCHESTRATION</column>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_ds_ws.elementTypeInOrderTree</valueType>
+    </variable>
+    <variable name="orchestrationProcessId" type="leaf">
+      <column>ORCHESTRATIONPROCESSID</column>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_cwf.processId</valueType>
+    </variable>
+    <variable name="provisioningProcessResult" type="leaf">
+      <column>PROVISIONINGPROCESSRESULT</column>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_processSTC.provisioningProcessResult</valueType>
+    </variable>
+    <variable name="provisioningProcessId" type="leaf">
+      <column>PROVISIONINGPROCESSID</column>
+      <table>STC_ORDER_ORCHESTRATION</table>
+      <valueType>dtype_cwf.processId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_processSTC.STC_ORDER_ORCHESTRATION</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="genGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STC_ORDER_ORCHESTRATIONGrid" type="elgrd">
+                    <colWidths>140px,160px,140px,160px,140px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>640px</width>
+                    <elementList>
+                      <element name="STC_ORDER_ORCHESTRATIONHeader" type="elhdr">
+                        <label>Order Orchestration</label>
+                      </element>
+                      <element name="orderNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/leaf_orderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp"/>
+                      <element name="lineItemIdentifier" type="elfld">
+                        <label>LineItem Identifier</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/leaf_lineItemIdentifier</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwOrderItemPath" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/leaf_cwOrderItemPath</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwDocId" type="elfld">
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/leaf_cwDocId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwParentObjectId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/leaf_cwParentObjectId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="provisionable" type="elchk">
+                        <label>Provisionable</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/leaf_provisionable</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sequence" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/leaf_sequence</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="elementTypeInOrchestration" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/leaf_elementTypeInOrchestration</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer1" type="elrsp"/>
+                      <element name="orchestrationProcessId" type="elref">
+                        <dataLength>9</dataLength>
+                        <label>Orchestration Process ID</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/leaf_orchestrationProcessId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="provisioningProcessId" type="elref">
+                        <dataLength>9</dataLength>
+                        <label>Provisioning Process ID</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/leaf_provisioningProcessId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="provisioningProcessResult" type="elslct">
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_ORCHESTRATION/leaf_provisioningProcessResult</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

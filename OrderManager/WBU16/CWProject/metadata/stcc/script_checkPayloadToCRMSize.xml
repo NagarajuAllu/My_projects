@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="3aafaceea24031a058d29b42b3ce826" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcc.checkPayloadToCRMSize">
+  <guid>{025353ad-cd94-b972-6e34-509f14eed279}</guid>
+  <label>Check Payload To CRM Size</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="inputMessage" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="operationName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var resultString = null;
+    if(inputMessage != null) {
+          var payloadSize    = inputMessage.toXML().length;
+          var maxPayloadSize = Global.getConfigVariable("MAX_LENGTH_STRING_IN_CRM", "500");
+          if(payloadSize > maxPayloadSize) {
+                Global.logDebug("Warning: the payload sent to EAI for operation '" + operationName + "' has a size [" + payloadSize +
+                                        "] greater than the configured one: " + maxPayloadSize + "; Payload is: " + inputMessage.toXML());
+          }
+    }
+
+    return;
+  ]]></script>
+</script>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.overload_computeNextUser">
+  <label>Compute Next User [Overload]</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="orderItemId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="processId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="processName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="activityPerformed" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // check if there is a rule configured
+    var finderOperationAssignment = new Finder("workflow.operationAssignmentRuleFinder");
+    finderOperationAssignment.searchDocument.processName = processName;
+    finderOperationAssignment.searchDocument.operationName = activityPerformed;
+
+    debugPrintln("Process name:" + processName + "; activityPerformed:" + activityPerformed);
+
+    var resultList = finderOperationAssignment.search();
+    debugPrintln("Result for activity search: " + resultList + "Length: " + resultList.length);
+    var user = null;
+
+    if(resultList != null && resultList.length > 0) {
+        // extract the assignment rule
+        var assignmentRule = resultList[0].assignmentRule;
+        var internalParticipantName = resultList[0].internalParticipantName;
+        var privilegeCode = resultList[0].privilegeCode;
+        debugPrintln("Privilege Code is: "+privilegeCode);
+        user = workflow.getUserForOrder(orderId, orderItemId, internalParticipantName);
+
+        if(user == null) {
+            if(assignmentRule == "Direct") {
+                Global.throwException("AE0011", internalParticipantName);
+            }
+            else if(assignmentRule == "Round Robin") {
+                user = workflow.selectNextUserWithPrivForRoundRobin(privilegeCode);
+            }
+            else if(assignmentRule == "To Manager") {
+                var userList = up_priv.getManagersByPrivilege(privilegeCode);
+                if(userList != null && userList.length == 1) {
+                    user = userList[0];
+                }
+                else {
+                    // 2016/08/04 -- LLD says that it has to be put in Shared List so next sentence is wrong
+                    // OLD and WRONG: no managers or too many managers, so implementing Load Balancing
+                    // user = findUsersByLoadBalancing_(privilegeCode);
+                }
+            }
+            else if(assignmentRule == "Load Balancing") {
+                user = findUsersByLoadBalancing_(privilegeCode);
+            }
+            else {
+                // To Shared List, so nothing to do
+            }
+        }
+      Global.logInfo("User Picked: "+user);
+        // email management
+        workflow.setEmailForProcess(processId, resultList[0].emailNotification);
+    }
+
+    if(user != null) {
+        workflow.setUserInUsersForOrder(orderId, orderItemId, internalParticipantName, user.userId);
+        debugPrintln("User found and set as: "+user.userId + " for order.id:" + orderId + " orderItemId:" + orderItemId);
+    }
+    else{
+      debugPrintln("User not found.");
+    }
+
+
+
+    function findUsersByLoadBalancing_(privilegeCode) {
+        var userList = up_priv.getUsersByPrivilegeSortByLoad(privilegeCode);
+        if(userList == null || userList.length == 0) {
+            Global.throwException("AE0012", privilegeCode);
+        }
+
+        return userList[0];
+    }
+  ]]></script>
+</script>

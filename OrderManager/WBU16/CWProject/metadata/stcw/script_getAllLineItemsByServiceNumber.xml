@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getAllLineItemsByServiceNumber">
+  <label>Get All LineItems By ServiceNumber</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="serviceNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var resultList = null;
+
+    if(serviceNumber != null) {
+        var searchDoc = new Document("stcw.search_LineItem");
+        searchDoc.serviceNumber = serviceNumber;
+
+        resultList = Finder.runFinder("stcw.findLineItem", "select", searchDoc);
+    }
+    return resultList;
+  ]]></script>
+</script>

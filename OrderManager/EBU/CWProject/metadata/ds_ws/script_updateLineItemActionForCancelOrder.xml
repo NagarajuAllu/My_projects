@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="71a15016292a415baef1667d2712b168" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.updateLineItemActionForCancelOrder">
+  <label>Update LineItemAction For CancelOrder</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="lineItem" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="existingLineItem" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="existingOrderWasKO" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="validationErrors" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    /*******
+       NOTE:  Please refer to the following table (mail sent by MR to Waleed 2015-05-01):
+    -------------+-------------------+-------------------+-------------------+------------------------------------------------|
+                 |              Do Nothing               |                Cancel                                              |
+                 |     (so maintain same action)         |                                                                    |
+                 |-------------------+-------------------+-------------------+------------------------------------------------|
+                 | Already received  |   Not received    | Already received  |       Not received                             |
+                 |      cancel       |      cancel       |      cancel       |          cancel                                |
+    -------------+-------------------+-------------------+-------------------+------------------------------------------------|
+     Hold        |       REJECT      | Status: Hold      |          Status: CANCELLED                                         |
+                 |                   | Action: existing  |          Action: existing                                          |
+                 |                   | send as Submit    |          NO PROVISIONING                                           |
+    -------------+-------------------+-------------------+-------------------+-------------------+-----------+----------------|
+     COMPLETED   |          Status: COMPLETED            |     REJECT        |  Prev. Action N:  |  Default: |     MATM:      |
+                 |          Action: existing             |                   +-------------------+-----------+----------------|
+                 |          NO PROVISIONING              |                   | Status: COMPLETED |  REJECT   | Status: Hold   |
+                 |                                       |                   | Action: existing  |           | Action: D      |
+                 |                                       |                   | NO PROVISIONING   |           | send as Submit |
+    -------------+-------------------+-------------------+-------------------+-------------------+-----------+----------------|
+     CANCELLED   |                 REJECT                |          Status: CANCELLED                                         |
+                 |                                       |          Action: existing                                          |
+                 |                                       |          NO PROVISIONING                                           |
+    -------------+-------------------+-------------------+-------------------+-------------------+-----------+----------------|
+     FAILED      |                 REJECT                |          Status: CANCELLED                                         |
+                 |                                       |          Action: existing                                          |
+                 |                                       |          NO PROVISIONING                                           |
+    -------------+-------------------+-------------------+-------------------+------------------------------------------------|
+     Submitted   |          Status: maintain             |    REJECT         |       Status: Hold                             |
+                 |          Action: existing             |                   |       Action: 'C'                              |
+                 |          Operation: maintain          |                   |       send as Update                           |
+                 | Don't send to Granite if already done |                   |                                                |
+    -------------+-------------------+-------------------+-------------------+------------------------------------------------|
+
+    **********/
+
+    var existingLineItemStatus = existingLineItem.lineItemStatus;
+    var existingLineItemAction = existingLineItem.action;
+    // 2015-12-01: added sentAnytimeToGranite management
+    var existingLineItemInGranite = (existingLineItem.alreadySentToGranite || lineItem.sentAnytimeToGranite);
+
+    var receivedAction = lineItem.action;
+
+    if(existingLineItemStatus == "Hold" || existingLineItemStatus == "Waiting for Granite Resp") {
+        // just received; nothing happened in provisioning
+        if(receivedAction != "C") {
+            if(lineItem.alreadyReceivedCancel) {
+                // for the lineItem OM has been already received a Cancel request; and now it's receiving a "non cancel"
+                validationErrors = ds_ws.appendToValidationErrors("AE0070", Global.translateText("AE0070", null, "CancelOrder"), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+            }
+            else {
+                // maintain the existing action and status
+                lineItem.action = receivedAction;
+                lineItem.lineItemStatus = "Hold";
+                // send as submit
+                lineItem.isSubmit = true;
+                lineItem.isCancel = false;
+            }
+        }
+        else {
+            // 2015-12-30:
+            // changed to support repush for updateOrder:
+            // original code was:
+            //     if(lineItem.alreadyReceivedCancel) {
+            //
+            if(lineItem.alreadyReceivedCancel && !existingOrderWasKO) {
+                validationErrors = ds_ws.appendToValidationErrors("AE0070", Global.translateText("AE0070", null, "CancelOrder"), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+            }
+            else {
+                if(existingLineItemInGranite) {
+                    // 2015-12-01: it means that a previous instance of the lineItem has been sent to Granite. So the cancel has to be forwarded to Granite
+                    lineItem.action = receivedAction;
+                    lineItem.lineItemStatus = "Hold";
+                    lineItem.isSubmit = false;
+                    lineItem.isCancel = true;
+                }
+                else {
+                    // requested to cancel the provisioning for this element that has not yet started. Mark as cancelled
+                    lineItem.action = receivedAction;
+                    lineItem.lineItemStatus = "CANCELLED";
+                }
+            }
+        }
+    }
+    else if(existingLineItemStatus.toUpperCase() == "COMPLETED") {
+        // element completed
+        if(receivedAction != "C") {
+            // maintain the existing action; but the element is completed, so nothing to do
+            lineItem.action = receivedAction;
+            lineItem.lineItemStatus = "COMPLETED";
+        }
+        else {
+            if(lineItem.alreadyReceivedCancel) {
+                // already received cancel and component completed
+                validationErrors = ds_ws.appendToValidationErrors("AE0071", Global.translateText("AE0071", null, ["CancelOrder", "COMPLETED"]), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+            }
+            else {
+                if(existingLineItemAction == "N") {
+                    // lineItem COMPLETED due the action that was "N" so nothing to do
+                    lineItem.action = receivedAction;
+                    // 2015-08-17: set the status of the lineItem to CANCELLED to properly compute the status of the parentLineItem
+                    // lineItem.lineItemStatus = "COMPLETED";
+                    lineItem.lineItemStatus = "CANCELLED";
+                    lineItem.isCancel = true;  // maintains that we received a Cancel for this lineItem
+                }
+                else {
+                    if((ds_ws.checkIfServiceTypeRequireDisconn4CancelOnCOMPLETED(lineItem.serviceType) && (orderType == "I")) || (orderType == "F")) {
+                        // serviceType requires Disconnect for Cancel on COMPLETED element; for example MATM
+                        // otherwise is a feasibility; in that case WD has to send a DISCONNECT for such item
+                        lineItem.action = "D"; // delete
+                        lineItem.lineItemStatus = "Hold"
+                        lineItem.workOrderNumber = null; // it reset the workOrderNumber so OM has to generate a new one while sending it to Granite
+                        lineItem.isSubmit = true;
+                        lineItem.isCancel = true;  // maintains that we received a Cancel for this lineItem
+                        lineItem.alreadySentToGranite = false;
+                    }
+                    else {
+                        // for example SIP
+                        validationErrors = ds_ws.appendToValidationErrors("AE0071", Global.translateText("AE0071", null, ["CancelOrder", "COMPLETED"]), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+                    }
+                }
+            }
+        }
+    }
+    else if(existingLineItemStatus.toUpperCase() == "CANCELLED") {
+        // element cancelled
+        if(receivedAction != "C") {
+            validationErrors = ds_ws.appendToValidationErrors("AE0071", Global.translateText("AE0071", null, ["CancelOrder", "CANCELLED"]), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+        }
+        else {
+            // maintain same status and action
+            lineItem.action = receivedAction;
+            lineItem.lineItemStatus = "CANCELLED";
+        }
+    }
+    else if(existingLineItemStatus.toUpperCase() == "FAILED" && (!existingLineItemInGranite)) {
+        // element failed to be pushed in Granite
+        if(receivedAction != "C") {
+            if(!existingOrderWasKO) {
+                validationErrors = ds_ws.appendToValidationErrors("AE0071", Global.translateText("AE0071", null, ["CancelOrder", "FAILED"]), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+            }
+            else {
+                // 2015-12-30: this is for repush for UpdateOrder
+                // this is one of the components of the order that are failed. Copying all the data from existing lineItem to restart provisioning process
+                lineItem.action = existingLineItem.action;
+                lineItem.lineItemStatus = "Hold"
+                lineItem.workOrderNumber = existingLineItem.workOrderNumber;
+                lineItem.isSubmit = existingLineItem.isSubmit;
+                lineItem.isCancel = existingLineItem.isCancel;
+                lineItem.alreadySentToGranite = existingLineItem.alreadySentToGranite;
+            }
+        }
+        else {
+            // maintain same status and action
+            lineItem.action = receivedAction;
+            lineItem.lineItemStatus = "CANCELLED";
+        }
+    }
+    else {
+        // in provisioning
+        if(receivedAction != "C") {
+            // maintain the existing action
+            lineItem.action = receivedAction;
+            lineItem.lineItemStatus = existingLineItemStatus;
+        }
+        else {
+            if(lineItem.alreadyReceivedCancel && (!existingOrderWasKO)) {
+                validationErrors = ds_ws.appendToValidationErrors("AE0070", Global.translateText("AE0070", null, "CancelOrder"), validationErrors, "updateLineItemActionForCancelOrder (" + lineItem.lineItemIdentifier + ")");
+            }
+            else {
+                // 2016-01-04: enhancement for repush x updateOrder in case the serviceType supports Disconnect x Cancel on COMPLETED and the disconnect
+                // old:
+                //      lineItem.action = "C";
+                //      // send as UpdateOrder(Cancel) to Granite
+                //      lineItem.isSubmit = false;
+                //      lineItem.isCancel = true;
+                // new:
+                if(existingLineItemAction == "D" && ds_ws.checkIfServiceTypeRequireDisconn4CancelOnCOMPLETED(lineItem.serviceType) && orderType == "I") {
+                    // at this point, the existing lineItem was a Disconnect to Cancel a COMPLETED lineItem - it's the unique case in which orderType = 'I' and existingLineItemAction = 'D'
+                    // sending again the disconnect ...
+                    lineItem.action = "D";
+                    // ... as SubmitOrder to Granite
+                    lineItem.isSubmit = true;
+                    lineItem.isCancel = true;
+                }
+                else {
+                    // requested to cancel the provisioning for this element;
+                    lineItem.action = "C";
+                    // send as UpdateOrder(Cancel) to Granite
+                    lineItem.isSubmit = false;
+                    lineItem.isCancel = true;
+                }
+                lineItem.lineItemStatus = "Hold";
+                lineItem.alreadySentToGranite = false;
+
+                if(existingLineItemAction == "C" && existingLineItem.alreadySentToGranite) {
+                    lineItem.alreadySentToGranite = true;
+                    lineItem.lineItemStatus = existingLineItem.lineItemStatus;
+                }
+            }
+        }
+    }
+
+    // it's common to all the cases
+    // 2016-01-04: enhancement for repush x updateOrder
+    // old:
+    //      lineItem.alreadyReceivedCancel = true;
+    // new:
+    lineItem.alreadyReceivedCancel = (existingLineItem.alreadyReceivedCancel || receivedAction == "C");
+
+
+    return validationErrors;
+  ]]></script>
+</script>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.checkIfChangeRequestTypeIsCompatible">
+  <label>Check If ChangeRequetType Is Compatible</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="receivedChangeRequestType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderChangeRequestType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var isCompatible = false;
+    if(orderChangeRequestType == "UPGRADE") {
+        isCompatible = (receivedChangeRequestType == "UPGRADE");
+    }
+    else if (orderChangeRequestType == "DOWNGRADE") {
+        isCompatible = (receivedChangeRequestType == "DOWNGRADE");
+    }
+    else if(orderChangeRequestType == "CHANGE_ONT") {
+        isCompatible = (receivedChangeRequestType == "CHANGE_ONT");
+    }
+    else if(orderChangeRequestType == "CHANGE_NUM") {
+        isCompatible = (receivedChangeRequestType == "CHANGE_NUM");
+    }
+    else if(orderChangeRequestType == "RELOCATION" ||
+            orderChangeRequestType == "RELOCATION_ADD" ||
+            orderChangeRequestType == "RELOCATION_BW" ||
+            orderChangeRequestType == "RELOCATION_DEL" ||
+            orderChangeRequestType == "RELOCATION_NC") {
+        isCompatible = (receivedChangeRequestType == "RELOCATION" ||
+                        receivedChangeRequestType == "RELOCATION_ADD" ||
+                        receivedChangeRequestType == "RELOCATION_BW" ||
+                        receivedChangeRequestType == "RELOCATION_DEL" ||
+                        receivedChangeRequestType == "RELOCATION_NC");
+    }
+    return isCompatible;
+  ]]></script>
+</script>

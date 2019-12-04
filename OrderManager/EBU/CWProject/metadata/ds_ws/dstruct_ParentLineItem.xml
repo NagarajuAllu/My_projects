@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataStructure filenameHash="21fcfcf31c5a69726dbdfb73c8e8f27a" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.ParentLineItem">
+  <container>true</container>
+  <extends>dstruct_ds_ws.CommonLineItemParameters</extends>
+  <guid>{7f32fdf3-ef5e-4505-bfde-eb6b987d0a95}</guid>
+  <highlight>38</highlight>
+  <label>ParentLineItem</label>
+  <metaVersion>4</metaVersion>
+  <childList>
+    <child name="ParentLineItemIdentifer" type="dstruct">
+      <datatype>true</datatype>
+      <element>dtype_com.conceptwave.system.String</element>
+      <guid>{74879b10-3936-43ce-992b-170d65f7465a}</guid>
+      <label>ParentLineItemIdentifer</label>
+      <mandatory>true</mandatory>
+    </child>
+    <child name="ParentLineItemNameValueParameters" type="dstruct">
+      <container>true</container>
+      <guid>{ff83ee3d-c4c0-464a-a44d-4c2e0ff41f0d}</guid>
+      <label>ParentLineItemNameValueParameters</label>
+      <childList>
+        <child name="NameValue" type="dstruct">
+          <array>true</array>
+          <element>dstruct_ds_ws.BundleNameValue</element>
+          <guid>{d0f9507d-71e6-46d9-bc78-5a502ef0f6e9}</guid>
+          <label>NameValue</label>
+          <maxInstance>999</maxInstance>
+        </child>
+      </childList>
+    </child>
+    <child name="ParentLineItemsBlockParameters" type="dstruct">
+      <container>true</container>
+      <guid>{76835a6e-ba99-493b-9234-8c3044ee669a}</guid>
+      <label>ParentLineItemsBlockParameters</label>
+      <childList>
+        <child name="BlockNameValueParameter" type="dstruct">
+          <array>true</array>
+          <element>dstruct_ds_ws.BlockParameter</element>
+          <guid>{8a868696-3a85-4432-b4f3-4131892ffd2b}</guid>
+          <label>BlockNameValueParameter</label>
+          <maxInstance>999</maxInstance>
+        </child>
+      </childList>
+    </child>
+    <child name="SVCLineItems" type="dstruct">
+      <array>true</array>
+      <element>dstruct_ds_ws.ServiceLineItem</element>
+      <guid>{d2671cad-ec77-4d49-9fb2-29afe1397f54}</guid>
+      <label>SVCLineItems</label>
+      <maxInstance>999</maxInstance>
+    </child>
+  </childList>
+  <UserInterface name="UserInterface" type="tree">
+    <defaultFolderImage>undefined</defaultFolderImage>
+    <defaultLeafImage>undefined</defaultLeafImage>
+    <element>dstruct_ds_ws.ParentLineItem</element>
+    <extends>tree_com.conceptwave.system.DataStructureUserInterface</extends>
+    <tableDoc>doc_com.conceptwave.system.TreeDocument</tableDoc>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>dstruct_ds_ws.ParentLineItem</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>tree_com.conceptwave.system.DataStructureUserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</dataStructure>

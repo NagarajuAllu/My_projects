@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getNewChildOrderNumber">
+  <label>Get New ChildOrderNumber</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="workOrderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = null;
+
+    // Invoke the function to retrieve a unique Order #:
+    // - the first input is the 'Order Type'
+    // - the second input is the 'User Initials' (hardcoded to 'ST')
+    var sql = "SELECT STC_OE_GEN_ORDER_NO('" + workOrderType + "', 'ST') FROM DUAL";
+    var output = Global.runSQLQuery("GRANITE", "stcc.genericOutput_String", 1, null, sql);
+
+    if (output != null && output.size == 1) {
+        result = output[0].result;
+    }
+
+    return result;
+  ]]></script>
+</script>

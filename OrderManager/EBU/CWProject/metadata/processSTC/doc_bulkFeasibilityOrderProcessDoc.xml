@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="548ff8e228f0515d0242daac267ebcbd" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.bulkFeasibilityOrderProcessDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{ebbd3c24-1f84-4779-9460-abbc916df5d4}</guid>
+  <label>Bulk Feasilitity Order Process Document</label>
+  <metaVersion>4</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="jobId" type="leaf">
+      <valueType>dtype_ds_ws.integer10</valueType>
+    </variable>
+    <variable name="countProcessed" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Integer</valueType>
+    </variable>
+    <variable name="currentHeaderId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_processSTC.bulkFeasibilityOrderProcessDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.customerInfoUpdate">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>203.27036</x>
+    <y>30.0</y>
+    <childList>
+      <child name="receiveCustomerInfoUpdate" type="subflowActivity">
+        <element>proc_stcw.receiveCustomerInfoUpdate</element>
+        <label>Receive CustomerInfoUpdate</label>
+        <x>332.05225</x>
+        <y>137.0</y>
+      </child>
+      <child name="validateReceivedData" type="scriptActivity">
+        <label>Validate Received  Data</label>
+        <x>362.40088</x>
+        <y>248.40234</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.updateHistoryEvent (this, "expediterValidation");
+
+              var crmInput = stcw.findGenericProcessMessage (this.process.id, this.process.processDocument.activityName, "wsws:customerInformationUpdate");
+
+              // Applying Validation Rules
+              var error = null;
+              if (crmInput.businessUnit != "Wholesale") {
+                  error = (xcutl.createError ("InvalidBusinessUnit", crmInput.businessUnit));
+              }
+              else {
+                  var validationResult = crmInput.validate(1, true);
+                  if(validationResult != null) {
+                      error      = new DataStructure ("xcutl:Error");
+                      error.code = validationResult[0];
+                      error.text = validationResult[1];
+                  }
+                  else {
+                      var attributesToMonitor = ["accountStatus", "accountSubType", "accountType"];
+                      for(var i=0; i<attributesToMonitor.length && error == null; i++) {
+                          var valueFound = crmInput[attributesToMonitor[i]];
+                          if(! stcw.validatePickListValue(attributesToMonitor[i], valueFound)) {
+                              error      = new DataStructure ("xcutl:Error");
+                              error.code = "DE1107";
+                              error.text = Global.translateText("DE1107", null, attributesToMonitor[i]);
+                          }
+                      }
+                  }
+              }
+
+              this.process.processDocument.activityName = "EXPEDITER_VALIDATION";
+              var response = new DataStructure("grws:customerInformationUpdateResponse");
+              var result = response.result;
+              result.AccountNumber           = crmInput.accountNumber;
+              result.BusinessUnit            = crmInput.businessUnit;
+
+              if(error != null) {
+                    // error, so setting additional fields Data Structure
+                    result.Status.ErrorCode        = error.code;
+                    result.Status.ErrorDescription = stcc.limitStringLengthToCRMValue(error.text);
+                    result.Status.ErrorTime        = stcc.getSysdateInYYYYMMDD_HH24MMSS();
+                    result.Status.ErrorType        = "FUNCTIONAL";
+                    result.Status.SystemName       = "Expediter";
+                    result.Status.Status           = "ERROR";
+              }
+              else {
+                    result.Status.Status           = "SUCCESS";
+              }
+
+              this.process.processDocument.ackResult = result.Status.Status;
+              stcw.storeGenericProcessMessage (this.process.id, this.process.processDocument.activityName, response);
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="validateEndsOK" type="switchActivity">
+        <label>Validate Ends OK?</label>
+        <x>360.06592</x>
+        <y>374.50586</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>417.42188</x>
+                <y>488.2588</y>
+                <childList>
+                  <child name="enterCustomerInfoInGranite" type="subflowActivity">
+                    <element>proc_stcw.enterCustomerInfoInGranite</element>
+                    <label>Enter CustomerInfo In Granite</label>
+                    <x>403.40723</x>
+                    <y>582.6094</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.ackResult == "SUCCESS");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>323.40723</x>
+            <y>597.31055</y>
+          </child>
+        </childList>
+      </child>
+      <child name="forwardCustomerInfoAckToCrm" type="subflowActivity">
+        <element>proc_stcw.forwardCustomerInfoAckToCrm</element>
+        <label>ForwardCustomerInfo To CRM</label>
+        <x>329.39502</x>
+        <y>708.7129</y>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>371.41455</x>
+        <y>820.11523</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - CustomerInfoUpdate - COMPLETED!!!");]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="interfaceExcp" type="onExceptionActivity">
+        <element>excp_cwf.interfaceExcp</element>
+        <label>External interface error</label>
+        <x>0.0</x>
+        <y>0.0</y>
+        <childList>
+          <child name="handleError" type="seqActivity">
+            <label>Handle Error</label>
+            <x>190.50195</x>
+            <y>146.70117</y>
+            <childList>
+              <child name="handleInterfaceError" type="subflowActivity">
+                <element>proc_stcw.handleInterfaceError</element>
+                <label>Handle Interface Error</label>
+                <x>190.36621</x>
+                <y>248.40234</y>
+              </child>
+              <child name="rollbackIntfError" type="rollbackActivity">
+                <label>rollbackIntfError</label>
+                <x>171.36719</x>
+                <y>381.85645</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      debugPrintln("Value read from the processDocument for compensate = " + rb);
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeIntfError" type="resumeActivity">
+                <label>resumeIntfError</label>
+                <x>172.03516</x>
+                <y>485.9082</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="unexpectedError" type="onExceptionActivity">
+        <element>excp_stcw.applicationError</element>
+        <label>Unexpected Error</label>
+        <x>0.0</x>
+        <y>0.0</y>
+        <childList>
+          <child name="handleError" type="seqActivity">
+            <label>Handle Error</label>
+            <x>51.472656</x>
+            <y>146.70117</y>
+            <childList>
+              <child name="handleApplicationError" type="subflowActivity">
+                <element>proc_stcw.handleApplicationError</element>
+                <label>Handle Application Error</label>
+                <x>45.323242</x>
+                <y>248.40234</y>
+              </child>
+              <child name="rollbackAppError" type="rollbackActivity">
+                <label>rollbackAppError</label>
+                <x>30.0</x>
+                <y>381.85645</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      debugPrintln("Value read from the processDocument for compensate = " + rb);
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeAppError" type="resumeActivity">
+                <label>resumeAppError</label>
+                <x>30.667969</x>
+                <y>485.9082</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - CustomerInfoUpdate - Start...");]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_stcw.orderProcess</document>
+  <label>Customer Information Update</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <revision>6</revision>
+  <subflowReferenceList>
+    <subflowReference type="sref">
+      <revision>2</revision>
+      <subflow>proc_stcw.handleApplicationError</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>3</revision>
+      <subflow>proc_stcw.enterCustomerInfoInGranite</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>4</revision>
+      <subflow>proc_stcw.handleInterfaceError</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_stcw.receiveCustomerInfoUpdate</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>3</revision>
+      <subflow>proc_stcw.forwardCustomerInfoAckToCrm</subflow>
+    </subflowReference>
+  </subflowReferenceList>
+  <type>User</type>
+</process>

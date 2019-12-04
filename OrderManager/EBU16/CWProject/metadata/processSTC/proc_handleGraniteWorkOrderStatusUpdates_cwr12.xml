@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="processSTC.handleGraniteWorkOrderStatusUpdates_cwr12">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>55.0</x>
+    <y>75.0</y>
+    <childList>
+      <child name="workOrderStatusUpdate" type="opActivity">
+        <element>iface_ifGranite_jms.XngServicesNotificationToProcesses/oper_WorkOrderStatusUpdate</element>
+        <label>Work Order Status Update Notification</label>
+        <participant>part_ifGranite_jms.graniteNotificationToProcesses</participant>
+        <x>252.0</x>
+        <y>48.0</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - receivedWOSU = " + this.activityData.toXML());
+
+              var receivedWOSU = this.activityData;
+
+              this.process.processDocument.latestWOSUId = processSTC.writeWOSUIntoDB(this.process.id, this.activityData);
+
+              // update status of the element
+              this.process.processOrderItem.lineItemStatus = this.activityData.workOrderStatus;
+              if(processSTC.isLineItemCompleted(this.process.processOrderItem.lineItemStatus)) {
+                  if(this.process.processOrderItem.isCancel) {
+                      this.process.processOrderItem.lineItemStatus = "CANCELLED";
+                  }
+                  this.process.processOrderItem.completionDate = new Date();
+              }
+              // 2015-12-31: adding update of CLLI according to WOSU data
+              if(this.activityData.parameters != null && this.activityData.parameters.length > 0) {
+                  for(var i=0; i<this.activityData.parameters.length; i++) {
+                      var paramName = this.activityData.parameters[i].name;
+                      var paramValue = this.activityData.parameters[i].value;
+
+                      if(paramName == "Cct-Site-A" && paramValue != null) {
+                          this.process.processOrderItem.locationACCLICode = paramValue;
+                      }
+
+                      if(paramName == "Cct-Site-Z" && paramValue != null) {
+                          this.process.processOrderItem.locationBCCLICode = paramValue;
+                      }
+                  }
+              }
+
+              this.process.processOrderItem.remarks = this.activityData.workOrderRemarks;
+              this.process.processOrderItem.save();
+
+
+              // this is to properly update the status of the SubService in case of SIP orders migrated
+              // it has to be applicable if and only if:
+              // - the element under management is a Service (elementTypeInOrderTree = 'C')
+              // - the serviceType is Primary SIP (to be check in the configuration table)
+              // - the order is migrated (isMigrated flag in orderHeader equals to true)
+              // - the element has only 1 child not provisionable in orchestration table
+              if(this.process.processOrderItem.elementTypeInOrderTree == 'C' && this.process.processOrder.orderHeader.isMigrated) {
+                  // the element under management is a service & the order is migrated!
+
+                  var childrenListFound = processSTC.findRecordsInOrchTabByOrder_Type_Parent_Seq(this.process.processOrder.id, 'S', this.process.processOrderItem.id);
+                  if(childrenListFound != null && childrenListFound.length == 1 && !childrenListFound[0].provisionable) {
+                      // found 1 only child "sub-service" element not provisionable!
+
+                      var primarySIPServiceTypeName = ds_ws.getCRMServiceTypeForOMInternalServiceType("SIP/Primary SIP");
+                      if(primarySIPServiceTypeName != null && primarySIPServiceTypeName == this.process.processOrderItem.serviceType) {
+                          // checking completed! it's a migrated SIP order
+
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - updating status of the subService child of the circuit under management");
+                          var serviceLineItem = Document.readDoc("ds_ws.lineItemDocument", childrenListFound[0].cwDocId);
+                          if(serviceLineItem != null) {
+                              serviceLineItem.lineItemStatus = this.process.processOrderItem.lineItemStatus;
+                              serviceLineItem.completionDate = this.process.processOrderItem.completionDate;
+                              serviceLineItem.remarks = this.activityData.workOrderRemarks;
+                              serviceLineItem.save();
+                          }
+                          else {
+              Global.logDebug("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - ERROR! Unable to load document '" + childrenListFound[0].cwDocId + "' child of '" + this.process.processOrderItem.id + "'");
+                          }
+                      }
+                  }
+              }
+
+              ds_ws.updateBundleAndOrderHeaderStatus(this.process.processOrder, this.process.processOrderItem);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="sendWOSUToCRM" type="spawnActivity">
+        <element>proc_processSTC.sendWOSUToCRM</element>
+        <label>Send WOSU To CRM</label>
+        <x>256.0</x>
+        <y>221.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var childProcessDocument = this.activityData;
+              childProcessDocument.latestWOSUId = this.process.processDocument.latestWOSUId;
+              childProcessDocument.firstPassWOSU = "Y";
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="waitSendWOSUToCRM" type="joinActivity">
+        <element>proc_processSTC.sendWOSUToCRM</element>
+        <label>Wait Send WOSU To CRM</label>
+        <x>256.0</x>
+        <y>369.0</y>
+      </child>
+      <child name="additionalWOSUExpected" type="switchActivity">
+        <label>Additional WOSU Expected?</label>
+        <x>255.0</x>
+        <y>538.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>58.0</x>
+            <y>444.0</y>
+            <childList>
+              <child name="repeat" type="repeatActivity">
+                <element>proc_processSTC.handleGraniteWorkOrderStatusUpdates_cwr12/seqActivity_start</element>
+                <label>Repeat</label>
+                <x>58.0</x>
+                <y>557.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  // checking lineItemStatus
+                  var isLineItemCompleted = processSTC.isLineItemCompleted(this.process.processOrderItem.lineItemStatus);
+
+                  if(! isLineItemCompleted) {
+                      // checking dummy WOSU
+                      var supportDummyWOSU = Global.getConfigVariable("DUMMY_WOSU_FOR_FAILED_ORDER", "FALSE");
+                      if(supportDummyWOSU == "TRUE") {
+                          // to know if WD is managing dummy WOSU, it checks if the status = 'FAILED' and also if
+                          // the lineItem has been accepted or not by Granite: if a dummy WOSU, the lineItem is not
+                          // accepted by Granite!
+                          isLineItemCompleted = (this.process.processOrderItem.lineItemStatus == "FAILED" && (!this.process.processOrderItem.alreadySentToGranite));
+                      }
+                  }
+
+                  return (! isLineItemCompleted);
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>425.0</x>
+            <y>560.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="graniteNotificationToProcesses" type="participantActivity">
+        <label>Granite Notification To Processes</label>
+        <participant>part_ifGranite_jms.graniteNotificationToProcesses</participant>
+        <x>475.0</x>
+        <y>38.0</y>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Handle Granite WorkOrderStatusUpdates</label>
+  <metaVersion>23</metaVersion>
+  <priority>8</priority>
+  <revision>12</revision>
+  <type>Sub-flow</type>
+</process>

@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findOrder filenameHash="1c7e54564138e260bd205ce83b5c9a2e" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.orderFinder">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <guid>{001e3fbe-c709-64e1-e772-4c93bbc0ab35}</guid>
+  <input>doc_orb.orderSearch</input>
+  <itemTypeList>
+    <itemType>order_stcw.wholesaleOrder</itemType>
+  </itemTypeList>
+  <label>Order Finder</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>3</metaVersion>
+  <output>doc_stcw.orderHeader</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_orb.orderHeader/leaf_orderNumber</path>
+    </sort>
+  </sortList>
+  <type>order</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <vDetailForm>doc_stcw.orderHeader/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>1</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_orb.orderSearch</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_orderNumber</mappedPath>
+      <operation>like</operation>
+      <path>doc_orb.orderSearch/leaf_orderNumber</path>
+    </search>
+  </searchList>
+  <selectResultList>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwDocId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwDocId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwCreatedBy</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwCreatedBy</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwCreated</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwCreated</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwDocStamp</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwDocStamp</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwTypeNo</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwTypeNo</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_lastUpdatedDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_lastUpdatedDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_sysMDVersionNo</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_sysMDVersionNo</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwOrderCreationDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwOrderCreationDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwOrderId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwOrderId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwParentId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwParentId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_updatedBy</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_updatedBy</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_orderNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_orderNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_orderAction</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_orderAction</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_stcw.orderHeader/leaf_orderStatus</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.orderHeader/leaf_orderStatus</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_stcw.orderHeader/leaf_orderRowItemId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.orderHeader/leaf_orderRowItemId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_stcw.orderHeader/leaf_orderType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.orderHeader/leaf_orderType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_stcw.orderHeader/leaf_completedDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.orderHeader/leaf_completedDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_stcw.orderHeader/leaf_quoteNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.orderHeader/leaf_quoteNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_stcw.orderHeader/leaf_productCode</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.orderHeader/leaf_productCode</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_stcw.orderHeader/leaf_reservationNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.orderHeader/leaf_reservationNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <mappedDocument>doc_stcw.orderHeader</mappedDocument>
+      <mappedPath>doc_stcw.orderHeader/leaf_orderComments</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.orderHeader/leaf_orderComments</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.orderHeader</document>
+      <operation>equal</operation>
+      <path>doc_stcw.orderHeader/leaf_skipSendToGranite</path>
+    </selectResult>
+  </selectResultList>
+  <methodList>
+    <method name="cwOnInitSearch" type="action">
+      <guid>{065ee9d8-9728-72f7-5469-d6ec2d4b456e}</guid>
+      <system>true</system>
+      <script><![CDATA[
+        if(searchData.orderNumber == null)  {
+              searchData.orderNumber = "%";
+        }
+        else {
+              if(! searchData.orderNumber.startsWith("%") )  {
+                    searchData.orderNumber = ("%" + searchData.orderNumber);
+              }
+              if(! searchData.orderNumber.endsWith("%") )  {
+                    searchData.orderNumber = (searchData.orderNumber + "%");
+              }
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.OrderFinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findOrder_stcw.orderFinder</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_orb.orderSearch/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_stcw.orderHeader</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_stcw.orderHeader/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.OrderFinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.OrderFinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.OrderFinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext">
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="searchResults" type="vform">
+            <label>searchResults</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.OrderFinderUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Creation_Date" type="eldatetime">
+                  <label>Creation Date</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwCreated</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>138px</width>
+                </element>
+                <element name="Order_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>216px</width>
+                </element>
+                <element name="Order_RowItemId" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_orderRowItemId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>120px</width>
+                </element>
+                <element name="Order_Action" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderAction</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>126px</width>
+                </element>
+                <element name="Order_Status" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_orderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Order_Type" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_orderType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>126px</width>
+                </element>
+                <element name="Complete_Date" type="eldatetime">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_completedDate</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>138px</width>
+                </element>
+                <element name="Product_Code" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_productCode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Quote_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_quoteNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Reservation_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_reservationNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Order_Comments" type="ellab">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_orderComments</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>360px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="detailMenu" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="synchronizeSelectedOrdersWithGranite" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/usrActionMethod_synchronizeSelectedOrdersWithGranite_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Synchronize Selected Orders With Granite</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/permMethod_synchronizeSelectedOrdersWithGraniteView</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="detailMenuEx" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Menu</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <overflow>visible</overflow>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <width>1px</width>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="orderDisplay" type="vform">
+            <label>orderDisplay</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.OrderFinderUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Order_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>216px</width>
+                </element>
+                <element name="Order_RowItemId" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_orderRowItemId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>120px</width>
+                </element>
+                <element name="Quote_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_quoteNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Reservation_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_reservationNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Order_Type" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_orderType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>126px</width>
+                </element>
+                <element name="Order_Action" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderAction</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>126px</width>
+                </element>
+                <element name="Order_Status" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_orderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Product_Code" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_productCode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Order_Comments" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_orderComments</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>1836px</width>
+                </element>
+                <element name="System_order_ID" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwOrderId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>120px</width>
+                </element>
+                <element name="System_document_ID" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwDocId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>138px</width>
+                </element>
+                <element name="Creation_Date" type="eldatetime">
+                  <label>Creation Date</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwCreated</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>138px</width>
+                </element>
+                <element name="Complete_Date" type="eldatetime">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.orderFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.orderHeader/leaf_completedDate</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>138px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="synchronizeSelectedOrdersWithGranite" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <confirmation>findOrder_stcw.orderFinder/ui_UserInterface/action_synchronizeSelectedOrdersWithGranite_confirm</confirmation>
+        <script><![CDATA[
+          var selectList = this.result.selected;
+                var debugHeader = " synchronizeSelectedOrders - ";
+
+                if(selectList != null && selectList.length > 0) {
+          debugPrintln(stcc.getSysdateForLog() + debugHeader + "Selected " + selectList.length +  " orders");
+
+                      for(var i=0; i<selectList.length; i++) {
+          debugPrintln(stcc.getSysdateForLog() + debugHeader + "Processing order number " + (i+1) + "/" + selectList.length);
+
+                            var cwOrderIdSelected = selectList[i].cwOrderId;
+                            var selectedOrder = Order.getOrderById(selectList[i].cwOrderId);
+
+          debugPrintln(stcc.getSysdateForLog() + debugHeader + "cwOrderIdSelected " + cwOrderIdSelected + "; orderNumber = " + selectedOrder.header.orderNumber);
+
+                            // check if it's a rejected order
+                            var positionRejection = (selectedOrder.header.orderNumber.search("/*_201[0-9]/[0-9][0-9]/[0-9][0-9]_ErrGran"));
+                            var isRejected = (positionRejection != -1);
+
+                            if(isRejected) {
+                                  var processDocument = new Document("stcw:syncRejectedOrderProcessDocument");
+                                  var originalOrderNumber = selectedOrder.header.orderNumber.substring(0, positionRejection);
+
+                                  processDocument.currentRejectedOrderId = selectedOrder.id;
+                                  processDocument.originalOrderNumber    = originalOrderNumber;
+
+                                  var processId = Process.startProcess("stcw:syncRejectedOrderBetweenExpdAndGranite",
+                                                                                         processDocument,
+                                                                                         null);
+
+          debugPrintln(stcc.getSysdateForLog() + debugHeader + "Started RejectedSyncOrder Process with id " + processId + " and process document " + processDocument.toXML());
+                            }
+                            else {
+                                  var processOrderFinder = new Finder ("xcutl:processForOrderFinder");
+                                  processOrderFinder.searchDocument.orderId = cwOrderIdSelected;
+                                  processOrderFinder.searchDocument.processStatus = 1;
+                                  processOrderFinder.search();
+
+                                  var processList = processOrderFinder.list;
+                                  if (processList != null && processList.size > 0) {
+                                        var processDocument = new Document("stcw:syncOrderQuoteProcessDocument");
+                                        processDocument.errorFound = false;
+
+                                        if(processList.size == 1) {
+                                              processDocument.currentProcessId = processList[0].PROCESS_ID;
+                                        }
+                                        else {
+                                              // found more than 1 process running for the same order ... it's due to update order management (there can be more than 1 process while
+                                              // the new instance of the order is not in granite ...
+                                              var tmpProcessId = -1;
+                                              for (var i = 0; i < processList.size; i++) {
+                                                  processDocument = processList[i];
+          debugPrintln(stcc.getSysdateForLog() + debugHeader + "Found process running with id " + processDoc.PROCESS_ID);
+                                                    if(processDoc.PROCESS_ID > tmpProcessId) {
+                                                          tmpProcessId = processDoc.PROCESS_ID;
+          debugPrintln(stcc.getSysdateForLog() + debugHeader + "New Candidate ProcessId " + tmpProcessId);
+                                                    }
+                                              }
+                                              processDocument.currentProcessId = tmpProcessId;
+                                        }
+
+
+                                        var processId = Process.startProcess("stcw:syncOrderBetweenExpdAndGranite",
+                                                                                               processDocument,
+                                                                                               null);
+
+          debugPrintln(stcc.getSysdateForLog() + debugHeader + "Started syncOrder Process with id " + processId + " and process document " + processDocument.toXML());
+                                  }
+                                  else {
+          debugPrintln(stcc.getSysdateForLog() + debugHeader + "Unable to find process that is managing the order " + selectedOrder.header.orderNumber);
+                                  }
+                            }
+                      }
+                }
+        ]]></script>
+      </method>
+      <method name="synchronizeSelectedOrdersWithGranite_confirm" type="action">
+        <script><![CDATA[
+          var selectList = this.result.selected;
+                if(selectList == null || selectList.length == 0) {
+                      Global.throwException("AE0003");
+                }
+
+                for(var i=0; i<selectList.length; i++) {
+                      var cwOrderIdSelected = selectList[i].cwOrderId;
+                      var selectedOrder = Order.getOrderById(selectList[i].cwOrderId);
+
+                      if(selectedOrder.header.orderStatus == "COMPLETED" || selectedOrder.header.orderStatus == "CANCELLED") {
+                            Global.throwException("AE0005");
+                      }
+                }
+
+
+                return "AW0005";
+        ]]></script>
+      </method>
+      <method name="synchronizeSelectedOrdersWithGranite_menu" type="usrActionMethod">
+        <script><![CDATA[
+          var result = this.synchronizeSelectedOrdersWithGranite();
+          if(result instanceof Finder) {
+            Global.runContentDisplayScript(result.searchDocument, "displayScript");
+          } else {
+            Global.runContentDisplayScript(this, "displayScript");
+          }
+
+          return result;
+        ]]></script>
+      </method>
+      <method name="synchronizeSelectedOrdersWithGraniteView" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>appErr</privilege>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>bUManagement</privilege>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>intfErr</privilege>
+          </privileges>
+          <privileges type="ppriv">
+            <privilege>UPAdmin</privilege>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+        <script><![CDATA[
+          // SCRIPT MIGRATION: if null, return false
+          function functionToReturnFalseWhenNull(scriptToReturnFalseWhenNullThis) {
+                return ($psCondition);
+          }
+
+          var functionToReturnFalseWhenNullRes = functionToReturnFalseWhenNull(this);
+          if(functionToReturnFalseWhenNullRes == null)
+            return false;
+          else
+            return functionToReturnFalseWhenNullRes;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="degault" type="findVView">
+      <inputOverlay>doc_orb.orderSearch/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Order Finder</label>
+      <outputOverlay>findOrder_stcw.orderFinder/ui_UserInterface/frmui_Forms/vform_searchResults</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findOrder>

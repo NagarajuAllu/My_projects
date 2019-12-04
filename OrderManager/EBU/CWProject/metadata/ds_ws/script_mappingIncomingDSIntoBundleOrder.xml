@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="62295ce36e27f60c80b35d28c64046bc" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.mappingIncomingDSIntoBundleOrder">
+  <label>Mapping Incoming DS Into BundleOrder</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="inputDS" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="isCancel" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var order = new Order("ds_ws:bundleOrderSTC");
+
+
+    // mapping orderHeader
+    inputDS.message.mapTo(order.orderHeader);
+    order.orderHeader.receivedDate = new Date();
+
+    // reasonCode
+    if(inputDS.message.ReasonCode != null) {
+        for(var z=0; z<inputDS.message.ReasonCode.length; z++) {
+            createReasonCode_(inputDS.message.ReasonCode[z], order.orderHeader.id);
+        }
+    }
+
+
+    // mapping order parameters (NV)
+    if(inputDS.message.OrderParameters != null) {
+        if(inputDS.message.OrderParameters.NameValue != null) {
+            for(var i=0; i<inputDS.message.OrderParameters.NameValue.length; i++) {
+                var nvDoc = order.createOrderItemByPath("orderHeaderParameters." + (i+1) + ".orderHeaderParameter");
+                inputDS.message.OrderParameters.NameValue[i].mapTo(nvDoc);
+                nvDoc.parentElementId = order.orderHeader.id;
+            }
+        }
+    }
+
+    // mapping child elements
+    if(inputDS.message.ParentLineItems != null) {
+        for(var i=0; i<inputDS.message.ParentLineItems.length; i++) {
+            var bundleDS = inputDS.message.ParentLineItems[i];
+            var orderItemPathForBundle = "bundles." + (i+1);
+            // mapping bundle
+            var bundleDoc = order.createOrderItemByPath(orderItemPathForBundle + ".bundle");
+            bundleDoc.lineItemIdentifier = bundleDS.ParentLineItemIdentifer;
+            bundleDoc.dependencies = getAllDependencies_(bundleDS);
+            bundleDoc.elementTypeInOrderTree = "B";
+            bundleDoc.isSubmit = (isSubmit || (isCancel && bundleDS.Action != "C"));
+            bundleDoc.isCancel = (isCancel && bundleDS.Action == "C");
+            bundleDoc.provisioningFlag = "PROVISIONING";
+            bundleDS.mapTo(bundleDoc);
+            // scanMode
+            if (bundleDS.ReasonCode.length == 1 && inputDS.message.OrderType == "C"){
+                bundleDoc.scanMode = getScanModeForProdTypeServType_ReasonCode_(bundleDS.ProductType, bundleDS.ServiceType, bundleDS.ReasonCode[0]);
+            }
+            // reasonCode
+            saveReasonCodes_(bundleDS.ReasonCode, inputDS.message.ReasonCode, bundleDoc.id);
+
+            // mapping bundle NV
+            if(bundleDS.ParentLineItemNameValueParameters != null) {
+                if(bundleDS.ParentLineItemNameValueParameters.NameValue != null) {
+                    for(var j=0; j<bundleDS.ParentLineItemNameValueParameters.NameValue.length; j++) {
+                        var nvDoc = order.createOrderItemByPath(orderItemPathForBundle + ".bundleParameters." + (j+1) + ".bundleParameter");
+                        bundleDS.ParentLineItemNameValueParameters.NameValue[j].mapTo(nvDoc);
+                        nvDoc.parentElementId = bundleDoc.id;
+                    }
+                }
+            }
+
+            // mapping bundle blockParameters
+            if(bundleDS.ParentLineItemsBlockParameters != null) {
+                if(bundleDS.ParentLineItemsBlockParameters.BlockNameValueParameter != null) {
+                    for(var j=0; j<bundleDS.ParentLineItemsBlockParameters.BlockNameValueParameter.length; j++) {
+                        var blockNVDoc = order.createOrderItemByPath(orderItemPathForBundle + ".bundleBlockParameters." + (j+1) + ".bundleBlockParameter");
+                        bundleDS.ParentLineItemsBlockParameters.BlockNameValueParameter[j].mapTo(blockNVDoc);
+                        blockNVDoc.parentElementId = bundleDoc.id;
+                        if(bundleDS.ParentLineItemsBlockParameters.BlockNameValueParameter[j].BlockParameterValues != null) {
+                            if(bundleDS.ParentLineItemsBlockParameters.BlockNameValueParameter[j].BlockParameterValues.BlockParameterValue != null) {
+                                for(var z=0; z<bundleDS.ParentLineItemsBlockParameters.BlockNameValueParameter[j].BlockParameterValues.BlockParameterValue.length; z++) {
+                                    createBlockValue_(bundleDS.ParentLineItemsBlockParameters.BlockNameValueParameter[j].BlockParameterValues.BlockParameterValue[z], blockNVDoc.id);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // mapping circuits
+            if(bundleDS.SVCLineItems != null) {
+                for(var j=0; j<bundleDS.SVCLineItems.length; j++) {
+                    var serviceDS = bundleDS.SVCLineItems[j];
+                    var orderItemPathForCircuit = orderItemPathForBundle + ".circuits." + (j+1);
+                    // mapping circuit
+                    var circuitDoc = order.createOrderItemByPath(orderItemPathForCircuit + ".circuit");
+                    circuitDoc.lineItemIdentifier = serviceDS.SvcLineItemInstanceIdentifier;
+                    circuitDoc.dependencies = getAllDependencies_(serviceDS);
+                    circuitDoc.elementTypeInOrderTree = "C";
+                    circuitDoc.isSubmit = (isSubmit || (isCancel && serviceDS.Action != "C"));
+                    circuitDoc.isCancel = (isCancel && serviceDS.Action == "C");
+                    serviceDS.mapTo(circuitDoc);
+                    // scanMode
+                    if (serviceDS.ReasonCode.length == 1 && inputDS.message.OrderType == "C"){
+                        circuitDoc.scanMode = getScanModeForProdTypeServType_ReasonCode_(serviceDS.ProductType, serviceDS.ServiceType, serviceDS.ReasonCode[0]);
+                    }
+                    // reasonCode
+                    saveReasonCodes_(serviceDS.ReasonCode, inputDS.message.ReasonCode, circuitDoc.id);
+
+
+                    // mapping circuit NV
+                    if(serviceDS.SvcLineItemNameValueParameters != null) {
+                        if(serviceDS.SvcLineItemNameValueParameters.NameValue != null) {
+                            for(var k=0; k<serviceDS.SvcLineItemNameValueParameters.NameValue.length; k++) {
+                                var nvDoc = order.createOrderItemByPath(orderItemPathForCircuit + ".circuitParameters." + (k+1) + ".circuitParameter");
+                                serviceDS.SvcLineItemNameValueParameters.NameValue[k].mapTo(nvDoc);
+                                nvDoc.parentElementId = circuitDoc.id;
+                            }
+                        }
+                    }
+
+                    // mapping circuit blockParameters
+                    if(serviceDS.SvcLineItemsBlockParameters != null) {
+                        if(serviceDS.SvcLineItemsBlockParameters.BlockNameValueParameter != null) {
+                            for(var k=0; k<serviceDS.SvcLineItemsBlockParameters.BlockNameValueParameter.length; k++) {
+                                var blockNVDoc = order.createOrderItemByPath(orderItemPathForCircuit + ".circuitBlockParameters." + (k+1) + ".circuitBlockParameter");
+                                serviceDS.SvcLineItemsBlockParameters.BlockNameValueParameter[k].mapTo(blockNVDoc);
+                                blockNVDoc.parentElementId = circuitDoc.id;
+                                if(serviceDS.SvcLineItemsBlockParameters.BlockNameValueParameter[k].BlockParameterValues != null) {
+                                    if(serviceDS.SvcLineItemsBlockParameters.BlockNameValueParameter[k].BlockParameterValues.BlockParameterValue != null) {
+                                        for(var z=0; z<serviceDS.SvcLineItemsBlockParameters.BlockNameValueParameter[k].BlockParameterValues.BlockParameterValue.length; z++) {
+                                            createBlockValue_(serviceDS.SvcLineItemsBlockParameters.BlockNameValueParameter[k].BlockParameterValues.BlockParameterValue[z], blockNVDoc.id);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+                    // mapping services
+                    if(serviceDS.SubSvcLineItems != null) {
+                        for(var k=0; k<serviceDS.SubSvcLineItems.length; k++) {
+                            var subServiceDS = serviceDS.SubSvcLineItems[k];
+                            var orderItemPathForService = orderItemPathForCircuit + ".services." + (k+1);
+                            // mapping service
+                            var serviceDoc = order.createOrderItemByPath(orderItemPathForService + ".service");
+                            serviceDoc.lineItemIdentifier = subServiceDS.SubSvcLineItemInstanceIdentifier;
+                            serviceDoc.dependencies = getAllDependencies_(subServiceDS);
+                            serviceDoc.elementTypeInOrderTree = "S";
+                            serviceDoc.isSubmit = (isSubmit || (isCancel && subServiceDS.Action != "C"));
+                            serviceDoc.isCancel = (isCancel && subServiceDS.Action == "C");
+                            subServiceDS.mapTo(serviceDoc);
+                            // scanMode
+                            if (subServiceDS.ReasonCode.length == 1 && inputDS.message.OrderType == "C"){
+                                serviceDoc.scanMode = getScanModeForProdTypeServType_ReasonCode_(subServiceDS.ProductType, subServiceDS.ServiceType, subServiceDS.ReasonCode[0]);
+                            }
+                            // reasonCode
+                            saveReasonCodes_(subServiceDS.ReasonCode, inputDS.message.ReasonCode, serviceDoc.id);
+
+                            // mapping service NV
+                            if(subServiceDS.SubSvcLineItemNameValueParameters  != null) {
+                                if(subServiceDS.SubSvcLineItemNameValueParameters.NameValue != null) {
+                                    for(var l=0; l<subServiceDS.SubSvcLineItemNameValueParameters.NameValue.length; l++) {
+                                        var nvDoc = order.createOrderItemByPath(orderItemPathForService + ".serviceParameters." + (l+1) + ".serviceParameter");
+                                        subServiceDS.SubSvcLineItemNameValueParameters.NameValue[l].mapTo(nvDoc);
+                                        nvDoc.parentElementId = serviceDoc.id;
+                                    }
+                                }
+                            }
+
+                            // mapping service blockParameters
+                            if(subServiceDS.SubSvcLineItemBlockParameters != null) {
+                                if(subServiceDS.SubSvcLineItemBlockParameters.BlockNameValueParameter != null) {
+                                    for(var l=0; l<subServiceDS.SubSvcLineItemBlockParameters.BlockNameValueParameter.length; l++) {
+                                        var blockNVDoc = order.createOrderItemByPath(orderItemPathForService + ".serviceBlockParameters." + (l+1) + ".serviceBlockParameter");
+                                        subServiceDS.SubSvcLineItemBlockParameters.BlockNameValueParameter[l].mapTo(blockNVDoc);
+                                        blockNVDoc.parentElementId = serviceDoc.id;
+                                        if(subServiceDS.SubSvcLineItemBlockParameters.BlockNameValueParameter[l].BlockParameterValues != null) {
+                                            if(subServiceDS.SubSvcLineItemBlockParameters.BlockNameValueParameter[l].BlockParameterValues.BlockParameterValue != null) {
+                                                for(var z=0; z<subServiceDS.SubSvcLineItemBlockParameters.BlockNameValueParameter[l].BlockParameterValues.BlockParameterValue.length; z++) {
+                                                    createBlockValue_(subServiceDS.SubSvcLineItemBlockParameters.BlockNameValueParameter[l].BlockParameterValues.BlockParameterValue[z], blockNVDoc.id);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+
+                            // mapping subServices
+                            if(subServiceDS.SubSubLineItems != null) {
+                                for(var l=0; l<subServiceDS.SubSubLineItems.length; l++) {
+                                    var subSubServiceDS = subServiceDS.SubSubLineItems[l];
+                                    var orderItemPathForSubService = orderItemPathForService + ".subServices." + (l+1);
+                                    // mapping subService
+                                    var subServiceDoc = order.createOrderItemByPath(orderItemPathForSubService + ".subService");
+                                    subServiceDoc.lineItemIdentifier = subSubServiceDS.SubSubSvcLineItemInstanceIdentifer;
+                                    subServiceDoc.dependencies = getAllDependencies_(subSubServiceDS);
+                                    subServiceDoc.elementTypeInOrderTree = "T";
+                                    subServiceDoc.isSubmit = (isSubmit || (isCancel && subSubServiceDS.Action != "C"));
+                                    subServiceDoc.isCancel = (isCancel && subSubServiceDS.Action == "C");
+                                    subSubServiceDS.mapTo(subServiceDoc);
+                                    // scanMode
+                                    if (subSubServiceDS.ReasonCode.length == 1 && inputDS.message.OrderType == "C"){
+                                        subServiceDoc.scanMode = getScanModeForProdTypeServType_ReasonCode_(subSubServiceDS.ProductType, subSubServiceDS.ServiceType, subSubServiceDS.ReasonCode[0]);
+                                    }
+                                    // reasonCode
+                                    saveReasonCodes_(subSubServiceDS.ReasonCode, inputDS.message.ReasonCode, subServiceDoc.id);
+
+                                    // mapping subService NV
+                                    if(subSubServiceDS.SubSubSvcLineItemNameValueParameters != null) {
+                                        if(subSubServiceDS.SubSubSvcLineItemNameValueParameters.NameValue != null) {
+                                            for(var m=0; m<subSubServiceDS.SubSubSvcLineItemNameValueParameters.NameValue.length; m++) {
+                                                var nvDoc = order.createOrderItemByPath(orderItemPathForSubService + ".subServiceParameters." + (m+1) + ".subServiceParameter");
+                                                subSubServiceDS.SubSubSvcLineItemNameValueParameters.NameValue[m].mapTo(nvDoc);
+                                                nvDoc.parentElementId = subServiceDoc.id;
+                                            }
+                                        }
+                                    }
+
+                                    // mapping subService blockParameters
+                                    if(subSubServiceDS.SubSubSvcLineItemBlockParameters != null) {
+                                        if(subSubServiceDS.SubSubSvcLineItemBlockParameters.BlockNameValueParameter != null) {
+                                            for(var m=0; m<subSubServiceDS.SubSubSvcLineItemBlockParameters.BlockNameValueParameter.length; m++) {
+                                                var blockNVDoc = order.createOrderItemByPath(orderItemPathForSubService + ".subServiceBlockParameters." + (m+1) + ".subServiceBlockParameter");
+                                                subSubServiceDS.SubSubSvcLineItemBlockParameters.BlockNameValueParameter[m].mapTo(blockNVDoc);
+                                                blockNVDoc.parentElementId = subServiceDoc.id;
+                                                if(subSubServiceDS.SubSubSvcLineItemBlockParameters.BlockNameValueParameter[m].BlockParameterValues != null) {
+                                                    if(subSubServiceDS.SubSubSvcLineItemBlockParameters.BlockNameValueParameter[m].BlockParameterValues.BlockParameterValue != null) {
+                                                        for(var z=0; z<subSubServiceDS.SubSubSvcLineItemBlockParameters.BlockNameValueParameter[m].BlockParameterValues.BlockParameterValue.length; z++) {
+                                                            createBlockValue_(subSubServiceDS.SubSubSvcLineItemBlockParameters.BlockNameValueParameter[m].BlockParameterValues.BlockParameterValue[z], blockNVDoc.id);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return order;
+
+
+    function getScanModeForProdTypeServType_ReasonCode_(productType, serviceType, reasonCode) {
+        var searchDoc = new Document("ds_ws.search_ProductTypeServiceTypeScanCfg");
+        searchDoc.productType = productType;
+        searchDoc.serviceType = serviceType;
+        searchDoc.reasonCode = reasonCode;
+
+        var scanMode = "default";
+        var resultList = Finder.runFinder("ds_ws:findScanCfgView", "select", searchDoc);
+        if(resultList != null && resultList.length == 1) {
+            if(resultList[0].scanTopDown == true) {
+                scanMode = "TopDown";
+            }
+            else {
+                scanMode = "BottomUp";
+            }
+        }
+
+        return scanMode;
+    }
+
+    function saveReasonCodes_(lineItemRC, headerRC, lineItemId){
+        var rc = null;
+        if (lineItemRC != null && lineItemRC[0] != null && lineItemRC.length > 0){
+            rc = lineItemRC;
+        }
+        else if (headerRC != null && headerRC[0] != null && headerRC.length > 0) {
+            rc = headerRC;
+        }
+
+        if(rc!= null) {
+            for(var z=0; z<rc.length; z++) {
+                createReasonCode_(rc[z], lineItemId);
+            }
+        }
+    }
+
+    function getAllDependencies_(dataSource) {
+        var dependentLIValue = null;
+        if(dataSource.DependentLineItems != null) {
+            for(var i=0; i<dataSource.DependentLineItems.length; i++) {
+                if(dependentLIValue == null) {
+                    dependentLIValue = dataSource.DependentLineItems[i];
+                }
+                else {
+                    dependentLIValue += (";" + dataSource.DependentLineItems[i]);
+                }
+            }
+        }
+
+        return dependentLIValue;
+    }
+
+    function createBlockValue_(value, parentDocId) {
+        var blockValueDoc = new Document("ds_ws:blockValue");
+        blockValueDoc.parentDocId = parentDocId;
+        blockValueDoc.cwOrderId = order.id;
+        blockValueDoc.blockValue = value;
+        blockValueDoc.save();
+    }
+
+
+    function createReasonCode_(value, parentDocId) {
+        var reasonCodeDoc = new Document("ds_ws:reasonCode");
+        reasonCodeDoc.parentDocId = parentDocId;
+        reasonCodeDoc.cwOrderId = order.id;
+        reasonCodeDoc.reasonCode = value;
+        reasonCodeDoc.save();
+    }
+  ]]></script>
+</script>

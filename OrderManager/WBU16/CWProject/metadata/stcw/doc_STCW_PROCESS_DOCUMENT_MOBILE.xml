@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcw.STCW_PROCESS_DOCUMENT_MOBILE">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{4994483c-f7f8-4f70-bcc1-56c9345898b4}</guid>
+  <label>STCW_PROCESS_DOCUMENT_MOBILE</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="ifErrorCount" type="leaf">
+      <valueType>dtype_stcw.integer1</valueType>
+    </variable>
+    <variable name="firstPassOrderAck" type="leaf">
+      <valueType>dtype_stcw.nY_pickList</valueType>
+    </variable>
+    <variable name="firstPassWOSU" type="leaf">
+      <valueType>dtype_stcw.nY_pickList</valueType>
+    </variable>
+    <variable name="errorType" type="leaf">
+      <valueType>dtype_stcw.ExceptionType</valueType>
+    </variable>
+    <variable name="rollbackNumber" type="leaf">
+      <valueType>dtype_stcw.rollbackNumber</valueType>
+    </variable>
+    <variable name="acceptedByOp1" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="acceptedByOp2" type="leaf">
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="latestWOSUId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="interfaceName" type="leaf">
+      <propertyElement type="elfld">
+        <label>Interface Name</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="operationName" type="leaf">
+      <propertyElement type="elfld">
+        <label>Operation Name</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="outputDocumentName" type="leaf">
+      <propertyElement type="elfld">
+        <label>Output Document Name</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="retryCountForOp" type="leaf">
+      <propertyElement type="elfld">
+        <label>Retry Count for Operation</label>
+      </propertyElement>
+      <valueType>dtype_stcw.integer1</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$firstPassWOSU" type="laction">
+      <path>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_firstPassWOSU</path>
+      <type>initializer</type>
+      <script><![CDATA[document.firstPassWOSU = "Y";]]></script>
+    </method>
+    <method name="cwLeafInitAction$firstPassOrderAck" type="laction">
+      <path>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_firstPassOrderAck</path>
+      <type>initializer</type>
+      <valueType>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_firstPassOrderAck</valueType>
+      <script><![CDATA[document.firstPassOrderAck = "Y";]]></script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="attachPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.DocumentUserInterface</extends>
+    <label>Process</label>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="STC_PROCESS_DOCUMENT_MOBILEGrid" type="elgrd">
+                <colWidths>110px,160px,110px,160px,110px,160px</colWidths>
+                <labelOrientation>left</labelOrientation>
+                <numOfCols>6</numOfCols>
+                <useDefaultHeight>true</useDefaultHeight>
+                <width>160px</width>
+                <elementList>
+                  <element name="STC_PROCESS_DOCUMENT_MOBILEHeader" type="elhdr">
+                    <label>Process Document for MOBILE</label>
+                  </element>
+                  <element name="firstPassOrderAck" type="elslct">
+                    <label>First Pass Order Ack?</label>
+                    <sorted>false</sorted>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_firstPassOrderAck</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="firstPassWOSU" type="elslct">
+                    <label>First Pass Send WOSU to EAI?</label>
+                    <sorted>false</sorted>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_firstPassWOSU</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="rollbackNumber" type="elfld">
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_rollbackNumber</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="ifErrorCount" type="elfld">
+                    <label>Interface Error Count</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_ifErrorCount</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="errorType" type="elslct">
+                    <sorted>false</sorted>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_errorType</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="acceptedByOp1" type="elchk">
+                    <label>Accepted By Operation 1?</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_acceptedByOp1</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="acceptedByOp2" type="elchk">
+                    <label>Accepted By Operation 2?</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_acceptedByOp2</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="latestWOSUId" type="elfld">
+                    <label>Latest WOSU ID</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_latestWOSUId</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="RowSpacer" type="elrsp"/>
+                  <element name="interfaceName" type="elfld">
+                    <label>Interface Name</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_interfaceName</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="operationName" type="elfld">
+                    <label>Operation Name</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_operationName</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="outputDocumentName" type="elfld">
+                    <label>Output Document Name</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_outputDocumentName</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                  <element name="retryCount" type="elfld">
+                    <label>Retry Count for Operation</label>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/ui_UserInterface/uivar_model</variablePath>
+                        <variablePath>doc_stcw.STCW_PROCESS_DOCUMENT_MOBILE/leaf_retryCountForOp</variablePath>
+                      </variablePathList>
+                    </variable>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/vform_Menu</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/vform_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

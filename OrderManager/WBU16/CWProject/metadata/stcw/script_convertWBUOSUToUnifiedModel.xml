@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.convertWBUOSUToUnifiedModel">
+  <label>Convert WBU OSU To Unified Model</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="inputWBUOSU" type="rifp">
+      <type>dstruct_wgws.updateOrderStatus</type>
+    </parameter>
+    <parameter name="parentOrderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var wosuUnifiedModel = new DataStructure("stcw.wosuUnifiedModel");
+    wosuUnifiedModel.comOrderNumber = parentOrderNumber;
+    wosuUnifiedModel.orderStatus = inputWBUOSU.workOrderStatus;
+    wosuUnifiedModel.businessUnit = inputWBUOSU.businessUnit;
+    wosuUnifiedModel.reservationNumber = null;
+    wosuUnifiedModel.feasibilityStatus = null;
+    wosuUnifiedModel.reservationDays = null;
+    wosuUnifiedModel.actualImplementationDays = null;
+    wosuUnifiedModel.plannedFeasibleDays = null;
+    wosuUnifiedModel.lineItemIdentifier = null;
+    wosuUnifiedModel.lineItemStatus = inputWBUOSU.assetStatus;
+    wosuUnifiedModel.assetNumber = inputWBUOSU.assetNumber;
+    wosuUnifiedModel.niNumber = inputWBUOSU.NINumber;
+    wosuUnifiedModel.systemDesignation = inputWBUOSU.systemDesignation;
+    wosuUnifiedModel.workOrderName = inputWBUOSU.orderNumber;
+    wosuUnifiedModel.workOrderStatus = inputWBUOSU.workOrderStatus;
+    wosuUnifiedModel.workOrderRemarks = inputWBUOSU.comments;
+    wosuUnifiedModel.workOrderProblemDescription = null;
+    wosuUnifiedModel.taskNumber = null;
+    wosuUnifiedModel.taskName = inputWBUOSU.taskName;
+    wosuUnifiedModel.taskAllocatedTime = null;
+    wosuUnifiedModel.taskDescription = null;
+    wosuUnifiedModel.taskOperation = inputWBUOSU.taskOperation;
+    wosuUnifiedModel.taskPriority = null;
+    wosuUnifiedModel.taskServiceStatus = null;
+    wosuUnifiedModel.taskStatusCode = inputWBUOSU.taskStatusCode;
+    wosuUnifiedModel.taskRemarks = null;
+    wosuUnifiedModel.workOrderStage = null;
+
+    if(inputWBUOSU.nameValue != null && inputWBUOSU.nameValue.length > 0) {
+        for(var i=0; i<inputWBUOSU.nameValue.length; i++) {
+            var nvPairDS = new DataStructure("stcw.wosuNVPair");
+            nvPairDS.name = inputWBUOSU.nameValue[i].name; // do i have to convert name?
+            nvPairDS.value = inputWBUOSU.nameValue[i].value; // do i have to convert value?
+            wosuUnifiedModel.nvPairs[i] = nvPairDS;
+        }
+    }
+
+    return wosuUnifiedModel;
+  ]]></script>
+</script>

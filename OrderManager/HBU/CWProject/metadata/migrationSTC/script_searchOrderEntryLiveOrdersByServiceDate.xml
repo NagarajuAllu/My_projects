@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="e0c3037ce8a5354447298081809205d0" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="migrationSTC.searchOrderEntryLiveOrdersByServiceDate">
+  <guid>{0bef1d4e-fec3-f0f3-417c-181e38abe734}</guid>
+  <label>Search Order Entry (Live Orders) by Service Date</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="date" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_com.conceptwave.system.Date</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = null;
+
+    if (date != null) {
+
+          var input = new Document("migrationSTC:genericInputForDate");
+          input.date = date;
+
+          var output = Finder.runFinder("migrationSTC:findOrderEntryLiveOrdersByServiceDate", "select", input);
+
+          if (output != null && output.size > 0) {
+
+                result = new Array();
+
+    //            var ratio = output.totalSize / output.size;
+    //            for (var j = 0; j < ratio; j++) {
+                      // [A]. Increase the page load
+                      output.loadPage(0);
+                      // [B]. Fetch the current page
+                      for (var i = 0; i < output.size; i++){
+                            result = result.concat(output[i]);
+                      }
+     //           }
+          }
+    }
+
+    return result;
+  ]]></script>
+</script>

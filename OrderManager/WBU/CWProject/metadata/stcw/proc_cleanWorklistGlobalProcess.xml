@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process filenameHash="832984b8e14363bcaf1554ad0510a930" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.cleanWorklistGlobalProcess">
+  <activity name="start" type="seqActivity">
+    <guid>{0f5cc668-8f95-6c6a-c1c3-5dcf12766663}</guid>
+    <label>Start</label>
+    <schedule type="sched">
+      <duration type="dur">
+        <length>P0Y0M0DT0H5M0S</length>
+      </duration>
+    </schedule>
+    <x>49.0</x>
+    <y>113.0</y>
+    <childList>
+      <child name="deleteWorklistEntriesForCompletedTerminatedProcesses" type="scriptActivity">
+        <guid>{0bda59b6-0a60-a7f8-f3d8-dac340f65dc7}</guid>
+        <label>Delete Worklist Entries For Completed Or Terminated Processes</label>
+        <x>327.0</x>
+        <y>68.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0b128f2a-9bc5-a797-769d-e2ea4e8f0ea6}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              var header = "[" + this.process.id + "] - deleteWorklistEntriesForCompletedTerminatedProcesses - ";
+              var rowDeleted = Global.runDBUpdate("ORDER",
+                                                                    "delete from cwpworklist where sender_id in (select process_id from cwprocess where status in (3, 6))",
+                                                                    null);
+              if(rowDeleted > 0) {
+              debugPrintln(stcc.getSysdateForLog() + header + "Deleted " + rowDeleted + " rows");
+                    }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="repeat" type="repeatActivity">
+        <element>proc_stcw.cleanWorklistGlobalProcess/seqActivity_start</element>
+        <guid>{02984de4-8809-78e7-29c7-1fa6343ac407}</guid>
+        <label>Repeat</label>
+        <x>189.0</x>
+        <y>267.0</y>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <guid>{0157ef79-c266-7464-c2fc-a23a6c105a10}</guid>
+  <label>Clean Worklist Global Process</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <revision>2</revision>
+  <type>Global</type>
+</process>

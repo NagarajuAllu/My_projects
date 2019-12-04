@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="6e14f76e43c5f3620c32ba5816df8071" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="migrationSTC.executeEBULegacyOrderMigrationSingleRun">
+  <label>Execute EBULegacyOrder Migration Single Run</label>
+  <metaVersion>4</metaVersion>
+  <script><![CDATA[
+    var found = 0;
+    var loadedSuccessfully = 0;
+    var migratedWithValidationErrors = 0;
+    var processedSuccessfully = 0;
+
+    var searchDoc = new Document("ds_ws.search_orderMessage");
+    searchDoc.migratedToBundle = false;
+
+    var ordersFound = Finder.runFinder("ds_ws.findOrderMessageByOrderNumber", "select", searchDoc);
+
+
+    if(ordersFound != null) {
+        found = ordersFound.length;
+        for(var i=0; i<ordersFound.length; i++) {
+            try {
+                var orderToMigrate = Order.getOrderById(ordersFound[i].cwOrderId, true);
+                if(orderToMigrate != null) {
+                    loadedSuccessfully++;
+                    var bundleOrderMigrated = migrationSTC.migrateExistingEBULegacyOrderToBundleOrder(orderToMigrate);
+                    if(bundleOrderMigrated != null) {
+                        bundleOrderMigrated.save();
+                        orderToMigrate.orderMessage.migratedToBundle = true;
+                        orderToMigrate.save();
+
+                        var validationErrors = bundleOrderMigrated.validate(1000, true);
+                        if(validationErrors != null) {
+                            migratedWithValidationErrors++
+
+                            // migrated order is not valid
+                            debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] executeLegacyOrderMigrationSingleRun[" + i + "] - Order.id: " + ordersFound[i].id + " - ValidationErrors: ");
+                            for(var k=0; k<validationErrors.length; k=k+2) {
+                                debugPrintln(("" + k/2).leftPad(4, " ") + ". - " + validationErrors[k] + " = " + validationErrors[k+1]);
+                            }
+                        }
+
+                        if(bundleOrderMigrated.orderHeader.orderStatus == "COMPLETED" || validationErrors == null) {
+                            var orchestrationError = processSTC.writeSequenceForOrder(bundleOrderMigrated);
+                            if(orchestrationError != null) {
+                                 migratedWithValidationErrors++
+                                for(var k=0; k<orchestrationError.length; k++) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] executeLegacyOrderMigrationSingleRun[" + i + "] - Order.id: " + ordersFound[i].id + " - Error in creating orchestration record: " +
+                 "<" + orchestrationError[k].ErrorCode + "," + orchestrationError[k].ErrorDescription + ">");
+                                }
+                            }
+                            else {
+                                processedSuccessfully++;
+                            }
+                        }
+                    }
+                }
+            }
+            catch(exc) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] executeLegacyOrderMigrationSingleRun[" + i + "] - Order.id: " + ordersFound[i].id + " - Exc: " + exc.message);
+            }
+        }
+    }
+
+    var result = new Array();
+    result[0] = found;
+    result[1] = loadedSuccessfully;
+    result[2] = migratedWithValidationErrors;
+    result[3] = processedSuccessfully;
+
+
+    return result;
+  ]]></script>
+</script>

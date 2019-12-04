@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.completeActivityOnTracking">
+  <label>Complete Activity On Tracking</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="wlId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="objectId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="objectType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="operationName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="userId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="completionDate" type="rifp">
+      <type>dtype_common.tfsDateTime</type>
+    </parameter>
+    <parameter name="operationPerformed" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var trackingSearchDoc = new Document("workflow.trackingSearchDoc");
+    trackingSearchDoc.wlId = wlId;
+    trackingSearchDoc.orderId = orderId;
+    trackingSearchDoc.objectId = objectId;
+    trackingSearchDoc.objectType = objectType;
+    trackingSearchDoc.operationName = operationName;
+    trackingSearchDoc.userId = userId;
+
+    var resultList = Finder.runFinder("workflow.trackingFinder", "select", trackingSearchDoc);
+    var trackingRecord = null;
+    if(resultList != null && resultList.length > 0) {
+        trackingRecord = resultList[0];
+    }
+    else {
+        trackingRecord = new Document("workflow.tracking");
+        trackingRecord.wlId = wlId;
+        trackingRecord.orderId = orderId;
+        trackingRecord.objectId = objectId;
+        trackingRecord.objectType = objectType;
+        trackingRecord.operationName = operationName;
+        trackingRecord.userId = userId;
+        trackingRecord.processId = processId;
+    }
+
+    trackingRecord.completionDateTime = completionDate;
+    trackingRecord.actionPerformed = operationPerformed;
+    trackingRecord.save();
+  ]]></script>
+</script>

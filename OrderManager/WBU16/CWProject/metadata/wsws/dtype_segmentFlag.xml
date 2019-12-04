@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataType name="wsws.segmentFlag">
+  <extends>dtype_com.conceptwave.system.String</extends>
+  <label>Segment Flag</label>
+  <length>10</length>
+  <metaVersion>25</metaVersion>
+  <methodList>
+    <method name="validatePickListValue" type="crule">
+      <message>SegmentFlag: Invalid value in enumeration</message>
+      <severity>error</severity>
+      <type>validator</type>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+      <script><![CDATA[return  !(stcw.validatePickListValue("segmentFlag", itemData));]]></script>
+    </method>
+  </methodList>
+</dataType>

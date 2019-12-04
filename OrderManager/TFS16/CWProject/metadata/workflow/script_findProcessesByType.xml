@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.findProcessesByType">
+  <label>Find Processes By Type</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderId" type="rifp">
+      <type>dtype_cwf.cwOrderId</type>
+    </parameter>
+    <parameter name="processType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var f = new Document("cwf_pm.ProcessSearch");
+    f.ORDER_ID = orderId;
+
+    var procList = [];
+
+    var resultList = Finder.runFinder("cwf_pm:ProcessFinder", "select", f);
+
+
+    for(var i=0; i< resultList.length; i++){
+      var p = Process.getProcessInfo(resultList[i].PROCESS_ID);
+      if(p && p.metadataTypeName == processType){
+        procList.push(resultList[i].PROCESS_ID);
+      };
+    }
+
+    return procList;
+  ]]></script>
+</script>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="c018df31f39e96e4227c63d4876321ab" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.generateLastWOSUForOrder">
+  <label>Generate Last WOSU For Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // it generates the last WOSU for the bundleOrder
+    var wosuEvent = new DataStructure("ds_jms.workOrderStatusUpdate_el");
+    wosuEvent.workOrderNumber = bundleOrder.orderHeader.orderNumber;
+    wosuEvent.crmOrderNumber = bundleOrder.orderHeader.orderNumber;
+    wosuEvent.serviceNumber = bundleOrder.orderHeader.orderNumber;
+    wosuEvent.businessUnit = bundleOrder.orderHeader.businessUnit;
+    wosuEvent.workOrderStatus =  bundleOrder.orderHeader.orderStatus;
+    wosuEvent.taskName = "no-info";
+    wosuEvent.taskNumber = -1;
+    wosuEvent.taskOperation = "no-info";
+    wosuEvent.taskStatusCode = -1;
+
+    var wosuID = processSTC.writeWOSUIntoDB("-1", wosuEvent);
+
+    var wosuProcessDocument = new Document("processSTC.STC_PROCESS_DOCUMENT");
+    wosuProcessDocument.latestWOSUId = wosuID;
+    wosuProcessDocument.firstPassWOSU = "Y";
+
+    var wosuPID = Process.startProcess("processSTC.sendWOSUToCRM", wosuProcessDocument);
+  ]]></script>
+</script>

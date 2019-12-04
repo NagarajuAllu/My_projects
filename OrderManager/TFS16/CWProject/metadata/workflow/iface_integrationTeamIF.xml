@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<interface name="workflow.integrationTeamIF">
+  <label>Integration team interface</label>
+  <metaVersion>25</metaVersion>
+  <operationList>
+    <operation name="analyzeRejection" type="oper">
+      <description>Analyze rejection and decide either accept or reject it.</description>
+      <label>Analyze Rejection</label>
+      <privilegeList>
+        <privilege>STC_IOrdInitPriv</privilege>
+      </privilegeList>
+      <type>One-Way</type>
+    </operation>
+    <operation name="reject" type="oper">
+      <description>Reject rejection.</description>
+      <label>Reject</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="accept" type="oper">
+      <description>Accept rejection.</description>
+      <label>Accept</label>
+      <type>Notification</type>
+    </operation>
+    <operation name="fixIssue" type="oper">
+      <label>Fix Issue</label>
+      <type>One-Way</type>
+    </operation>
+    <operation name="issueFixed" type="oper">
+      <label>Issue fixed</label>
+      <type>Notification</type>
+    </operation>
+  </operationList>
+  <privilegeList>
+    <privilege>STC_IntegPriv</privilege>
+  </privilegeList>
+  <revision>3</revision>
+</interface>

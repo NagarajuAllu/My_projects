@@ -1,0 +1,901 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<definitions name="wsws" targetNamespace="java:com.telcordia.expediter.rmsw"
+	xmlns:tns="java:com.telcordia.expediter.rmsw"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wsws="java:com.telcordia.expediter.rmsw">
+
+	<types>
+		<schema targetNamespace="java:com.telcordia.expediter.rmsw"			
+	xmlns="http://www.w3.org/2001/XMLSchema"			
+	xmlns:wsws="java:com.telcordia.expediter.rmsw"			
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+
+			<annotation>
+				<documentation>Wholesale Web Services for EAI</documentation>
+				<appinfo>
+					<metadata>STC Order Management</metadata>
+					<created>Wed Jun 10 08:27:53 EDT 2009</created>
+				</appinfo>
+			</annotation>
+
+			<!-- Data types and elements -->
+
+			<simpleType name="lineItemPriority">
+				<annotation>
+					<documentation>LineItem Priority</documentation>
+				</annotation>
+				<restriction base="xsd:integer">
+					<totalDigits value="2"/>
+					<minInclusive value="1"/>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="accountSubType">
+				<annotation>
+					<documentation>accountSubType</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="30"/>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="orderType">
+				<annotation>
+					<documentation>Order Type</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="1"/>
+					<enumeration value="I">
+						<annotation>
+							<documentation>Install</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="C">
+						<annotation>
+							<documentation>Change</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="D">
+						<annotation>
+							<documentation>Tempo Disconnect</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="E">
+						<annotation>
+							<documentation>Reconnect</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="O">
+						<annotation>
+							<documentation>Disconnect</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="F">
+						<annotation>
+							<documentation>Feasibility</documentation>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="quoteType">
+				<annotation>
+					<documentation>quoteType</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="30"/>
+					<enumeration value="I">
+						<annotation>
+							<documentation>I</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="C">
+						<annotation>
+							<documentation>C</documentation>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="restoration">
+				<annotation>
+					<documentation>restoration</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="30"/>
+					<enumeration value="Y">
+						<annotation>
+							<documentation>Y</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="N">
+						<annotation>
+							<documentation>N</documentation>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="segmentFlag">
+				<annotation>
+					<documentation>Segment Flag</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="10"/>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="serviceStatus">
+				<annotation>
+					<documentation>serviceStatus</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="30"/>
+					<enumeration value="Add">
+						<annotation>
+							<documentation>Add</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="Revise">
+						<annotation>
+							<documentation>Revise</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="Cancel">
+						<annotation>
+							<documentation>Cancel</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="Unchanged">
+						<annotation>
+							<documentation>Unchanged</documentation>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="quantity">
+				<annotation>
+					<documentation>Quantity</documentation>
+				</annotation>
+				<restriction base="xsd:integer">
+					<totalDigits value="5"/>
+					<minInclusive value="1"/>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="orderRowItemId">
+				<annotation>
+					<documentation>OrderRowItemId</documentation>
+				</annotation>
+				<restriction base="xsd:integer">
+					<totalDigits value="5"/>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="nvAction">
+				<annotation>
+					<documentation>NV Action</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="10"/>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="accountType">
+				<annotation>
+					<documentation>accountType</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="30"/>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="accountStatus">
+				<annotation>
+					<documentation>accountStatus</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="30"/>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="quoteStatusDataType">
+				<annotation>
+					<documentation>quoteStatusDataType</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="30"/>
+					<enumeration value="Feasibility">
+						<annotation>
+							<documentation>Feasibility</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="Reservation">
+						<annotation>
+							<documentation>Reservation</documentation>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="feasibilityStatus">
+				<annotation>
+					<documentation>feasibilityStatus</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="30"/>
+				</restriction>
+			</simpleType>
+
+			<simpleType name="accountRegion">
+				<annotation>
+					<documentation>accountRegion</documentation>
+				</annotation>
+				<restriction base="xsd:string">
+					<maxLength value="100"/>
+				</restriction>
+			</simpleType>
+
+			<!-- Structures -->
+
+			<complexType name="nameValue_noAction">
+				<annotation>
+					<documentation>nameValue_noAction</documentation>
+				</annotation>
+					<sequence>
+						<element name="name" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="value" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="status">
+				<annotation>
+					<documentation>status</documentation>
+				</annotation>
+					<sequence>
+						<element name="errorCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="errorDescription" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="errorType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="sourceErrorCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="status" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="CommonLineItemParameters">
+				<annotation>
+					<documentation>CommonLineItemParameters</documentation>
+				</annotation>
+					<sequence>
+						<element name="LineItemType" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Priority" minOccurs="0" maxOccurs="1" type="wsws:lineItemPriority"/>
+						<element name="Action" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderRowItemId" minOccurs="0" maxOccurs="1" type="wsws:orderRowItemId"/>
+						<element name="ServiceType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ReservationNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Description" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OldServiceNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ReservationDays" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ReasonCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ChangeRequestType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="DisconnectionReason" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SegmentFlag" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ProductCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Restoration" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Remarks" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="NumberOfChannels" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="PrimaryAssetNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Quantity" minOccurs="0" maxOccurs="1" type="wsws:quantity"/>
+						<element name="IcmsSONumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="FictBillingNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="BandWidth" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="AccountNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OldAccountNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ProjectID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationACity" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationACCLICode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationAAccessCircuit" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationAJVCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationAExchangeSwCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationAAccessType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationAPlateID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationAoldPlateId" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationAContactAddress" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationAContactName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationAContactTelNo" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationAContactEmail" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocAUnitNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationAInterface" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationARemarks" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBCity" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBCCLICode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBAccessCircuit" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBJVCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBExchangeSwCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBAccessType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBPlateID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBoldPlateId" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBContactAddress" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBContactName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBContactTelNo" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBContactEmail" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocBUnitNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBInterface" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="LocationBRemarks" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Wires" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ReferenceTelNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceDescription" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceDate" minOccurs="1" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="CreationDate" minOccurs="1" maxOccurs="1" type="xsd:dateTime"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="subservice">
+				<annotation>
+					<documentation>subservice</documentation>
+				</annotation>
+					<sequence>
+						<element name="bandwidth" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="creationDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="nameValue" minOccurs="0" maxOccurs="unbounded" type="wsws:nameValue_noAction"/>
+						<element name="productCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="reservationNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="segmentFlag" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="serviceDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="assetNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="primaryAssetNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="numberOfChannels" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<element name="siteInformationUpdateAcknowledgement" type="wsws:siteAcknowledgement"/>
+
+			<element name="customerInformationUpdate" type="wsws:customer"/>
+
+			<complexType name="ParentLineItem">
+				<annotation>
+					<documentation>ParentLineItem</documentation>
+				</annotation>
+					<complexContent>
+						<extension base="wsws:CommonLineItemParameters">
+							<sequence>
+								<element name="ParentLineItemIdentifer" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+								<element name="ParentLineItemNameValueParameters" minOccurs="0" maxOccurs="1">
+									<annotation>
+										<documentation>ParentLineItemNameValueParameters</documentation>
+									</annotation>
+									<complexType>
+										<sequence>
+											<element name="NameValue" minOccurs="0" maxOccurs="999" type="wsws:nameValue"/>
+										</sequence>
+									</complexType>
+								</element>
+								<element name="ParentLineItemVASNVParameters" minOccurs="0" maxOccurs="1">
+									<annotation>
+										<documentation>ParentLineItemVASNVParameters</documentation>
+									</annotation>
+									<complexType>
+										<sequence>
+											<element name="VASNameValue" minOccurs="0" maxOccurs="999" type="wsws:VASNameValue"/>
+										</sequence>
+									</complexType>
+								</element>
+								<element name="ParentLineItemsBlockParameters" minOccurs="0" maxOccurs="1">
+									<annotation>
+										<documentation>ParentLineItemsBlockParameters</documentation>
+									</annotation>
+									<complexType>
+										<sequence>
+											<element name="BlockNameValueParameter" minOccurs="0" maxOccurs="999" type="wsws:BlockParameterNameValue"/>
+										</sequence>
+									</complexType>
+								</element>
+								<element name="SVCLineItems" minOccurs="0" maxOccurs="999" type="wsws:ServiceLineItem"/>
+							</sequence>
+						</extension>
+					</complexContent>
+				</complexType>
+
+			<complexType name="siteAcknowledgement">
+				<annotation>
+					<documentation>siteAcknowledgement</documentation>
+				</annotation>
+					<sequence>
+						<element name="businessUnit" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="siteID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="status" minOccurs="0" maxOccurs="1" type="wsws:status"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="service">
+				<annotation>
+					<documentation>service</documentation>
+				</annotation>
+					<sequence>
+						<element name="bandwidth" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="creationDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="nameValue" minOccurs="0" maxOccurs="unbounded" type="wsws:nameValue_noAction"/>
+						<element name="productCode" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="reservationNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="segmentFlag" minOccurs="1" maxOccurs="1" type="wsws:segmentFlag"/>
+						<element name="serviceDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="assetNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="primaryAssetNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="subservices" minOccurs="0" maxOccurs="unbounded" type="wsws:subservice"/>
+						<element name="numberOfChannels" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="quoteAcknowledgement">
+				<annotation>
+					<documentation>quoteAcknowledgement</documentation>
+				</annotation>
+					<sequence>
+						<element name="businessUnit" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="quoteNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="status" minOccurs="0" maxOccurs="1" type="wsws:status"/>
+						<element name="workOrderStatus" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="quotation">
+				<annotation>
+					<documentation>quotation</documentation>
+				</annotation>
+					<sequence>
+						<element name="accountNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="businessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="comments" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="creationDate" minOccurs="1" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="lineItems" minOccurs="1" maxOccurs="unbounded" type="wsws:quotableService"/>
+						<element name="quoteNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="quoteStatus" minOccurs="1" maxOccurs="1" type="wsws:quoteStatusDataType"/>
+						<element name="quoteType" minOccurs="1" maxOccurs="1" type="wsws:quoteType"/>
+						<element name="salesRepresentative" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<element name="submitOrder" type="wsws:OrderHeader"/>
+
+			<element name="restorationAcknowledgementResponse" type="wsws:status"/>
+
+			<element name="reportFailure" type="wsws:failureMessage"/>
+
+			<complexType name="VASNameValue">
+				<annotation>
+					<documentation>VASNameValue</documentation>
+				</annotation>
+					<sequence>
+						<element name="Name" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Value" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Action" minOccurs="0" maxOccurs="1" type="wsws:nvAction"/>
+					</sequence>
+				</complexType>
+
+			<element name="siteInformationUpdateAcknowledgementResponse" type="wsws:status"/>
+
+			<complexType name="nameValue">
+				<annotation>
+					<documentation>NameValue</documentation>
+				</annotation>
+					<sequence>
+						<element name="Name" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Value" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Action" minOccurs="0" maxOccurs="1" type="wsws:nvAction"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="Failure">
+				<annotation>
+					<documentation>Failure</documentation>
+				</annotation>
+					<sequence>
+						<element name="ErrorCode" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorDescription" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorTime" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="FunctionName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ObjectId" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ProcessInstanceId" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SourceErrorCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SystemName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="TargetRecord" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="UserId" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<element name="submitOrderResponse">
+				<complexType >
+				<annotation>
+					<documentation>submitOrderResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="returns" minOccurs="1" maxOccurs="1" type="wsws:OrderAcknowledgementWithFailure"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<complexType name="customer">
+				<annotation>
+					<documentation>customer</documentation>
+				</annotation>
+					<sequence>
+						<element name="accountNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="accountRegion" minOccurs="0" maxOccurs="1" type="wsws:accountRegion"/>
+						<element name="accountStatus" minOccurs="1" maxOccurs="1" type="wsws:accountStatus"/>
+						<element name="accountSubType" minOccurs="0" maxOccurs="1" type="wsws:accountSubType"/>
+						<element name="accountType" minOccurs="1" maxOccurs="1" type="wsws:accountType"/>
+						<element name="accountTypeCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="businessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="name" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="streetAddress" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="nameValue" minOccurs="0" maxOccurs="unbounded" type="wsws:nameValue_noAction"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="ServiceLineItem">
+				<annotation>
+					<documentation>ServiceLineItem</documentation>
+				</annotation>
+					<complexContent>
+						<extension base="wsws:CommonLineItemParameters">
+							<sequence>
+								<element name="SvcLineItemInstanceIdentifier" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+								<element name="SvcLineItemNameValueParameters" minOccurs="0" maxOccurs="1">
+									<annotation>
+										<documentation>SvcLineItemNameValueParameters</documentation>
+									</annotation>
+									<complexType>
+										<sequence>
+											<element name="NameValue" minOccurs="0" maxOccurs="999" type="wsws:nameValue"/>
+										</sequence>
+									</complexType>
+								</element>
+								<element name="SvcLineItemVASNVParameters" minOccurs="0" maxOccurs="1">
+									<annotation>
+										<documentation>SvcLineItemVASNVParameters</documentation>
+									</annotation>
+									<complexType>
+										<sequence>
+											<element name="VASNameValue" minOccurs="0" maxOccurs="999" type="wsws:VASNameValue"/>
+										</sequence>
+									</complexType>
+								</element>
+								<element name="SvcLineItemsBlockParameters" minOccurs="0" maxOccurs="1">
+									<annotation>
+										<documentation>SvcLineItemsBlockParameters</documentation>
+									</annotation>
+									<complexType>
+										<sequence>
+											<element name="BlockNameValueParameter" minOccurs="0" maxOccurs="999" type="wsws:BlockParameterNameValue"/>
+										</sequence>
+									</complexType>
+								</element>
+							</sequence>
+						</extension>
+					</complexContent>
+				</complexType>
+
+			<element name="quoteValidation" type="wsws:quotation"/>
+
+			<element name="quoteValidationResponse" type="wsws:quoteAcknowledgement"/>
+
+			<element name="customerInformationUpdateAcknowledgement" type="wsws:customerAcknowledgement"/>
+
+			<complexType name="customerAcknowledgement">
+				<annotation>
+					<documentation>customerAcknowledgement</documentation>
+				</annotation>
+					<sequence>
+						<element name="accountNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="businessUnit" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="status" minOccurs="0" maxOccurs="1" type="wsws:status"/>
+					</sequence>
+				</complexType>
+
+			<element name="updateOrder" type="wsws:OrderHeader"/>
+
+			<complexType name="quotableService">
+				<annotation>
+					<documentation>quotableService</documentation>
+				</annotation>
+					<complexContent>
+						<extension base="wsws:service">
+							<sequence>
+								<element name="action" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+								<element name="feasibilityStatus" minOccurs="0" maxOccurs="1" type="wsws:feasibilityStatus"/>
+								<element name="orderRowItemId" minOccurs="1" maxOccurs="1" type="xsd:integer"/>
+								<element name="quantity" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+								<element name="reservationDays" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+								<element name="restoration" minOccurs="0" maxOccurs="1" type="wsws:restoration"/>
+								<element name="serviceStatus" minOccurs="1" maxOccurs="1" type="wsws:serviceStatus"/>
+							</sequence>
+						</extension>
+					</complexContent>
+				</complexType>
+
+			<element name="restorationAcknowledgement" type="wsws:maintOrderAcknowledgement"/>
+
+			<complexType name="BlockParameterNameValue">
+				<annotation>
+					<documentation>BlockParameterNameValue</documentation>
+				</annotation>
+					<sequence>
+						<element name="BlockParameterName" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="BlockParameterValues" minOccurs="0" maxOccurs="1">
+							<annotation>
+								<documentation>BlockParameterValues</documentation>
+							</annotation>
+							<complexType>
+								<sequence>
+									<element name="BlockParameterValue" minOccurs="0" maxOccurs="999" type="xsd:string"/>
+								</sequence>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+
+			<complexType name="maintOrderAcknowledgement">
+				<annotation>
+					<documentation>maintOrderAcknowledgement</documentation>
+				</annotation>
+					<sequence>
+						<element name="businessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="maintOrderNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="status" minOccurs="0" maxOccurs="1" type="wsws:status"/>
+						<element name="workOrderStatus" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="failureMessage">
+				<annotation>
+					<documentation>failureMessage</documentation>
+				</annotation>
+					<sequence>
+						<element name="functionName" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="errorCode" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="errorDescription" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="errorType" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="sourceErrorCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="status" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<element name="reportFailureAcknowledgement" type="wsws:status"/>
+
+			<complexType name="OrderHeader">
+				<annotation>
+					<documentation>OrderHeader</documentation>
+				</annotation>
+					<sequence>
+						<element name="CustomerIdNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="AccountNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerIDType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerContact" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerContactName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderType" minOccurs="1" maxOccurs="1" type="wsws:orderType"/>
+						<element name="OrderStatus" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="CreationDate" minOccurs="1" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="CreatedBy" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="CreatedByName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CreatedByContactName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceDate" minOccurs="1" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="Priority" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerSegmentation" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="FeasibilityFor" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Reservation" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="BusinessUnit" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="ICMSSalesOrderNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ReferenceTelNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SalesRepresentative" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderParameters" minOccurs="0" maxOccurs="1">
+							<annotation>
+								<documentation>OrderParameters</documentation>
+							</annotation>
+							<complexType>
+								<sequence>
+									<element name="NameValue" minOccurs="0" maxOccurs="999" type="wsws:nameValue"/>
+								</sequence>
+							</complexType>
+						</element>
+						<element name="ParentLineItem" minOccurs="1" maxOccurs="1" type="wsws:ParentLineItem"/>
+					</sequence>
+				</complexType>
+
+			<element name="updateOrderResponse">
+				<complexType >
+				<annotation>
+					<documentation>updateOrderResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="returns" minOccurs="1" maxOccurs="1" type="wsws:OrderAcknowledgementWithFailure"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<complexType name="OrderAcknowledgementWithFailure">
+				<annotation>
+					<documentation>OrderAcknowledgementWithFailure</documentation>
+				</annotation>
+					<sequence>
+						<element name="MasterOrderNumber" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="MasterOrderStatus" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+						<element name="Failure" minOccurs="0" maxOccurs="999" type="wsws:Failure"/>
+					</sequence>
+				</complexType>
+
+			<!-- Documents -->
+
+		</schema>
+	</types>
+
+	<message name="customerInformationUpdate">
+		<part name="customerInformationUpdate" element="wsws:customerInformationUpdate"/>
+	</message>
+
+	<message name="customerInformationUpdateAcknowledgement">
+		<part name="customerInformationUpdateAcknowledgement" element="wsws:customerInformationUpdateAcknowledgement"/>
+	</message>
+
+	<message name="submitOrder">
+		<part name="submitOrder" element="wsws:submitOrder"/>
+	</message>
+
+	<message name="submitOrderResponse">
+		<part name="submitOrderResponse" element="wsws:submitOrderResponse"/>
+	</message>
+
+	<message name="updateOrder">
+		<part name="updateOrder" element="wsws:updateOrder"/>
+	</message>
+
+	<message name="updateOrderResponse">
+		<part name="updateOrderResponse" element="wsws:updateOrderResponse"/>
+	</message>
+
+	<message name="quoteValidation">
+		<part name="quoteValidation" element="wsws:quoteValidation"/>
+	</message>
+
+	<message name="quoteValidationResponse">
+		<part name="quoteValidationResponse" element="wsws:quoteValidationResponse"/>
+	</message>
+
+	<message name="reportFailure">
+		<part name="reportFailure" element="wsws:reportFailure"/>
+	</message>
+
+	<message name="reportFailureAcknowledgement">
+		<part name="reportFailureAcknowledgement" element="wsws:reportFailureAcknowledgement"/>
+	</message>
+
+	<message name="siteInformationUpdateAcknowledgement">
+		<part name="siteInformationUpdateAcknowledgement" element="wsws:siteInformationUpdateAcknowledgement"/>
+	</message>
+
+	<message name="siteInformationUpdateAcknowledgementResponse">
+		<part name="siteInformationUpdateAcknowledgementResponse" element="wsws:siteInformationUpdateAcknowledgementResponse"/>
+	</message>
+
+	<message name="restorationAcknowledgement">
+		<part name="restorationAcknowledgement" element="wsws:restorationAcknowledgement"/>
+	</message>
+
+	<message name="restorationAcknowledgementResponse">
+		<part name="restorationAcknowledgementResponse" element="wsws:restorationAcknowledgementResponse"/>
+	</message>
+
+	<portType name="ifExpedtier_WHOLESALE">
+		<operation name="operation_CustomerInformationUpdate">
+			<input message="tns:customerInformationUpdate"/>
+			<output message="tns:customerInformationUpdateAcknowledgement"/>
+		</operation>
+		<operation name="operation_SubmitOrder">
+			<input message="tns:submitOrder"/>
+			<output message="tns:submitOrderResponse"/>
+		</operation>
+		<operation name="operation_UpdateOrder">
+			<input message="tns:updateOrder"/>
+			<output message="tns:updateOrderResponse"/>
+		</operation>
+		<operation name="operation_QuoteValidation">
+			<input message="tns:quoteValidation"/>
+			<output message="tns:quoteValidationResponse"/>
+		</operation>
+		<operation name="operation_ReportFailure">
+			<input message="tns:reportFailure"/>
+			<output message="tns:reportFailureAcknowledgement"/>
+		</operation>
+		<operation name="operation_SiteInformationUpdateAck">
+			<input message="tns:siteInformationUpdateAcknowledgement"/>
+			<output message="tns:siteInformationUpdateAcknowledgementResponse"/>
+		</operation>
+		<operation name="operation_RestorationAcknowledgement">
+			<input message="tns:restorationAcknowledgement"/>
+			<output message="tns:restorationAcknowledgementResponse"/>
+		</operation>
+	</portType>
+
+	<binding name="bindingForExpediterIF_SOAP_WHOLESALE" type="tns:ifExpedtier_WHOLESALE">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+		<operation name="operation_CustomerInformationUpdate">
+			<soap:operation soapAction="operation_CustomerInformationUpdate"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_SubmitOrder">
+			<soap:operation soapAction="operation_SubmitOrder"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_UpdateOrder">
+			<soap:operation soapAction="operation_UpdateOrder"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_QuoteValidation">
+			<soap:operation soapAction="operation_quoteValidation"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_ReportFailure">
+			<soap:operation soapAction="operation_ReportFailure"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_SiteInformationUpdateAck">
+			<soap:operation soapAction="operation_SiteInformationUpdateAck"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_RestorationAcknowledgement">
+			<soap:operation soapAction="operation_RestorationAcknowledgement"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+
+	<service name="ifExpediter_WHOLESALE_Service">
+		<port name="portForExpediterIF_SOAP_WHOLESALE" binding="tns:bindingForExpediterIF_SOAP_WHOLESALE">
+			<soap:address location="http://localhost:8282/cwf/services/ifExpedtier_WHOLESALE"/>
+		</port>
+	</service>
+
+</definitions>

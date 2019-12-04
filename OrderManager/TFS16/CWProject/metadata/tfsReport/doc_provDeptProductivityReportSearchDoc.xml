@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.provDeptProductivityReportSearchDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{f4b75a22-698b-4372-afea-6f26a15fa129}</guid>
+  <label>Provisioning Department Productivity Report Search Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="completionDateFrom" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>TFR Completion Date &gt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="completionDateTo" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>yyyy/MM/dd HH:mm:ss</displayFormat>
+        <label>TFR Completion Date &lt;=</label>
+      </propertyElement>
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.provDeptProductivityReportSearchDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultVerticalLayout" type="elvlt">
+                <width>1200px</width>
+                <elementList>
+                  <element name="inputDataLabel" type="elhdr">
+                    <cellAlignment>left,center</cellAlignment>
+                    <height>40px</height>
+                    <label>Provisioning Department Productivity Report Input Data</label>
+                    <width>1200px</width>
+                  </element>
+                  <element name="provDeptProductivityReportSearchDocGrid" type="elgrd">
+                    <colWidths>150px,150px,150px,150px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="completionDateFrom" type="eldatetime">
+                        <label>TFR Completion Date &gt;=</label>
+                        <labelOrientation>left</labelOrientation>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.provDeptProductivityReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.provDeptProductivityReportSearchDoc/leaf_completionDateFrom</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="completionDateTo" type="eldatetime">
+                        <label>TFR Completion Date &lt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfsReport.provDeptProductivityReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfsReport.provDeptProductivityReportSearchDoc/leaf_completionDateTo</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="LayoutSpacer" type="ellsp">
+                    <height>20px</height>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,258 @@
+<definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservices.system.stc.custom.granite.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://webservices.system.stc.custom.granite.com/" name="XngOrderService">
+	<types>
+		<xsd:schema xmlns:ns0="http://webservices.system.stc.custom.granite.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://webservices.system.stc.custom.granite.com/">
+			<xsd:complexType name="commonLineItem">
+				<xsd:sequence>
+					<xsd:element name="bundleProductType" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="bundleServiceType" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="parentItemServiceNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="lineItemIdentifier" type="xsd:string"/>
+					<xsd:element name="lineItemType" type="ns0:lineItemType" minOccurs="0"/>
+					<xsd:element name="action" type="ns0:lineItemAction"/>
+					<xsd:element name="serviceType" type="xsd:string"/>
+					<xsd:element name="serviceNumber" type="xsd:string"/>
+					<xsd:element name="oldServiceNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="reasonCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+					<xsd:element name="productType" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="remarks" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="icmsSONumber" type="xsd:string"/>
+					<xsd:element name="fictBillingNumber" type="xsd:string"/>
+					<xsd:element name="referenceTelNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="serviceDescription" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="bandwidth" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="accountNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="oldAccountNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="projectId" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationACity" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationACCLICode" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAAccessCircuit" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAJVCode" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAExchangeSwitchCode" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAAccessType" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAPlateID" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAOldPlateID" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAContactAddress" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAContactName" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAContactTelNo" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAContactEmail" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAUnitNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationAInterface" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationARemarks" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBCity" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBCCLICode" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBAccessCircuit" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBJVCode" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBExchangeSwitchCode" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBAccessType" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBPlateID" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBOldPlateID" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBContactAddress" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBContactName" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBContactTelNo" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBContactEmail" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBUnitNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBInterface" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="locationBRemarks" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="tbPortNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="wires" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="serviceDate" type="xsd:dateTime" minOccurs="0"/>
+					<xsd:element name="creationDate" type="xsd:dateTime" minOccurs="0"/>
+					<xsd:element name="nameValueParameters" type="ns0:nameValueParameters" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+					<xsd:element name="blockParameters" type="ns0:blockParameters" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="submitOrder">
+				<xsd:sequence>
+					<xsd:element name="arg0" type="ns0:orderMessage" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="submitOrderResponse">
+				<xsd:sequence>
+					<xsd:element name="return" type="ns0:orderAcknowledgementWithFailure" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="updateOrder">
+				<xsd:sequence>
+					<xsd:element name="arg0" type="ns0:orderMessage" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="orderAcknowledgementWithFailure">
+				<xsd:sequence>
+					<xsd:element name="workOrderNumber" type="xsd:string"/>
+					<xsd:element name="crmOrderNumber" type="xsd:string"/>
+					<xsd:element name="lineItemIdentifier" type="xsd:string"/>
+					<xsd:element name="status" type="ns0:orderStatus"/>
+					<xsd:element name="xngOrderNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="failure" type="ns0:orderFailure" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="updateOrderResponse">
+				<xsd:sequence>
+					<xsd:element name="return" type="ns0:orderAcknowledgementWithFailure" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="orderMessage">
+				<xsd:sequence>
+					<xsd:element name="customerIdNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="accountNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="customerType" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="customerIDType" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="customerContact" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="customerContactName" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="customerName" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="customerNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="workOrderNumber" type="xsd:string"/>
+					<xsd:element name="crmOrderNumber" type="xsd:string"/>
+					<xsd:element name="workOrderType" type="ns0:orderType"/>
+					<xsd:element name="orderStatus" type="xsd:string"/>
+					<xsd:element name="creationDate" type="xsd:dateTime"/>
+					<xsd:element name="createdBy" type="xsd:string"/>
+					<xsd:element name="createdByName" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="createdByContactName" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="serviceDate" type="xsd:dateTime" minOccurs="0"/>
+					<xsd:element name="priority" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="remarks" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="referenceTelNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="reasonCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+					<xsd:element name="version" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="customerSegmentation" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="feasibilityFor" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="reservation" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="reservationNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="icmsSalesOrderNumber" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="businessUnit" type="xsd:string"/>
+					<xsd:element name="orderNameValueParameters" type="ns0:nameValueParameters" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+					<xsd:element name="lineItem" type="ns0:lineItem"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="lineItem">
+				<xsd:complexContent>
+					<xsd:extension base="ns0:commonLineItem">
+						<xsd:sequence>
+							<xsd:element name="vasLineItem" type="ns0:commonLineItem" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="blockParameters">
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"/>
+					<xsd:element name="value" type="xsd:string" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+					<xsd:element name="action" type="ns0:nameValueAction" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="orderFailure">
+				<xsd:sequence>
+					<xsd:element name="errorCode" type="xsd:string"/>
+					<xsd:element name="errorDescription" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="errorTime" type="xsd:string"/>
+					<xsd:element name="errorType" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="systemName" type="xsd:string" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="nameValueParameters">
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"/>
+					<xsd:element name="value" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="action" type="ns0:nameValueAction" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="submitOrder" type="ns0:submitOrder"/>
+			<xsd:element name="submitOrderResponse" type="ns0:submitOrderResponse"/>
+			<xsd:element name="updateOrder" type="ns0:updateOrder"/>
+			<xsd:element name="orderAcknowledgementWithFailure" type="ns0:orderAcknowledgementWithFailure"/>
+			<xsd:element name="updateOrderResponse" type="ns0:updateOrderResponse"/>
+			<xsd:element name="orderMessage" type="ns0:orderMessage"/>
+			<xsd:simpleType name="orderType">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="I"/>
+					<xsd:enumeration value="C"/>
+					<xsd:enumeration value="T"/>
+					<xsd:enumeration value="O"/>
+					<xsd:enumeration value="D"/>
+					<xsd:enumeration value="E"/>
+					<xsd:enumeration value="F"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="nameValueAction">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Add"/>
+					<xsd:enumeration value="Remove"/>
+					<xsd:enumeration value="Modify"/>
+					<xsd:enumeration value="No-Change"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="lineItemType">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Service"/>
+					<xsd:enumeration value="VAS"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="orderStatus">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Accepted"/>
+					<xsd:enumeration value="Rejected"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="lineItemAction">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="A"/>
+					<xsd:enumeration value="D"/>
+					<xsd:enumeration value="M"/>
+					<xsd:enumeration value="N"/>
+					<xsd:enumeration value="S"/>
+					<xsd:enumeration value="R"/>
+					<xsd:enumeration value="C"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:schema>
+	</types>
+	<message name="submitOrder">
+		<part name="parameters" element="tns:submitOrder"/>
+	</message>
+	<message name="submitOrderResponse">
+		<part name="parameters" element="tns:submitOrderResponse"/>
+	</message>
+	<message name="updateOrder">
+		<part name="parameters" element="tns:updateOrder"/>
+	</message>
+	<message name="updateOrderResponse">
+		<part name="parameters" element="tns:updateOrderResponse"/>
+	</message>
+	<portType name="XngOrderService">
+		<operation name="submitOrder">
+			<input wsam:Action="submitOrder" message="tns:submitOrder"/>
+			<output wsam:Action="http://webservices.system.stc.custom.granite.com/XngOrderService/submitOrderResponse" message="tns:submitOrderResponse"/>
+		</operation>
+		<operation name="updateOrder">
+			<input wsam:Action="updateOrder" message="tns:updateOrder"/>
+			<output wsam:Action="http://webservices.system.stc.custom.granite.com/XngOrderService/updateOrderResponse" message="tns:updateOrderResponse"/>
+		</operation>
+	</portType>
+	<binding name="XngOrderServicePortBinding" type="tns:XngOrderService">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+		<operation name="submitOrder">
+			<soap:operation soapAction="submitOrder"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="updateOrder">
+			<soap:operation soapAction="updateOrder"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="XngOrderService">
+		<port name="XngOrderServicePort" binding="tns:XngOrderServicePortBinding">
+			<soap:address location="http://10.21.1.13:8088/tgs-STCRMSEBU-4.0-webservices/XngOrderService"/>
+		</port>
+	</service>
+</definitions>

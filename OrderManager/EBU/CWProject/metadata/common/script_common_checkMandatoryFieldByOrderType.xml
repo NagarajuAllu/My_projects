@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="ffda1d61e13e78e82937fd78ff26c6d5" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="common.common_checkMandatoryFieldByOrderType">
+  <guid>{0fce8635-0b2d-1a7d-ee57-6a02ccf84637}</guid>
+  <label>Check Mandatory Field By &quot;Order Type&quot;</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="values" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_ds_ws.orderType</type>
+    </parameter>
+    <parameter name="field" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = false;
+    var debug = "[COMMON: CHECK MANDATORY FIELD BY 'ORDER TYPE'] ";
+
+    try {
+        // Check Order Type value:
+        // - in this case the field must be mandatory
+        if (values != null && values.length > 0){
+            if (values.join(",").indexOf(orderType) != -1){
+                result = (field == null);
+            }
+        }
+    }
+    catch (exc){
+        debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "EXCEPTION:" + exc.message + "...");
+        result = true;
+    }
+
+    return result;
+  ]]></script>
+</script>

@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<userInterface name="tfs.tfsApplication">
+  <blockUIOnAction>true</blockUIOnAction>
+  <extends>ui_com.conceptwave.system.Application</extends>
+  <label>TFS Application</label>
+  <metaVersion>21</metaVersion>
+  <url>/tfsApplication</url>
+  <worklist>findDoc_workflow.customWorkListFinder</worklist>
+  <variableList>
+    <variable name="userId" type="leaf">
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+    </variable>
+  </variableList>
+  <vformList>
+    <vform name="Forms" type="frmui">
+      <extends>ui_com.conceptwave.system.Application/frmui_Forms</extends>
+      <overlayList>
+        <overlay name="Menu" type="exov">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</extends>
+          <label>Menu</label>
+          <overrideList>
+            <override name="HorizontalLayout" type="elext"/>
+            <override name="HorizontalLayoutForMenuItems" type="elext">
+              <elementList>
+                <element name="fileMenuItem" type="elmnu">
+                  <menuAccel type="mAccelP">
+                    <keyName>F</keyName>
+                  </menuAccel>
+                  <label>File</label>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <elementList>
+                    <element name="selectApplicationMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_selectApplication</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwfv/window_next.png</icon>
+                      <label>Select Application</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                    </element>
+                    <element name="changePasswordMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_changePassword</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwfv/key.png</icon>
+                      <label>Change Password</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                    </element>
+                    <element name="changeAvailableStatus" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_changeUserAvailability</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/MenuIconProcessMgr.gif</icon>
+                      <label>Change &quot;Availability&quot; status</label>
+                    </element>
+                    <element name="manageAllTeamMembersAvailabilityStatus" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_showAllMembersAvailability</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Manage All Team Members Availability Status</label>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/permMethod_groupManagerPrivilege</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="logoutMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_logout</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwfv/exit.png</icon>
+                      <label>Logout</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="applicationMenuItem" type="elmnu">
+                  <menuAccel type="mAccelP">
+                    <keyName>A</keyName>
+                  </menuAccel>
+                  <label>Application</label>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <elementList>
+                    <element name="prnrMenuItem" type="elmnu">
+                      <label>PRNR Menu</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="createPRNRMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_createNewPRNR</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <icon>/cwf/new.gif</icon>
+                          <label>Create New PRNR</label>
+                          <visible type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/permMethod_orderInitiatorPrivilege</variablePath>
+                            </variablePathList>
+                          </visible>
+                        </element>
+                        <element name="searchPRNRMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_finder_searchPRNR</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <icon>/cwf/finder.gif</icon>
+                          <label>Search PRNRs</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="prnMenuItem" type="elmnu">
+                      <label>PRN Menu</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="searchPRNMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_finder_searchPRN</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <icon>/cwf/finder.gif</icon>
+                          <label>Search PRNs</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="tfrMenuItem" type="elmnu">
+                      <label>TFR Menu</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="searchTFRMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_finder_searchTFR</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <icon>/cwf/finder.gif</icon>
+                          <label>Search TFRs</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="biMenuItem" type="elmnu">
+                      <label>BI Menu</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="searchBIMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_finder_searchBI</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <icon>/cwf/finder.gif</icon>
+                          <label>Search BIs</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="taskMenuItem" type="elmnu">
+                      <label>TFR Task Menu</label>
+                      <elementList>
+                        <element name="searchTaskMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_finder_searchTask</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <icon>/cwf/finder.gif</icon>
+                          <label>Search Tasks</label>
+                        </element>
+                      </elementList>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="reportMenuItem" type="elmnu">
+                  <label>Reports</label>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <elementList>
+                    <element name="faReportsGeneralMenuItem" type="elmnu">
+                      <label>FA Reports General</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <elementList>
+                        <element name="durationTFRReportMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_durationTFR</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Duration of TFRs Report</label>
+                        </element>
+                        <element name="faPendingSummaryReportMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_faPendingSummary</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>FA Pending Summary Report</label>
+                        </element>
+                        <element name="niAsBuiltProductivityReportMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_niAsBuiltProductivity</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>NI As-Built Productivity Report</label>
+                        </element>
+                        <element name="prnSummaryReportMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_prnSummary</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>PRN Summary Report</label>
+                        </element>
+                        <element name="provDeptProductivityReportMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_provDeptProductivity</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Provisioning Department Productivity Report</label>
+                        </element>
+                        <element name="rejectionAlarmReportMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_rejectionAlarm</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>Rejection Alarm Report</label>
+                        </element>
+                        <element name="tfrRejectionReportMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_tfrRejection</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>TFR Rejection Report</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="kpiAnalysisMenuItem" type="elmnu">
+                      <label>KPI Analysis</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <showRollOver>true</showRollOver>
+                      <elementList>
+                        <element name="kpiAnalysisPRN_TFRMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_kpiAnalysisPRN_TFR</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>KPI Analysis for PRN and TFR</label>
+                        </element>
+                        <element name="kpiAnalysisBIMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_kpiAnalysisBI</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>KPI Analysis for BI Only</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="txMappingMenuItem" type="elmnu">
+                      <label>TX Mapping</label>
+                      <showDown>true</showDown>
+                      <showMenuDropDown>true</showMenuDropDown>
+                      <elementList>
+                        <element name="tfrReturned4TimesReportMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_tfrReturned4Times</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>TFR Returned 4 Times Report</label>
+                        </element>
+                        <element name="txMappingSummaryReportMenuItem" type="elmnu">
+                          <clickMethod type="varPath">
+                            <variablePathList>
+                              <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_txMappingSummary</variablePath>
+                            </variablePathList>
+                          </clickMethod>
+                          <label>TX Mapping Summary Report</label>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="advancedReportMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_advancedReport</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Advanced Report</label>
+                    </element>
+                    <element name="biSummaryReportMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_biSummary</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>BI Summary Report</label>
+                    </element>
+                    <element name="deptEscalationReportMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_deptEscalation</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Dept. Escalation Report</label>
+                    </element>
+                    <element name="deptProductivityReportMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_deptProductivity</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Department Productivity Report</label>
+                    </element>
+                    <element name="faPendingTFRReportMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_faPendingTFR</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>FA Pending TFRs Report</label>
+                    </element>
+                    <element name="niProductivityReportMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_niProductivity</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>NI Productivity Report</label>
+                    </element>
+                    <element name="prnr_prnSummaryReportMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_prnr_prnSummary</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>PRNR/PRN Summary Report</label>
+                    </element>
+                    <element name="processTimingReportMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_processTiming</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Process Timing Report</label>
+                    </element>
+                    <element name="summaryReportMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_summary</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Summary Report</label>
+                    </element>
+                    <element name="workProductivityReportMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_report_workProductivity</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Work Productivity Report</label>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="configurationMenuItem" type="elmnu">
+                  <menuAccel type="mAccelP">
+                    <keyName>C</keyName>
+                  </menuAccel>
+                  <label>Configuration</label>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <elementList>
+                    <element name="codeTablesMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_codeTableCommand</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Code Tables</label>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/permMethod_configurationPrivilege</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="customAttributeConfigMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_finder_customAttributesConfiguration</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Custom Attributes Configuration</label>
+                    </element>
+                    <element name="assignmentRuleConfigMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_finder_operationAssignmentRuleFinder</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Assignment Rules Configuration</label>
+                    </element>
+                    <element name="rejectionQuestionConfigMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_finder_rejectionQuestionFinder</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Rejection Question Configuration</label>
+                    </element>
+                    <element name="rejectionAnswerConfigMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_tfs.tfsApplication/usrActionMethod_finder_rejectionAnswerFinder</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Rejection Answer Configuration</label>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="userId" type="ellab">
+                  <label>You are logged as </label>
+                  <textAlign>center</textAlign>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>ui_tfs.tfsApplication/leaf_userId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>400px</width>
+                </element>
+              </elementList>
+            </override>
+          </overrideList>
+        </overlay>
+        <overlay name="Page" type="expg">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</extends>
+          <label>Page</label>
+          <stylesheet>/cwf/tfs.css</stylesheet>
+          <title>STC Transmission Facility System Application</title>
+        </overlay>
+      </overlayList>
+    </vform>
+  </vformList>
+  <methodList>
+    <method name="onInit" type="action">
+      <description><![CDATA[
+        <p style="margin-top: 0">
+          This notification method is called by the framework when this application is initialized
+        </p>
+      ]]></description>
+      <script><![CDATA[
+        this.cw$super_onInit();
+
+        this.userId = "You are logged as " + Global.getUserId();
+      ]]></script>
+    </method>
+    <method name="selectApplication" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script><![CDATA[return new Document("tfs.SelectApp");]]></script>
+    </method>
+    <method name="changePassword" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <form>doc_cwf_up.chgPwdDoc/ui_UserInterface/frmui_Forms/vform_Default</form>
+      <showInPopup>true</showInPopup>
+      <userInterface>doc_cwf_up.chgPwdDoc</userInterface>
+      <validate>true</validate>
+      <valueType>doc_cwf_up.chgPwdDoc</valueType>
+    </method>
+    <method name="logout" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script>UserProfile.logout();</script>
+    </method>
+    <method name="orderInitiatorPrivilege" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_IOrdInitPriv</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="createNewPRNR" type="usrActionMethod">
+      <script><![CDATA[
+        var tfsOrder = new Order("tfs.tfsOrder");
+        var prnrDoc = tfsOrder.createOrderItemByPath("prnrDocument");
+        tfsOrder.save();
+
+        return prnrDoc;
+      ]]></script>
+    </method>
+    <method name="finder_searchPRNR" type="usrActionMethod">
+      <userInterface>findDoc_tfs.findPRNR</userInterface>
+      <valueType>findDoc_tfs.findPRNR</valueType>
+    </method>
+    <method name="finder_customAttributesConfiguration" type="usrActionMethod">
+      <userInterface>findDoc_configuration.customAttributeFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findDoc_configuration.customAttributeFinder</valueType>
+    </method>
+    <method name="finder_operationAssignmentRuleFinder" type="usrActionMethod">
+      <userInterface>findDoc_workflow.operationAssignmentRuleFinder</userInterface>
+      <valueType>findDoc_workflow.operationAssignmentRuleFinder</valueType>
+    </method>
+    <method name="finder_rejectionQuestionFinder" type="usrActionMethod">
+      <userInterface>findSql_tfs.rejectionQuestionFinder</userInterface>
+      <valueType>findSql_tfs.rejectionQuestionFinder</valueType>
+    </method>
+    <method name="finder_rejectionAnswerFinder" type="usrActionMethod">
+      <userInterface>findSql_tfs.rejectionAnswerFinder</userInterface>
+      <valueType>findSql_tfs.rejectionAnswerFinder</valueType>
+    </method>
+    <method name="finder_searchPRN" type="usrActionMethod">
+      <userInterface>findDoc_tfs.findPRN</userInterface>
+      <valueType>findDoc_tfs.findPRN</valueType>
+    </method>
+    <method name="finder_searchTFR" type="usrActionMethod">
+      <userInterface>findDoc_tfs.findTFR</userInterface>
+      <valueType>findDoc_tfs.findTFR</valueType>
+    </method>
+    <method name="finder_searchBI" type="usrActionMethod">
+      <userInterface>findSql_tfs.findBI</userInterface>
+      <valueType>findSql_tfs.findBI</valueType>
+    </method>
+    <method name="finder_searchTask" type="usrActionMethod">
+      <userInterface>findSql_tfs.findAllTasks</userInterface>
+      <valueType>findSql_tfs.findAllTasks</valueType>
+    </method>
+    <method name="codeTableCommand" type="usrActionMethod">
+      <form>tree_cwt_common.CodeTableTree/frmui_Forms/exov_Default</form>
+      <userInterface>tree_cwt_common.CodeTableTree</userInterface>
+      <valueType>tree_cwt_common.CodeTableTree</valueType>
+    </method>
+    <method name="configurationPrivilege" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_ConfigPriv</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="report_workProductivity" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.workProductivityReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.workProductivityReportFinder</valueType>
+    </method>
+    <method name="report_advancedReport" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.advancedReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.advancedReportFinder</valueType>
+    </method>
+    <method name="report_deptProductivity" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.departmentProductivityReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.departmentProductivityReportFinder</valueType>
+    </method>
+    <method name="report_faPendingTFR" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.faPendingTFRReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.faPendingTFRReportFinder</valueType>
+    </method>
+    <method name="report_niProductivity" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.niProductivityReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.niProductivityReportFinder</valueType>
+    </method>
+    <method name="report_summary" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.summaryReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.summaryReportFinder</valueType>
+    </method>
+    <method name="report_faPendingSummary" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.faPendingSummaryReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.faPendingSummaryReportFinder</valueType>
+    </method>
+    <method name="report_rejectionAlarm" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.rejectionAlarmReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.rejectionAlarmReportFinder</valueType>
+    </method>
+    <method name="report_durationTFR" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.durationTFRReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.durationTFRReportFinder</valueType>
+    </method>
+    <method name="report_provDeptProductivity" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.provDeptProductivityReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.provDeptProductivityReportFinder</valueType>
+    </method>
+    <method name="report_niAsBuiltProductivity" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.niAsBuiltProductivityReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.niAsBuiltProductivityReportFinder</valueType>
+    </method>
+    <method name="report_tfrRejection" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.tfrRejectionReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.tfrRejectionReportFinder</valueType>
+    </method>
+    <method name="report_prnSummary" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.prnSummaryReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.prnSummaryReportFinder</valueType>
+    </method>
+    <method name="report_processTiming" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.processTimingReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.processTimingReportFinder</valueType>
+    </method>
+    <method name="report_txMappingSummary" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.txMappingSummaryReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.txMappingSummaryReportFinder</valueType>
+    </method>
+    <method name="report_biSummary" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.biSummaryReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.biSummaryReportFinder</valueType>
+    </method>
+    <method name="report_prnr_prnSummary" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.prnr_prnSummaryReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.prnr_prnSummaryReportFinder</valueType>
+    </method>
+    <method name="report_deptEscalation" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.deptEscalationReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.deptEscalationReportFinder</valueType>
+    </method>
+    <method name="report_tfrReturned4Times" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.tfrReturned4TimesReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.tfrReturned4TimesReportFinder</valueType>
+    </method>
+    <method name="report_kpiAnalysisPRN_TFR" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.kpiAnalysisReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.kpiAnalysisReportFinder</valueType>
+    </method>
+    <method name="report_kpiAnalysisBI" type="usrActionMethod">
+      <userInterface>findSql_tfsReport.kpiAnalysisBIReportFinder</userInterface>
+      <validate>true</validate>
+      <valueType>findSql_tfsReport.kpiAnalysisBIReportFinder</valueType>
+    </method>
+    <method name="changeUserAvailability" type="usrActionMethod">
+      <confirmation>ui_tfs.tfsApplication/uimthd_changeUserAvailabilityConfirm</confirmation>
+      <script><![CDATA[
+        var currentAvailability = up_priv.isUserAvailable(Global.getUserId());
+        up_priv.setUserAvailable(Global.getUserId(), !currentAvailability);
+      ]]></script>
+    </method>
+    <method name="changeUserAvailabilityConfirm" type="uimthd">
+      <script><![CDATA[
+        var currentAvailable = up_priv.isUserAvailable(Global.getUserId());
+        var msg = "AW0012";
+        if(! currentAvailable) {
+            msg = "AW0013";
+        }
+
+        return msg;
+      ]]></script>
+    </method>
+    <method name="groupManagerPrivilege" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_GroupMgrPriv</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition</script>
+    </method>
+    <method name="showAllMembersAvailability" type="usrActionMethod">
+      <script><![CDATA[
+        var finderForCurrentUserPrivilege = new Finder("up_priv.getUserSTCPrivileges_NoManager");
+        finderForCurrentUserPrivilege.searchDocument.value = Global.getUserId();
+        var resultList = finderForCurrentUserPrivilege.search();
+
+        if(resultList != null && resultList.length > 0) {
+            var privList = "";
+            for (var i=0; i<resultList.length; i++) {
+                privList = (i == 0 ? "" : ",") + resultList[i].privilegeCode;
+            }
+
+            var userFinder = new Finder("up_priv.getAllUsersByPrivileges");
+            userFinder.searchDocument.value = privList;
+            userFinder.search();
+
+            return userFinder;
+        }
+        else {
+            Global.showUserMessage("No application privileges found for the current user");
+        }
+      ]]></script>
+    </method>
+  </methodList>
+</userInterface>

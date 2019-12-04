@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="1639f00bd21a9a0fae5d387ad7e8a9e9" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.genericProcessReceivedMessages">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{066bda38-1d0e-ec47-b296-506caaacbbec}</guid>
+  <label>GenericProcess Received Messages</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <guid>{0f0d8d94-7578-adef-0dab-10bc77696c19}</guid>
+      <key>1</key>
+      <label>System document ID</label>
+      <propertyElement type="elfld">
+        <label>System document ID</label>
+      </propertyElement>
+      <table>STCW_RECEIVED_MSG</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="processId" type="leaf">
+      <column>PROCESSID</column>
+      <guid>{088c1220-2bcf-4f4d-7760-7c9b4eed8b0a}</guid>
+      <label>processId</label>
+      <propertyElement type="elfld">
+        <label>processId</label>
+      </propertyElement>
+      <table>STCW_RECEIVED_MSG</table>
+      <valueType>dtype_cwf_pm.PROCESS_ID</valueType>
+    </variable>
+    <variable name="activityName" type="leaf">
+      <column>ACTIVITYNAME</column>
+      <guid>{09322f91-b134-0cf3-e57f-c453d7026754}</guid>
+      <label>Activity Name</label>
+      <propertyElement type="elfld">
+        <label>Activity Name</label>
+      </propertyElement>
+      <table>STCW_RECEIVED_MSG</table>
+      <valueType>dtype_stcw.activityName</valueType>
+    </variable>
+    <variable name="receivedMsg" type="leaf">
+      <column>RECEIVEDMSG</column>
+      <guid>{0bc6d88c-14a2-d1f8-868c-09c22887ce33}</guid>
+      <label>Received Msg</label>
+      <propertyElement type="elfld">
+        <label>Received Msg</label>
+      </propertyElement>
+      <table>STCW_RECEIVED_MSG</table>
+      <valueType>dtype_stcw.receivedMsg</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.genericProcessReceivedMessages</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="genericProcessReceivedMessagesGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="genericProcessReceivedMessagesGrid" type="elgrd">
+                    <colWidths>160</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>160px</width>
+                    <elementList>
+                      <element name="genericProcessReceivedMessagesHeader" type="elhdr">
+                        <label>GenericProcess Received Messages</label>
+                      </element>
+                      <element name="cwDocId" type="elfld">
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.genericProcessReceivedMessages/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.genericProcessReceivedMessages/leaf_cwDocId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="processId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.genericProcessReceivedMessages/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.genericProcessReceivedMessages/leaf_processId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="activityName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.genericProcessReceivedMessages/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.genericProcessReceivedMessages/leaf_activityName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="receivedMsg" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.genericProcessReceivedMessages/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.genericProcessReceivedMessages/leaf_receivedMsg</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

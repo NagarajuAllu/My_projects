@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <getOutput>doc_ds_ws.lineItemDocument</getOutput>
+  <input>doc_ds_ws.search_LineItem_ByCRM_WorkOrderNumDoc</input>
+  <label>Find LineItem By CRMOrderNumber &amp; WorkOrderNumber</label>
+  <maxRowsLimit>999</maxRowsLimit>
+  <metaVersion>21</metaVersion>
+  <output>doc_ds_ws.lineItemDocument</output>
+  <type>SQL</type>
+  <vDetailForm>doc_ds_ws.lineItemDocument/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>1</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select {+*+}
+          from stc_lineitem
+         where 1=1
+        {[1] and workordernumber = ?}
+           and cworderid = (select h.cworderid
+                              from stc_bundleorder_header h
+                             where 1=1
+                          {[0] and h.ordernumber = ?})
+      ]]></script>
+    </method>
+    <method name="cwOnFinderSQLGet" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select {+*+}
+          from stc_lineitem
+         where cwdocid = ?
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.lineItemDocument</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_ds_ws.search_LineItem_ByCRM_WorkOrderNumDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_ds_ws.lineItemDocument/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="searchLineItemByCRMOrderNumber_WorkOrderNumberResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="lineItemIdentifier" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_lineItemIdentifier</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="lineItemType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_lineItemType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="lineItemStatus" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_lineItemStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="workOrderNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_workOrderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="priority" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_priority</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="action" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_action</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_serviceNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="oldServiceNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_oldServiceNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="productType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_productType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="feasibilityType" type="elfld">
+                        <label>Feasibility Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_feasibilityType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="reservationNumber" type="elfld">
+                        <label>Reservation #</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_reservationNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="omOrderNumber" type="elfld">
+                        <label>OM Order Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_omOrderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="remarks" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_remarks</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="icmsSONumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_icmsSONumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="fictBillingNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_fictBillingNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="referenceTelNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_referenceTelNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceDescription" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_serviceDescription</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="bandwidth" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_bandwidth</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="accountNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_accountNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="oldAccountNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_oldAccountNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="projectId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_projectId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationACity" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationACity</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationACCLICode" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationACCLICode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAAccessCircuit" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAAccessCircuit</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAJVCode" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAJVCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAExchangeSwitchCode" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAExchangeSwitchCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAAccessType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAAccessType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAPlateID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAPlateID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAOldPlateID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAOldPlateID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAContactAddress" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAContactAddress</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAContactName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAContactName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAContactTel" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAContactTel</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAContactEmail" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAContactEmail</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAUnitNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAUnitNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationAInterface" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationAInterface</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationARemarks" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationARemarks</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBCity" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBCity</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBCCLICode" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBCCLICode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBAccessCircuit" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBAccessCircuit</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBJVCode" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBJVCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBExchangeSwitchCode" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBExchangeSwitchCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBAccessType" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBAccessType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBPlateID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBPlateID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBOldPlateID" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBOldPlateID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBContactAddress" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBContactAddress</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBContactName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBContactName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBContactTel" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBContactTel</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBContactEmail" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBContactEmail</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBUnitNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBUnitNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBInterface" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBInterface</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="locationBRemarks" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_locationBRemarks</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="tbPortNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_tbPortNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="wires" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_wires</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceDate" type="eldate">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_serviceDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDate" type="eldate">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_creationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="dependencies" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_dependencies</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="elementTypeInOrderTree" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_elementTypeInOrderTree</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="blackListed" type="elchk">
+                        <label>BlackListed</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_blackListed</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="parkProvisioning" type="elchk">
+                        <label>Park Provisioning</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_parkProvisioning</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="resumeProvisioning" type="elchk">
+                        <label>Resume Provisioning</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_resumeProvisioning</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="onHeld" type="elchk">
+                        <label>On Held</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_onHeld</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="feasible" type="elchk">
+                        <label>Feasible</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_feasible</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="autoFeasibilityMode" type="elchk">
+                        <label>&quot;Auto&quot; Feasibility Mode</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_autoFeasibilityMode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="previousWONumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_previousWONumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="previousActiveDocId" type="elfld">
+                        <label>Previous Active DocId</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_previousActiveDocId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwDocId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_cwDocId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwDocStamp" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_cwDocStamp</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwOrderCreationDate" type="eldate">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_cwOrderCreationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwOrderId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_cwOrderId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="cwParentId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_cwParentId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="lastUpdatedDate" type="eldate">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_lastUpdatedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="updatedBy" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_ds_ws.lineItemDocument/leaf_updatedBy</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="searchLineItemByCRMOrderNumber_WorkOrderNumberView" type="findVView">
+      <outputOverlay>findSql_ds_ws.findLineItemByCRMOrderNumber_WorkOrderNumber/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+    </view>
+  </viewList>
+</findSql>

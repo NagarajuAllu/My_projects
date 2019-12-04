@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getLineItemMandatoryAttribsByOrderType_ServiceType">
+  <label>Get LineItem Mandatory Attributes By OrderType And ServiceType</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_wsws.orderType</type>
+    </parameter>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_stcw.string25</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("stcconf.search_ValidationMap_ServiceType_OrderTypeDoc");
+    inputDoc.orderType = orderType;
+    inputDoc.serviceType = (serviceType != null ? serviceType : "X");
+
+    var resultList = Finder.runFinder("stcconf.findLineItemValidationMapByOrdType_ServType", "select", inputDoc);
+
+    var mandatoryFieldNames = null;
+
+    if(resultList == null || resultList.length == 0) {
+        // no record found; searching with wildcard
+        inputDoc.serviceType = "*";
+
+        resultList = Finder.runFinder("stcconf.findLineItemValidationMapByOrdType_ServType", "select", inputDoc);
+    }
+
+    if(resultList != null && resultList.length > 0) {
+        var validationMapDocument = resultList[0];
+
+        var arrayOfLeavesAndValues = validationMapDocument.getDocumentAsList(false);
+        for(var i=0; i<arrayOfLeavesAndValues.length; i=(i+2)) {
+            if(arrayOfLeavesAndValues[i+1] == 1) {
+                if(arrayOfLeavesAndValues[i] != "orderType" && arrayOfLeavesAndValues[i] != "serviceType") {
+                    if(mandatoryFieldNames == null) {
+                        mandatoryFieldNames = new Array();
+                    }
+
+                    mandatoryFieldNames.push(arrayOfLeavesAndValues[i]);
+                }
+            }
+        }
+    }
+
+    return mandatoryFieldNames;
+  ]]></script>
+</script>

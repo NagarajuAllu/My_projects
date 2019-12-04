@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.map_graniteCustomerInfoAck_CRMCustomerInfoAck">
+  <label>(map) map_graniteCustomerInfoAck_CRMCustomerInfoAck</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="output" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="input" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    if (output == null || output.metadataType != "sicustack:processRequest_el") {
+          Global.logDebug ("map_graniteCustomerInfoAck_CRMCustomerInfoAck - nonexistant/wrong output: " + output);
+          return (false);
+    }
+
+    if (input == null || input.metadataType != "grws:customerInformationUpdateResponse") {
+          Global.logDebug ("map_graniteCustomerInfoAck_CRMCustomerInfoAck - nonexistant/wrong input: " + input);
+          return (false);
+    }
+
+    var outputRequest = output.Request;
+    var inputResult = input.result;
+    var inputResultStatus = input.result.Status;
+
+    outputRequest.AccountNumber    = inputResult.AccountNumber;
+    outputRequest.BusinessUnit     = inputResult.BusinessUnit;
+
+    outputRequest.ErrorCode        = inputResultStatus.ErrorCode;
+    outputRequest.ErrorDescription = stcc.limitStringLengthToCRMValue(inputResultStatus.ErrorDescription);
+    outputRequest.ErrorStatus      = inputResultStatus.Status;
+    outputRequest.ErrorType        = inputResultStatus.ErrorType;
+    outputRequest.SourceErrorCode  = inputResultStatus.SourceErrorCode;
+
+    return (true);
+  ]]></script>
+</script>

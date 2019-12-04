@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.performValidationOnGranitePathForFeasibilityOrder">
+  <label>Perform Validation On Granite Path For Feasibilty Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="feasibilityFor" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="pathName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="lineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var validationErrors = null;
+
+    var mrLaptop = Global.getConfigVariable("MR_LAPTOP", "N");
+    var isMRLaptop = false;
+    if(mrLaptop != null && mrLaptop == "Y") {
+        isMRLaptop = true;
+    }
+
+
+    if(feasibilityFor != null) {
+        if(!isMRLaptop) {
+            var pathInGranite = granite.getPathInGranite(pathName);
+            if(feasibilityFor.toUpperCase().equals("INSTALL")) {
+                if(pathInGranite != null) {
+                    // error; path is already in Granite
+                    validationErrors = ["AE0096", Global.translateText("AE0096", null, ["feasibility order", pathName])];
+                }
+            }
+            else if(feasibilityFor.toUpperCase().equals("CHANGE")) {
+                if(pathInGranite == null) {
+                    // error; unable to find path in Granite
+                    validationErrors = ["AE0097", Global.translateText("AE0097", null, ["feasibility order", pathName])];
+                }
+                else {
+                    var expectedStatus = "LIVE";
+                    if(! pathInGranite.STATUS.toUpperCase().equals(expectedStatus)) {
+                        // error; path found but with wrong status
+                        validationErrors = ["AE0098", Global.translateText("AE0098", null, ["feasibility order", pathName, pathInGranite.STATUS, expectedStatus])];
+                    }
+                }
+            }
+        }
+    }
+
+    if(validationErrors != null) {
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, lineItemIdentifier, failureArray, isSubmit);
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="bbf57d4458a46720676ed94f6e4bdfe7" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.map_submitOrder_submitOrder">
+  <guid>{0132c942-b580-4c11-7a9b-7a577ee42d21}</guid>
+  <label>(map) map_submitOrder_submitOrder</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="output" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="input" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    if (output == undefined || output == null || output.metadataType != "grws:submitOrder") {
+          Global.logDebug ("map_submitOrder_submitOrder - nonexistant/wrong output: " + output);
+          return (false);
+    }
+
+    if (input == undefined || input == null || input.metadataType != "wsws:submitOrder") {
+          Global.logDebug ("map_submitOrder_submitOrder - nonexistant/wrong input: " + input);
+          return (false);
+    }
+
+    stcw.map_crmOrder_graniteOrder (output, input);
+
+    return (true);
+  ]]></script>
+</script>

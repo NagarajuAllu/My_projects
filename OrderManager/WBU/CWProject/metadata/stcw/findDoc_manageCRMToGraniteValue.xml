@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc filenameHash="9d3ca4704c1434772fe909d3964101c" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.manageCRMToGraniteValue">
+  <display>split screen</display>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <guid>{0823ef3b-bb24-5032-4540-8c4e7a17365c}</guid>
+  <label>Manage CRM To Granite Value</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>3</metaVersion>
+  <output>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE</output>
+  <type>document</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <vDetailForm>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>1</volatility>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.SplitFinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findDoc_stcw.manageCRMToGraniteValue</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.SplitFinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.SplitFinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.SplitFinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext"/>
+            </overrideList>
+          </overlay>
+          <overlay name="default" type="vform">
+            <label>default</label>
+            <root name="result" type="eltabl">
+              <headerHeight>30</headerHeight>
+              <onSelectChange type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </onSelectChange>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findDoc_stcw.manageCRMToGraniteValue/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Attribute_Name" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_stcw.manageCRMToGraniteValue/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE/leaf_attributeName</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="CRM_Attribute_Value" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_stcw.manageCRMToGraniteValue/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE/leaf_crmAttributeValue</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Granite_Attribute_Value" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_stcw.manageCRMToGraniteValue/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.STCW_MAP_CRM_TO_GRANITE_VALUE/leaf_graniteAttributeValue</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="default" type="findVView">
+      <label>Manage CRM To Granite Value</label>
+      <outputOverlay>findDoc_stcw.manageCRMToGraniteValue/ui_UserInterface/frmui_Forms/vform_default</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+    </view>
+  </viewList>
+</findDoc>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.findServiceTypeHierarchyByParentAndChildServType">
+  <label>Find ServiceType Hierarchy By Parent And Child ServiceType</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="parentServiceType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="childServiceType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var searchDoc = new Document("stcconf.search_serviceTypesHierarchy");
+    searchDoc.parentServiceType = parentServiceType;
+    searchDoc.childServiceType = childServiceType;
+
+    var resultList = Finder.runFinder("stcconf.findServiceTypeHierarchyConf", "select", searchDoc);
+
+    var resultDoc = null;
+    if(resultList != null && resultList.length >0) {
+        resultDoc = resultList[0];
+    }
+
+    return resultDoc;
+  ]]></script>
+</script>

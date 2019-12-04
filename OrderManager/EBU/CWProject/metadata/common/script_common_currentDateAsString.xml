@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="7de312edd03b3861eeff1a8f682c200a" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="common.common_currentDateAsString">
+  <label>Current Date As String</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="format" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(format == null) {
+        format = "yyyy/MM/dd HH:mm:ss.SSS";
+    }
+
+    return Calendar.formatDate(new Date(), format);
+  ]]></script>
+</script>

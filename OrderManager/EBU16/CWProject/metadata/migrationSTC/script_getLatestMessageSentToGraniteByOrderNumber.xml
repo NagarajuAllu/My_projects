@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="44434390b3b2c1e216432e2d9b63a35f" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="migrationSTC.getLatestMessageSentToGraniteByOrderNumber">
+  <label>Get Latest Message Sent To Granite By OrderNumber</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var latestMsgSent = null;
+
+    var searchDoc = new Document('migrationSTC.search_By_OrderNumber');
+    searchDoc.orderNumber = orderNumber;
+
+    var resultList = Finder.runFinder('migrationSTC.find_STC_ORDERS_SENT_TO_GRANITE_ByOrderNumber', 'select', searchDoc);
+    if(resultList != null && resultList.length > 0) {
+        latestMsgSent = resultList[0];
+    }
+
+    return latestMsgSent;
+  ]]></script>
+</script>

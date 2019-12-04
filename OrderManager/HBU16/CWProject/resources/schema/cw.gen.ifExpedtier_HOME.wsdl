@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<definitions name="ifExpediter_ws" targetNamespace="http://com/granite/custom/stc/system/ifExpediter_ws"
+	xmlns:tns="http://com/granite/custom/stc/system/ifExpediter_ws"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:ds_ws="java:com.granite.custom.stc.transport.siebel">
+
+	<types>
+		<schema targetNamespace="java:com.granite.custom.stc.transport.siebel"			
+	xmlns="http://www.w3.org/2001/XMLSchema"			
+	xmlns:ds_ws="java:com.granite.custom.stc.transport.siebel"			
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+
+			<annotation>
+				<documentation>Data Structure &#091;SOAP&#093;</documentation>
+				<appinfo>
+					<metadata>STC Project</metadata>
+					<created>Mon Sep 08 11:04:21 CEST 2008</created>
+				</appinfo>
+			</annotation>
+
+			<!-- Data types and elements -->
+
+			<!-- Structures -->
+
+			<element name="siteInformationUpdateAcknowledgement">
+				<complexType >
+				<annotation>
+					<documentation>siteInformationUpdateAcknowledgement</documentation>
+				</annotation>
+					<sequence>
+						<element name="siteInformationUpdateAcknowledgement" minOccurs="1" maxOccurs="1" type="ds_ws:SiteInformationUpdateAcknowledgement"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<element name="quoteValidation">
+				<complexType >
+				<annotation>
+					<documentation>Quote Validation &#091;HOME&#093;</documentation>
+				</annotation>
+					<sequence>
+						<element name="message" minOccurs="1" maxOccurs="1" type="ds_ws:OrderMessage"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<complexType name="SiteInformationUpdateAcknowledgement">
+				<annotation>
+					<documentation>SiteInformationUpdateAcknowledgement</documentation>
+				</annotation>
+					<sequence>
+						<element name="Acknowledgement" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SiteID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="BusinessUnit" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<element name="reportFailure">
+				<complexType >
+				<annotation>
+					<documentation>reportFailure</documentation>
+				</annotation>
+					<sequence>
+						<element name="failure" minOccurs="1" maxOccurs="1" type="ds_ws:Failure"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<complexType name="siteInformationUpdateAcknowledgementResponse">
+				<annotation>
+					<documentation>siteInformationUpdateAcknowledgementResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="returns" minOccurs="1" maxOccurs="1" type="ds_ws:SiteInformationUpdateAcknowledgementWithFailure"/>
+					</sequence>
+				</complexType>
+
+			<element name="submitOrderResponse">
+				<complexType >
+				<annotation>
+					<documentation>submitOrderResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="returns" minOccurs="1" maxOccurs="1" type="ds_ws:OrderAcknowledgementWithFailure"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<complexType name="Failure">
+				<annotation>
+					<documentation>Failure</documentation>
+				</annotation>
+					<sequence>
+						<element name="ErrorCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorDescription" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorTime" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ErrorType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="FunctionName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ObjectId" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ProcessInstanceld" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SourceErrorCode" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Status" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="SystemName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="TargetRecored" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="UserId" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="OrderAcknowledgement">
+				<annotation>
+					<documentation>OrderAcknowledgement</documentation>
+				</annotation>
+					<sequence>
+						<element name="Remarks" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="XngOrderNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="BusinessUnit" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CircuitId" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="SiteInformationUpdateAcknowledgementWithFailure">
+				<annotation>
+					<documentation>SiteInformationUpdateAcknowledgementWithFailure</documentation>
+				</annotation>
+					<sequence>
+						<element name="Acknowledgement" minOccurs="1" maxOccurs="1" type="ds_ws:SiteInformationUpdateAcknowledgement"/>
+						<element name="Failure" minOccurs="1" maxOccurs="1" type="ds_ws:Failure"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="NameValue">
+				<annotation>
+					<documentation>NameValue</documentation>
+				</annotation>
+					<sequence>
+						<element name="Name" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Value" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<element name="submitOrder">
+				<complexType >
+				<annotation>
+					<documentation>Submit Order &#091;HOME&#093;</documentation>
+				</annotation>
+					<sequence>
+						<element name="message" minOccurs="1" maxOccurs="1" type="ds_ws:OrderMessage"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<complexType name="ServiceRequest">
+				<annotation>
+					<documentation>Service Request &#091;HOME&#093;</documentation>
+				</annotation>
+					<sequence>
+						<element name="ServiceType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="MaxBandwidth" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Failure" minOccurs="1" maxOccurs="1" type="ds_ws:Failure"/>
+						<element name="Neid" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderRowItemID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="ServiceParameters">
+				<annotation>
+					<documentation>Service Parameters &#091;HOME&#093;</documentation>
+				</annotation>
+					<sequence>
+						<element name="CreationDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="NameValue" minOccurs="0" maxOccurs="unbounded" type="ds_ws:NameValue"/>
+						<element name="OldServiceNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="ServiceDescription" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="PlateID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OldPlateID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="UnitNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OldUnitNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderRowItemID" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="QuoteAcknowledgement">
+				<annotation>
+					<documentation>Quote Acknowledgement &#091;HOME&#093;</documentation>
+				</annotation>
+					<sequence>
+						<element name="CircuitRemarks" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ValidationResponse" minOccurs="0" maxOccurs="1" type="ds_ws:ValidationResponse"/>
+					</sequence>
+				</complexType>
+
+			<element name="quoteValidationResponse">
+				<complexType >
+				<annotation>
+					<documentation>Quote Validation Response &#091;HOME&#093;</documentation>
+				</annotation>
+					<sequence>
+						<element name="returns" minOccurs="1" maxOccurs="1" type="ds_ws:QuoteAcknowledgementWithFailure"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<complexType name="QuoteAcknowledgementWithFailure">
+				<annotation>
+					<documentation>Quote Acknowledgement With Failure &#091;HOME&#093;</documentation>
+				</annotation>
+					<sequence>
+						<element name="Failure" minOccurs="1" maxOccurs="1" type="ds_ws:Failure"/>
+						<element name="QuoteAcknowledgement" minOccurs="1" maxOccurs="1" type="ds_ws:QuoteAcknowledgement"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="ValidationResponse">
+				<annotation>
+					<documentation>Validation Response &#091;HOME&#093;</documentation>
+				</annotation>
+					<sequence>
+						<element name="Services" minOccurs="0" maxOccurs="unbounded" type="ds_ws:ServiceRequest"/>
+					</sequence>
+				</complexType>
+
+			<element name="updateOrderResponse">
+				<complexType >
+				<annotation>
+					<documentation>updateOrderResponse</documentation>
+				</annotation>
+					<sequence>
+						<element name="returns" minOccurs="1" maxOccurs="1" type="ds_ws:OrderAcknowledgementWithFailure"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<complexType name="OrderMessage">
+				<annotation>
+					<documentation>Order Message &#091;HOME&#093;</documentation>
+				</annotation>
+					<sequence>
+						<element name="AccountNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="AlternativeSolution" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Bandwidth" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CctType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CircuitNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CreatedBy" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CreationDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="CustomerIDNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="FictBillingNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="IcmsSONumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OldCircuitNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderStatus" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="OrderType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Priority" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ProjectId" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ReferenceTelNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Remarks" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceDate" minOccurs="0" maxOccurs="1" type="xsd:dateTime"/>
+						<element name="ServiceDescription" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ServiceParameters" minOccurs="0" maxOccurs="unbounded" type="ds_ws:ServiceParameters"/>
+						<element name="ServiceType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="Wires" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerContact" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="TbPortNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="BusinessUnit" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerIDType" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="CustomerNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ReservationNumber" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+						<element name="ReservationExpiry" minOccurs="1" maxOccurs="1" type="xsd:integer"/>
+						<element name="OrderDomain" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+					</sequence>
+				</complexType>
+
+			<complexType name="OrderAcknowledgementWithFailure">
+				<annotation>
+					<documentation>OrderAcknowledgementWithFailure</documentation>
+				</annotation>
+					<sequence>
+						<element name="Failure" minOccurs="1" maxOccurs="1" type="ds_ws:Failure"/>
+						<element name="OrderAcknowledgement" minOccurs="1" maxOccurs="1" type="ds_ws:OrderAcknowledgement"/>
+					</sequence>
+				</complexType>
+
+			<element name="updateOrder">
+				<complexType >
+				<annotation>
+					<documentation>Update Order &#091;HOME&#093;</documentation>
+				</annotation>
+					<sequence>
+						<element name="message" minOccurs="1" maxOccurs="1" type="ds_ws:OrderMessage"/>
+					</sequence>
+				</complexType>
+			</element>
+
+			<!-- Documents -->
+
+		</schema>
+	</types>
+
+	<message name="submitOrder">
+		<part name="submitOrder" element="ds_ws:submitOrder"/>
+	</message>
+
+	<message name="submitOrderResponse">
+		<part name="submitOrderResponse" element="ds_ws:submitOrderResponse"/>
+	</message>
+
+	<message name="updateOrder">
+		<part name="updateOrder" element="ds_ws:updateOrder"/>
+	</message>
+
+	<message name="updateOrderResponse">
+		<part name="updateOrderResponse" element="ds_ws:updateOrderResponse"/>
+	</message>
+
+	<message name="quoteValidation">
+		<part name="quoteValidation" element="ds_ws:quoteValidation"/>
+	</message>
+
+	<message name="quoteValidationResponse">
+		<part name="quoteValidationResponse" element="ds_ws:quoteValidationResponse"/>
+	</message>
+
+	<message name="reportFailure">
+		<part name="reportFailure" element="ds_ws:reportFailure"/>
+	</message>
+
+	<message name="siteInformationUpdateAcknowledgement">
+		<part name="siteInformationUpdateAcknowledgement" element="ds_ws:siteInformationUpdateAcknowledgement"/>
+	</message>
+
+	<message name="siteInformationUpdateAcknowledgementResponse">
+		<part name="siteInformationUpdateAcknowledgementResponse" type="ds_ws:siteInformationUpdateAcknowledgementResponse"/>
+	</message>
+
+	<portType name="ifExpedtier_HOME">
+		<operation name="operation_SubmitOrder">
+			<input message="tns:submitOrder"/>
+			<output message="tns:submitOrderResponse"/>
+		</operation>
+		<operation name="operation_UpdateOrder">
+			<input message="tns:updateOrder"/>
+			<output message="tns:updateOrderResponse"/>
+		</operation>
+		<operation name="operation_QuoteValidation">
+			<input message="tns:quoteValidation"/>
+			<output message="tns:quoteValidationResponse"/>
+		</operation>
+		<operation name="operation_ReportFailure">
+			<input message="tns:reportFailure"/>
+		</operation>
+		<operation name="operation_SiteInformationUpdateAck">
+			<input message="tns:siteInformationUpdateAcknowledgement"/>
+			<output message="tns:siteInformationUpdateAcknowledgementResponse"/>
+		</operation>
+	</portType>
+
+	<binding name="bindingForExpediterIF_SOAP_HOME" type="tns:ifExpedtier_HOME">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+		<operation name="operation_SubmitOrder">
+			<soap:operation soapAction="operation_SubmitOrder"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_UpdateOrder">
+			<soap:operation soapAction="operation_UpdateOrder"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_QuoteValidation">
+			<soap:operation soapAction="operation_QuoteValidation"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="operation_ReportFailure">
+			<soap:operation soapAction="operation_ReportFailure"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+		</operation>
+		<operation name="operation_SiteInformationUpdateAck">
+			<soap:operation soapAction="operation_SiteInformationUpdateAck"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+
+	<service name="servicesForExpediterIF">
+		<port name="portForExpediterIF_SOAP_HOME" binding="tns:bindingForExpediterIF_SOAP_HOME">
+			<soap:address location="http://localhost:8281/cwf/services/ifExpedtier_HOME"/>
+		</port>
+	</service>
+
+</definitions>

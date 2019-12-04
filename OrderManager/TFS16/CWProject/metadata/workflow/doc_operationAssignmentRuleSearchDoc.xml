@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="workflow.operationAssignmentRuleSearchDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{7b7d3c52-1b32-48ff-99e0-31148e82a034}</guid>
+  <label>Operation Assignment Rule Search Doc</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="processName" type="leaf">
+      <propertyElement type="elslct">
+        <label>Process Name</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_workflow.processName</valueType>
+    </variable>
+    <variable name="operationName" type="leaf">
+      <propertyElement type="elslct">
+        <label>Operation Name</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_workflow.operationName</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_workflow.operationAssignmentRuleSearchDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="operationAssignmentRuleGrid" type="elgrd">
+                    <colWidths>110px,160px,110px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>580px</width>
+                    <elementList>
+                      <element name="operationAssignmentRuleHeader" type="elhdr">
+                        <label>Operation Assignment Rule Search Input Data</label>
+                      </element>
+                      <element name="processName" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_workflow.operationAssignmentRuleSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_workflow.operationAssignmentRuleSearchDoc/leaf_processName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="operationName" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_workflow.operationAssignmentRuleSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_workflow.operationAssignmentRuleSearchDoc/leaf_operationName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

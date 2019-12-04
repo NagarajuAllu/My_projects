@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<order filenameHash="96e55a4685ae040e8d98f2ad167ef007" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.default_orderSTC">
+  <extends>mdl_com.conceptwave.system.Model</extends>
+  <guid>{079448cd-18d5-fb98-9ffe-56f9b2c9f5a8}</guid>
+  <highlight>14</highlight>
+  <label>STC Order [Default]</label>
+  <metaVersion>3</metaVersion>
+  <childList>
+    <child name="orderMessage" type="order">
+      <extends>mdl_com.conceptwave.system.Model</extends>
+      <guid>{0ec4ef63-b424-e704-8690-247e1c16a918}</guid>
+      <highlight>12</highlight>
+      <label>Order Message</label>
+      <mandatory>true</mandatory>
+      <orderItem>doc_ds_ws.details_orderMessage</orderItem>
+      <orderType>document</orderType>
+      <xmlMap type="xmap">
+        <path>order_ds_ws.default_orderSTC/order_orderMessage</path>
+        <xmlName>details_orderMessage</xmlName>
+      </xmlMap>
+    </child>
+    <child name="serviceParametersList" type="order">
+      <extends>mdl_com.conceptwave.system.Model</extends>
+      <guid>{0c924fbf-369c-9ba1-5319-21bb36cb2244}</guid>
+      <highlight>12</highlight>
+      <label>Service Parameters List</label>
+      <maxInstances>99</maxInstances>
+      <orderType>collection</orderType>
+      <childList>
+        <child name="serviceParameters" type="order">
+          <extends>mdl_com.conceptwave.system.Model</extends>
+          <guid>{08463278-55b4-b71a-dc9c-8abf3f7adf9d}</guid>
+          <highlight>12</highlight>
+          <label>Service Parameters</label>
+          <mandatory>true</mandatory>
+          <orderItem>doc_ds_ws.details_serviceParameters</orderItem>
+          <orderType>document</orderType>
+          <xmlMap type="xmap">
+            <path>order_ds_ws.default_orderSTC/order_serviceParametersList/order_serviceParameters</path>
+            <xmlName>details_serviceParameters</xmlName>
+          </xmlMap>
+        </child>
+        <child name="nameValueList" type="order">
+          <collapsed>true</collapsed>
+          <extends>mdl_com.conceptwave.system.Model</extends>
+          <guid>{0893598e-ef9b-313e-2636-23daf0e32918}</guid>
+          <highlight>12</highlight>
+          <label>Name Value List</label>
+          <maxInstances>399</maxInstances>
+          <orderType>collection</orderType>
+          <childList>
+            <child name="nameValue" type="order">
+              <displayInParent>true</displayInParent>
+              <extends>mdl_com.conceptwave.system.Model</extends>
+              <guid>{08142334-b307-03e0-cf8d-81a24f30a7c8}</guid>
+              <highlight>12</highlight>
+              <label>Name Value</label>
+              <mandatory>true</mandatory>
+              <orderItem>doc_ds_ws.nameValueDocument</orderItem>
+              <orderType>document</orderType>
+              <xmlMap type="xmap">
+                <path>order_ds_ws.default_orderSTC/order_serviceParametersList/order_nameValueList/order_nameValue</path>
+                <xmlName>details_nameValue</xmlName>
+              </xmlMap>
+            </child>
+          </childList>
+        </child>
+      </childList>
+    </child>
+    <child name="orderACK" type="order">
+      <extends>mdl_com.conceptwave.system.Model</extends>
+      <guid>{0ca527e4-c8c2-36d7-244f-5aaae272603f}</guid>
+      <label>Order ACK</label>
+      <orderItem>doc_ds_ws.OrderAcknowledgementWithFailureDoc</orderItem>
+      <orderType>document</orderType>
+      <xmlMap type="xmap">
+        <path>order_ds_ws.default_orderSTC/order_orderACK</path>
+        <xmlName>OrderAcknowledgementWithFailureDoc</xmlName>
+      </xmlMap>
+    </child>
+  </childList>
+  <UserInterface name="UserInterface" type="tree">
+    <autoExpand>true</autoExpand>
+    <autoSaveInt>2</autoSaveInt>
+    <defaultFolderImage>undefined</defaultFolderImage>
+    <defaultLeafImage>undefined</defaultLeafImage>
+    <element>order_ds_ws.default_orderSTC</element>
+    <extends>tree_com.conceptwave.system.MOrderUserInterface</extends>
+    <label>STC Order [Default]</label>
+    <tableDoc>doc_com.conceptwave.system.TreeDocument</tableDoc>
+    <childList>
+      <child name="orderMessage" type="tnOi">
+        <autoExpand>true</autoExpand>
+        <autoSave>true</autoSave>
+        <detailForm>doc_ds_ws.details_orderMessage/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+        <detailUI>doc_ds_ws.details_orderMessage/ui_UserInterface</detailUI>
+        <element>doc_ds_ws.details_orderMessage</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <label>Order Message</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_ds_ws.default_orderSTC/order_orderMessage</orderItem>
+        <variableList>
+          <variable name="model" type="uivar">
+            <valueType>doc_ds_ws.details_orderMessage</valueType>
+          </variable>
+        </variableList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+        <methodList>
+          <method name="setValidationErrors" type="action">
+            <parameterList>
+              <parameter name="validationErrorList" type="rifp">
+                <mandatory>true</mandatory>
+                <type>nmeta_com.conceptwave.system.Object</type>
+              </parameter>
+            </parameterList>
+            <script><![CDATA[
+              if (validationErrorList instanceof ValidationErrorList) {
+                this.errorList = validationErrorList.getSubList(this.model, false, true);
+                this.setModelErrors(validationErrorList);
+              }
+              else if (validationErrorList == null) {
+                this.errorList = null;
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="serviceParametersList" type="tnOi">
+        <autoExpand>true</autoExpand>
+        <autoSave>true</autoSave>
+        <element>order_ds_ws.default_orderSTC/order_serviceParametersList</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <label>Service Parameters List</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_ds_ws.default_orderSTC/order_serviceParametersList</orderItem>
+        <showChildrenCount>true</showChildrenCount>
+        <childList>
+          <child name="serviceParametersListInstance" type="tnOi">
+            <autoExpand>true</autoExpand>
+            <autoSave>true</autoSave>
+            <collectionInstance>true</collectionInstance>
+            <element>order_ds_ws.default_orderSTC/order_serviceParametersList</element>
+            <extends>tn_com.conceptwave.system.TreeNode</extends>
+            <label>Service Parameters List</label>
+            <nodeType>4</nodeType>
+            <orderItem>order_ds_ws.default_orderSTC/order_serviceParametersList</orderItem>
+            <childList>
+              <child name="serviceParameters" type="tnOi">
+                <autoExpand>true</autoExpand>
+                <autoSave>true</autoSave>
+                <detailForm>doc_ds_ws.details_serviceParameters/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                <detailUI>doc_ds_ws.details_serviceParameters/ui_UserInterface</detailUI>
+                <element>doc_ds_ws.details_serviceParameters</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <label>Service Parameters</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_ds_ws.default_orderSTC/order_serviceParametersList/order_serviceParameters</orderItem>
+                <variableList>
+                  <variable name="model" type="uivar">
+                    <valueType>doc_ds_ws.details_serviceParameters</valueType>
+                  </variable>
+                </variableList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+                <methodList>
+                  <method name="setValidationErrors" type="action">
+                    <parameterList>
+                      <parameter name="validationErrorList" type="rifp">
+                        <mandatory>true</mandatory>
+                        <type>nmeta_com.conceptwave.system.Object</type>
+                      </parameter>
+                    </parameterList>
+                    <script><![CDATA[
+                      if (validationErrorList instanceof ValidationErrorList) {
+                        this.errorList = validationErrorList.getSubList(this.model, false, true);
+                        this.setModelErrors(validationErrorList);
+                      }
+                      else if (validationErrorList == null) {
+                        this.errorList = null;
+                      }
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="nameValueList" type="tnOi">
+                <autoSave>true</autoSave>
+                <element>order_ds_ws.default_orderSTC/order_serviceParametersList/order_nameValueList</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <label>Name Value List</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_ds_ws.default_orderSTC/order_serviceParametersList/order_nameValueList</orderItem>
+                <showChildrenCount>true</showChildrenCount>
+                <childList>
+                  <child name="nameValueListInstance" type="tnOi">
+                    <autoSave>true</autoSave>
+                    <collectionInstance>true</collectionInstance>
+                    <element>order_ds_ws.default_orderSTC/order_serviceParametersList/order_nameValueList</element>
+                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                    <label>Name Value List</label>
+                    <nodeType>4</nodeType>
+                    <orderItem>order_ds_ws.default_orderSTC/order_serviceParametersList/order_nameValueList</orderItem>
+                    <childList>
+                      <child name="nameValue" type="tnOi">
+                        <autoExpand>true</autoExpand>
+                        <autoSave>true</autoSave>
+                        <detailForm>doc_ds_ws.nameValueDocument/ui_UserInterface/frmui_Forms/exov_Default</detailForm>
+                        <detailUI>doc_ds_ws.nameValueDocument/ui_UserInterface</detailUI>
+                        <element>doc_ds_ws.nameValueDocument</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <label>Name Value</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_ds_ws.default_orderSTC/order_serviceParametersList/order_nameValueList/order_nameValue</orderItem>
+                        <variableList>
+                          <variable name="model" type="uivar">
+                            <valueType>doc_ds_ws.nameValueDocument</valueType>
+                          </variable>
+                        </variableList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                        <methodList>
+                          <method name="setValidationErrors" type="action">
+                            <parameterList>
+                              <parameter name="validationErrorList" type="rifp">
+                                <mandatory>true</mandatory>
+                                <type>nmeta_com.conceptwave.system.Object</type>
+                              </parameter>
+                            </parameterList>
+                            <script><![CDATA[
+                              if (validationErrorList instanceof ValidationErrorList) {
+                                this.errorList = validationErrorList.getSubList(this.model, false, true);
+                                this.setModelErrors(validationErrorList);
+                              }
+                              else if (validationErrorList == null) {
+                                this.errorList = null;
+                              }
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                    <variableList>
+                      <variable name="model" type="uivar">
+                        <valueType>order_ds_ws.default_orderSTC/order_serviceParametersList/order_nameValueList</valueType>
+                      </variable>
+                    </variableList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </child>
+                </childList>
+                <variableList>
+                  <variable name="model" type="uivar">
+                    <valueType>order_ds_ws.default_orderSTC/order_serviceParametersList/order_nameValueList</valueType>
+                  </variable>
+                </variableList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+            </childList>
+            <variableList>
+              <variable name="model" type="uivar">
+                <valueType>order_ds_ws.default_orderSTC/order_serviceParametersList</valueType>
+              </variable>
+            </variableList>
+            <vformList>
+              <vform name="Forms" type="frmui">
+                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+              </vform>
+            </vformList>
+          </child>
+        </childList>
+        <variableList>
+          <variable name="model" type="uivar">
+            <valueType>order_ds_ws.default_orderSTC/order_serviceParametersList</valueType>
+          </variable>
+        </variableList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </child>
+      <child name="orderACK" type="tnOi">
+        <autoExpand>true</autoExpand>
+        <autoSave>true</autoSave>
+        <detailForm>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</detailForm>
+        <detailUI>doc_ds_ws.OrderAcknowledgementWithFailureDoc/ui_UserInterface</detailUI>
+        <element>doc_ds_ws.OrderAcknowledgementWithFailureDoc</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <label>Order ACK</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_ds_ws.default_orderSTC/order_orderACK</orderItem>
+        <variableList>
+          <variable name="model" type="uivar">
+            <valueType>doc_ds_ws.OrderAcknowledgementWithFailureDoc</valueType>
+          </variable>
+        </variableList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+        <methodList>
+          <method name="setValidationErrors" type="action">
+            <parameterList>
+              <parameter name="validationErrorList" type="rifp">
+                <mandatory>true</mandatory>
+                <type>nmeta_com.conceptwave.system.Object</type>
+              </parameter>
+            </parameterList>
+            <script><![CDATA[
+              if (validationErrorList instanceof ValidationErrorList) {
+                this.errorList = validationErrorList.getSubList(this.model, false, true);
+                this.setModelErrors(validationErrorList);
+              }
+              else if (validationErrorList == null) {
+                this.errorList = null;
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>order_ds_ws.default_orderSTC</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>tree_com.conceptwave.system.MOrderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Menu" type="exov">
+            <base>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="FormFrame" type="eldel"/>
+              <override name="HorizontalLayout" type="elext">
+                <elementList>
+                  <element name="FormFrameEx" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>tree_com.conceptwave.system.NavigationTree/leaf_detailMenu</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Menu</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <overflow>visible</overflow>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>tree_com.conceptwave.system.NavigationTree/leaf_detailMenu</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <width>1px</width>
+                  </element>
+                </elementList>
+              </override>
+              <override name="Order" type="elmnu">
+                <menuAccel type="mAccelP">
+                  <keyName>O</keyName>
+                  <keys enum-type="menuAccelFlag">ALT_KEY</keys>
+                </menuAccel>
+                <icon>/cwf/TreeFolderUnknown.gif</icon>
+                <label>Order</label>
+                <menuType>2</menuType>
+                <showDown>true</showDown>
+                <showMenuDropDown>true</showMenuDropDown>
+                <showRollOver>true</showRollOver>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                  </variablePathList>
+                </visible>
+                <elementList>
+                  <element name="cwfAttach" type="elmnu">
+                    <menuAccel type="mAccelP">
+                      <keyName>N</keyName>
+                      <keys enum-type="menuAccelFlag">ALT_KEY</keys>
+                    </menuAccel>
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>order_ds_ws.default_orderSTC/tree_UserInterface/usrActionMethod_cwfAttach_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/MenuIconAttach.gif</icon>
+                    <label>Notes</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                    <style>CwMEIDefItem</style>
+                    <tooltip>Notes</tooltip>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>tree_com.conceptwave.system.OrderUserInterface/permMethod_attachVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="cwfPdf" type="elmnu">
+                    <menuAccel type="mAccelP">
+                      <keyName>P</keyName>
+                      <keys enum-type="menuAccelFlag">ALT_KEY</keys>
+                    </menuAccel>
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>order_ds_ws.default_orderSTC/tree_UserInterface/usrActionMethod_cwfPdf_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/acrobat.gif</icon>
+                    <label>Pdf</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                    <style>CwMEIDefItem</style>
+                    <tooltip>Pdf</tooltip>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>tree_com.conceptwave.system.OrderUserInterface/permMethod_pdfVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="cwfCopy" type="elmnu">
+                    <menuAccel type="mAccelP">
+                      <keyName>C</keyName>
+                      <keys enum-type="menuAccelFlag">ALT_KEY</keys>
+                    </menuAccel>
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>order_ds_ws.default_orderSTC/tree_UserInterface/usrActionMethod_cwfCopy_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/MenuIconCopy.gif</icon>
+                    <label>Copy</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                    <style>CwMEIDefItem</style>
+                    <tooltip>Copy</tooltip>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>tree_com.conceptwave.system.OrderUserInterface/permMethod_copyVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="cwfDelete" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>order_ds_ws.default_orderSTC/tree_UserInterface/usrActionMethod_cwfDelete_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/MenuIconDelete.gif</icon>
+                    <label>Delete</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                    <style>CwMEIDefItem</style>
+                    <tooltip>Delete</tooltip>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>tree_com.conceptwave.system.OrderUserInterface/permMethod_deleteVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="cwfAttach" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <script>return 1;</script>
+      </method>
+      <method name="cwfAttach_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>order_ds_ws.default_orderSTC/tree_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.cwfAttach();
+          Global.runContentDisplayScript(this, "displayScript");
+          {
+          this.attachAction();
+          return result;
+          }
+        ]]></script>
+      </method>
+      <method name="cwAutosaveConfirmation" type="action">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if (Global.isAutosaveEnabled() && this.detailNode != null && this.detailNode.model instanceof Document &&
+              !this.detailNode.model.readonly && this.detailNode.model.dirty &&
+              this.detailNode.modelUI != null && !this.detailNode.modelUI.isValid) {
+            return "UU0256:YN";
+          }
+          return null;
+        ]]></script>
+      </method>
+      <method name="cwfPdf" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <script><![CDATA[
+          var download = new com.conceptwave.system.DownloadPdf(null, this);
+          download.fileName = Global.getWebappPrefix() + "/order.pdf";
+          download.xml = this.model.toXML();
+          download.xsl = this.model.getXslFileName();
+          download.mimeType = "application/pdf";
+          Global.doDownload(download);
+                return 1;
+        ]]></script>
+      </method>
+      <method name="cwfPdf_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>order_ds_ws.default_orderSTC/tree_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.cwfPdf();
+          Global.runContentDisplayScript(this, "displayScript");
+          {
+          this.pdfAction();
+          return result;
+          }
+        ]]></script>
+      </method>
+      <method name="cwfCopy" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <script>return 1;</script>
+      </method>
+      <method name="cwfCopy_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>order_ds_ws.default_orderSTC/tree_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.cwfCopy();
+          Global.runContentDisplayScript(this, "displayScript");
+          {
+          this.copyAction();
+          return result;
+          }
+        ]]></script>
+      </method>
+      <method name="cwfDelete" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <script>return 1;</script>
+      </method>
+      <method name="cwfDelete_menu" type="usrActionMethod">
+        <script><![CDATA[
+          var result = this.cwfDelete();
+          Global.runContentDisplayScript(this, "displayScript");
+          {
+          this.deleteAction();
+          return result;
+          }
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</order>

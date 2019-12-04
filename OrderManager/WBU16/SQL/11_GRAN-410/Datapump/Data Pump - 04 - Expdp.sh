@@ -1,0 +1,5 @@
+PROD:
+expdp system/syseoc987mgr tables=CWW.STCW_INFO_ALL_SERVICES_180206 directory=EOCPROD_DUMPS dumpfile=STCW_INFO_ALL_SERVICES_20180206.dmp logfile=expdp_STCW_INFO_ALL_SERVICES_20180206.log job_name=EXPORT_STCW_INFO_ALL_SERVICES flashback_time=systimestamp
+
+PT:
+expdp system/sysdb123Admin tables=CWW.STCW_INFO_ALL_SERVICES_180325 directory=EOC_PUMP_DIR dumpfile=STCW_INFO_ALL_SERVICES_20180325.dmp logfile=expdp_STCW_INFO_ALL_SERVICES_20180325.log job_name=EXPORT_STCW_INFO_ALL_SERVICES flashback_time=systimestamp

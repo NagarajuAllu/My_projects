@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.validatePickListValue">
+  <label>Validate PickList Value</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="dataTypeName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="valueInEnumeration" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    var searchDoc = new Document("stcconf.search_pickListForValidationData");
+    searchDoc.dataTypeName = dataTypeName;
+    searchDoc.value = valueInEnumeration;
+
+    var resultList = Finder.runFinder("stcconf.findPickListForValidation", "select", searchDoc);
+
+    var found = false;
+    if(resultList != null && resultList.length > 0) {
+        found = true;
+    }
+
+    return found;
+  ]]></script>
+</script>

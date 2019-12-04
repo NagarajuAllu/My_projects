@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="9b58292cbbc76805c12db9b5db97a664" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.rejectedQuote">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{0cd4e451-2bb8-1d2d-3e32-76070c4ada43}</guid>
+  <label>Rejected Quote</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="parentQuoteNumber" type="leaf">
+      <column>PARENTQUOTENUMBER</column>
+      <guid>{0560762b-788c-77dd-9137-d89710a21cf3}</guid>
+      <label>Parent Quote Number</label>
+      <propertyElement type="elfld">
+        <label>Parent Quote Number</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_orb.OrderNumber</valueType>
+    </variable>
+    <variable name="orderRowItemId" type="leaf">
+      <column>ORDERROWITEMID</column>
+      <guid>{0a0447f2-a28b-30ba-0767-b40d0bc264bc}</guid>
+      <label>Order Row Item Id</label>
+      <propertyElement type="elfld">
+        <label>Order Row Item Id</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_stcw.orderRowItemId</valueType>
+    </variable>
+    <variable name="childQuoteNumber" type="leaf">
+      <column>CHILDQUOTENUMBER</column>
+      <guid>{09532116-fc93-b297-070b-44809381bbf0}</guid>
+      <label>Child Quote Number</label>
+      <propertyElement type="elfld">
+        <label>Child Quote Number</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_stcw.quoteNumber</valueType>
+    </variable>
+    <variable name="rejectedDateTime" type="leaf">
+      <column>REJECTEDDATETIME</column>
+      <guid>{0049c5d8-423a-5951-29ba-475b19cd4ba9}</guid>
+      <label>Rejected Date Time</label>
+      <propertyElement type="eldatetime">
+        <label>Rejected Date Time</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_stcc.formattedDateTime</valueType>
+    </variable>
+    <variable name="errorDescription" type="leaf">
+      <column>ERRORDESCRIPTION</column>
+      <guid>{029ff37c-de60-bfca-ceb1-3e38cffcdc5c}</guid>
+      <label>Error Description</label>
+      <propertyElement type="elfld">
+        <label>Error Description</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_stcw.errorText</valueType>
+    </variable>
+    <variable name="rejectedSystem" type="leaf">
+      <column>REJECTEDSYSTEM</column>
+      <guid>{09e788ff-f1e9-2b41-9ff1-0124281c9bb2}</guid>
+      <label>Rejected System</label>
+      <propertyElement type="elfld">
+        <label>Rejected System</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_stcw.string40</valueType>
+    </variable>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <guid>{0be9aade-2a92-b8f8-53ce-05e8545d1bf5}</guid>
+      <key>1</key>
+      <label>System document ID</label>
+      <propertyElement type="elfld">
+        <label>System document ID</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.rejectedQuote</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

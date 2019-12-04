@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.siteInformationUpdate_cwr1">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>73.34473</x>
+    <y>27.0</y>
+    <childList>
+      <child name="receiveSiteInfoUpdate" type="subflowActivity">
+        <element>proc_stcw.receiveSiteInfoUpdate</element>
+        <label>Receive SiteInfoUpdate</label>
+        <x>55.66797</x>
+        <y>122.0</y>
+      </child>
+      <child name="forwardSiteInfoUpdateToCrm" type="subflowActivity">
+        <element>proc_stcw.forwardSiteInfoUpdateToCrm</element>
+        <label>Forward SiteInfoUpdate To CRM</label>
+        <x>55.338867</x>
+        <y>239.80469</y>
+      </child>
+      <child name="hasAckSuccess" type="switchActivity">
+        <label>Has Ack Success?</label>
+        <x>338.34473</x>
+        <y>245.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>342.34473</x>
+                <y>360.0</y>
+                <childList>
+                  <child name="receiveSiteInfoUpdateAckFromEAI" type="subflowActivity">
+                    <element>proc_stcw.receiveSiteInfoUpdateAckFromCRM</element>
+                    <label>Receive SiteInfoUpdate Ack From EAI</label>
+                    <x>325.0</x>
+                    <y>453.40234</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.ackResult == "SUCCESS");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>no</label>
+            <x>523.3447</x>
+            <y>246.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>523.3447</x>
+        <y>470.11523</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - SiteInfoUpdate - COMPLETED!!!");]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - SiteInfoUpdate - Start...");]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_stcw.orderProcess</document>
+  <label>Site Information Update</label>
+  <metaVersion>23</metaVersion>
+  <priority>8</priority>
+  <subflowReferenceList>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_stcw.receiveSiteInfoUpdate</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_stcw.receiveSiteInfoUpdateAckFromCRM</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>5</revision>
+      <subflow>proc_stcw.forwardSiteInfoUpdateToCrm</subflow>
+    </subflowReference>
+  </subflowReferenceList>
+  <type>User</type>
+</process>

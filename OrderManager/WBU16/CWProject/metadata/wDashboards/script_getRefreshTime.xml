@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="wDashboards.getRefreshTime">
+  <label>Get Refresh Time for Dashboards</label>
+  <metaVersion>25</metaVersion>
+  <script><![CDATA[
+    var sessionValue = Global.getSessionParameter("Dashboard_RefreshTime");
+
+    var result = sessionValue;
+    if(result == null) {
+        result = 1;
+    }
+
+    return result;
+  ]]></script>
+</script>

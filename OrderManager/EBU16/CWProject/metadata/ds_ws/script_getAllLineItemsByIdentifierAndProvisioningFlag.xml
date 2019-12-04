@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="c43bcc0812dbc897861ac3f48b78b646" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.getAllLineItemsByIdentifierAndProvisioningFlag">
+  <label>Get All LineItems By Identifier And ProvisioningFlag</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="lineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="elementTypeInOrderTree" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="provisioningFlag" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var searchDoc = new Document("ds_ws.searchLineItemDoc");
+    searchDoc.lineItemIdentifier = lineItemIdentifier;
+    searchDoc.elementTypeInOrderTree = elementTypeInOrderTree;
+    searchDoc.provisioningFlag = provisioningFlag;
+
+    var resultList = Finder.runFinder("ds_ws.findLineItem", "select", searchDoc);
+    return resultList;
+  ]]></script>
+</script>

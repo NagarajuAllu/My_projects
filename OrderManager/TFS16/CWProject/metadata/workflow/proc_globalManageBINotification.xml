@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="workflow.globalManageBINotification">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <schedule type="sched">
+      <duration type="dur">
+        <length>P0Y0M0DT0H2M0S</length>
+      </duration>
+    </schedule>
+    <x>129.73535</x>
+    <y>257.0</y>
+    <childList>
+      <child name="checkExistAnotherBINotification" type="switchActivity">
+        <label>Exist Another BI Notification?</label>
+        <x>312.70996</x>
+        <y>240.0</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>329.51074</x>
+            <y>102.103516</y>
+          </child>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>212.0</x>
+            <y>256.0</y>
+            <childList>
+              <child name="startManagementBINotification" type="seqActivity">
+                <label>Start Management BI Notification</label>
+                <x>775.02325</x>
+                <y>245.07364</y>
+                <childList>
+                  <child name="markProcessedCompletionInBI" type="scriptActivity">
+                    <label>Mark CompletionProcessed As TRUE In BI</label>
+                    <x>752.02325</x>
+                    <y>365.07364</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var finderBI = new Finder("tfs.findBIById");
+                          finderBI.searchDocument.cwDocID = this.process.processDocument.biId;
+                          var resultListBI = finderBI.search();
+
+                          if(resultListBI != null && resultListBI.length > 0) {
+                              resultListBI[0].completionProcessed = true;
+                              resultListBI[0].save();
+                          }
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="processLinkedPRNs_TFRs" type="scriptActivity">
+                    <label>Process Linked PRN(s) And TFR(s)</label>
+                    <x>585.8369</x>
+                    <y>364.8047</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var finderLinkedObjects = new Finder("tfs.findAllBILinkedObjects");
+                          finderLinkedObjects.searchDocument.biId = this.process.processDocument.biId;
+
+                          var resultList = finderLinkedObjects.search();
+
+                          if(resultList != null && resultList.length > 0) {
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "BI_Id [" + this.process.processDocument.biId + "] - Found " + resultList.length + " elements linked");
+
+                              for(var i=0; i<resultList.length; i++) {
+                                  var biRelationship = resultList[i];
+
+                                  var finderOpenBIs = new Finder("tfs.findOpenBIForPRN_TFR");
+                                  var orderId = null;
+                                  var isTFR = false;
+
+                                  if(biRelationship.prnId != null && biRelationship.prnId != "-1") {
+                                      finderOpenBIs.searchDocument.prnId = biRelationship.prnId;
+                                      isTFR = false;
+
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "BI_Id [" + this.process.processDocument.biId + "] - Checking PRN with id " + biRelationship.prnId);
+
+                                      var prnFinder = new Finder("tfs.findPRN");
+                                      prnFinder.searchDocument.prnId = biRelationship.prnId;
+                                      var resultListPRN = prnFinder.search();
+
+                                      if(resultListPRN != null && resultListPRN.length > 0) {
+                                          orderId = resultListPRN[0].orderId;
+                                      }
+                                  }
+                                  else if(biRelationship.tfrId != null && biRelationship.tfrId != "-1") {
+                                      // the BI is linked to a TFR
+                                      finderOpenBIs.searchDocument.tfrId = biRelationship.tfrId;
+                                      isTFR = true;
+
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "BI_Id [" + this.process.processDocument.biId + "] - Checking TFR with id " + biRelationship.tfrId);
+
+                                      var tfrFinder = new Finder("tfs.findTFR");
+                                      tfrFinder.searchDocument.tfrId = biRelationship.tfrId;
+                                      var resultListTFR = tfrFinder.search();
+
+                                      if(resultListTFR != null && resultListTFR.length > 0) {
+                                          orderId = resultListTFR[0].orderId;
+                                      }
+                                  }
+                                  else {
+                                      finderOpenBIs = null;
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "BI_Id [" + this.process.processDocument.biId + "] - STRANGE! the BI is linked to any elements!!!");
+                                  }
+
+                                  if(finderOpenBIs != null) {
+                                      var listOpenBIs = finderOpenBIs.search();
+                                      if(listOpenBIs == null || listOpenBIs.length == 0) {
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "BI_Id [" + this.process.processDocument.biId + "] - " +
+                                       (isTFR ? ("TFR with id " + biRelationship.tfrId): ("PRN with id " + biRelationship.prnId)) + " has all BIs closed!!! Sending notification!!!");
+
+                                          if(orderId != null) {
+                                              // find process
+                                              var processesInstall = workflow.findRunningProcessesByType(orderId, "workflow.installOrderProcess");
+                                              if(processesInstall != null && processesInstall.length > 0) {
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Send 'WakeUpParent' to Install with PID " + processesInstall[0]);
+                                                  Process.sendSignal("workflow.wakeUpParent", processesInstall[0]);
+                                              }
+                                              else {
+                                                  var processesChange = workflow.findRunningProcessesByType(orderId, "workflow.changeOrderProcess");
+                                                  if(processesChange != null && processesChange.length > 0) {
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Send 'WakeUpParent' to Change with PID " + processesChange[0]);
+                                                      Process.sendSignal("workflow.wakeUpParent", processesChange[0]);
+                                                  }
+                                                  else {
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Not able to find running processes for order with id " + orderId);
+                                                  }
+                                              }
+                                          }
+                                          else {
+                          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Unable to find the order for the biRelationship " + biRelationship.toXML());
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="deleteBINotificationRecord" type="scriptActivity">
+                    <label>Delete BI Notification Record</label>
+                    <x>451.02325</x>
+                    <y>371.07364</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var finder = new Finder("workflow.findBINotificationRecordById");
+                          finder.searchDocument.cwDocID = this.process.processDocument.eventId;
+                          var result = finder.search();
+
+                          if(result != null && result.length > 0) {
+                              result[0].deleteItem();
+                          }
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="repeat" type="repeatActivity">
+                    <element>proc_workflow.globalManageBINotification/seqActivity_start/switchActivity_checkExistAnotherBINotification</element>
+                    <label>Repeat</label>
+                    <x>326.0</x>
+                    <y>385.01172</y>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Found another BI Notification: biId: " + this.process.processDocument.biId);
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var found = false;
+
+                  var record = workflow.findNextBINotificationMessage();
+                  if(record != null) {
+                      this.process.processDocument.eventId = record.cwDocId;
+                      this.process.processDocument.biId = record.biId;
+                      found = true;
+                  }
+
+                  return found;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>498.51074</x>
+        <y>102.50586</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Complete Managing BI Notification");]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln(workflow.getLogHeaderForProcess(this.process.id) + "Start Managing BI Notification");
+
+          this.process.processDocument.eventId = null;
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_workflow.globalBINotificationProcessDocument</document>
+  <label>Global - Manage BI Notification</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <type>Global</type>
+</process>

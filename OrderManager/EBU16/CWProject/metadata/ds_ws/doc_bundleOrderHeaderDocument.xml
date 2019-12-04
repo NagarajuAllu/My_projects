@@ -1,0 +1,1671 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.bundleOrderHeaderDocument">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{67305bfc-73e2-4858-af18-8570e520bebe}</guid>
+  <label>Bundle Order Header</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="customerIdNumber" type="leaf">
+      <column>CUSTOMERIDNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Customer ID #</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="accountNumber" type="leaf">
+      <column>ACCOUNTNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Account #</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="customerType" type="leaf">
+      <column>CUSTOMERTYPE</column>
+      <propertyElement type="elfld">
+        <label>Customer Type</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="customerIDType" type="leaf">
+      <column>CUSTOMERIDTYPE</column>
+      <propertyElement type="elfld">
+        <label>Customer ID Type</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="customerContact" type="leaf">
+      <column>CUSTOMERCONTACT</column>
+      <propertyElement type="elfld">
+        <label>Customer Contact</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="customerContactName" type="leaf">
+      <column>CUSTOMERCONTACTNAME</column>
+      <propertyElement type="elfld">
+        <label>Customer Contact Name</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="customerName" type="leaf">
+      <column>CUSTOMERNAME</column>
+      <propertyElement type="elfld">
+        <label>Customer Name</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string60</valueType>
+    </variable>
+    <variable name="customerNumber" type="leaf">
+      <column>CUSTOMERNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Customer Number</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="orderNumber" type="leaf">
+      <column>ORDERNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Order #</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="orderType" type="leaf">
+      <column>ORDERTYPE</column>
+      <propertyElement type="elslct">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.orderType</valueType>
+    </variable>
+    <variable name="orderStatus" type="leaf">
+      <column>ORDERSTATUS</column>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.orderStatus</valueType>
+    </variable>
+    <variable name="creationDate" type="leaf">
+      <column>CREATIONDATE</column>
+      <propertyElement type="eldate">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Creation Date</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="createdBy" type="leaf">
+      <column>CREATEDBY</column>
+      <propertyElement type="elfld">
+        <label>Created By</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="createdByName" type="leaf">
+      <column>CREATEDBYNAME</column>
+      <propertyElement type="elfld">
+        <label>Created By Name</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="createdByContactName" type="leaf">
+      <column>CREATEDBYCONTACTNAME</column>
+      <propertyElement type="elfld">
+        <label>Created By Contact Name</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="serviceDate" type="leaf">
+      <column>SERVICEDATE</column>
+      <propertyElement type="eldate">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Service Date</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="priority" type="leaf">
+      <column>PRIORITY</column>
+      <propertyElement type="elfld"/>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.priority</valueType>
+    </variable>
+    <variable name="remarks" type="leaf">
+      <column>REMARKS</column>
+      <propertyElement type="eltxtArea">
+        <label>Remarks</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string4000</valueType>
+    </variable>
+    <variable name="referenceTelNumber" type="leaf">
+      <column>REFERENCETELNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Reference Tel #</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="version" type="leaf">
+      <column>VERSION</column>
+      <propertyElement type="elfld">
+        <label>Version</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string10</valueType>
+    </variable>
+    <variable name="customerSegmentation" type="leaf">
+      <column>CUSTOMERSEGMENTATION</column>
+      <propertyElement type="elfld">
+        <label>Customer Segmentation</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string30</valueType>
+    </variable>
+    <variable name="feasibilityFor" type="leaf">
+      <column>FEASIBILITYFOR</column>
+      <propertyElement type="elfld">
+        <label>Feasibility For</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.feasibilityFor</valueType>
+    </variable>
+    <variable name="reservation" type="leaf">
+      <column>RESERVATION</column>
+      <propertyElement type="elslct">
+        <label>Reservation</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.nY_pickList</valueType>
+    </variable>
+    <variable name="reservationNumber" type="leaf">
+      <column>RESERVATIONNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Reservation #</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="icmsSalesOrderNumber" type="leaf">
+      <column>ICMSSALESORDERNUMBER</column>
+      <propertyElement type="elfld">
+        <label>ICMS Sales Order #</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string19</valueType>
+    </variable>
+    <variable name="businessUnit" type="leaf">
+      <column>BUSINESSUNIT</column>
+      <propertyElement type="elfld">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.businessUnit</valueType>
+    </variable>
+    <variable name="completionDate" type="leaf">
+      <column>COMPLETIONDATE</column>
+      <propertyElement type="eldate">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Completion Date</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="receivedDate" type="leaf">
+      <column>RECEIVEDDATE</column>
+      <propertyElement type="eldatetime">
+        <displayFormat>dd/MM/yyyy HH:mm:ss</displayFormat>
+        <label>Received Date</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.dateTimeSec</valueType>
+    </variable>
+    <variable name="isMigrated" type="leaf">
+      <column>ISMIGRATED</column>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="primaryOrderNumber" type="leaf">
+      <column>PRIMARYORDERNUMBER</column>
+      <propertyElement type="elfld">
+        <label>Primary OrderNumber</label>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="internalOrder" type="leaf">
+      <column>INTERNALORDER</column>
+      <propertyElement type="elslct">
+        <label>Internal Order</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_ds_ws.nY_pickList</valueType>
+    </variable>
+    <variable name="cwDocStamp" type="leaf">
+      <column>CWDOCSTAMP</column>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.cwDocStamp</valueType>
+    </variable>
+    <variable name="cwOrderCreationDate" type="leaf">
+      <column>CWORDERCREATIONDATE</column>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.cwOrderCreationDate</valueType>
+    </variable>
+    <variable name="cwOrderId" type="leaf">
+      <column>CWORDERID</column>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.cwOrderId</valueType>
+    </variable>
+    <variable name="cwParentId" type="leaf">
+      <column>CWPARENTID</column>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.cwParentId</valueType>
+    </variable>
+    <variable name="lastUpdatedDate" type="leaf">
+      <column>LASTUPDATEDDATE</column>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.lastUpdatedDate</valueType>
+    </variable>
+    <variable name="updatedBy" type="leaf">
+      <column>UPDATEDBY</column>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.updatedBy</valueType>
+    </variable>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_BUNDLEORDER_HEADER</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$internalOrder" type="laction">
+      <path>doc_ds_ws.bundleOrderHeaderDocument/leaf_internalOrder</path>
+      <type>initializer</type>
+      <script><![CDATA[document.internalOrder = "N";]]></script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <script><![CDATA[
+        this.cw$super_deletePerm($psCondition);
+        return false;
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script><![CDATA[
+        this.cw$super_editablePerm($psCondition);
+        return false;
+      ]]></script>
+    </method>
+    <method name="cwOnDocVisualKey" type="action">
+      <system>true</system>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+      <script>return this.orderNumber;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.bundleOrderHeaderDocument</valueType>
+      </variable>
+      <variable name="reasonCodes" type="leaf">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+      </variable>
+      <variable name="nameValuesList" type="leaf">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.nameValueDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="Tabset" type="eltset">
+                <elementList>
+                  <element name="TabFrameOrderHeader" type="eltab">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/frmui_Forms/vform_bundleOrderHeader</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <label>Bundle Order Header Details</label>
+                  </element>
+                  <element name="TabFrameNVPair" type="eltab">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/frmui_Forms/vform_orderHeaderParameters</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <label>Order Header Parameters</label>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="eldel"/>
+              <override name="hl1" type="elext">
+                <elementList>
+                  <element name="showMessageLogs" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/usrActionMethod_showMessages</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show Messages for the entire Order</label>
+                  </element>
+                  <element name="showOrchestrationTable" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/usrActionMethod_showOrchestrationTable</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show Orchestration Table for the Order</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/permMethod_orchestrationView</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="generateOrchestrationTable" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/usrActionMethod_generateOrchestrationTable</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Generate Orchestration Table for the Order</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/permMethod_generateOrchestrationView</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="disconnectOrder" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/usrActionMethod_createDisconnectOrder</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/SolidStop.gif</icon>
+                    <label>Create Disconnect Order And Start Processing</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/permMethod_disconnectPerm</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="restartProvisioningProcess" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/usrActionMethod_restartProvisioningProcess</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/avms.gif</icon>
+                    <label>Restart Provisioning Process</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/permMethod_restartProcessPerm</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="cancelOrder" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/usrActionMethod_cancelOrder</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/MenuIconTaskUnavail.gif</icon>
+                    <label>Cancel Order</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/permMethod_cancelOrderPerm</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="bundleOrderHeader" type="vform">
+            <label>bundleOrderHeader</label>
+            <root name="output_mainInformationGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>1</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="details_orderMessageHeader" type="elhdr">
+                  <label>Bundle Order Information</label>
+                  <showValidation>true</showValidation>
+                </element>
+                <element name="details_orderInfo" type="elhdr">
+                  <label>General Information</label>
+                  <showValidation>true</showValidation>
+                </element>
+                <element name="orderInfoGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <width>1000px</width>
+                  <wrapLabel>true</wrapLabel>
+                  <elementList>
+                    <element name="orderNumber" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="orderType" type="elslct">
+                      <columnSpan>1</columnSpan>
+                      <label>Order Type</label>
+                      <onChangeMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_com.conceptwave.system.DocumentUserInterface/usrActionMethod_runTrigger</variablePath>
+                        </variablePathList>
+                      </onChangeMethod>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="orderStatus" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <label>Order Status</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_orderStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="businessUnit" type="elfld">
+                      <label>Business Unit</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_businessUnit</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="priority" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <label>Priority</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_priority</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="completionDate" type="eldate">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_completionDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="isMigrated" type="elchk">
+                      <label>Migrated from Legacy EBU Services</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_isMigrated</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="internalOrder" type="elslct">
+                      <label>Internal Order</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_internalOrder</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="primaryOrderNumber" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <label>Primary Order #</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_primaryOrderNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer" type="elrsp"/>
+                    <element name="createdById" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdBy</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="createdByName" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdByName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="createdByContactName" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_createdByContactName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="creationDate" type="eldate">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_creationDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="receivedDate" type="eldate">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_receivedDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceDate" type="eldate">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_serviceDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="accountNumber" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_accountNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="referenceTelNumber" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_referenceTelNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="version" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_version</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="icmsSalesOrderNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_icmsSalesOrderNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer1" type="elrsp"/>
+                    <element name="feasibilityFor" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_feasibilityFor</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="reservation" type="elslct">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_reservation</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="reservationNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_reservationNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="LayoutSpacer1" type="ellsp">
+                  <height>20px</height>
+                  <width>100%</width>
+                </element>
+                <element name="details_remarks" type="elhdr">
+                  <label>Remarks &amp; Reason Codes</label>
+                  <showValidation>true</showValidation>
+                </element>
+                <element name="remarksGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <width>1000px</width>
+                  <wrapLabel>true</wrapLabel>
+                  <elementList>
+                    <element name="remarks" type="eltxtArea">
+                      <columnSpan>5</columnSpan>
+                      <icon>/cwfv/text_view.png</icon>
+                      <startRow>true</startRow>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_remarks</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="RowSpacer2" type="elrsp">
+                      <height>20px</height>
+                      <rowSpan>20px</rowSpan>
+                    </element>
+                    <element name="reasonCodes" type="eltxtArea">
+                      <columnSpan>5</columnSpan>
+                      <icon>/cwfv/text_view.png</icon>
+                      <label>Reason Codes Received</label>
+                      <startRow>true</startRow>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/leaf_reasonCodes</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="LayoutSpacer" type="ellsp">
+                  <height>20px</height>
+                  <width>100%</width>
+                </element>
+                <element name="details_customerInfo" type="elhdr">
+                  <label>Customer Information</label>
+                  <showValidation>true</showValidation>
+                </element>
+                <element name="customerInfoGrid" type="elgrd">
+                  <colWidths>115px,185px,115px,185px,115px,185px</colWidths>
+                  <fixedColWidths>true</fixedColWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <style>fittedSimpleBorder</style>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>1000px</width>
+                  <wrapLabel>true</wrapLabel>
+                  <elementList>
+                    <element name="customerNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerName" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerType" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerIdNumber" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerIdNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerIDType" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerIDType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerSegmentation" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerSegmentation</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerContact" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerContact</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="customerContactName" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/leaf_customerContactName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="orderHeaderParameters" type="vform">
+            <label>orderHeaderParameters</label>
+            <root name="topStack" type="elsectnstck">
+              <height>100%</height>
+              <visibilityMode>multiple</visibilityMode>
+              <visible type="varPath">
+                <variablePathList>
+                  <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uivar_model</variablePath>
+                  <variablePath>doc_com.conceptwave.system.Document/permMethod_visiblePerm</variablePath>
+                </variablePathList>
+              </visible>
+              <width>100%</width>
+              <elementList>
+                <element name="topSection" type="elsect">
+                  <visible type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                    </variablePathList>
+                  </visible>
+                  <elementList>
+                    <element name="finderHeader" type="elsecth">
+                      <elementList>
+                        <element name="pref" type="elmnu">
+                          <icon>/cwt/images/16/preferences.png</icon>
+                          <showMenuDropDown>true</showMenuDropDown>
+                          <elementList>
+                            <element name="cwfXLS" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uimthd_downloadNVPairAsXLS</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <icon>/cwf/excel.gif</icon>
+                              <label>Download as XLS</label>
+                            </element>
+                            <element name="cwfCSV" type="elmnu">
+                              <clickMethod type="varPath">
+                                <variablePathList>
+                                  <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uimthd_downloadNVPairAsCSV</variablePath>
+                                </variablePathList>
+                              </clickMethod>
+                              <icon>/cwfv/text_marked.png</icon>
+                              <label>Download as CSV</label>
+                            </element>
+                          </elementList>
+                        </element>
+                      </elementList>
+                    </element>
+                    <element name="details_nameValueHeader" type="elhdr">
+                      <height>30px</height>
+                      <label>Name Value Order Header</label>
+                    </element>
+                    <element name="Table" type="eltabl">
+                      <canReOrder type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                        </variablePathList>
+                      </canReOrder>
+                      <cellWidth>300</cellWidth>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <height>100%</height>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/leaf_nameValuesList</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <width>915px</width>
+                      <elementList>
+                        <element name="name" type="elfld">
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/leaf_nameValuesList</variablePath>
+                              <variablePath>doc_ds_ws.nameValueDocument/leaf_name</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                        <element name="value" type="elfld">
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/leaf_nameValuesList</variablePath>
+                              <variablePath>doc_ds_ws.nameValueDocument/leaf_value</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                        <element name="action" type="elfld">
+                          <variable type="varPath">
+                            <variablePathList>
+                              <variablePath>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/leaf_nameValuesList</variablePath>
+                              <variablePath>doc_ds_ws.nameValueDocument/leaf_action</variablePath>
+                            </variablePathList>
+                          </variable>
+                        </element>
+                      </elementList>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="cwAutosaveConfirmation" type="action">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if (!this.isValid && Global.isAutosaveEnabled() && !this.model.readonly && this.model.isSavable()) {
+            return "UU0256:YN";
+          }
+          return null;
+        ]]></script>
+      </method>
+      <method name="onInit" type="action">
+        <valueType>nmeta_com.conceptwave.system.Object</valueType>
+        <script><![CDATA[
+          var res = this.cw$super_onInit();
+
+          this.reasonCodes = ds_ws.getReasonCodesForUI(this.model.id);
+
+          this.nameValuesList = ds_ws.getAllNameValuesByParentElementId(this.model.id);
+
+          return res;
+        ]]></script>
+      </method>
+      <method name="showMessages" type="usrActionMethod">
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>1200</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var finder = new Finder("ds_ws.msgLogFinderNoShowInput");
+          finder.searchDocument.crmOrderNumber = this.model.orderNumber;
+          finder.searchDocument.fromTime = null;
+          finder.search();
+          debugPrintln("finder.list.length = " + finder.list.length);
+          return finder;
+        ]]></script>
+      </method>
+      <method name="downloadNVPairAsCSV" type="uimthd">
+        <script><![CDATA[this.downloadFinderResult("ds_ws.findNameValueByParentElementId", true, "nameValueList");]]></script>
+      </method>
+      <method name="downloadNVPairAsXLS" type="uimthd">
+        <script><![CDATA[this.downloadFinderResult("ds_ws.findNameValueByParentElementId", false, "nameValueList");]]></script>
+      </method>
+      <method name="downloadFinderResult" type="uimthd">
+        <parameterList>
+          <parameter name="finderName" type="rifp">
+            <type>dtype_com.conceptwave.system.String</type>
+          </parameter>
+          <parameter name="isCSV" type="rifp">
+            <type>dtype_com.conceptwave.system.Boolean</type>
+          </parameter>
+          <parameter name="headerFileName" type="rifp">
+            <type>dtype_com.conceptwave.system.String</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          var finder = new Finder(finderName);
+          finder.searchDocument.cwDocID = this.model.id;
+          finder.search();
+
+          var finderUI = new ds_ws.findNameValueByParentElementId.UserInterface(finder, this);
+          var download = (isCSV ? new com.conceptwave.system.DownloadCsv(null, this) : new com.conceptwave.system.DownloadXls(null, this));
+          download.fileName = headerFileName + "-" + this.model.orderNumber + (isCSV ? ".csv" : ".xls");
+          download.objectToPrint = finderUI;
+          download.mimeType = (isCSV ? "text/csv" : "text/xsl");
+          Global.doDownload(download);
+
+
+
+          return finderUI;
+        ]]></script>
+      </method>
+      <method name="showOrchestrationTable" type="usrActionMethod">
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>1200</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          var finder = new Finder("processSTC.findSTC_ORDER_ORCHESTRATION");
+          finder.searchDocument.cwOrderId = this.model.cwOrderId;
+          finder.search();
+          return finder;
+        ]]></script>
+      </method>
+      <method name="orchestrationView" type="permMethod">
+        <script><![CDATA[
+          var finder = new Finder("processSTC.findSTC_ORDER_ORCHESTRATION");
+          finder.searchDocument.cwOrderId = this.model.cwOrderId;
+          var resultList = finder.search();
+
+          return (resultList != null && resultList.length > 0);
+        ]]></script>
+      </method>
+      <method name="generateOrchestrationView" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>UPAdmin</privilege>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+        <script><![CDATA[
+          var finder = new Finder("processSTC.findSTC_ORDER_ORCHESTRATION");
+          finder.searchDocument.cwOrderId = this.model.cwOrderId;
+          var resultList = finder.search();
+
+          return (resultList == null || resultList.length == 0 && $psCondition);
+        ]]></script>
+      </method>
+      <method name="generateOrchestrationTable" type="usrActionMethod">
+        <script><![CDATA[
+          var bundleOrder = Order.getOrderById(this.model.cwOrderId);
+          var orchestrationError = processSTC.writeSequenceForOrder(bundleOrder);
+
+          var msg = "Orchestration Table for Order '" + this.model.orderNumber + "' created!";
+
+          if(orchestrationError != null) {
+              msg = "Error in generating Orchestration Table for Order '" +  this.model.orderNumber + "': " + orchestrationError.ErrorDescription;
+          }
+
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] generateOrchestrationTable - " + msg);
+          Global.showUserMessage(msg);
+        ]]></script>
+      </method>
+      <method name="disconnectPerm" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>STC_DiscOrder</privilege>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+      </method>
+      <method name="createDisconnectOrder" type="usrActionMethod">
+        <confirmation>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uimthd_createDisconnectOrder_confirm</confirmation>
+        <script><![CDATA[
+          var errorArray = new Array();
+
+          var order = Order.getOrderById(this.model.orderId);
+
+          var disconnectPossible = ds_ws.checkIfDisconnectOrderIsPossible(order, errorArray);
+          if (!disconnectPossible){
+              Global.showUserMessage(errorArray[0]);
+              return;
+          }
+
+          var resultArray = ds_ws.cloneOrderForDisconnectAndStartProvisingProcess(order, this.model.orderNumber, null, errorArray);
+          if(resultArray != null) {
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] " + " Disconnect process for order number: " + this.model.orderNumber + " has been started with id:" + resultArray[1]);
+              Global.showUserMessage("Disconnect Order created with OrderNumber: " + resultArray[0] + "; provisioning process started with id: " + resultArray[1]);
+          }
+          else {
+              var exceptionMsg = (errorArray.length > 0 ? errorArray[0].ErrorDescription : null);
+              Global.showUserMessage("Error in creating disconnect order " + exceptionMsg);
+          }
+        ]]></script>
+      </method>
+      <method name="createDisconnectOrder_confirm" type="uimthd">
+        <script><![CDATA[return "AW0015";]]></script>
+      </method>
+      <method name="restartProcessPerm" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>STC_RestartProc</privilege>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+      </method>
+      <method name="restartProvisioningProcess_confirm" type="uimthd">
+        <script><![CDATA[return "AW0016";]]></script>
+      </method>
+      <method name="restartProvisioningProcess" type="usrActionMethod">
+        <confirmation>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uimthd_restartProvisioningProcess_confirm</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var orderUnderMgmt = Order.getOrderById(this.model.orderId);
+          if(orderUnderMgmt == null) {
+              Global.throwException("AE0052", this.model.orderId);
+          }
+
+          this.performBasicChecksForCancelOrder_ResumeProcess(orderUnderMgmt, true);
+
+          var existProcessKO = processSTC.checkIfExistProcessKOInOrchestrationTable(this.model.orderId);
+          if(!existProcessKO) {
+              // there are no processes in KO status in Orchestration table, so rejecting the order
+              Global.throwException("AE0138");
+          }
+
+          processSTC.deleteOrchestrationTableForOrder(orderUnderMgmt.id);
+          var orchestrationErrors = processSTC.writeSequenceForOrder(orderUnderMgmt);
+
+          if(orchestrationErrors != null && orchestrationErrors.length > 0) {
+              for(var m=0; m<orchestrationErrors.length; m++) {
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] restartProvisioningProcess - Error in creating orchestration record: <" + orchestrationErrors[m].ErrorCode + "," + orchestrationErrors[m].ErrorDescription + ">");
+              }
+              Global.throwException("Error in creating orchestration record: <" + orchestrationErrors[0].ErrorCode + "," + orchestrationErrors[0].ErrorDescription + ">");
+          }
+
+          processSTC.removeOrderToFailedOrdersForLockList(this.model.orderNumber);
+
+          var processId = Process.startProcess ("processSTC.mainSTCOrchestrationProcess", orderUnderMgmt.id, orderUnderMgmt.id);
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] " + " Provisioning process for order number: " + this.model.orderNumber + " has been started with id:" + processId);
+
+          // insert into logging table
+          ds_ws.addActivityLogging("Restart Provisioning Process With UI", this.model.orderNumber, Global.getUserId());
+
+          Global.showUserMessage("Provisioning process for the order has been started with id: " + processId);
+        ]]></script>
+      </method>
+      <method name="cancelOrderPerm" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>STC_CancelOrder</privilege>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+      </method>
+      <method name="cancelOrder_confirm" type="uimthd">
+        <script><![CDATA[return "AW0017";]]></script>
+      </method>
+      <method name="cancelOrder" type="usrActionMethod">
+        <confirmation>doc_ds_ws.bundleOrderHeaderDocument/ui_UserInterface/uimthd_cancelOrder_confirm</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var bundleOrder = Order.getOrderById(this.model.orderId);
+          if(bundleOrder == null) {
+              Global.throwException("AE0052", this.model.orderId);
+          }
+
+          var isSIP = false;
+          var isLegacy = ds_ws.isLegacyService(bundleOrder.bundles[0]);
+          if(! isLegacy) {
+              isSIP = this.checkIfIsSIPBundle(bundleOrder.bundles[0].bundle.productType);
+          }
+
+          // performing checks required by the function
+          this.performChecksForCancelOrder(bundleOrder, isSIP);
+
+          if(isSIP) {
+              // it's a SIP bundle; using the new approach generating the cancel order
+              this.performCancellationForSIPOrder(bundleOrder);
+          }
+          else {
+              // it's a legacy service or it's a bundle not SIP; using the old approach cancelling the order in EOC itself
+              this.cancelOrderInEOCOnly(bundleOrder);
+          }
+        ]]></script>
+      </method>
+      <method name="checkIfIsSIPBundle" type="uimthd">
+        <parameterList>
+          <parameter name="productType" type="rifp">
+            <type>dtype_com.conceptwave.system.String</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          var isSIP = false;
+          var bundleSIPProductTypes  = ds_ws.getAllCRMProductTypesForOMInternalProductType("Bundle SIP");
+          if(bundleSIPProductTypes != null) {
+              for(var i=0; i<bundleSIPProductTypes.length && !isSIP; i++) {
+                  isSIP = (productType == bundleSIPProductTypes[i]);
+              }
+          }
+
+          if(!isSIP) {
+              var bundleSIPMWProductTypes  = ds_ws.getAllCRMProductTypesForOMInternalProductType("Bundle SIPMW");
+              if(bundleSIPMWProductTypes != null) {
+                  for(var i=0; i<bundleSIPMWProductTypes.length && !isSIP; i++) {
+                      isSIP = (productType == bundleSIPMWProductTypes[i]);
+                  }
+              }
+          }
+
+          return isSIP;
+        ]]></script>
+      </method>
+      <method name="performChecksForCancelOrder" type="uimthd">
+        <parameterList>
+          <parameter name="bundleOrder" type="rifp">
+            <type>nmeta_com.conceptwave.system.Object</type>
+          </parameter>
+          <parameter name="isSIP" type="rifp">
+            <type>dtype_com.conceptwave.system.Boolean</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          this.performBasicChecksForCancelOrder_ResumeProcess(bundleOrder, false);
+
+          if(bundleOrder.orderHeader.orderType == "F") {
+               Global.throwException("AE0157", bundleOrder.orderHeader.orderType);
+          }
+
+          var checkExistWOInGranite = (ds_ws.isLegacyService(bundleOrder.bundles[0]) || !isSIP);
+
+          if(! isSIP) {
+              // checking that, for the not completed components, the WO reported in EOC should not exist in Granite
+              for(var i=0; i<bundleOrder.bundles.length; i++) {
+                  checkIfWOIsInGranite_(bundleOrder.bundles[i].bundle);
+
+                  if(bundleOrder.bundles[i].circuits != null) {
+                      for(var j=0; j<bundleOrder.bundles[i].circuits.length; j++) {
+                          checkIfWOIsInGranite_(bundleOrder.bundles[i].circuits[j].circuit);
+
+                          if(bundleOrder.bundles[i].circuits[j].services != null) {
+                              for(var k=0; k<bundleOrder.bundles[i].circuits[j].services.length; k++) {
+                                  checkIfWOIsInGranite_(bundleOrder.bundles[i].circuits[j].services[k].service);
+
+                                  if(bundleOrder.bundles[i].circuits[j].services[k].subServices != null) {
+                                      for(var l=0; l<bundleOrder.bundles[i].circuits[j].services[k].subServices.length; l++) {
+                                          checkIfWOIsInGranite_(bundleOrder.bundles[i].circuits[j].services[k].subServices[l].subService);
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+          else {
+              // checks for SIP to verify that all the WO are not in status 7 without the cancel Task
+              var isWOReallyCompleted = false;
+
+              for(var i=0; i<bundleOrder.bundles.length && !isWOReallyCompleted; i++) {
+                  isWOReallyCompleted = checkIfWOIsReallyCompleted_(bundleOrder.bundles[i].bundle);
+
+                  if(bundleOrder.bundles[i].circuits != null) {
+                      for(var j=0; j<bundleOrder.bundles[i].circuits.length && !isWOReallyCompleted; j++) {
+                          isWOReallyCompleted = checkIfWOIsReallyCompleted_(bundleOrder.bundles[i].circuits[j].circuit);
+
+                          if(bundleOrder.bundles[i].circuits[j].services != null) {
+                              for(var k=0; k<bundleOrder.bundles[i].circuits[j].services.length && !isWOReallyCompleted; k++) {
+                                  isWOReallyCompleted = checkIfWOIsReallyCompleted_(bundleOrder.bundles[i].circuits[j].services[k].service);
+
+                                  if(bundleOrder.bundles[i].circuits[j].services[k].subServices != null) {
+                                      for(var l=0; l<bundleOrder.bundles[i].circuits[j].services[k].subServices.length && !isWOReallyCompleted; l++) {
+                                          isWOReallyCompleted = checkIfWOIsReallyCompleted_(bundleOrder.bundles[i].circuits[j].services[k].subServices[l].subService);
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+
+              if(isWOReallyCompleted) {
+                   Global.throwException("AE0156");
+              }
+          }
+
+
+          function checkIfWOIsInGranite_(lineItem) {
+              if(! processSTC.isLineItemCompleted(lineItem.lineItemStatus)) {
+                  var woNumber = lineItem.workOrderNumber;
+                  var woInGranite = granite.getWOInGranite(woNumber);
+
+                  if(woInGranite != null) {
+                      var isCancelled = false;
+
+                      if(woInGranite.STATUS == 8) {
+                          isCancelled = true;
+                      }
+                      else if(woInGranite.STATUS == 7) {
+                          // the WO is COMPLETED; checking if there is the "Cancel" task
+                          isCancelled = (granite.checkIfTaskOperationIsInWO(woInGranite.WO_INST_ID, "CANCEL-SIP-ORDER"));
+                      }
+
+                      if(!isCancelled) {
+                          Global.throwException("AE0153", [woNumber, lineItem.lineItemIdentifier, lineItem.lineItemStatus]);
+                      }
+                  }
+              }
+          }
+
+          function checkIfWOIsReallyCompleted_(lineItem) {
+              var isReallyCompleted = false;
+
+              var woNumber = lineItem.workOrderNumber;
+              if(woNumber != null) {
+                  var woInGranite = granite.getWOInGranite(woNumber);
+                  if(woInGranite != null) {
+                      if(woInGranite.STATUS == 7) {
+                          // the WO is COMPLETED; checking if there is the "Cancel" task
+                          isReallyCompleted = (! granite.checkIfTaskOperationIsInWO(woInGranite.WO_INST_ID, "CANCEL-SIP-ORDER"));
+                      }
+                  }
+              }
+
+              return isReallyCompleted;
+          }
+        ]]></script>
+      </method>
+      <method name="performBasicChecksForCancelOrder_ResumeProcess" type="uimthd">
+        <parameterList>
+          <parameter name="bundleOrder" type="rifp">
+            <type>nmeta_com.conceptwave.system.Object</type>
+          </parameter>
+          <parameter name="isRestart" type="rifp">
+            <type>dtype_com.conceptwave.system.Boolean</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          // checking if the status is already completed or cancelled
+          var isOrderCompleted = processSTC.isOrderCompleted(this.model.orderStatus);
+          if(isOrderCompleted) {
+              if(isRestart) {
+                  Global.throwException("AE0136", this.model.orderStatus);
+              }
+              else {
+                  Global.throwException("AE0154", this.model.orderStatus);
+              }
+          }
+
+          // checking that the user is not UPADMIN
+          var currentUser = Global.getUserId();
+          if(currentUser.equalsIgnoreCase("UPADMIN")) {
+              Global.throwException("AE0152");
+          }
+
+          // checking that the provisioningFlag of the order is PROVISIONING
+          var parentLineItem = bundleOrder.bundles[0].bundle;
+          if(parentLineItem.provisioningFlag != "PROVISIONING") {
+              if(isRestart) {
+                  Global.throwException("AE0137", parentLineItem.provisioningFlag);
+              }
+              else {
+                  Global.throwException("AE0155", parentLineItem.provisioningFlag);
+              }
+          }
+
+          if(!isRestart) {
+              if(parentLineItem.isCancel) {
+                  Global.throwException("AE0158");
+              }
+          }
+
+          // checking that all the processes for the order are completed or terminated
+          var areProcessesCompleted = processSTC.checkAllProcessesInOrchestrationTableAreCompleted(bundleOrder.id);
+          if(! areProcessesCompleted) {
+              Global.throwException("AE0088");
+          }
+        ]]></script>
+      </method>
+      <method name="cancelOrderInEOCOnly" type="uimthd">
+        <parameterList>
+          <parameter name="bundleOrder" type="rifp">
+            <type>nmeta_com.conceptwave.system.Object</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          var userId = Global.getUserId();
+          var newLog = common.common_currentDateAsStringDDMMYYYYHH24MISS() + " - User '" + userId + "' performed the action 'Cancel Order' using UI";
+
+          var lastLineItemUpdated = null;
+          if(ds_ws.isLegacyService(bundleOrder.bundles[0])) {
+              if(! processSTC.isLineItemCompleted(bundleOrder.bundles[0].bundle.lineItemStatus)) {
+                  updateLineItemInfo_(bundleOrder.bundles[0].bundle);
+                  lastLineItemUpdated = bundleOrder.bundles[0].bundle;
+              }
+          }
+          else {
+              if(bundleOrder.bundles[0].circuits != null) {
+                  for(var j=0; j<bundleOrder.bundles[0].circuits.length; j++) {
+                      if(! processSTC.isLineItemCompleted(bundleOrder.bundles[0].circuits[j].circuit.lineItemStatus)) {
+                          updateLineItemInfo_(bundleOrder.bundles[0].circuits[j].circuit);
+                          lastLineItemUpdated = bundleOrder.bundles[0].circuits[j].circuit;
+                      }
+                      if(bundleOrder.bundles[0].circuits[j].services != null) {
+                          for(var k=0; k<bundleOrder.bundles[0].circuits[j].services.length; k++) {
+                              if(! processSTC.isLineItemCompleted(bundleOrder.bundles[0].circuits[j].services[k].service.lineItemStatus)) {
+                                  updateLineItemInfo_(bundleOrder.bundles[0].circuits[j].services[k].service);
+                                  lastLineItemUpdated = bundleOrder.bundles[0].circuits[j].services[k].service;
+                              }
+
+                              if(bundleOrder.bundles[0].circuits[j].services[k].subServices != null) {
+                                  for(var l=0; l<bundleOrder.bundles[0].circuits[j].services[k].subServices.length; l++) {
+                                      if(! processSTC.isLineItemCompleted(bundleOrder.bundles[0].circuits[j].services[k].subServices[l].subService.lineItemStatus)) {
+                                          updateLineItemInfo_(bundleOrder.bundles[0].circuits[j].services[k].subServices[l].subService);
+                                          lastLineItemUpdated = bundleOrder.bundles[0].circuits[j].services[k].subServices[l].subService;
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+
+          bundleOrder.orderHeader.remarks = newLog + ((bundleOrder.orderHeader.remarks != null) ? ("\n" + bundleOrder.orderHeader.remarks) : "");
+          bundleOrder.save();
+
+          ds_ws.updateBundleAndOrderHeaderStatus(bundleOrder, lastLineItemUpdated);
+
+          // reloading order because changed by the script
+          bundleOrder = Order.getOrderById(this.model.orderId);
+
+          // provisioning flag!!!!
+          if(bundleOrder.bundles[0].bundle.isCancel || bundleOrder.bundles[0].bundle.lineItemStatus == "CANCELLED") {
+              bundleOrder.bundles[0].bundle.provisioningFlag = "CANCELLED";
+          }
+          else {
+              var orderNumber = this.model.orderNumber;
+              if((orderNumber.indexOf("_CANC_") >= 0) || (orderNumber.indexOf("_REVI_") >= 0)) {
+                  // do nothing because it's an old version of the order
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] - ProvisioningFlag not changed " +
+                               "because orderNumber (" + orderNumber + ") contains '_CANC_' or _REVI_'");
+              }
+              else {
+                  var activeLineItems = ds_ws.getAllLineItemsByIdentifierAndProvisioningFlag(bundleOrder.bundles[0].bundle.lineItemIdentifier, "B", "ACTIVE");
+                  for(var j=0; j<activeLineItems.length; j++) {
+                      activeLineItems[j].provisioningFlag = "OLD";
+                      activeLineItems[j].save();
+                  }
+
+                  bundleOrder.bundles[0].bundle.provisioningFlag = "ACTIVE";
+              }
+          }
+          bundleOrder.save();
+
+          // insert into logging table
+          ds_ws.addActivityLogging("Cancel Order With UI", this.model.orderNumber, userId);
+
+          // return the success message to the user!
+          Global.showUserMessage("Action completed; new status of the order is: " + bundleOrder.orderHeader.orderStatus + ".\nPlease reload the order to view the new status");
+
+
+
+
+
+          function updateLineItemInfo_(lineItem) {
+              lineItem.lineItemStatus = "CANCELLED";
+              lineItem.isCancel = true;
+              lineItem.alreadyReceivedCancel = true;
+              lineItem.remarks = newLog + ((lineItem.remarks != null) ? ("\n" + lineItem.remarks) : "");
+              lineItem.completionDate = new Date();
+
+              if(lineItem.bandwidth == null) {
+                  lineItem.bandwidth = "1MBPS_E2E";
+              }
+
+              var orchestrationRecord = processSTC.getRecordInOrchestrationTableByLineItemId(lineItem.id);
+              if(orchestrationRecord != null && orchestrationRecord.provisioningProcessResult == "KO") {
+                  // this is to avoid that the next scripts will be in trouble due to a failed process
+                  orchestrationRecord.provisioningProcessResult = null;
+                  orchestrationRecord.save();
+              }
+          }
+        ]]></script>
+      </method>
+      <method name="performCancellationForSIPOrder" type="uimthd">
+        <parameterList>
+          <parameter name="bundleOrder" type="rifp">
+            <type>nmeta_com.conceptwave.system.Object</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          var debug = " performCancelForSIPOrder(" + bundleOrder.orderHeader.orderNumber + ") ";
+
+          var userId = Global.getUserId();
+          var newLog = common.common_currentDateAsStringDDMMYYYYHH24MISS() + " - User '" + userId + "' performed the action 'Cancel Order' using UI";
+
+          var isMigrated = bundleOrder.orderHeader.isMigrated;
+          var orderType = bundleOrder.orderHeader.orderType;
+
+
+          if(bundleOrder.bundles[0].circuits != null) {
+              for(var j=0; j<bundleOrder.bundles[0].circuits.length; j++) {
+                  var woNumberInCircuit = bundleOrder.bundles[0].circuits[j].circuit.workOrderNumber;
+                  if(isWOCancelled_(woNumberInCircuit)) {
+                      updateLineItemInfoForCancelled_(bundleOrder.bundles[0].circuits[j].circuit);
+                  }
+                  else if(isWOCompleted_(woNumberInCircuit)) {
+                      if(orderType == "C" || orderType == "T") {
+                          // if the WO is completed and the orderType is "C" or "T", update the status of the circuit setting it to completed
+                          updateLineItemInfoForCompleted_(bundleOrder.bundles[0].circuits[j].circuit);
+                      }
+                  }
+
+                  if(bundleOrder.bundles[0].circuits[j].services != null) {
+                      for(var k=0; k<bundleOrder.bundles[0].circuits[j].services.length; k++) {
+                          var woNumberInService = bundleOrder.bundles[0].circuits[j].services[k].service.workOrderNumber;
+                          if(isWOCancelled_(woNumberInService)) {
+                              updateLineItemInfoForCancelled_(bundleOrder.bundles[0].circuits[j].services[k].service);
+                          }
+                          else {
+                              if(isMigrated && (woNumberInService == woNumberInCircuit)) {
+                                  // it's migrated and the WO for service and circuit is the same; if it's not completed, the service has to be immediately cancelled
+                                  if(! isWOCompleted_(woNumberInService)) {
+                                      // no completed, so immediate cancelled!
+                                      updateLineItemInfoForCancelled_(bundleOrder.bundles[0].circuits[j].services[k].service);
+                                  }
+                              }
+                          }
+
+
+                          if(bundleOrder.bundles[0].circuits[j].services[k].subServices != null) {
+                              for(var l=0; l<bundleOrder.bundles[0].circuits[j].services[k].subServices.length; l++) {
+                                  if(isWOCancelled_(bundleOrder.bundles[0].circuits[j].services[k].subServices[l].subService.workOrderNumber)) {
+                                      updateLineItemInfoForCancelled_(bundleOrder.bundles[0].circuits[j].services[k].subServices[l].subService);
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+
+          bundleOrder.orderHeader.remarks = newLog + ((bundleOrder.orderHeader.remarks != null) ? ("\n" + bundleOrder.orderHeader.remarks) : "");
+          bundleOrder.save();
+
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Order updated to match data in Granite: " + bundleOrder.toXML());
+
+          // reloading order because changed by the script
+          bundleOrder = Order.getOrderById(this.model.orderId);
+
+
+          var newRemarksForCancelRequest = "Cancel order created internally in EOC because requested by user '" + userId + "'";
+
+          var cancelOrder = ds_ws.generateCancelRequestForOrder(bundleOrder, newRemarksForCancelRequest);
+          if(cancelOrder == null) {
+              Global.throwException("AE0160", "Generate Cancel Order");
+          }
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Cancel order generated: " + cancelOrder.toXML());
+
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Starting Full Validation for the Cancel Order");
+          var failureArray = ds_ws.performFullValidationForUpdateOrder(cancelOrder, bundleOrder, true);
+          if(failureArray != null && failureArray.length > 0) {
+              Global.throwException("AE0159", ["PerformValidationOnUpdateOrder", failureArray[0].ErrorCode, failureArray[0].ErrorDescription]);
+          }
+
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Starting Orchestration Analysis for the Cancel Order");
+          var orchestrationError = processSTC.writeSequenceForOrder(cancelOrder);
+          if(orchestrationError != null) {
+              Global.throwException("AE0159", ["WriteOrchestrationForUpdateOrder", orchestrationError[0].ErrorCode, orchestrationError[0].ErrorDescription]);
+          }
+
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Starting Orchestration Analysis for the Cancel Order");
+          var errorsInInterruptingProcess = processSTC.interruptProvisioningProcessesForOrder(bundleOrder);
+          if(errorsInInterruptingProcess != null) {
+              Global.throwException("AE0159", ["InterruptProvisioningProcesses", errorsInInterruptingProcess[0].ErrorCode, errorsInInterruptingProcess[0].ErrorDescription]);
+          }
+
+
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Archiving existing order");
+          ds_ws.archiveExistingOrderDueToUpdate(bundleOrder, true);
+
+
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Saving Cancel order");
+          cancelOrder.save();
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Cancel order saved!!!!");
+
+
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Starting OrchestrationProcess For Cancel Order " + cancelOrder.id + "; " + cancelOrder.toXML());
+          var processId = Process.startProcess ("processSTC.mainSTCOrchestrationProcess", cancelOrder.id, cancelOrder.id);
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Started OrchestrationProcess For Order " + cancelOrder.id + "; processId = " + processId);
+
+
+          // insert into logging table
+          ds_ws.addActivityLogging("Cancel Order With UI", this.model.orderNumber, userId);
+
+          // return the success message to the user!
+          Global.showUserMessage("Action completed; cancel order has been created and provisioning process started; processId = " + processId);
+
+
+
+
+
+          function isWOCancelled_(woNumber) {
+              var isCancelled = false;
+
+              if(woNumber != null) {
+                  var woInGranite = granite.getWOInGranite(woNumber);
+                  if(woInGranite != null) {
+                      if(woInGranite.STATUS == 8) {
+                          isCancelled = true;
+                      }
+                      else if(woInGranite.STATUS == 7) {
+                          // the WO is COMPLETED; checking if there is the "Cancel" task
+                          isCancelled = (granite.checkIfTaskOperationIsInWO(woInGranite.WO_INST_ID, "CANCEL-SIP-ORDER"));
+                      }
+                  }
+              }
+
+              return isCancelled;
+          }
+
+          function isWOCompleted_(woNumber) {
+              var isCompleted = false;
+
+              if(woNumber != null) {
+                  var woInGranite = granite.getWOInGranite(woNumber);
+                  if(woInGranite != null) {
+                      if(woInGranite.STATUS == 7) {
+                          // the WO is COMPLETED; checking if there is the "Cancel" task
+                          isCompleted = (! granite.checkIfTaskOperationIsInWO(woInGranite.WO_INST_ID, "CANCEL-SIP-ORDER"));
+                      }
+                  }
+              }
+
+              return isCompleted;
+          }
+
+          function updateLineItemInfoForCancelled_(lineItem) {
+              lineItem.lineItemStatus = "CANCELLED";
+              lineItem.isCancel = true;
+              lineItem.alreadyReceivedCancel = true;
+              lineItem.remarks = newLog + ((lineItem.remarks != null) ? ("\n" + lineItem.remarks) : "");
+              lineItem.completionDate = new Date();
+
+              if(lineItem.bandwidth == null) {
+                  lineItem.bandwidth = "1MBPS_E2E";
+              }
+
+              var orchestrationRecord = processSTC.getRecordInOrchestrationTableByLineItemId(lineItem.id);
+              if(orchestrationRecord != null && orchestrationRecord.provisioningProcessResult == "KO") {
+                  // this is to avoid that the next scripts will be in trouble due to a failed process
+                  orchestrationRecord.provisioningProcessResult = null;
+                  orchestrationRecord.save();
+              }
+          }
+
+          function updateLineItemInfoForCompleted_(lineItem) {
+              lineItem.lineItemStatus = "COMPLETED";
+              lineItem.remarks = newLog + ((lineItem.remarks != null) ? ("\n" + lineItem.remarks) : "");
+              lineItem.completionDate = new Date();
+
+              var orchestrationRecord = processSTC.getRecordInOrchestrationTableByLineItemId(lineItem.id);
+              if(orchestrationRecord != null && orchestrationRecord.provisioningProcessResult == "KO") {
+                  // this is to avoid that the next scripts will be in trouble due to a failed process
+                  orchestrationRecord.provisioningProcessResult = null;
+                  orchestrationRecord.save();
+              }
+          }
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

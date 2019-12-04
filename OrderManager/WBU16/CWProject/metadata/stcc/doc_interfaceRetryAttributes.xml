@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcc.interfaceRetryAttributes">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{0b5900c5-4523-2b46-567b-b645616531e3}</guid>
+  <label>Interface Retry Attributes</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <label>System document ID</label>
+      <propertyElement type="elfld">
+        <label>System document ID</label>
+      </propertyElement>
+      <table>REF_INTERFACE_RETRY_ATTRS</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="cwCreated" type="leaf">
+      <column>CWCREATED</column>
+      <label>System created timestamp</label>
+      <propertyElement type="eldatetime">
+        <label>System created timestamp</label>
+      </propertyElement>
+      <table>REF_INTERFACE_RETRY_ATTRS</table>
+      <valueType>dtype_cwf.cwCreated</valueType>
+    </variable>
+    <variable name="lastUpdatedDate" type="leaf">
+      <column>LASTUPDATEDDATE</column>
+      <label>System last updated timestamp</label>
+      <propertyElement type="eldatetime">
+        <label>System last updated timestamp</label>
+      </propertyElement>
+      <table>REF_INTERFACE_RETRY_ATTRS</table>
+      <valueType>dtype_cwf.lastUpdatedDate</valueType>
+    </variable>
+    <variable name="updatedBy" type="leaf">
+      <column>UPDATEDBY</column>
+      <label>System updated by</label>
+      <propertyElement type="elfld">
+        <label>System updated by</label>
+      </propertyElement>
+      <table>REF_INTERFACE_RETRY_ATTRS</table>
+      <valueType>dtype_cwf.updatedBy</valueType>
+    </variable>
+    <variable name="interfaceOperation" type="leaf">
+      <column>INTERFACE_OPERATION</column>
+      <label>Interface Operation</label>
+      <propertyElement type="elfld">
+        <label>Interface Operation</label>
+      </propertyElement>
+      <table>REF_INTERFACE_RETRY_ATTRS</table>
+      <valueType>dtype_cwf.interOperFQ</valueType>
+    </variable>
+    <variable name="interfaceRetryCount" type="leaf">
+      <column>INTERFACE_RETRY_COUNT</column>
+      <label>Interface Retry Count</label>
+      <propertyElement type="elfld">
+        <label>Interface Retry Count</label>
+      </propertyElement>
+      <table>REF_INTERFACE_RETRY_ATTRS</table>
+      <valueType>dtype_stcc.InterfaceRetryCount</valueType>
+    </variable>
+    <variable name="interfaceRetryDelay" type="leaf">
+      <column>INTERFACE_RETRY_DELAY</column>
+      <label>Interface Retry Delay</label>
+      <propertyElement type="elfld">
+        <label>Interface Retry Delay</label>
+      </propertyElement>
+      <table>REF_INTERFACE_RETRY_ATTRS</table>
+      <valueType>dtype_stcc.InterfaceRetryDelay</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcc.interfaceRetryAttributes</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="resultsGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="interfaceRetryAttributesHeader" type="elhdr">
+                    <label>Results</label>
+                    <showValidation>true</showValidation>
+                    <style>CwFOT</style>
+                  </element>
+                  <element name="resultsGrid" type="elgrd">
+                    <colWidths>195,195</colWidths>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>390px</width>
+                    <elementList>
+                      <element name="System_Id1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <label>System Id</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcc.interfaceRetryAttributes/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcc.interfaceRetryAttributes/leaf_cwDocId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="Operation1" type="elslct">
+                        <columnSpan>1</columnSpan>
+                        <label>Operation</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcc.interfaceRetryAttributes/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcc.interfaceRetryAttributes/leaf_interfaceOperation</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="Retry_Count1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <label>Retry Count</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcc.interfaceRetryAttributes/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcc.interfaceRetryAttributes/leaf_interfaceRetryCount</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="Retry_Delay1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <label>Retry Delay</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcc.interfaceRetryAttributes/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcc.interfaceRetryAttributes/leaf_interfaceRetryDelay</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

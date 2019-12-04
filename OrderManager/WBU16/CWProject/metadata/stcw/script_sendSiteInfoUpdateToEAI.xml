@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="11b0aa3689f7b4885266bc2bfd7b344a" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.sendSiteInfoUpdateToEAI">
+  <guid>{0cb417bf-9e14-a835-2d0b-b5d631ed0883}</guid>
+  <label>Send SiteInfoUpdate To EAI</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="request" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="processId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // it uses the common method:
+    // sendDataToInterface( request, processId, operationDescription, interfaceName, operationName )
+    var response = stcc.sendDataToInterface(request, processId, "sendSiteInfoUpdateToEAI", "siSIUpdate:processRequest_PortType", "processRequest");
+    return response;
+  ]]></script>
+</script>

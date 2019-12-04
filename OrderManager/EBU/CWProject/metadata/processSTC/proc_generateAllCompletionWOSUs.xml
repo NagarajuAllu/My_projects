@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process filenameHash="e8494bf10df7030e8d6e74f526a04200" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.generateAllCompletionWOSUs">
+  <activity name="start" type="seqActivity">
+    <guid>{a7aa54e0-3fb1-4535-9663-fe69c9f40705}</guid>
+    <label>Start</label>
+    <x>62.0</x>
+    <y>40.0</y>
+    <childList>
+      <child name="generateWOSU" type="scriptActivity">
+        <guid>{fd5e85e7-b09f-49df-a3a5-cd0c76e6e9d5}</guid>
+        <label>Generate WOSU for Completed WOs</label>
+        <x>216.0</x>
+        <y>25.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var resultList = Finder.runFinder("processSTC.findInfoForCompletedWO", "select", null);
+              if(resultList != null && resultList.length > 0) {
+                  for(var i=0; i<resultList.length; i++) {
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Found Completed WO " + resultList[i].toXML());
+
+                      var completionWOSU = processSTC.generateGraniteWOSUForCompletedWO(resultList[i]);
+                      ifGranite_jms.manageGraniteMsg_WorkOrderStatusUpdate(completionWOSU);
+
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Generated COMPLETION WOSU for WO " + resultList[i].workOrderNumber);
+                  }
+              }
+              else {
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - No record founds from the view");
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{d8a40b27-6b4a-43a7-b2a1-d19d917112a2}</guid>
+        <label>End</label>
+        <x>424.0</x>
+        <y>45.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Global process for Completed WOSU completed");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - Start Global process 'Generate Completion WOSU for Completed WO'");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <guid>{ec6b9df7-edb2-418e-bc95-92e45c90405c}</guid>
+  <label>Generate All Completion WOSUs</label>
+  <metaVersion>4</metaVersion>
+  <priority>8</priority>
+  <type>User</type>
+</process>

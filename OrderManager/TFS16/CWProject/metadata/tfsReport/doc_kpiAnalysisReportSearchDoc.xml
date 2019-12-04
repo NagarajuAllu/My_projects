@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.kpiAnalysisReportSearchDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{618f2ae8-9843-405d-9232-fcd3f612097f}</guid>
+  <label>KPI Analysis Report Search Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="creationDateFrom" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="creationDateTo" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="completionDateFrom" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="completionDateTo" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="numDaysProvisioningPRN" type="leaf">
+      <valueType>dtype_common.integer3</valueType>
+    </variable>
+    <variable name="numDaysProvisioningTFR" type="leaf">
+      <valueType>dtype_common.integer3</valueType>
+    </variable>
+    <variable name="numDaysProvisioningPRN_TFR_noBI" type="leaf">
+      <valueType>dtype_common.integer3</valueType>
+    </variable>
+    <variable name="numDaysProvisioningPRN_TFR_BI" type="leaf">
+      <valueType>dtype_common.integer3</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.kpiAnalysisReportSearchDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultVerticalLayout" type="elvlt">
+                <width>1200px</width>
+                <elementList>
+                  <element name="inputDataLabel" type="elhdr">
+                    <cellAlignment>left,center</cellAlignment>
+                    <height>40px</height>
+                    <label>KPI Analysis Report Input Data</label>
+                    <width>1200px</width>
+                  </element>
+                  <element name="HorizontalLayout" type="elhlt">
+                    <elementList>
+                      <element name="dayLimitGridLayout" type="elgrd">
+                        <colWidths>120px,150px</colWidths>
+                        <labelOrientation>left</labelOrientation>
+                        <numOfCols>2</numOfCols>
+                        <style>simpleBorder</style>
+                        <width>500px</width>
+                        <elementList>
+                          <element name="numDaysProvisioningPRN" type="elfld">
+                            <label>Num. Days to Complete PRN</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/leaf_numDaysProvisioningPRN</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="numDaysProvisioningTFR" type="elfld">
+                            <label>Num. Days to Complete TFR</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/leaf_numDaysProvisioningTFR</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="numDaysProvisioningPRN_TFR_noBI" type="elfld">
+                            <label>Num. Days to Complete PRN and TFR - no BI</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/leaf_numDaysProvisioningPRN_TFR_noBI</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="numDaysProvisioningPRN_TFR_BI" type="elfld">
+                            <label>Num. Days to Complete PRN and TFR - with BI</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/leaf_numDaysProvisioningPRN_TFR_BI</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="LayoutSpacer1" type="ellsp">
+                        <width>20px</width>
+                      </element>
+                      <element name="kpiAnalysisReportSearchDocGrid" type="elgrd">
+                        <colWidths>120px,150px,120px,150px</colWidths>
+                        <labelOrientation>left</labelOrientation>
+                        <numOfCols>4</numOfCols>
+                        <useDefaultHeight>true</useDefaultHeight>
+                        <elementList>
+                          <element name="creationDateFrom" type="eldatetime">
+                            <label>Creation Date &gt;=</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/leaf_creationDateFrom</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="creationDateTo" type="eldatetime">
+                            <label>Creation Date &lt;=</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/leaf_creationDateTo</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="RowSpacer" type="elrsp">
+                            <height>15px</height>
+                            <rowSpan>15px</rowSpan>
+                          </element>
+                          <element name="completionDateFrom" type="eldatetime">
+                            <label>Completion Date &gt;=</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/leaf_completionDateFrom</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                          <element name="completionDateTo" type="eldatetime">
+                            <label>Completion Date &lt;=</label>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                                <variablePath>doc_tfsReport.kpiAnalysisReportSearchDoc/leaf_completionDateTo</variablePath>
+                              </variablePathList>
+                            </variable>
+                          </element>
+                        </elementList>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="LayoutSpacer" type="ellsp">
+                    <height>20px</height>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="e0093a24729d1c69060a6c5e8ecffc83" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.findProcessIdsForQuoteProcessesRunning">
+  <guid>{0849034f-d913-e371-680b-e42b3fd1a294}</guid>
+  <label>Find ProcessIds For QuoteProcesses Running</label>
+  <metaVersion>3</metaVersion>
+  <script><![CDATA[
+    var processIdFinder = new Finder ("stcw:processIdsForQuoteProcessesRunning");
+    processIdFinder.search ();
+
+    var processIdList = processIdFinder.list;
+    if (processIdList == null || processIdList.size <= 0)
+          return (null);
+
+    var processIds = null;
+    for (var i = 0; i <  processIdList.size; i++) {
+          processIds = (processIds == null ? "" : processIds + ";") + processIdList[i].PROCESS_ID;
+    }
+
+    return processIds;
+  ]]></script>
+</script>

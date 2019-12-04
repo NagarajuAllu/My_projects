@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="configuration.customAttribute">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{3aa66825-365a-40bb-8662-860a079a96ef}</guid>
+  <label>Custom Attribute</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="customAttributeId" type="leaf">
+      <column>CUSTOMATTR_ID</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>Custom Attribute Id</label>
+      </propertyElement>
+      <table>STC_CUSTOMATTR</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="objectType" type="leaf">
+      <column>PARENT_ELEMENT</column>
+      <propertyElement type="elslct">
+        <label>Object Type</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_CUSTOMATTR</table>
+      <valueType>dtype_configuration.objectTypeForCustomAttributes</valueType>
+    </variable>
+    <variable name="attributeName" type="leaf">
+      <column>ATTRIBUTE_NAME</column>
+      <propertyElement type="elfld">
+        <label>Attribute Name</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_CUSTOMATTR</table>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="attributeType" type="leaf">
+      <column>ATTRIBUTE_TYPE</column>
+      <propertyElement type="elslct">
+        <label>Attribute Type</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_CUSTOMATTR</table>
+      <valueType>dtype_common.customAttrType</valueType>
+    </variable>
+    <variable name="hyperlinkAttributeName" type="leaf">
+      <column>HYPERLINK_ATTR_NAME</column>
+      <table>STC_CUSTOMATTR</table>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        if(this.objectType != 'PRNR' && this.objectType != 'PRN' && this.objectType != 'TFR' && this.objectType != 'BI') {
+            Global.throwException("AE0001", this.objectType);
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="customAttrPickListFinderUI" type="leaf">
+        <valueType>findDoc_configuration.customAttributePickListValuesFinder/ui_UserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_configuration.customAttribute</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="formFrameGeneralData" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_configuration.customAttribute/ui_UserInterface/frmui_Forms/vform_generalData</variablePath>
+                      </variablePathList>
+                    </formReference>
+                  </element>
+                  <element name="LayoutSpacer" type="ellsp">
+                    <height>15px</height>
+                  </element>
+                  <element name="formFramePickListValue" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_configuration.customAttribute/ui_UserInterface/frmui_Forms/vform_pickListValue</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <height>600px</height>
+                    <style>simpleBorder</style>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_configuration.customAttribute/ui_UserInterface/permMethod_pickListVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                    <width>500px</width>
+                  </element>
+                  <element name="formFrameHyperLinkData" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_configuration.customAttribute/ui_UserInterface/frmui_Forms/vform_hyperLinkData</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <height>200px</height>
+                    <style>simpleBorder</style>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_configuration.customAttribute/ui_UserInterface/permMethod_hyperlinkVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                    <width>500px</width>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="generalData" type="vform">
+            <label>generalData</label>
+            <root name="defaultGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="customAttributeGrid" type="elgrd">
+                  <colWidths>110px,160px,110px,160px,110px,160px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>900px</width>
+                  <elementList>
+                    <element name="customAttributeHeader" type="elhdr">
+                      <label>Custom Attribute Configuration</label>
+                    </element>
+                    <element name="objectType" type="elslct">
+                      <label>Object Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_configuration.customAttribute/leaf_objectType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="attributeName" type="elfld">
+                      <label>Attribute Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_configuration.customAttribute/leaf_attributeName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="attributeType" type="elslct">
+                      <label>Attribute Type</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_configuration.customAttribute/leaf_attributeType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="pickListValue" type="vform">
+            <label>pickListValue</label>
+            <root name="pickListValueGrid" type="elvlt">
+              <height>100%</height>
+              <membersMargin>100</membersMargin>
+              <useDefaultHeight>true</useDefaultHeight>
+              <width>500px</width>
+              <elementList>
+                <element name="pickListValueHeader" type="elhdr">
+                  <height>40px</height>
+                  <label>PickList Values Management</label>
+                </element>
+                <element name="FormFrame" type="elovf">
+                  <formReference type="varPath">
+                    <variablePathList>
+                      <variablePath>doc_configuration.customAttribute/ui_UserInterface/leaf_customAttrPickListFinderUI</variablePath>
+                      <variablePath>findDoc_configuration.customAttributePickListValuesFinder/ui_UserInterface/frmui_Forms/vform_showInParent</variablePath>
+                    </variablePathList>
+                  </formReference>
+                  <height>100%</height>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>doc_configuration.customAttribute/ui_UserInterface/leaf_customAttrPickListFinderUI</variablePath>
+                    </variablePathList>
+                  </variable>
+                </element>
+                <element name="HorizontalLayout" type="elhlt">
+                  <elementList>
+                    <element name="buttonAdd" type="elbtn">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/uimthd_addValueToPickList</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <disabled type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/permMethod_notConfigurationPrivilege</variablePath>
+                        </variablePathList>
+                      </disabled>
+                      <icon>/cwf/add.gif</icon>
+                      <label>Add</label>
+                    </element>
+                    <element name="buttonRemove" type="elbtn">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/usrActionMethod_removeValueFromPickList</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <disabled type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/permMethod_notConfigurationPrivilege</variablePath>
+                        </variablePathList>
+                      </disabled>
+                      <icon>/cwf/delete.gif</icon>
+                      <label>Remove</label>
+                    </element>
+                    <element name="LayoutSpacer" type="ellsp">
+                      <width>30px</width>
+                    </element>
+                    <element name="buttonMoveUp" type="elbtn">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/uimthd_moveUp</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <disabled type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/permMethod_notConfigurationPrivilege</variablePath>
+                        </variablePathList>
+                      </disabled>
+                      <icon>/cwf/up.gif</icon>
+                      <label>Move Up</label>
+                    </element>
+                    <element name="buttonMoveDown" type="elbtn">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/uimthd_moveDown</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <disabled type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/permMethod_notConfigurationPrivilege</variablePath>
+                        </variablePathList>
+                      </disabled>
+                      <icon>/cwf/down.gif</icon>
+                      <label>Move Down</label>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="hyperLinkData" type="vform">
+            <label>hyperLinkData</label>
+            <root name="defaultGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="hyperlinkGrid" type="elgrd">
+                  <colWidths>110px,160px,110px,160px,110px,160px</colWidths>
+                  <labelOrientation>left</labelOrientation>
+                  <numOfCols>6</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>900px</width>
+                  <elementList>
+                    <element name="hyperlinkHeader" type="elhdr">
+                      <label>Hyperlink Configuration - The name of the attribute used to compute the hyperlink</label>
+                    </element>
+                    <element name="hyperlinkAttributeName" type="elfld">
+                      <label>Hyperlink Attribute Name</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_configuration.customAttribute/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_configuration.customAttribute/leaf_hyperlinkAttributeName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="pickListVisible" type="permMethod">
+        <script><![CDATA[
+          var visible = false;
+          if (this.model.attributeType != null) {
+              visible = this.model.attributeType == "PickList";
+          }
+
+          return visible;
+        ]]></script>
+      </method>
+      <method name="onInit" type="action">
+        <valueType>nmeta_com.conceptwave.system.Object</valueType>
+        <script><![CDATA[
+          var onInit = this.cw$super_onInit();
+
+          this.customAttrPickListFinderUI = new configuration.customAttributePickListValuesFinder.UserInterface(null, this);
+
+          if(this.model.attributeType == "PickList") {
+              this.customAttrPickListFinderUI.search.model.cwDocID = this.model.customAttributeId;
+              this.customAttrPickListFinderUI.model.search();
+          }
+
+          return onInit;
+        ]]></script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <confirmation>doc_configuration.customAttribute/ui_UserInterface/uimthd_saveConfirmation</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+      <method name="saveConfirmation" type="uimthd">
+        <script><![CDATA[
+          if(this.model.isStored) {
+              return "AW0002";
+          }
+
+          return "AW0001";
+        ]]></script>
+      </method>
+      <method name="addValueToPickList" type="uimthd">
+        <script><![CDATA[
+          var sequenceNumber = 1;
+          if(this.customAttrPickListFinderUI.result != null && this.customAttrPickListFinderUI.result.length > 0) {
+              sequenceNumber = this.customAttrPickListFinderUI.result[this.customAttrPickListFinderUI.result.length - 1].sequenceNumber + 1;
+          }
+
+          var newCustomAttr = new Document("configuration.customAttributePickListValue");
+          newCustomAttr.customAttr_id = this.model.customAttributeId;
+          newCustomAttr.sequenceNumber = sequenceNumber;
+          newCustomAttr.save();
+
+          configuration.compressCustomAttrPickListValueSequence(this.model.customAttributeId);
+
+          this.customAttrPickListFinderUI.search.model.cwDocID = this.model.customAttributeId;
+          this.customAttrPickListFinderUI.model.search();
+          this.customAttrPickListFinderUI.result.setSelected(newCustomAttr);
+        ]]></script>
+      </method>
+      <method name="removeValueFromPickListConfirm" type="uimthd">
+        <script><![CDATA[return "AW0003";]]></script>
+      </method>
+      <method name="removeValueFromPickList" type="usrActionMethod">
+        <confirmation>doc_configuration.customAttribute/ui_UserInterface/uimthd_removeValueFromPickListConfirm</confirmation>
+        <script><![CDATA[
+          if(this.customAttrPickListFinderUI.result.selected != null && this.customAttrPickListFinderUI.result.selected.length > 0) {
+              if(this.customAttrPickListFinderUI.result.selected.length > 1) {
+                  Global.throwException("UU0116");
+              }
+              else {
+                  this.customAttrPickListFinderUI.result.selected[0].deleteItem();
+
+                  configuration.compressCustomAttrPickListValueSequence(this.model.customAttributeId);
+
+                  this.customAttrPickListFinderUI.search.model.cwDocID = this.model.customAttributeId;
+                  this.customAttrPickListFinderUI.model.search();
+              }
+          }
+          else {
+              Global.throwException("UU0111");
+          }
+        ]]></script>
+      </method>
+      <method name="moveUp" type="uimthd">
+        <script><![CDATA[
+          if(this.customAttrPickListFinderUI.result.selected != null && this.customAttrPickListFinderUI.result.selected.length > 0) {
+              if(this.customAttrPickListFinderUI.result.selected.length > 1) {
+                  Global.throwException("UU0116");
+              }
+              else {
+                  // moving up
+                  var currentRecord = this.customAttrPickListFinderUI.result.selected[0];
+                  var currentSequenceNumber = currentRecord.sequenceNumber;
+                  if(currentSequenceNumber > 1) {
+                      currentRecord.sequenceNumber = currentSequenceNumber - 1;
+                      currentRecord.save();
+                      this.customAttrPickListFinderUI.result[currentSequenceNumber - 2].sequenceNumber =  currentSequenceNumber;
+                      this.customAttrPickListFinderUI.result[currentSequenceNumber - 2].save();
+                  }
+                  configuration.compressCustomAttrPickListValueSequence();
+                  this.customAttrPickListFinderUI.model.search();
+                  this.customAttrPickListFinderUI.result.setSelected(currentRecord);
+              }
+          }
+          else {
+              Global.throwException("UU0111");
+          }
+        ]]></script>
+      </method>
+      <method name="moveDown" type="uimthd">
+        <script><![CDATA[
+          if(this.customAttrPickListFinderUI.result.selected != null && this.customAttrPickListFinderUI.result.selected.length > 0) {
+              if(this.customAttrPickListFinderUI.result.selected.length > 1) {
+                  Global.throwException("UU0116");
+              }
+              else {
+                  // moving down
+                  var currentRecord = this.customAttrPickListFinderUI.result.selected[0];
+                  var currentSequenceNumber = currentRecord.sequenceNumber;
+                  if(currentSequenceNumber < this.customAttrPickListFinderUI.result.length) {
+                      currentRecord.sequenceNumber = currentSequenceNumber + 1;
+                      currentRecord.save();
+                      this.customAttrPickListFinderUI.result[currentSequenceNumber].sequenceNumber =  currentSequenceNumber;
+                      this.customAttrPickListFinderUI.result[currentSequenceNumber].save();
+                  }
+                  configuration.compressCustomAttrPickListValueSequence();
+                  this.customAttrPickListFinderUI.model.search();
+                  this.customAttrPickListFinderUI.result.setSelected(currentRecord);
+              }
+          }
+          else {
+              Global.throwException("UU0111");
+          }
+        ]]></script>
+      </method>
+      <method name="notConfigurationPrivilege" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>STC_ConfigPriv</privilege>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+        <script>return !($psCondition);</script>
+      </method>
+      <method name="hyperlinkVisible" type="permMethod">
+        <script><![CDATA[
+          var visible = false;
+          if (this.model.attributeType != null) {
+              visible = this.model.attributeType == "Hyperlink";
+          }
+
+          return visible;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

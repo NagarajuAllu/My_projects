@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="aa47bc0af1815e453203862eabf71aa6" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="migrationSTC.countOrdersInGraniteByParentOrderNumber">
+  <guid>{0bb6c5c6-ffb7-9654-dbc1-552ab8020cad}</guid>
+  <label>Count Orders In Granite By Parent Order Number</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="parentOrderNumber" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var numOrdersFound = 0;
+
+    if (parentOrderNumber != null) {
+
+          var input = new Document("migrationSTC:searchOrdersInGraniteDoc");
+          input.clearData();
+          input.PARENT_ORDER_NUMBER = parentOrderNumber;
+
+          var output = Finder.runFinder("migrationSTC:findOrdersInGranite", "select", input);
+
+          if (output != null) {
+                numOrdersFound = output.size;
+          }
+    }
+
+    return numOrdersFound;
+  ]]></script>
+</script>

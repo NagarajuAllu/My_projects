@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.checkIfLineItemIsNotFeasibleForQuote">
+  <label>Check If LineItem is Not Feasible For Quote</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="elementStatusInUpperCase" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var failed = false;
+    if(orderType == "F") {
+        // Old: (before GRAN-393 and CR 14039/14040)
+        // failed = (elementStatusInUpperCase == "NOT FEASIBLE" || elementStatusInUpperCase == "PLANNED FEASIBLE");
+        // New:
+        failed = (elementStatusInUpperCase == "NOT FEASIBLE");
+    }
+
+    return failed;
+  ]]></script>
+</script>

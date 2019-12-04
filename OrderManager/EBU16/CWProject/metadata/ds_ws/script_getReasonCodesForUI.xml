@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="d23fe1981fd19c192b9011f618dbc960" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.getReasonCodesForUI">
+  <label>Get Reason Codes For UI</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="parentDocId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var resultArray = ds_ws.getReasonCodesAsArray(parentDocId);
+
+    var result = null;
+
+    if(resultArray != null) {
+        result = resultArray.join("\n");
+    }
+
+    return result;
+  ]]></script>
+</script>

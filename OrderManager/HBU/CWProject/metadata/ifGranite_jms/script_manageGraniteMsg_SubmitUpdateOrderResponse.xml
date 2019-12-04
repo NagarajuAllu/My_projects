@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="881983ee9ee7845316b363c7b7c43166" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ifGranite_jms.manageGraniteMsg_SubmitUpdateOrderResponse">
+  <guid>{0870bc96-898a-ad2c-fbfc-4349aeeb10d8}</guid>
+  <label>Manage Granite Message: Submit/Update Order Response [JMS]</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="input" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = "[MANAGE GRANITE MESSAGE VIA 'JMS': SUBMIT/UPDATE ORDER RESPONSE] ";
+
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Start...");
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Input: " + (input != null ? input.toXML() : "") + "...");
+          var logMsgId = UserProfile.getMsgLogId();
+
+          if (input != null) {
+                if(input.orderAcknowledgement.orderNumber != null) {
+
+                      var foundOrderMessage = ds_ws.searchOrderMessageHomeByOrderNumber(input.orderAcknowledgement.orderNumber);
+
+                      if(foundOrderMessage != null) {
+                            var inputDocForQuery = new Document("cwf_pm:ProcessSearch");
+                            inputDocForQuery.ORDER_ID = foundOrderMessage.cwOrderId;
+
+                            var processId = null;
+                            var processFinder = Finder.runFinder("cwf_pm:ProcessFinder", "select",  inputDocForQuery);
+                            if (processFinder != null && processFinder.size > 0) {
+                                  var processId = processFinder.start.PROCESS_ID;
+
+    //                              if(foundOrderMessage.orderStatus.toUpperCase() == "NEW") {
+
+                                  var processDocument = Process.getProcessDocument(processId);
+                                  if(processDocument.isSubmit == "Y") {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug +
+                       "- Sending SubmitOrderResponse for Order : " + input.orderAcknowledgement.orderNumber + " to process " + processId + "...");
+
+                                        Process.sendMessageToProcess(processId, null, "ifGranite_jms:XngServicesSubmitOrderR/SubmitOrder", input);
+                                  }
+                                  else {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug +
+                       "- Sending UpdateOrderResponse for Order : " + input.orderAcknowledgement.orderNumber + " to process " + processId + "...");
+
+                                        Process.sendMessageToProcess(processId, null, "ifGranite_jms:XngServicesUpdateOrderR/UpdateOrder", input);
+                                  }
+                            }
+                            else {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug +
+                       "- WARNING - Unable to find process for Order: " + input.orderAcknowledgement.orderNumber);
+                            }
+                      }
+                      else {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug +
+                       "- WARNING - Unable to find CWOrder for received granite OrderResponse for Order: " + input.orderAcknowledgement.orderNumber);
+                      }
+                }
+                else {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug +
+                       "- WARNING - Received granite OrderResponse with OrderNumber NULL ...");
+
+                }
+
+                var userData1 = (input.orderAcknowledgement.parentOrderNumber != null ? input.orderAcknowledgement.parentOrderNumber : input.orderAcknowledgement.orderNumber);
+                var userData2 = (input.orderAcknowledgement.parentOrderNumber != null ? input.orderAcknowledgement.orderNumber : null);
+                UserProfile.setMsgLogData(userData1, userData2, null, logMsgId);
+          }
+          else{
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- WARNING - Interface invoked with input NULL...");
+          }
+
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- End ...");
+  ]]></script>
+</script>

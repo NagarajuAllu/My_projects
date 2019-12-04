@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.performValidationOfMandatoryNVPairs">
+  <label>Perform Validation Of Mandatory NVPairs</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="nvPairs" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="serviceType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="objectId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var mandatoryNVPairs = stcw.getMandatoryNVPairsByOrderType_ServiceType(orderType, serviceType);
+
+    var validationErrors = null;
+
+    if(mandatoryNVPairs != null) {
+        var found = false;
+        var foundWithValue = false;
+        var foundWithWrongDataType = false;
+        var valueFound = null;
+
+        for(var i=0; i<mandatoryNVPairs.length; i++) {
+            found = false;
+            foundWithValue = false;
+            foundWithWrongDataType = false;
+            valueFound = null;
+
+            for(var j=0; j<nvPairs.length && !found; j++) {
+                if(nvPairs[j][0].name == mandatoryNVPairs[i].nvPairName) {
+                    found = true;
+                    foundWithValue = stcc.stringHasValue(nvPairs[j][0].value);
+                    if(foundWithValue && mandatoryNVPairs[i].datatype != null && mandatoryNVPairs[i].datatype == "Number") {
+                        // checking if the value is a number
+                        foundWithWrongDataType = isNaN(parseInt(nvPairs[j][0].value));
+                        valueFound = nvPairs[j][0].value;
+                    }
+                }
+            }
+
+            if(!found) {
+                if(validationErrors == null) {
+                    validationErrors = new Array();
+                }
+
+                // AE0037: Missing Mandatory NVPair: {0}
+                validationErrors.push("AE0037");
+                validationErrors.push(Global.translateText("AE0037", null, [mandatoryNVPairs[i].nvPairName]));
+            }
+            else {
+                if(!foundWithValue) {
+                    if(validationErrors == null) {
+                        validationErrors = new Array();
+                    }
+
+                    // AE0038: Found Mandatory NVPair with no value: {0}
+                    validationErrors.push("AE0038");
+                    validationErrors.push(Global.translateText("AE0038", null, [mandatoryNVPairs[i].nvPairName]));
+                }
+                else {
+                    if(foundWithWrongDataType) {
+                        if(validationErrors == null) {
+                            validationErrors = new Array();
+                        }
+
+                        // AE0040: Found Mandatory NVPair with value in invalid format[expected {1}]: {0}
+                        validationErrors.push("AE0040");
+                        validationErrors.push(Global.translateText("AE0040", null, [mandatoryNVPairs[i].nvPairName, mandatoryNVPairs[i].datatype, valueFound]));
+                    }
+                }
+            }
+        }
+    }
+
+    if(validationErrors != null) {
+    debugPrintln(stcc.getSysdateForLog() + " performValidationOfMandatoryNVPairs (" + objectId + "): Found errors [" + validationErrors + "]");
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, objectId, failureArray, isSubmit);
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

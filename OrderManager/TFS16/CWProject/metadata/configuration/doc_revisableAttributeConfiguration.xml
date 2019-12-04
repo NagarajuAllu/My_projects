@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="configuration.revisableAttributeConfiguration">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{6f0fae61-c1b1-41dc-ab25-d773f5ec4fc0}</guid>
+  <label>Revisable Attribute Configuration</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>REVISABLE_ID</column>
+      <key>1</key>
+      <table>STC_REVISABLE_ATTR</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="objectType" type="leaf">
+      <column>OBJECT_TYPE</column>
+      <table>STC_REVISABLE_ATTR</table>
+      <valueType>dtype_common.objectType</valueType>
+    </variable>
+    <variable name="attributeName" type="leaf">
+      <column>FIELD_NAME</column>
+      <table>STC_REVISABLE_ATTR</table>
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_configuration.revisableAttributeConfiguration</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

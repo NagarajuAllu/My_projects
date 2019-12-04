@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.deleteAllBlockValuesInOrder">
+  <label>Delete All BlockValues In Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("stcw.blockValue");
+    inputDoc.cwDocId = null;
+    inputDoc.cwOrderId = orderId;
+
+    var resultList = Finder.runFinder("stcw.blockValueFinder", "select", inputDoc);
+
+    var resultArray = null;
+
+    if(resultList != null) {
+        for(var i=0; i<resultList.length; i++) {
+            resultList[i].deleteItem();
+        }
+    }
+  ]]></script>
+</script>

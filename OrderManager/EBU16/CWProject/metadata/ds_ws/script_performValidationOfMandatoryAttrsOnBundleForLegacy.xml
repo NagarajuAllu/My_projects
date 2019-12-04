@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.performValidationOfMandatoryAttrsOnBundleForLegacy">
+  <label>Perform Validation Of Mandatory Elements On Bundle For Legacy Services</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="bundleIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="orderType" type="rifp">
+      <type>dtype_ds_ws.orderType</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    // DE0030; No value in mandatory field "Customer Contact"
+    // the attributes that must be set in Bundle (EBU Legacy services) are:
+    // bandwidth, for OrderType I, C, T, F
+    // accountNumber, for OrderType I, C, T
+    // locationACCLICode, for OrderType I, C, T, F
+    // locationAContactAddress, for OrderType I, C, T, F
+    // locationAContactName, for OrderType I, C, T, F
+    // locationAContactTelNo, for OrderType I, C, T, F
+    // locationBCCLICode, for OrderType I, C, T, F
+    // locationBContactAddress, for OrderType I, C, T, F
+    // locationBContactName, for OrderType I, C, T, F
+    // locationBContactTelNo, for OrderType I, C, T, F
+    // fictBillingNumber, for OrderType I, C, T
+
+    var validationErrors = null;
+
+    var attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("I", "C", "T", "F"), orderType, bundleContainer.bundle.bandwidth);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "Bandwidth");
+
+    attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("I", "C", "T"), orderType, bundleContainer.bundle.accountNumber);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "AccountNumber");
+
+    attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("I", "C", "T", "F"), orderType, bundleContainer.bundle.locationACCLICode);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "LocationACCLICode");
+
+    attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("I", "C", "T", "F"), orderType, bundleContainer.bundle.locationAContactAddress);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "LocationAContactAddress");
+
+    attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("I", "C", "T", "F"), orderType, bundleContainer.bundle.locationAContactName);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "LocationAContactName");
+
+    attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("I", "C", "T", "F"), orderType, bundleContainer.bundle.locationAContactTel);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "LocationAContactTelNo");
+
+    attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("I", "C", "T", "F"), orderType, bundleContainer.bundle.locationBCCLICode);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "LocationBCCLICode");
+
+    attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("I", "C", "T", "F"), orderType, bundleContainer.bundle.locationBContactAddress);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "LocationBContactAddress");
+
+    attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("I", "C", "T", "F"), orderType, bundleContainer.bundle.locationBContactName);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "LocationBContactName");
+
+    attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("I", "C", "T", "F"), orderType, bundleContainer.bundle.locationBContactTel);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "LocationBContactTelNo");
+
+    attributeIsNull = common.common_checkMandatoryFieldByOrderType(new Array("I", "C", "T"), orderType, bundleContainer.bundle.fictBillingNumber);
+    checkIfNullAndAppendToValidationErrors_(attributeIsNull, "FictBillingNumber");
+
+    if(validationErrors != null) {
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, bundleIdentifier, failureArray, isSubmit);
+    }
+    return failureArray;
+
+
+
+    function checkIfNullAndAppendToValidationErrors_(attributeIsNull, fieldName) {
+        if(attributeIsNull) {
+            validationErrors = ds_ws.appendToValidationErrors("DE0030", "No value in mandatory field \"" + fieldName + "\"", validationErrors, "performValidationOfMandatoryAttrsOnBundleForLegacy (" + bundleIdentifier + ")");
+        }
+    }
+  ]]></script>
+</script>

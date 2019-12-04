@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="703d5c1e22ed6053d2057bbf4b33f040" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.addValidationErrorsToFailureArray">
+  <label>Add Validation Errors To Failure Array</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="validationErrors" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="objectId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="errorType" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="operationName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="systemName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(validationErrors != null) {
+        if(failureArray == null) {
+            failureArray = new Array();
+        }
+
+        for(var i=0; i<validationErrors.length; i=(i+2)) {
+            var failureOrderDS = new DataStructure("ds_ws:OrderFailure");
+            failureOrderDS.ErrorCode = ((validationErrors[i] == null) ? "DE1107" : validationErrors[i]);
+            failureOrderDS.ErrorDescription = validationErrors[i+1];
+            failureOrderDS.ErrorTime = common.common_currentDateAsStringDDMMYYYYHH24MISS();
+            failureOrderDS.ErrorType = errorType;
+            failureOrderDS.FunctionName = operationName;
+            failureOrderDS.ObjectId = objectId;
+            failureOrderDS.SystemName = systemName;
+
+            failureArray.push(failureOrderDS);
+        }
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

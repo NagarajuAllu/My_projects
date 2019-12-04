@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="granite.siteSearchDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{a1fabf11-61f7-448c-8f65-351d86f3d9f7}</guid>
+  <label>Site Search Doc</label>
+  <metaVersion>21</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="SITE_HUM_ID" type="leaf">
+      <propertyElement type="elfld">
+        <label>Site Hum Id [%]</label>
+      </propertyElement>
+      <valueType>dtype_granite.SITE_HUM_ID</valueType>
+    </variable>
+    <variable name="CITY_NAME" type="leaf">
+      <propertyElement type="elfld">
+        <label>City Name [%]</label>
+      </propertyElement>
+      <valueType>dtype_common.string60</valueType>
+    </variable>
+    <variable name="STATE_PROV" type="leaf">
+      <propertyElement type="elfld">
+        <label>State/Prov [%]</label>
+      </propertyElement>
+      <valueType>dtype_common.string40</valueType>
+    </variable>
+    <variable name="COUNTY" type="leaf">
+      <label>COUNTY</label>
+      <valueType>dtype_common.string40</valueType>
+    </variable>
+    <variable name="COUNTRY" type="leaf">
+      <propertyElement type="elfld">
+        <label>Country [%]</label>
+      </propertyElement>
+      <valueType>dtype_common.string60</valueType>
+    </variable>
+    <variable name="NUM" type="leaf">
+      <label>NUM</label>
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_granite.siteSearchDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="siteSearchDocGrid" type="elgrd">
+                    <colWidths>90px,160px,90px,160px,90px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>6</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>800px</width>
+                    <elementList>
+                      <element name="siteSearchDocHeader" type="elhdr">
+                        <label>Search Site Input Data</label>
+                      </element>
+                      <element name="SITE_HUM_ID" type="elfld">
+                        <label>CLLI [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.siteSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.siteSearchDoc/leaf_SITE_HUM_ID</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="CITY_NAME" type="elfld">
+                        <label>City Name [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.siteSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.siteSearchDoc/leaf_CITY_NAME</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="STATE_PROV" type="elfld">
+                        <label>Region [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.siteSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.siteSearchDoc/leaf_STATE_PROV</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="COUNTY" type="elfld">
+                        <label>District [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.siteSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.siteSearchDoc/leaf_COUNTY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="COUNTRY" type="elfld">
+                        <label>Country [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.siteSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.siteSearchDoc/leaf_COUNTRY</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="NUM" type="elfld">
+                        <label>Category [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_granite.siteSearchDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_granite.siteSearchDoc/leaf_NUM</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp">
+                        <height>10px</height>
+                        <rowSpan>10px</rowSpan>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

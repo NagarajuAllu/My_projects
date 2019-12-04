@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.handleGraniteQuoteStatusUpdates">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>105.87244</x>
+    <y>59.0</y>
+    <childList>
+      <child name="receiveGraniteQuoteUpdate" type="opActivity">
+        <element>iface_wgws.ifExpediter_GRANITE/oper_operation_QuoteStatusUpdate</element>
+        <label>Receive Granite Quote Update</label>
+        <participant>part_stcw.GraniteInputInterface</participant>
+        <x>316.19568</x>
+        <y>49.0</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.updateHistoryEvent (this, "graniteStatusUpdate");
+
+              var inputMessage = this.activityData;
+              var order = this.process.processOrder;
+
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - GraniteStatusQuoteUpdate - Received " + (inputMessage == null ? "null" : inputMessage.toXML()));
+
+                    stcw.storeInterfaceMessage (stcw.createInterfaceFolder (order, "GR_STATUS_UPD"), inputMessage);
+
+                    // Moved in "Change Quote Status" - "Before" to solve the issue from Raj
+                    // received 07 July 2011
+                    //order.header.quoteStatus = inputMessage.workOrderStatus;
+                    order.save ();
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="sendQuoteStatusUpdateToCrm" type="spawnActivity">
+        <element>proc_stcw.sendQuoteStatusUpdateToCrm</element>
+        <label>Send Quote Status Update To CRM</label>
+        <x>305.87244</x>
+        <y>197.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var debugHeader = "[" + this.process.id + "] - SendQSUToCRM - ";
+
+              var order = this.process.processOrder;
+              var childProcessDocument = this.activityData;
+
+              childProcessDocument.sourceInterfaceIndex = stcw.getInterfaceFolderCount (order, "GR_STATUS_UPD") - 1;
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "childProcessDocument.sourceInterfaceIndex " + childProcessDocument.sourceInterfaceIndex);
+
+                    if (stcw.createInterfaceFolder (order, "CRM_QUOTE_STATUS_UPDATE") != null)
+                          childProcessDocument.targetInterfaceIndex = stcw.getInterfaceFolderCount (order, "CRM_ORDER_STATUS_UPDATE") - 1;
+                    else
+                          childProcessDocument.targetInterfaceIndex = -1;
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "childProcessDocument.targetInterfaceIndex " + childProcessDocument.targetInterfaceIndex);
+
+                    order.save ();
+
+                    debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - GraniteStatusQuoteUpdate - Starting process to send QSU to EAI ...");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="waitOnCrmUpdateprocesses" type="joinActivity">
+        <element>proc_stcw.sendQuoteStatusUpdateToCrm</element>
+        <label>Wait On CRM Update processes</label>
+        <x>309.87244</x>
+        <y>329.0</y>
+        <methodList>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="changeQuoteStatus" type="scriptActivity">
+        <label>Change Quote Status</label>
+        <x>316.87244</x>
+        <y>477.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var debugHeader = "[" + this.process.id + "] - ChangeQuoteStatus - ";
+
+              var order = this.process.processOrder;
+              var sourceInterfaceIndex = stcw.getInterfaceFolderCount (order, "GR_STATUS_UPD") - 1;
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "sourceInterfaceIndex " + sourceInterfaceIndex);
+
+                    var orderVersion = getOrderVersion_ (order);
+                    if (orderVersion == null)
+                          return;
+
+                    var graniteUpdate = findGraniteUpdate_ (orderVersion, sourceInterfaceIndex);
+                    if (graniteUpdate == null)
+                          return;
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "Update OrderStatus To " + graniteUpdate.workOrderStatus);
+
+                    order.header.quoteStatus = graniteUpdate.workOrderStatus;
+                    order.save();
+
+
+
+
+                    //
+                    //  getOrderVersion_
+                    //
+                    function getOrderVersion_ (order) {
+
+                          var orderVersion = order.versions [order.versions.count - 1];
+                          if (orderVersion == null)
+                                Global.logDebug ("could not get the order version");
+
+                          return (orderVersion);
+
+                    }            // g e t O r d e r V e r s i o n _
+
+                    //
+                    //  findGraniteUpdate_
+                    //
+                    function findGraniteUpdate_ (orderVersion, sourceInterfaceIndex) {
+
+                          var interfaceFolder = orderVersion.interfaces [sourceInterfaceIndex];
+                          if (interfaceFolder == null) {
+                                Global.logDebug ("could not get the interfaceFolder");
+                                return (null);
+                          }
+
+                          return (stcw.readStructure (interfaceFolder.interfaceData.responseData, "wgws:updateQuoteStatus"));
+
+                    }            // f i n d G r a n i t e U p d a t e _
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="moreUpdatesExpected" type="switchActivity">
+        <label>More Updates Expected ?</label>
+        <x>307.87244</x>
+        <y>622.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="continue" type="repeatActivity">
+                <element>proc_stcw.handleGraniteQuoteStatusUpdates/seqActivity_start</element>
+                <label>Continue</label>
+                <x>103.87244</x>
+                <y>632.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var order = this.process.processOrder;
+                  if (order.header.quoteStatus == "COMPLETED" || order.header.quoteStatus == "CANCELLED")
+                        return (false);
+
+                  return (true);
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>321.87244</x>
+            <y>525.0</y>
+            <childList>
+              <child name="wait" type="seqActivity">
+                <label>Wait</label>
+                <x>494.87244</x>
+                <y>636.0</y>
+                <childList>
+                  <child name="done" type="scriptActivity">
+                    <label>Done</label>
+                    <x>604.87244</x>
+                    <y>635.0</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="GraniteInputInterface" type="participantActivity">
+        <label>GRANITE Input Interface</label>
+        <participant>part_stcw.GraniteInputInterface</participant>
+        <x>545.0</x>
+        <y>61.0</y>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <highlight>14</highlight>
+  <label>Handle Granite Quote Status Updates</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <type>Sub-flow</type>
+</process>

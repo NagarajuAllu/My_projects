@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcw.restorationData">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0019818a-76ee-e245-4b33-d3effdc43fb3}</guid>
+  <label>Restoration Data</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="processId" type="leaf">
+      <column>PROCESSID</column>
+      <key>1</key>
+      <label>processId</label>
+      <propertyElement type="elfld">
+        <label>processId</label>
+      </propertyElement>
+      <table>STCW_RESTORATION_DATA</table>
+      <valueType>dtype_cwf_pm.PROCESS_ID</valueType>
+    </variable>
+    <variable name="maintOrderNumber" type="leaf">
+      <column>MAINTORDERNUMBER</column>
+      <label>Maint Order Number</label>
+      <propertyElement type="elfld">
+        <label>Maint Order Number</label>
+      </propertyElement>
+      <table>STCW_RESTORATION_DATA</table>
+      <valueType>dtype_stcw.maintOrderNumber</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.restorationData</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="restorationDataGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="restorationDataGrid" type="elgrd">
+                    <colWidths>160</colWidths>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>160px</width>
+                    <elementList>
+                      <element name="restorationDataHeader" type="elhdr">
+                        <label>Restoration Data</label>
+                      </element>
+                      <element name="processId" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.restorationData/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.restorationData/leaf_processId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="maintOrderNumber" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.restorationData/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.restorationData/leaf_maintOrderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

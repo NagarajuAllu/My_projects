@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="258251b977b62c4c6c816155642498e" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.syncRejectedOrderBetweenExpdAndGranite_cwr1">
+  <activity name="start" type="seqActivity">
+    <guid>{0bb9f87e-9c1f-125e-d66b-2977673e3740}</guid>
+    <label>Start</label>
+    <x>60.0</x>
+    <y>60.0</y>
+    <childList>
+      <child name="checkIfExistOrderNOTRejected" type="switchActivity">
+        <guid>{0f98d506-4921-948c-a2e3-2950830e4dc7}</guid>
+        <label>Check If Exist Order NOT Rejected</label>
+        <x>185.0</x>
+        <y>36.0</y>
+        <childList>
+          <child name="existOrderNOTRejected" type="caseActivity">
+            <guid>{00cc4917-6394-baaa-86bc-aabf8afff47a}</guid>
+            <label>Exist Order NOT Rejected</label>
+            <x>185.0</x>
+            <y>215.0</y>
+            <childList>
+              <child name="logTheError" type="scriptActivity">
+                <guid>{0845d39b-0750-c3e2-d3dd-61d740478809}</guid>
+                <label>Log The Error</label>
+                <x>193.0</x>
+                <y>214.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{0768b8d5-6315-4dbd-c537-d595a593e4ea}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var msg = "ERROR: for Expediter Rejected Order with id: " + this.process.processDocument.currentRejectedOrderId + " exists a order with the same orderNumber " +
+                                    this.process.processDocument.originalOrderNumber + " (I'm position 4.a.i.1) !!!!!!";
+                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - " + msg);
+                            Global.logDebug(msg);
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+          <child name="noOrderFound" type="caseActivity">
+            <guid>{042aa474-9297-0546-2243-9ced50d548b8}</guid>
+            <label>No Order Found</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="checkOrderInGranite" type="switchActivity">
+                <guid>{0460346e-f18d-c74e-f8b5-01ae01fffb7c}</guid>
+                <label>Check Order Is In Granite</label>
+                <x>392.0</x>
+                <y>46.0</y>
+                <childList>
+                  <child name="orderIsInGranite" type="caseActivity">
+                    <guid>{019dbfe1-d3d4-858c-1262-af55dbbbae06}</guid>
+                    <label>Order IS in Granite</label>
+                    <x>0.0</x>
+                    <y>0.0</y>
+                    <childList>
+                      <child name="checkIfWOIsCompleted_Cancelled" type="switchActivity">
+                        <guid>{0f9149dc-ed81-c977-be77-11e1eed1dc18}</guid>
+                        <label>Check If WO Is Completed or Cancelled</label>
+                        <x>591.0</x>
+                        <y>27.0</y>
+                        <childList>
+                          <child name="woNOTCompleted_Cancelled" type="caseActivity">
+                            <guid>{093e63bc-7acf-10f4-73d7-9a95330b88c6}</guid>
+                            <label>WO NOT Completed or Cancelled</label>
+                            <x>0.0</x>
+                            <y>0.0</y>
+                            <childList>
+                              <child name="nothingToDo" type="scriptActivity">
+                                <guid>{0959a287-58f8-18e9-d714-9b6fb3aef524}</guid>
+                                <label>Nothing To Do</label>
+                                <x>591.0</x>
+                                <y>210.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <guid>{02d453e0-0f61-630a-f1c4-14b8c7fc9c95}</guid>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Nothing to do (I'm position 4.a.ii.2.b) ...");
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                          </child>
+                          <child name="woISCompleted_Cancelled" type="caseActivity">
+                            <guid>{0d744d32-b670-f64b-e1fb-ca7bc99febfb}</guid>
+                            <label>WO IS Completed or Cancelled</label>
+                            <x>0.0</x>
+                            <y>0.0</y>
+                            <childList>
+                              <child name="convertRejectedOrderIntoCompletedOne" type="scriptActivity">
+                                <guid>{0a9dc12b-7281-67e1-c23f-de70557b4192}</guid>
+                                <label>Converted Rejected Order Into Completed One</label>
+                                <x>763.0</x>
+                                <y>27.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <guid>{0f1b73e5-7a84-2ab2-f843-8cce5121d88d}</guid>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Converting Completed/Cancelled the order with id: " + this.process.processDocument.currentRejectedOrderId);
+
+                                            var order = Order.getOrderById(this.process.processDocument.currentRejectedOrderId);
+                                            // b.i.3.2.a.i - renaming the orderNumber ...
+                                            var rejectedOrderNumber = order.header.orderNumber;
+                                            order.header.orderNumber = this.process.processDocument.originalOrderNumber;
+                                            order.save();
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Renamed Rejected Order with id: " + rejectedOrderNumber + " to " + this.process.processDocument.originalOrderNumber);
+
+                                            // b.i.3.2.a.ii - generate order acknowledgement ...
+                                            var graniteResponse = new DataStructure("grws:submitOrderResponse");
+                                            graniteResponse.result.OrderNumber = this.process.processDocument.originalOrderNumber;
+                                            graniteResponse.result.AssetNumber = this.process.processDocument.originalOrderNumber;
+                                            graniteResponse.result.WorkOrderStatus = "New";
+                                            graniteResponse.result.AssetStatus = "New";
+                                            graniteResponse.result.BusinessUnit = "Wholesale";
+                                            graniteResponse.result.Status.Status = "SUCCESS";
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Generated Order ACK for " + this.process.processDocument.originalOrderNumber);
+
+                                            // b.i.3.2.a.ii - ... store into order ...
+                                            var isUpdate = stcw.existUpdateVersion(order);
+                                            var interfaceName = (isUpdate ? "GR_UPD_ORDER" : "GR_SUB_ORDER");
+                                            stcw.storeInterfaceMessage (stcw.findLastInterfaceFolder (order, interfaceName), graniteResponse);
+                                            order.save();
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Saved Order ACK for " + this.process.processDocument.originalOrderNumber);
+
+                                            // b.i.3.2.a.ii - ... send ACK to EAI
+                                            var request = new DataStructure("siordAck:processRequest_el");
+                                            if(isUpdate) {
+                                                  stcw.map_updateOrderResp_orderAck(request, graniteResponse);
+                                            }
+                                            else {
+                                                  stcw.map_submitOrderResp_orderAck (request, graniteResponse);
+                                            }
+                                            var crm_ACKIF_Folder = stcw.ensureInterfaceFolder (order, "CRM_ORDER_ACK");
+                                            order.save();
+
+                                            // check payload size
+                                            stcc.checkPayloadToCRMSize(request, "siordAck:processRequest_PortType/processRequest");
+
+                                            var crmResponse = stcw.sendOrderAckToEAI(request, this.process.id);
+                                            rpts.updateHistoryEvent (this);
+                                            stcw.storeInterfaceMessage(crm_ACKIF_Folder, crmResponse);
+                                            order.save();
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Sent Order ACK to EAI for " + this.process.processDocument.originalOrderNumber);
+
+                                            // b.i.3.2.a.iv - generate OSU event ...
+                                            var osuFinder = new Finder("granite:findAssetInfoByOrderNumber");
+                                            osuFinder.searchDocument.WO_NAME = this.process.processDocument.originalOrderNumber;
+                                            osuFinder.search();
+
+                                            var completedOSUList = osuFinder.list;
+                                            if(completedOSUList != null && completedOSUList.size > 0) {
+                                                  var completedOSU = completedOSUList.start;
+
+                                                  // b.i.3.2.a.iii - Update order status to completed or cancelled
+                                                  order.header.orderStatus = ((completedOSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED");
+                                                  order.save();
+
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Update Order Status to " +
+                                                         ((completedOSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED") +
+                                                         " for " + this.process.processDocument.originalOrderNumber);
+
+                                                  var osuMessage = new DataStructure("wgws:updateOrderStatus");
+                                                  osuMessage.assetNumber       = completedOSU.ASSETNAME;
+                                                  osuMessage.assetStatus       = completedOSU.ASSETSTATUS;
+                                                  osuMessage.businessUnit      = "Wholesale";
+                                                  osuMessage.comments          = completedOSU.WO_COMMENTS;
+                                                  osuMessage.NINumber          = completedOSU.NINUMBER;
+                                                  osuMessage.orderNumber       = order.header.orderNumber;
+                                                  osuMessage.systemDesignation = "";
+                                                  osuMessage.workOrderStatus   = ((completedOSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED");
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Generated " + ((completedOSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED") +
+                                                         " Order OSU for " + this.process.processDocument.originalOrderNumber);
+
+                                                  // b.i.3.2.a.iv - ... store into order ...
+                                                  stcw.storeInterfaceMessage (stcw.createInterfaceFolder (order, "GR_STATUS_UPD"),  osuMessage);
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Saved Order OSU for " + this.process.processDocument.originalOrderNumber);
+
+                                                  // b.i.3.2.a.iv - ... send OSU to EAI
+                                                  var request = new DataStructure("siosu:processRequest_el");
+                                                  stcw.map_updateOrderStatus_orderUpdate (request, osuMessage);
+                                                  var crm_OSUIF_Folder = stcw.ensureInterfaceFolder (order, "CRM_ORDER_STATUS_UPDATE");
+                                                  order.save ();
+
+                                                  // check payload size
+                                                  stcc.checkPayloadToCRMSize(request, "siosu:processRequest_PortType/processRequest");
+
+                                                  var eaiResponse = stcw.sendOrderUpdateToEAI(request, this.process.id);
+                                                  rpts.updateHistoryEvent (this);
+                                                  stcw.storeInterfaceMessage(crm_OSUIF_Folder, eaiResponse);
+                                                  order.save ();
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Sent Order OSU to EAI for " + this.process.processDocument.originalOrderNumber);
+
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Converted Rejected Order with id: " + this.process.processDocument.currentRejectedOrderId +
+                                                         " to " + ((completedOSU.WO_STATUS == '8') ? "CANCELLED" : "COMPLETED") +
+                                                         " Order with number : " + this.process.processDocument.originalOrderNumber);
+                                            }
+                                            else {
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Unable to find assetInfo for order " + this.process.processDocument.originalOrderNumber);
+                                            }
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                            <methodList>
+                              <method name="cwOnProcActCond" type="action">
+                                <category>cond</category>
+                                <guid>{01847f54-7a7b-bebe-ac1d-d5fcad4e3cdd}</guid>
+                                <system>true</system>
+                                <script><![CDATA[
+                                  var woStatus = stcw.getWOStatusInGranite(this.process.processDocument.originalOrderNumber);
+
+                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Is (woStatus in ('7','8')) for order " + this.process.processDocument.originalOrderNumber +
+                                                     " in Granite => " + (woStatus == '7' || woStatus == '8'));
+
+                                        return (woStatus == '7' || woStatus == '8');
+                                ]]></script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                    <methodList>
+                      <method name="cwOnProcActCond" type="action">
+                        <category>cond</category>
+                        <guid>{0f75f52c-5520-647f-1877-a3a1a9d9d010}</guid>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var order = Order.getOrderById(this.process.processDocument.currentRejectedOrderId);
+
+                          var found = stcw.checkOrderExistInGranite(this.process.processDocument.originalOrderNumber);
+
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Order '" + order.header.orderNumber + "' is in Granite => " + found);
+
+                                return found;
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="orderIsNotInGranite" type="caseActivity">
+                    <guid>{099b1007-e290-bf15-f30f-b37fcd2ca437}</guid>
+                    <label>Order IS NOT in Granite</label>
+                    <x>604.0</x>
+                    <y>695.0</y>
+                    <childList>
+                      <child name="nothingToDo" type="scriptActivity">
+                        <guid>{0f2065fc-9820-701a-ac89-a3041114dddc}</guid>
+                        <label>Nothing To Do</label>
+                        <x>391.0</x>
+                        <y>211.0</y>
+                        <methodList>
+                          <method name="cwOnProcActBefore" type="action">
+                            <category>before</category>
+                            <guid>{05472930-0363-f3dd-a34d-c1f1e4491d53}</guid>
+                            <system>true</system>
+                            <script><![CDATA[
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Nothing to do (I'm position 4.a.ii.1) ...");
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{0909cd4a-b72b-f1c0-3bae-f1e1976d955b}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  var orderFinder = new Finder("stcw:orderByOrderNumberFinder");
+                  orderFinder.searchDocument.orderNumber = this.process.processDocument.originalOrderNumber;
+                  orderFinder.search();
+
+                  var orderList = orderFinder.list;
+                  return (orderList == null || orderList.size == 0);
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{08001885-6b72-358b-007f-86740ea2eb14}</guid>
+        <label>End</label>
+        <x>764.0</x>
+        <y>404.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{068f63ce-a509-3b96-8365-535a045d01eb}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Completed 'SyncRejectedOrderBetweenExpdAndGranite' for Order " + this.process.processDocument.originalOrderNumber);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0c3eddf0-4afc-5837-60a0-35f3f1828988}</guid>
+        <system>true</system>
+        <script><![CDATA[
+          if(this.process.parent != null) {
+                this.process.processDocument.currentRejectedOrderId = this.process.parent.processDocument.currentRejectedOrderId;
+                this.process.processDocument.originalOrderNumber    = this.process.parent.processDocument.originalOrderNumber;
+          }
+
+          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Starting with processDocument: " + this.process.processDocument.toXML());
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_stcw.syncRejectedOrderProcessDocument</document>
+  <label>Sync Rejected Order Between Expediter And Granite</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_stcw.syncRejectedOrderBetweenExpdAndGranite</process>
+  <type>User</type>
+</process__revision>

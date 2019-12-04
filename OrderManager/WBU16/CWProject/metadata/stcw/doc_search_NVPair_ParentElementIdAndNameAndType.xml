@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcw.search_NVPair_ParentElementIdAndNameAndType">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{2e1d7e2f-c879-4525-8f9d-3e2eb5ff7d48}</guid>
+  <label>Search Element: NV By Parent Element Id and Name and Type (VAS or not)</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="cwDocID" type="leaf">
+      <label>Document ID</label>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="name" type="leaf">
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+    <variable name="isVAS" type="leaf">
+      <valueType>dtype_stcw.nY_pickList</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.search_NVPair_ParentElementIdAndNameAndType</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

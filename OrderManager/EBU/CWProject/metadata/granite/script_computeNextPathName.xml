@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="3d1e774b75b24fa20bc6ba58b4850fc0" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="granite.computeNextPathName">
+  <label>Compute Next PathName</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="siteAName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="siteZName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="functionCode" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var result = null;
+    var inputString = siteAName + "-" + siteZName + " " + functionCode;
+
+    if (inputString != null) {
+
+        var input = new Document("granite.search_CIRC_PATH_INST");
+        input.CIRC_PATH_HUM_ID = inputString;
+
+        var output = Finder.runFinder("granite.findPathWithMaxName", "select", input);
+
+        var maxSerialNumber = 1;
+        if (output != null && output.size > 0) {
+            var maxExistingPathName = output[0].CIRC_PATH_HUM_ID;
+            if(maxExistingPathName != null) {
+                var maxSerialNumberString = maxExistingPathName.substring(inputString.length).trim();
+                maxSerialNumber = Number(maxSerialNumberString);
+                if(maxSerialNumber != Number.NaN) {
+                    maxSerialNumber++;
+                }
+            }
+        }
+
+        result = inputString + maxSerialNumber;
+    }
+
+    return result;
+  ]]></script>
+</script>

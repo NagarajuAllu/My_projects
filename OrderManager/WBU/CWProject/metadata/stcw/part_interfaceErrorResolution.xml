@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<participant filenameHash="e54f8ecf833f09b62bedef956a6ee8dd" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.interfaceErrorResolution">
+  <distributionType>Shared</distributionType>
+  <duration type="dur">
+    <length>P0Y0M0DT3H0M0S</length>
+  </duration>
+  <guid>{085c8763-f192-f522-e213-dee626d75ed4}</guid>
+  <interface>iface_stcw.interfaceErrorMonitoring</interface>
+  <label>Interface Error Resolution</label>
+  <metaVersion>3</metaVersion>
+  <operationConditionsList>
+    <operationConditions type="opco">
+      <bulkComplete>true</bulkComplete>
+      <operation>iface_stcw.interfaceErrorMonitoring/oper_errorResolved</operation>
+      <tasksList>
+        <tasks>interfaceErrorDetected</tasks>
+      </tasksList>
+      <validateOrder>true</validateOrder>
+      <methodList>
+        <method name="cwOnParticipantOpAct" type="action">
+          <guid>{0b9cfbb6-f3fe-cb7e-d6d4-1773e36977a8}</guid>
+          <system>true</system>
+          <script><![CDATA[
+            if(this.processOrder != null) {
+
+                  var orderMetadatatype = this.processOrder.metadataType;
+                  // checking the type of the order linked to the worklist record
+
+                  if(orderMetadatatype.equals("stcw:wholesaleOrder")) {
+                        // it's order; checking if the order exists in Granite
+                        var found = stcw.checkOrderExistInGranite(this.processOrder.header.orderNumber);
+
+            debugPrintln(stcc.getSysdateForLog() + " - Order '" + this.processOrder.header.orderNumber + "' is in Granite => " + found);
+
+                              if(found) {
+                                    var cwOrderId = this.processOrder.id;
+                                    var cwOrder = Order.getOrderById(this.processOrder.id);
+                                    cwOrder.header.skipSendToGranite = "Y";
+                                    cwOrder.save();
+                              }
+                        }
+                  }
+
+                  return;
+          ]]></script>
+        </method>
+      </methodList>
+    </operationConditions>
+  </operationConditionsList>
+  <privilege>intfErr</privilege>
+  <removeTasks>true</removeTasks>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.WLTaskUserInterface</extends>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.WLTaskUserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</participant>

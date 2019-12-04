@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="stcconf.findGraniteServiceTypeForSOMName">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_stcconf.search_ValidationMap_COMServiceType</input>
+  <label>Find Granite ServiceType For SOM Internal Name</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_stcconf.STCW_SERVICETYPE_NAME_MAP</output>
+  <type>document</type>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_stcconf.search_ValidationMap_COMServiceType</document>
+      <mappedDocument>doc_stcconf.STCW_SERVICETYPE_NAME_MAP</mappedDocument>
+      <mappedPath>doc_stcconf.STCW_SERVICETYPE_NAME_MAP/leaf_somInternalName</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcconf.search_ValidationMap_COMServiceType/leaf_serviceType</path>
+    </search>
+  </searchList>
+</findDoc>

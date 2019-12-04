@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="processSTC.startSubComp">
+  <activity name="start" type="seqActivity">
+    <label>start</label>
+    <x>73.50928</x>
+    <y>30.0</y>
+    <childList>
+      <child name="firstPassSw" type="switchActivity">
+        <label>First Pass Switch</label>
+        <x>68.84033</x>
+        <y>122.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>114.0</x>
+            <y>230.92578</y>
+            <childList>
+              <child name="alert" type="scriptActivity">
+                <label>Alert</label>
+                <x>114.0</x>
+                <y>229.92578</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      if(this.process.processDocument.isSubmit == "Y") {
+                          processSTC.sendMailForError("Caught error in submit process " + this.process.id, Global.getConfigVariable("MAIL_RECEIVER_FOR_ALERTS"));
+                      }
+                      else {
+                          processSTC.sendMailForError("Caught error in update process " + this.process.id, Global.getConfigVariable("MAIL_RECEIVER_FOR_ALERTS"));
+                      }
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>30.0</x>
+            <y>230.92578</y>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  if (this.process.processDocument.firstPassSub == "N") {
+                      return true;
+                  }
+                  return false;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="waitTimeforSubmit" type="scriptActivity">
+        <label>Wait Time for Submit</label>
+        <schedule type="sched">
+          <duration type="dur">
+            <methodList>
+              <method name="cwOnDuration" type="action">
+                <system>true</system>
+                <script><![CDATA[
+                  // configured time for sleeping
+                  var submitSleep = Global.getConfigVariable("SUBMITSLEEP", "10");
+
+                  // if downtime
+                  var ifDelay = Global.getInterfaceDelay("ifGranite_jms:XngServicesWR");
+                  ifDelay = ((ifDelay != null) ? ifDelay : "10") ;
+
+                  // sleepTime of the process = max(submitSleep, ifDelay);
+                  var sleepTime = ((submitSleep > ifDelay) ? submitSleep : ifDelay);
+
+                  debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.id + "] - sleep for : " + sleepTime + " secs -- {" + submitSleep + ";" + ifDelay + "}");
+
+                  return sleepTime;
+                ]]></script>
+              </method>
+            </methodList>
+          </duration>
+        </schedule>
+        <x>68.166504</x>
+        <y>327.88867</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[this.process.processDocument.firstPassSub = "N";]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Start Submit/Update Write Compensate</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <revision>6</revision>
+  <type>Sub-flow</type>
+</process>

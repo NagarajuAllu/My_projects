@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="1b63ffd49dc77be2e050a5040aca63ed" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.handleApplicationError_cwr1">
+  <activity name="start" type="seqActivity">
+    <guid>{0d600d05-baf3-bd9c-0ef2-52f245340eaa}</guid>
+    <label>Start</label>
+    <x>46.5</x>
+    <y>30.0</y>
+    <childList>
+      <child name="applicationErrorDetected" type="opActivity">
+        <element>iface_stcw.applicationErrorMonitoring/oper_applicationErrorDetected</element>
+        <guid>{0167dac9-11d1-843f-e412-0ed8aa1c4c30}</guid>
+        <label>Application Error Detected</label>
+        <participant>part_stcw.applicationErrorResolution</participant>
+        <x>39.13965</x>
+        <y>116.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{020c3a1e-88ba-567d-2077-d774256e65fc}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] Handle Application Error - Adding to WL");
+                    stcc.sendMailForApplicationError(this.process.id, this.process.metadataType);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="errorResolved" type="opActivity">
+        <element>iface_stcw.applicationErrorMonitoring/oper_errorResolved</element>
+        <guid>{0c3cc2d4-a155-81d3-0f30-300415e070c6}</guid>
+        <label>Error Resolved</label>
+        <participant>part_stcw.applicationErrorResolution</participant>
+        <x>42.48633</x>
+        <y>325.20703</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <guid>{04f27406-8a08-ba08-1477-9426d1ffcc1c}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] Handle Application Error - Error Resolved");
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0314fce1-a365-255e-7bfd-b032ff420b32}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="rollback" type="rollbackActivity">
+        <guid>{0fd2adcc-f905-4d01-ee4e-f48d8406b3f3}</guid>
+        <label>Roll Back</label>
+        <x>42.0</x>
+        <y>426.9162</y>
+      </child>
+      <child name="retry" type="resumeActivity">
+        <guid>{0842217c-d139-2aa2-81d1-dccea5a13cbb}</guid>
+        <label>Retry</label>
+        <x>51.0</x>
+        <y>519.9162</y>
+      </child>
+      <child name="applicationErrorResolution" type="participantActivity">
+        <guid>{0aa3e35d-76ab-28a0-8dbd-c4239afe662d}</guid>
+        <participant>part_stcw.applicationErrorResolution</participant>
+        <x>243.0</x>
+        <y>215.10352</y>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{014b179f-7b49-06a1-5c56-d363e71f669f}</guid>
+        <system>true</system>
+        <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + process.id + "] Handle Application Error - Starting");]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Handle Application Error</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_stcw.handleApplicationError</process>
+  <type>Sub-flow</type>
+</process__revision>

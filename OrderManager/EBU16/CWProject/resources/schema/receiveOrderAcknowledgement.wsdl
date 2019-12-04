@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soapjms="http://www.w3.org/2010/soapjms/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="receiveOrderAcknowledgement" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" name="receiveOrderAcknowledgement" targetNamespace="receiveOrderAcknowledgement">
+	<wsdl:types>
+		<xsd:schema targetNamespace="receiveOrderAcknowledgement" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="receiveOrderAcknowledgement">
+			<xsd:element name="receiveOrderAcknowledgement" type="tns:receiveOrderAcknowledgement"/>
+			<xsd:element name="receiveOrderAcknowledgementResponse" type="tns:receiveOrderAcknowledgementResponse"/>
+			<xsd:complexType name="receiveOrderAcknowledgement">
+				<xsd:sequence>
+					<xsd:element name="orderAcknowledgementRequest" type="tns:OrderAcknowledgementRequest"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="OrderAcknowledgementRequest">
+				<xsd:sequence>
+					<xsd:element name="header" type="tns:RequestHeader"/>
+					<xsd:element name="body" type="tns:body"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="RequestHeader">
+				<xsd:sequence>
+					<xsd:element name="systemId" type="xsd:string"/>
+					<xsd:element name="serverInfo" type="xsd:string"/>
+					<xsd:element name="messageId" type="xsd:string"/>
+					<xsd:element name="conversationId" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="timestamp" type="xsd:dateTime"/>
+					<xsd:element name="domainId" type="xsd:string"/>
+					<xsd:element name="serviceId" type="xsd:string"/>
+					<xsd:element name="operationType" type="xsd:string"/>
+					<xsd:element name="userId" nillable="true" type="xsd:string" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="body">
+				<xsd:sequence>
+					<xsd:element name="masterOrderNumber" type="xsd:string"/>
+					<xsd:element name="serviceOrderNumber" type="xsd:string"/>
+					<xsd:element name="serviceOrderStatus" type="xsd:string"/>
+					<xsd:element name="masterOrderStatus" type="xsd:string"/>
+					<xsd:element name="lineItemIdentifier" type="xsd:string"/>
+					<xsd:element name="fulfillmentMode" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="failure" nillable="true" type="tns:failure" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="failure">
+				<xsd:sequence>
+					<xsd:element name="errorCode" type="xsd:string"/>
+					<xsd:element name="errorDescription" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="errorTime" type="xsd:string"/>
+					<xsd:element name="errorType" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="functionName" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="objectId" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="processInstanceId" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="sourceCodeError" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="systemName" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="targetRecord" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="userId" nillable="true" type="xsd:string" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="receiveOrderAcknowledgementResponse">
+				<xsd:sequence>
+					<xsd:element name="orderAcknowledgementResponse" type="tns:OrderAcknowledgementResponse"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="OrderAcknowledgementResponse">
+				<xsd:sequence>
+					<xsd:element name="header" type="tns:ResponseHeader"/>
+					<xsd:element name="status" type="tns:Status"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="ResponseHeader">
+				<xsd:sequence>
+					<xsd:element name="systemId" type="xsd:string"/>
+					<xsd:element name="serverInfo" type="xsd:string"/>
+					<xsd:element name="messageId" type="xsd:string"/>
+					<xsd:element name="conversationId" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="timestamp" type="xsd:string"/>
+					<xsd:element name="domainId" type="xsd:string"/>
+					<xsd:element name="serviceId" type="xsd:string"/>
+					<xsd:element name="operationType" type="xsd:string"/>
+					<xsd:element name="userId" nillable="true" type="xsd:string" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Status">
+				<xsd:sequence>
+					<xsd:element name="status" type="xsd:string"/>
+					<xsd:element name="error" nillable="true" type="tns:error" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="error">
+				<xsd:sequence>
+					<xsd:element name="errorSourceSystem" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="errorSourceCode" nillable="true" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="errorCode" type="xsd:string"/>
+					<xsd:element name="errorType" type="xsd:string"/>
+					<xsd:element name="errorDescription" nillable="true" type="xsd:string" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="receiveOrderAcknowledgement_PortType_receiveOrderAcknowledgementResponse">
+		<wsdl:part name="parameters" element="tns:receiveOrderAcknowledgementResponse">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="receiveOrderAcknowledgement_PortType_receiveOrderAcknowledgement">
+		<wsdl:part name="parameters" element="tns:receiveOrderAcknowledgement">
+    </wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="receiveOrderAcknowledgement_PortType">
+		<wsdl:operation name="receiveOrderAcknowledgement">
+			<wsdl:input message="tns:receiveOrderAcknowledgement_PortType_receiveOrderAcknowledgement">
+    </wsdl:input>
+			<wsdl:output message="tns:receiveOrderAcknowledgement_PortType_receiveOrderAcknowledgementResponse">
+    </wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="GraniteGW_Data_order_orderAcknowledgement_ws_provider_receiveOrderAcknowledgement_Binder" type="tns:receiveOrderAcknowledgement_PortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="receiveOrderAcknowledgement">
+			<soap:operation soapAction="GraniteGW_Data_order_orderAcknowledgement_ws_provider_receiveOrderAcknowledgement_Binder_receiveOrderAcknowledgement" style="document"/>
+			<wsdl:input>
+				<soap:body parts="parameters" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="parameters" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="receiveOrderAcknowledgement">
+		<wsdl:port name="GraniteGW_Data_order_orderAcknowledgement_ws_provider_receiveOrderAcknowledgement_Port" binding="tns:GraniteGW_Data_order_orderAcknowledgement_ws_provider_receiveOrderAcknowledgement_Binder">
+			<soap:address location="http://STC.com.sa:8080/ws/GraniteGW_Data.order.orderAcknowledgement.ws.provider:receiveOrderAcknowledgement/GraniteGW_Data_order_orderAcknowledgement_ws_provider_receiveOrderAcknowledgement_Port"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

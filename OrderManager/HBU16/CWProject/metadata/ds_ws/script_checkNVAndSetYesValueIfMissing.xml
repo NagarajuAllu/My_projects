@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="c0885daf7ee5f91ecc65326e708b250" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.checkNVAndSetYesValueIfMissing">
+  <label>Check NV pair And Set Yes Value If Missing</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orders" type="rifp">
+      <array>true</array>
+      <type>order_ds_ws.default_orderSTC_HOME</type>
+    </parameter>
+    <parameter name="nvPairToCheck" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var foundValueYes = false;
+    var foundValueNo = false;
+
+    for (var s = 0; s < orders.length; s++) {
+        if(orders[s].serviceParametersList != null) {
+            for (var p = 0; p < orders[s].serviceParametersList.length; p++) {
+                var nvPairFound = false;
+                if(orders[s].serviceParametersList[p].nameValueList != null) {
+                    for (var n =0; n < orders[s].serviceParametersList[p].nameValueList.length; n++) {
+                        var nvPairName = orders[s].serviceParametersList[p].nameValueList[n].nameValue.name;
+                        var nvPairValue = orders[s].serviceParametersList[p].nameValueList[n].nameValue.value;
+                        if(nvPairName == nvPairToCheck) {
+                            nvPairFound = true;
+
+                            if(! ds_ws.common_isNullValue(nvPairValue)) {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][validateNVAndSetDefaultValue] orders[" + s + "].serviceParametersList[" + p + "].nameValueList [" + n + "] = " + orders[s].serviceParametersList[p].nameValueList[n].nameValue.toXML());
+                                // NV pair found; checking the value
+                                if(nvPairValue == "No") {
+                                    foundValueNo = true;
+                                }
+                                else if(nvPairValue == "Yes") {
+                                    foundValueYes = true;
+                                }
+                                else {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][validateNVAndSetDefaultValue] orders[" + s + "].serviceParametersList[" + p + "].nameValueList [" + n + "] has incorrect value ('" + nvPairValue + "') so setting equals to 'Yes'");
+                                    // value is different from 'Yes' and 'No'; setting the value to 'Yes'
+                                    orders[s].serviceParametersList[p].nameValueList[n].nameValue.value = "Yes";
+                                    foundValueYes = true;
+                                }
+                            }
+                            else {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][validateNVAndSetDefaultValue] orders[" + s + "].serviceParametersList[" + p + "].nameValueList [" + n + "] has null value so setting equals to 'Yes'");
+                                // NV pair has null value; setting the value to 'Yes'
+                                orders[s].serviceParametersList[p].nameValueList[n].nameValue.value = "Yes";
+                                foundValueYes = true;
+                            }
+                        }
+                    }
+                }
+
+                if(!nvPairFound) {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][validateNVAndSetDefaultValue] orders[" + s + "].serviceParametersList[" + p + "] => NV Pair not found so adding with value 'Yes'");
+                    addNVPairToService_(s, p);
+                    foundValueYes = true;
+                }
+            }
+        }
+    }
+
+
+    if(foundValueYes == true && foundValueNo == true) {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][validateNVAndSetDefaultValue] Found both the 'No' and 'Yes' value! updating all of them to 'Yes'");
+        // found in the order both the values, so overright everything to "Yes"
+        for (var s = 0; s < orders.length; s++) {
+            if(orders[s].serviceParametersList != null) {
+                for (var p = 0; p < orders[s].serviceParametersList.length; p++) {
+                    if(orders[s].serviceParametersList[p].nameValueList != null) {
+                        for (var n =0; n < orders[s].serviceParametersList[p].nameValueList.length; n++) {
+                            var nvPairName = orders[s].serviceParametersList[p].nameValueList[n].nameValue.name;
+                            var nvPairValue = orders[s].serviceParametersList[p].nameValueList[n].nameValue.value;
+                            if(nvPairName == nvPairToCheck) {
+                                if(nvPairValue == "No") {
+    debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][validateNVAndSetDefaultValue] orders[" + s + "].serviceParametersList[" + p + "].nameValueList [" + n + "] has 'No' value so setting equals to 'Yes'");
+                                    orders[s].serviceParametersList[p].nameValueList[n].nameValue.value = "Yes";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return orders;
+
+
+    function addNVPairToService_(s, p) {
+        var newNVPair = orders[s].createOrderItemByPath("serviceParametersList." + (p + 1) +
+                                                        ".nameValueList." + (orders[s].serviceParametersList[p].nameValueList != null ? (orders[s].serviceParametersList[p].nameValueList.length + 1) : 1) +
+                                                        ".nameValue");
+        newNVPair.name = nvPairToCheck;
+        newNVPair.value = "Yes";
+    }
+  ]]></script>
+</script>

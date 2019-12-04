@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="c0ec6645bdc1ca3ae16d4e82d8c7e5b" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.checkReceivedQuote_cwr3">
+  <activity name="start" type="seqActivity">
+    <guid>{040785a3-182d-9f03-70ac-ab21a9052899}</guid>
+    <label>Start</label>
+    <x>125.34473</x>
+    <y>91.0</y>
+    <childList>
+      <child name="isLastService" type="switchActivity">
+        <guid>{04094b34-0115-707a-03c1-a6bf03a916a0}</guid>
+        <label>Is Last Service?</label>
+        <x>124.34473</x>
+        <y>211.0</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <guid>{09fb120c-3e7c-2376-81c6-f24192aa5210}</guid>
+            <label>No</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <guid>{0f8c0ffd-72ba-746d-f51a-bd1c75619bf4}</guid>
+                <label>Start</label>
+                <x>231.34473</x>
+                <y>218.0</y>
+                <childList>
+                  <child name="validateReceivedData" type="scriptActivity">
+                    <guid>{0b2b33d2-3e2c-b155-1a30-b71fc78a0040}</guid>
+                    <label>Validate Received  Data</label>
+                    <x>335.34473</x>
+                    <y>206.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{0f471cf2-31d7-8852-d8c7-2976ce30e492}</guid>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var debugHeader = "[" + this.process.id + "] CheckReceivedQuote - ";
+
+                          // Update History Event
+                          rpts.updateHistoryEvent (this);
+
+                          var processDocument = this.process.processDocument;
+
+                          // Update History Event assing it the stored entry in CWMESSAGEID
+                          stcw.assignCWMsgIdToProcessEvent(this, processDocument.cwMsgId);
+
+                          var crmInput = stcw.findGenericProcessMessageById (this.process.processDocument.genericProcessMsgDocId, "wsws:quoteValidation");
+
+                          debugPrintln(stcc.getSysdateForLog() + debugHeader + "Received ValidateQuote with input = " + (crmInput == null ? "null" : crmInput.toXML()));
+
+                                processDocument.quoteNumber = crmInput.quoteNumber;
+
+                                var error = basicValidation_ (crmInput);
+                                if (error == null) {
+
+                                      var service  = crmInput.lineItems[processDocument.processedServices];
+
+                          debugPrintln(stcc.getSysdateForLog() + debugHeader + "Managing Service = " + (service == null ? "null" : service.toXML()));
+
+                                      if(service != null) {
+                                            processDocument.orderRowItemId = service.orderRowItemId;
+
+                                            if (stcw.isInstallQuoteRequest (crmInput)) {
+                                                  error = validateInstallService_ (crmInput, service, processDocument);
+                                            }
+                                            else if (stcw.isChangeQuoteRequest (crmInput)) {
+                                                  error = validateChangeQuote_ (crmInput);
+                                            }
+                                            else {
+                                                  error = xcutl.createError ("UnsupportedQuoteType", crmInput.quoteType);
+                                            }
+
+                                            processDocument.serviceStatus = service.serviceStatus;
+                                      }
+                                      else {
+                                            error = xcutl.creareError("InternalError");
+                                      }
+                                }
+
+                                if(error == null) {
+                                      processDocument.ackResult = "SUCCESS";
+                                }
+                                else {
+                                      processDocument.ackResult = "ERROR";
+                                      processDocument.ErrorCode = error.code;
+                                      processDocument.ErrorText = error.text;
+                                }
+
+                          debugPrintln(stcc.getSysdateForLog() + debugHeader + "processDocument = " + processDocument.toXML());
+
+                                //
+                                //  basicValidation_
+                                //
+                                function basicValidation_ (input) {
+
+                                      if (input.businessUnit != "Wholesale") {
+                                            return (xcutl.createError ("InvalidBusinessUnit", input.businessUnit));
+                                      }
+
+                                      if (input.quoteStatus != "Feasibility" && input.quoteStatus != "Reservation") {
+                                            return (xcutl.createError ("InvalidQuoteStatus", input.quoteStatus));
+                                      }
+
+                                      var validationResult = input.validate(1, true);
+                                      if(validationResult != null) {
+                                            var error = new DataStructure ("xcutl:Error");
+                                            error.code = validationResult[0];
+                                            error.text = validationResult[1];
+                                            return error;
+                                      }
+
+                                      return (null);
+
+                                }            // b a s i c V a l i d a t i o n _
+
+
+                                //
+                                // validateInstallService_
+                                //
+                                function validateInstallService_ (input, lineItem, processDocument) {
+
+                                      if(lineItem.serviceStatus != "Add" &&
+                                         lineItem.serviceStatus != "Cancel" &&
+                                         lineItem.serviceStatus != "Revise" &&
+                                         lineItem.serviceStatus != "Unchanged") {
+                                            return (xcutl.createError ("InvalidServiceStatus", input.quoteNumber, lineItem.orderRowItemId, lineItem.serviceStatus));
+                                      }
+
+                                      if(processDocument.restorationFlag != null) {
+                                            if(processDocument.restorationFlag != lineItem.restoration) {
+                                                  return (xcutl.createError ("DifferentRestoration", input.quoteNumber, lineItem.orderRowItemId));
+                                            }
+                                      }
+                                      else {
+                                            processDocument.restorationFlag = lineItem.restoration;
+                                      }
+
+
+                                      // quote already exists
+                                      var existingQuoteChild = stcw.findQuoteByParentQuoteNumberAndRowId (input.quoteNumber, lineItem.orderRowItemId);
+                                      if(lineItem.serviceStatus == "Add") {
+                                            // Quote Child Already Exists
+                                            if (existingQuoteChild != null) {
+                                                  return (xcutl.createError ("QuoteChildAlreadyExists", input.quoteNumber, lineItem.orderRowItemId));
+                                            }
+
+                                            // Quantity is not a number
+                                            if(isNaN(parseInt(lineItem.quantity))) {
+                                                  return (xcutl.createError ("QuantityNotNumber", input.quoteNumber, lineItem.orderRowItemId));
+                                            }
+
+                                            if(stcc.stringHasValue(lineItem.reservationDays)) {
+                                                  // ReservationDays is not a number
+                                                  if(isNaN(parseInt(lineItem.reservationDays))) {
+                                                        return (xcutl.createError ("ReservationDaysNotNumber", input.quoteNumber, lineItem.orderRowItemId));
+                                                  }
+                                            }
+                                      }
+                                      else {
+                                            if(lineItem.serviceStatus == "Cancel" || lineItem.serviceStatus == "Revise") {
+                                                  // quote child doesn't exist
+                                                  if (existingQuoteChild == null) {
+                                                        return (xcutl.createError ("QuoteChildNotExists", input.quoteNumber, lineItem.orderRowItemId));
+                                                  }
+
+                                                  // quote child already COMPLETED
+                                                  // removed as required by Rajakumar Mani - Call 22/05/2010
+                                                  /******
+                                                  if(existingQuoteChild.header.quoteStatus == "COMPLETED") {
+                                                        return (xcutl.createError ("UpdQuoteComplete", input.quoteNumber, lineItem.orderRowItemId));
+                                                  }
+                                                  *****/
+
+                                                  // quote child already CANCELLED
+                                                  if(existingQuoteChild.header.quoteStatus == "CANCELLED") {
+                                                        return (xcutl.createError ("UpdQuoteCancel", input.quoteNumber, lineItem.orderRowItemId));
+                                                  }
+
+                                                  // quote child is already managing a Cancel event...
+                                                  if(stcw.isQuoteCancelled(existingQuoteChild)) {
+                                                        return (xcutl.createError ("UpdQuoteCancel", input.quoteNumber, lineItem.orderRowItemId));
+                                                  }
+
+                                                  if(stcc.stringHasValue(lineItem.reservationDays)) {
+                                                        // ReservationDays is not a number
+                                                        if(isNaN(parseInt(lineItem.reservationDays))) {
+                                                              return (xcutl.createError ("ReservationDaysNotNumber", input.quoteNumber, lineItem.orderRowItemId));
+                                                        }
+                                                  }
+
+                                                  // quote child is Reservation ....
+                                                  if (input.quoteStatus == "Reservation") {
+                                                        // ... but doesn't have Reservation Number
+                                                        if(!stcc.stringHasValue(lineItem.reservationNumber)) {
+                                                              return (xcutl.createError ("UpdReservationWONumber", input.quoteStatus));
+                                                        }
+
+                                                        // ... but already exists an order for that reservation
+                                                        var countOrder = stcw.countNotCancelledOrderByReservation(lineItem.reservationNumber);
+                                                        if(countOrder > 0) {
+                                                              return (xcutl.createError ("ExistOrderOnReservation", lineItem.reservationNumber));
+                                                        }
+                                                  }
+
+                                                  if(lineItem.serviceStatus == "Revise") {
+                                                        // running check for Revise
+                                                        return validateReviseItem_(input, lineItem, existingQuoteChild);
+                                                  }
+                                            }
+                                      }
+
+                                      return (null);
+
+                                }            // v a l i d a t e I n s t a l l S e r v i c e _
+
+
+                                //
+                                // validateReviseItem_
+                                //
+                                function validateReviseItem_(input, inputLineItem, existingQuoteChild) {
+                                      var initialQuoteReceived = stcw.extractObjectFromInterfaceMessage(existingQuoteChild, 0, "CRM_QUOTE_VALIDATION", "wsws:quoteValidation");
+                                      if(initialQuoteReceived == null) {
+                                            return (xcutl.createError ("ErrorAccessInputData", input.quoteNumber));
+                                      }
+
+                                      var receivedLineItem = stcw.extractServiceFromReceivedQuote(initialQuoteReceived, inputLineItem.orderRowItemId);
+
+                                      if(receivedLineItem == null) {
+                                            return (xcutl.createError ("ErrorAccessServiceInputData", input.quoteNumber, inputLineItem.orderRowItemId));
+                                      }
+
+                                      // checking Location A
+                                      if(!stcw.checkValueInLineItemNVPair("LOCATIONA", inputLineItem, receivedLineItem)) {
+                                            return (xcutl.createError ("DifferentReceivedValue", "LOCATIONA"));
+                                      }
+
+                                      if(!stcw.checkValueInLineItemNVPair("COUNTRYA", inputLineItem, receivedLineItem)) {
+                                            return (xcutl.createError ("DifferentReceivedValue", "COUNTRYA"));
+                                      }
+
+                                      if(!stcw.checkValueInLineItemNVPair("ADDONA", inputLineItem, receivedLineItem)) {
+                                            return (xcutl.createError ("DifferentReceivedValue", "ADDONA"));
+                                      }
+
+                                      // checking Location Z
+                                      if(!stcw.checkValueInLineItemNVPair("LOCATIONZ", inputLineItem, receivedLineItem)) {
+                                            return (xcutl.createError ("DifferentReceivedValue", "LOCATIONZ"));
+                                      }
+
+                                      if(!stcw.checkValueInLineItemNVPair("COUNTRYZ", inputLineItem, receivedLineItem)) {
+                                            return (xcutl.createError ("DifferentReceivedValue", "COUNTRYZ"));
+                                      }
+
+                                      if(!stcw.checkValueInLineItemNVPair("ADDONZ", inputLineItem, receivedLineItem)) {
+                                            return (xcutl.createError ("DifferentReceivedValue", "ADDONZ"));
+                                      }
+
+                                      // checking Technology
+                                      if(!stcw.checkValueInLineItemNVPair("ACCESS_SPEED", inputLineItem, receivedLineItem)) {
+                                            return (xcutl.createError ("DifferentReceivedValue", "ACCESS_SPEED"));
+                                      }
+
+                                      if(!stcw.checkValueInLineItemNVPair("FACILITY_BW", inputLineItem, receivedLineItem)) {
+                                            return (xcutl.createError ("DifferentReceivedValue", "FACILITY_BW"));
+                                      }
+
+                                      // checking Quantity
+                                      if(!stcc.checkSameValue(inputLineItem.quantity, receivedLineItem.quantity)) {
+                                            return (xcutl.createError ("DifferentReceivedValue", "Quantity"));
+                                      }
+
+                                      // checking SegmentFlag
+                                      if(!stcc.checkSameValue(inputLineItem.segmentFlag, receivedLineItem.segmentFlag)) {
+                                            return (xcutl.createError ("DifferentReceivedValue", "SegmentFlag"));
+                                      }
+
+                                      return null;
+
+                                }            // v a l i d a t e R e v i s e I t e m _
+
+                                //
+                                // validateChangeQuote_
+                                //
+                                function validateChangeQuote_ (input) {
+                                      if(input.lineItems.length > 1) {
+                                            return (xcutl.createError ("TooManyServices", input.lineItems.length));
+                                      }
+
+                                      var lineItem =       input.lineItems[0];
+                                      if(lineItem.serviceStatus != "Add" &&
+                                         lineItem.serviceStatus != "Cancel" &&
+                                         lineItem.serviceStatus != "Revise" &&
+                                         lineItem.serviceStatus != "Unchanged") {
+                                            return (xcutl.createError ("InvalidServiceStatus", input.quoteNumber, lineItem.orderRowItemId, lineItem.serviceStatus));
+                                      }
+
+                                      if(stcc.stringHasValue(lineItem.reservationDays)) {
+                                            // ReservationDays is not a number
+                                            if(isNaN(parseInt(lineItem.reservationDays))) {
+                                                  return (xcutl.createError ("ReservationDaysNotNumber", input.quoteNumber, lineItem.orderRowItemId));
+                                            }
+                                      }
+
+                                      var existingQuoteChild = stcw.findQuoteByParentQuoteNumberAndRowId (input.quoteNumber, lineItem.orderRowItemId);
+                                      if(lineItem.serviceStatus != "Add") {
+                                            if (existingQuoteChild == null) {
+                                                  return (xcutl.createError ("QuoteChildNotExists", input.quoteNumber, lineItem.orderRowItemId));
+                                            }
+
+                                            if(lineItem.serviceStatus == "Cancel" || lineItem.serviceStatus == "Revise") {
+
+                                                  // quote child already CANCELLED
+                                                  if(existingQuoteChild.header.quoteStatus == "CANCELLED") {
+                                                        return (xcutl.createError ("UpdQuoteCancel", input.quoteNumber, lineItem.orderRowItemId));
+                                                  }
+
+                                                  // quote child is already managing a Cancel event...
+                                                  if(stcw.isQuoteCancelled(existingQuoteChild)) {
+                                                        return (xcutl.createError ("UpdQuoteCancel", input.quoteNumber, lineItem.orderRowItemId));
+                                                  }
+
+                                                  // quote child is Reservation ....
+                                                  if (input.quoteStatus == "Reservation") {
+                                                        // ... but doesn't have Reservation Number
+                                                        if(!stcc.stringHasValue(lineItem.reservationNumber)) {
+                                                              return (xcutl.createError ("UpdReservationWONumber", input.quoteStatus));
+                                                        }
+
+                                                        // ... but already exists an order for that reservation
+                                                        var countOrder = stcw.countNotCancelledOrderByReservation(lineItem.reservationNumber);
+                                                        if(countOrder > 0) {
+                                                              return (xcutl.createError ("ExistOrderOnReservation", lineItem.reservationNumber));
+                                                        }
+                                                  }
+
+                                                  if(lineItem.serviceStatus == "Revise") {
+                                                        // running check for Revise
+                                                        return validateReviseItem_(input, lineItem, existingQuoteChild);
+                                                  }
+                                            }
+                                      }
+                                      else {
+                                            // serviceStatus = "Add"
+                                            if (existingQuoteChild != null) {
+                                                  // Quote Child Already Exists
+                                                  return (xcutl.createError ("QuoteChildAlreadyExists", input.quoteNumber, lineItem.orderRowItemId));
+                                            }
+
+                                            // Quantity is not a number
+                                            if(isNaN(parseInt(lineItem.quantity))) {
+                                                  return (xcutl.createError ("QuantityNotNumber", input.quoteNumber, lineItem.orderRowItemId));
+                                            }
+                                      }
+
+                                      return (null);
+
+                                }            // v a l i d  a t e C h a n g e Q u o t e _
+                        ]]></script>
+                      </method>
+                      <method name="cwOnProcActCond" type="action">
+                        <category>cond</category>
+                        <guid>{0423b445-eced-233a-5f67-03b523061f63}</guid>
+                        <system>true</system>
+                        <script><![CDATA[
+                          rpts.createHistoryEvent (this);
+                          return (true);
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="validateEndsOK" type="switchActivity">
+                    <guid>{067f49eb-8cc4-05a1-898b-fe0e079c1713}</guid>
+                    <label>Validate Ends OK?</label>
+                    <x>448.34473</x>
+                    <y>213.0</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <guid>{07380c13-de81-4c24-eb54-978e6567be08}</guid>
+                        <label>Yes</label>
+                        <x>0.0</x>
+                        <y>0.0</y>
+                        <childList>
+                          <child name="start" type="seqActivity">
+                            <guid>{04a09fee-59b5-d3d8-1a4f-0dcf6e279688}</guid>
+                            <label>Start</label>
+                            <x>453.34473</x>
+                            <y>340.0</y>
+                            <childList>
+                              <child name="isUnchanged" type="switchActivity">
+                                <guid>{0f1dd745-1205-98cc-ecad-43a7a2774d54}</guid>
+                                <label>Is ServiceStatus Unchanged?</label>
+                                <x>438.34473</x>
+                                <y>458.0</y>
+                                <childList>
+                                  <child name="yes" type="caseActivity">
+                                    <guid>{0ee58418-3067-9792-c408-2cfbfe55e9a9}</guid>
+                                    <label>Yes</label>
+                                    <x>305.34473</x>
+                                    <y>463.0</y>
+                                    <methodList>
+                                      <method name="cwOnProcActCond" type="action">
+                                        <category>cond</category>
+                                        <guid>{08002c83-84e5-901e-4d14-8c819b413130}</guid>
+                                        <system>true</system>
+                                        <script><![CDATA[this.process.processDocument.serviceStatus == "Unchanged";]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="no" type="caseActivity">
+                                    <guid>{00c21ab0-f27d-f136-37a7-d40d8e8a5ce8}</guid>
+                                    <label>No</label>
+                                    <x>271.34473</x>
+                                    <y>340.0</y>
+                                    <childList>
+                                      <child name="start" type="seqActivity">
+                                        <guid>{0abccd6b-7c87-9b03-827e-cebad6f8b1dd}</guid>
+                                        <label>Start</label>
+                                        <x>648.3447</x>
+                                        <y>459.0</y>
+                                        <childList>
+                                          <child name="addServiceStatus" type="switchActivity">
+                                            <guid>{0253c439-cc56-a830-16a0-975cee1f941c}</guid>
+                                            <label>Is Service Status Add?</label>
+                                            <x>778.3447</x>
+                                            <y>443.0</y>
+                                            <childList>
+                                              <child name="no" type="caseActivity">
+                                                <guid>{067b36ae-9f4a-6e6b-434b-6d6bfb59a8e8}</guid>
+                                                <label>No</label>
+                                                <x>0.0</x>
+                                                <y>0.0</y>
+                                                <childList>
+                                                  <child name="start" type="seqActivity">
+                                                    <guid>{012671f3-1022-317b-0396-698edfdb636d}</guid>
+                                                    <label>Start</label>
+                                                    <x>949.3447</x>
+                                                    <y>455.0</y>
+                                                    <childList>
+                                                      <child name="addVersionToQuote" type="scriptActivity">
+                                                        <guid>{0ce6f3cd-12fd-f619-bc38-d18be01cb09e}</guid>
+                                                        <label>Add Version To Quote</label>
+                                                        <x>943.3447</x>
+                                                        <y>597.0</y>
+                                                        <methodList>
+                                                          <method name="cwOnProcActBefore" type="action">
+                                                            <category>before</category>
+                                                            <guid>{0f54b1e1-14fd-932f-056f-30039a13b5cf}</guid>
+                                                            <system>true</system>
+                                                            <script><![CDATA[
+                                                              var debugHeader = "[" + this.process.id + "] TerminateAllProcesses - ";
+                                                              debugPrintln(stcc.getSysdateForLog() + debugHeader + "start");
+
+
+                                                              var processDocument = this.process.processDocument;
+                                                              var input    = stcw.findGenericProcessMessageById (this.process.processDocument.genericProcessMsgDocId, "wsws:quoteValidation");
+                                                              var service  = input.lineItems[processDocument.processedServices];
+
+                                                              var existingQuoteChild = stcw.findQuoteByParentQuoteNumberAndRowId (input.quoteNumber, service.orderRowItemId);
+
+                                                              if(process.processDocument.serviceStatus == "Cancel") {
+                                                                    stcw.addVersionToOrder (existingQuoteChild, "CANCEL");
+                                                              }
+                                                              else {
+                                                                    stcw.addVersionToOrder (existingQuoteChild, "REVISE");
+                                                              }
+                                                              existingQuoteChild.header.orderAction       = process.processDocument.serviceStatus;
+                                                              existingQuoteChild.header.skipSendToGranite = "N";
+                                                              existingQuoteChild.header.quoteStatus       = input.quoteStatus;
+                                                              existingQuoteChild.save();
+
+                                                              processDocument.orderId = existingQuoteChild.id;
+                                                            ]]></script>
+                                                          </method>
+                                                        </methodList>
+                                                      </child>
+                                                    </childList>
+                                                  </child>
+                                                </childList>
+                                              </child>
+                                              <child name="yes" type="caseActivity">
+                                                <guid>{0b4c8e0f-ccaf-a321-7c2a-c6ec10ba6404}</guid>
+                                                <label>Yes</label>
+                                                <x>794.3447</x>
+                                                <y>495.0</y>
+                                                <childList>
+                                                  <child name="start" type="seqActivity">
+                                                    <guid>{0687b230-af76-3be6-8534-578462e6af7d}</guid>
+                                                    <label>Start</label>
+                                                    <x>782.3447</x>
+                                                    <y>605.0</y>
+                                                    <childList>
+                                                      <child name="createNewChildQuoteOrder" type="scriptActivity">
+                                                        <guid>{0f3ecdf9-b84d-ba2a-9a43-05f92ce12608}</guid>
+                                                        <label>Create New Child QuoteOrder</label>
+                                                        <x>432.34473</x>
+                                                        <y>589.0</y>
+                                                        <methodList>
+                                                          <method name="cwOnProcActBefore" type="action">
+                                                            <category>before</category>
+                                                            <guid>{06870c86-0c6e-8ff5-cfda-d10a3c254694}</guid>
+                                                            <system>true</system>
+                                                            <script><![CDATA[
+                                                              var debugHeader = "[" + this.process.id + "] CreateNewQuoteOrder - ";
+
+                                                              var processDocument = this.process.processDocument;
+                                                              var input    = stcw.findGenericProcessMessageById (this.process.processDocument.genericProcessMsgDocId, "wsws:quoteValidation");
+                                                              var service  = input.lineItems[processDocument.processedServices];
+
+                                                              debugPrintln(stcc.getSysdateForLog() + debugHeader + "Quote <" + input.quoteNumber + ", " + service.orderRowItemId + "> processing");
+
+                                                                    var order = stcw.createChildQuote(input, service.orderRowItemId);
+                                                                    order.save ();
+                                                              debugPrintln(stcc.getSysdateForLog() + "Quote <" + input.quoteNumber + ", " + service.orderRowItemId + "> created with id " + order.id);
+
+                                                                    processDocument.orderId = order.id;
+                                                            ]]></script>
+                                                          </method>
+                                                        </methodList>
+                                                      </child>
+                                                    </childList>
+                                                  </child>
+                                                </childList>
+                                                <methodList>
+                                                  <method name="cwOnProcActCond" type="action">
+                                                    <category>cond</category>
+                                                    <guid>{0146727b-1da6-7171-2738-b8812f5b0f48}</guid>
+                                                    <system>true</system>
+                                                    <script><![CDATA[return this.process.processDocument.serviceStatus == "Add";]]></script>
+                                                  </method>
+                                                </methodList>
+                                              </child>
+                                            </childList>
+                                          </child>
+                                          <child name="startProcessToManageQuote" type="scriptActivity">
+                                            <guid>{0667e11f-01c1-810e-3e38-1a8e9afdb5b4}</guid>
+                                            <label>Start Process To Manage Quote</label>
+                                            <x>125.34473</x>
+                                            <y>579.0</y>
+                                            <methodList>
+                                              <method name="cwOnProcActBefore" type="action">
+                                                <category>before</category>
+                                                <guid>{08e511cc-d8e2-c3cc-2e16-4a8255a96027}</guid>
+                                                <system>true</system>
+                                                <script><![CDATA[
+                                                  var debugHeader = "[" + this.process.id + "] ActivateProcessForQuote - ";
+
+                                                  rpts.updateHistoryEvent (this);
+
+                                                  var processDocument = this.process.processDocument;
+                                                  var input    = stcw.findGenericProcessMessageById (this.process.processDocument.genericProcessMsgDocId, "wsws:quoteValidation");
+                                                  var service  = input.lineItems[processDocument.processedServices];
+
+                                                  // patching all already stored events of this process with the order number
+                                                  stcw.assignProcessEventsToOrder(this.process.id, processDocument.orderId);
+
+                                                  var processId = Process.startProcess ("stcw:validateQuote", processDocument.orderId);
+                                                  debugPrintln(stcc.getSysdateForLog() + "Quote <" + input.quoteNumber + ", " + service.orderRowItemId + ">: processId = " + processId);
+
+                                                        var patchResults = rpts.patchAsynchMessageLog (processId, "crmQuoteValidation");
+
+                                                        Process.sendMessageToProcess (processId, null, "wsws:ifExpedtier_WHOLESALE/operation_QuoteValidation", input);
+                                                ]]></script>
+                                              </method>
+                                              <method name="cwOnProcActCond" type="action">
+                                                <category>cond</category>
+                                                <guid>{0c81c217-6d38-4c14-bb13-ada52000ef3b}</guid>
+                                                <system>true</system>
+                                                <script><![CDATA[
+                                                  rpts.createHistoryEvent (this);
+                                                  return (true);
+                                                ]]></script>
+                                              </method>
+                                            </methodList>
+                                          </child>
+                                        </childList>
+                                      </child>
+                                    </childList>
+                                  </child>
+                                </childList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <guid>{084db14f-3d81-88c3-fb54-9776b40d48d7}</guid>
+                            <system>true</system>
+                            <script><![CDATA[return (this.process.processDocument.ackResult == "SUCCESS");]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <guid>{0d86ddaa-e51b-1100-4648-35b26cba2333}</guid>
+                        <label>No</label>
+                        <x>580.3447</x>
+                        <y>29.0</y>
+                        <childList>
+                          <child name="start" type="seqActivity">
+                            <guid>{0ea2781b-4c15-721e-33c8-a1b9eb18b9b9}</guid>
+                            <label>Start</label>
+                            <x>566.3447</x>
+                            <y>218.0</y>
+                            <childList>
+                              <child name="startProcessToSendFailureAck" type="scriptActivity">
+                                <guid>{0668a8ea-76a1-c14c-8ac7-5533c83ab7f6}</guid>
+                                <label>Start Process To Send Failure Ack</label>
+                                <x>713.3447</x>
+                                <y>208.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <guid>{0654a30f-ca88-8654-b668-80880eb0eb1e}</guid>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      var newProcessDocument            = new Document("stcw:sendFailureAckForQuoteDoc");
+                                      newProcessDocument.ErrorCode      = this.process.processDocument.ErrorCode;
+                                      newProcessDocument.ErrorText      = this.process.processDocument.ErrorText;
+                                      newProcessDocument.quoteNumber    = this.process.processDocument.quoteNumber;
+                                      newProcessDocument.orderRowItemId = this.process.processDocument.orderRowItemId;
+
+                                      var processId = Process.startProcess ("stcw:sendFailureQuoteAckToCrm", newProcessDocument);
+                                      debugPrintln(stcc.getSysdateForLog() + "Start Process 'sendFailureQuoteAckToCrm' <" + newProcessDocument.quoteNumber + ", " + newProcessDocument.orderRowItemId + ">: processId = " + processId);
+
+
+                                            stcw.createRejectedQuote(this.process.processDocument.quoteNumber,
+                                                                                 this.process.processDocument.orderRowItemId,
+                                                                                 ((this.process.processDocument.orderRowItemId != null) ? (this.process.processDocument.quoteNumber + "#" + this.process.processDocument.orderRowItemId) : null),
+                                                                                 "Expediter",
+                                                                                 this.process.processDocument.ErrorText);
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="repeat" type="repeatActivity">
+                    <element>prrev_stcw.checkReceivedQuote_cwr3/seqActivity_start/switchActivity_isLastService</element>
+                    <guid>{06ebf441-1bc5-e6c4-3445-90b6757571a2}</guid>
+                    <label>Repeat</label>
+                    <x>136.34473</x>
+                    <y>463.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{0fd42799-5f02-e2ef-6c3a-b7c250412d1f}</guid>
+                        <system>true</system>
+                        <script>this.process.processDocument.processedServices++;</script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{0739d940-b92f-7d6f-6c81-def198a6e6aa}</guid>
+                    <system>true</system>
+                    <script>this.process.processDocument.serviceStatus = null;</script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{0f431540-51d0-07ff-d5ac-1ee4d294fcb7}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  var processDocument = this.process.processDocument;
+
+                  return (processDocument.numServices > processDocument.processedServices);
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="yes" type="caseActivity">
+            <guid>{0fb7c6c4-a06b-f378-8ce0-5eede9ce7719}</guid>
+            <label>Yes</label>
+            <x>31.344727</x>
+            <y>276.0</y>
+            <childList>
+              <child name="end" type="completeActivity">
+                <guid>{0861e952-a9ce-853f-3591-a717165f6f60}</guid>
+                <label>End</label>
+                <x>13.344727</x>
+                <y>215.0</y>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0712a3ae-5e62-49ee-ce3b-5c29f2c590c2}</guid>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - CheckReceivedQuote - Start...");
+
+          var receivedDS = stcw.findGenericProcessMessageById (this.process.processDocument.genericProcessMsgDocId, "wsws:quoteValidation");
+
+          this.process.processDocument.processedServices = 0;
+          this.process.processDocument.numServices       = receivedDS.lineItems.length;
+          this.process.processDocument.restorationFlag   = null;
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <document>doc_stcw.checkProcessDocument</document>
+  <label>Check Received Quote</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_stcw.checkReceivedQuote</process>
+  <revision>3</revision>
+  <type>User</type>
+</process__revision>

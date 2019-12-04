@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.updateExistingOrderHeaderForResubmit">
+  <label>Update Existing OrderHeader For Resubmit</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="existingOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="receivedOrder" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(Calendar.isDateBefore(existingOrder.orderHeader.serviceDate, receivedOrder.orderHeader.serviceDate)) {
+        existingOrder.orderHeader.serviceDate = receivedOrder.orderHeader.serviceDate;
+    }
+
+    if(existingOrder.orderHeader.orderType == "F" && receivedOrder.orderHeader.orderType != "F") {
+        var validationError = ["AE0009", Global.translateText("AE0009", null, [receivedOrder.orderHeader.orderType, existingOrder.orderHeader.orderType])];
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, receivedOrder.orderHeader.orderNumber, failureArray, true);
+    }
+
+    if(existingOrder.orderHeader.orderType != "F" && receivedOrder.orderHeader.orderType == "F") {
+        var validationError = ["AE0009", Global.translateText("AE0009", null, [receivedOrder.orderHeader.orderType, existingOrder.orderHeader.orderType])];
+        failureArray = stcw.addValidationErrorsToFailureArrayForSub_UpdInWD(validationError, receivedOrder.orderHeader.orderNumber, failureArray, true);
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

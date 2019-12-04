@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.STC_BLOCKPARAMS_CONFIGURATION">
+  <dbSchema>ORDER</dbSchema>
+  <description><![CDATA[
+    <p style="margin-top: 0">
+      Block Parameters Configuration Table
+    </p>
+  ]]></description>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{5faf2b1c-98fc-4986-a409-81be234f9d48}</guid>
+  <label>STC Block Parameters Configuration</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_BLOCKPARAMS_CONFIGURATION</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="isMandatory" type="leaf">
+      <column>ISMANDATORY</column>
+      <propertyElement type="elchk">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/permMethod_editablePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Is Mandatory?</label>
+      </propertyElement>
+      <table>STC_BLOCKPARAMS_CONFIGURATION</table>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="blockParameterName" type="leaf">
+      <column>BLOCKPARAMETERNAME</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/permMethod_editablePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Block Parameter Name</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BLOCKPARAMS_CONFIGURATION</table>
+      <valueType>dtype_ds_ws.string4000</valueType>
+    </variable>
+    <variable name="orderStatus" type="leaf">
+      <column>ORDERSTATUS</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/permMethod_editablePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <label>Order Status</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BLOCKPARAMS_CONFIGURATION</table>
+      <valueType>dtype_ds_ws.initialOrderStatus</valueType>
+    </variable>
+    <variable name="serviceType" type="leaf">
+      <column>SERVICETYPE</column>
+      <propertyElement type="elfld">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/permMethod_editablePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_BLOCKPARAMS_CONFIGURATION</table>
+      <valueType>dtype_ds_ws.serviceType</valueType>
+    </variable>
+    <variable name="orderType" type="leaf">
+      <column>ORDERTYPE</column>
+      <propertyElement type="elslct">
+        <editable type="varPath">
+          <variablePathList>
+            <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/permMethod_editablePerm</variablePath>
+          </variablePathList>
+        </editable>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_BLOCKPARAMS_CONFIGURATION</table>
+      <valueType>dtype_ds_ws.orderType</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="blockParameterValidation" type="crule">
+      <message>Configuration for this Block Parameter already exists</message>
+      <path>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/leaf_blockParameterName</path>
+      <severity>error</severity>
+      <type>validator</type>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+      <script><![CDATA[
+        var queryDoc = new Document("ds_ws:search_BlockParametersForConfiguration");
+
+        queryDoc.orderType = document.orderType;
+        queryDoc.serviceType = document.serviceType;
+        queryDoc.orderStatus = document.orderStatus;
+        queryDoc.blockParameterName = document.blockParameterName;
+
+        var resultList = Finder.runFinder("ds_ws:findBlockParamsConf", "select", queryDoc);
+
+        if(resultList.length == 0){
+          return false;
+        } else if( resultList.length == 1){
+          if (resultList[0].cwDocId == document.cwDocId){
+             return false;
+          }
+        }
+        return true;
+      ]]></script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>STC_Config</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        if(this.isStored) {
+            Global.showUserMessage(Global.translateText("AI0002"));
+        }
+        else {
+            Global.showUserMessage(Global.translateText("AI0001"));
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+          </overlay>
+          <overlay name="Search" type="vform">
+            <label>Search</label>
+            <root name="SearchGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="STC_BLOCKPARAMS_CONFIGURATIONGrid" type="elgrd">
+                  <colWidths>160,160,160,160,160,160</colWidths>
+                  <numOfCols>6</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>960px</width>
+                  <elementList>
+                    <element name="STC_BLOCKPARAMS_CONFIGURATIONHeader" type="elhdr">
+                      <label>STC Block Parameters Configuration Add/Update</label>
+                    </element>
+                    <element name="blockParameterName" type="elfld">
+                      <label>Block Parameter Name</label>
+                      <labelOrientation>left</labelOrientation>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/leaf_blockParameterName</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="orderStatus" type="elslct">
+                      <label>Order Status</label>
+                      <labelOrientation>left</labelOrientation>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/leaf_orderStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="serviceType" type="elfld">
+                      <label>Service Type</label>
+                      <labelOrientation>left</labelOrientation>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/leaf_serviceType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="orderType" type="elslct">
+                      <label>Order Type</label>
+                      <labelOrientation>left</labelOrientation>
+                      <sorted>false</sorted>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/leaf_orderType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="isMandatory" type="elchk">
+                      <label>Is Mandatory?</label>
+                      <labelOrientation>left</labelOrientation>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_ds_ws.STC_BLOCKPARAMS_CONFIGURATION/leaf_isMandatory</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="eee890fcdb306a48dc8c6851af4c91de" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.checkProcessDocument">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{0421c4e0-8b89-5c68-f831-bd2351742c0f}</guid>
+  <label>Check Process Document</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="numServices" type="leaf">
+      <guid>{0fcd866e-4428-78db-3fe4-e1a8487e87ed}</guid>
+      <label>Num Services</label>
+      <propertyElement type="elfld">
+        <label>Num Services</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="processedServices" type="leaf">
+      <guid>{0a88e1b1-7e25-fcb1-d3b3-9e988db28f2c}</guid>
+      <label>Processed Services</label>
+      <propertyElement type="elfld">
+        <label>Processed Services</label>
+      </propertyElement>
+      <valueType>dtype_cwf_up.Integer9</valueType>
+    </variable>
+    <variable name="ErrorCode" type="leaf">
+      <guid>{0886fb46-bba2-b965-4ef8-98fb896ec577}</guid>
+      <label>ErrorCode</label>
+      <propertyElement type="elfld">
+        <label>ErrorCode</label>
+      </propertyElement>
+      <valueType>dtype_xcutl.ErrorCode</valueType>
+    </variable>
+    <variable name="ErrorText" type="leaf">
+      <guid>{05a8aa22-2789-0a22-db6b-1e0dd54acc4a}</guid>
+      <label>ErrorText</label>
+      <propertyElement type="elfld">
+        <label>ErrorText</label>
+      </propertyElement>
+      <valueType>dtype_stcw.errorText</valueType>
+    </variable>
+    <variable name="ackResult" type="leaf">
+      <guid>{01833da7-0766-e569-8a55-6ab461dbc36c}</guid>
+      <label>Ack Result</label>
+      <propertyElement type="elfld">
+        <label>Ack Result</label>
+      </propertyElement>
+      <valueType>dtype_stcw.ackResult</valueType>
+    </variable>
+    <variable name="serviceStatus" type="leaf">
+      <guid>{03a27702-afdd-6d86-8a6b-0084970b142c}</guid>
+      <label>Service Status</label>
+      <propertyElement type="elfld">
+        <label>Service Status</label>
+      </propertyElement>
+      <valueType>dtype_stcw.serviceStatus</valueType>
+    </variable>
+    <variable name="orderId" type="leaf">
+      <guid>{0b81d05e-7c53-7cc1-7305-f89e2131da76}</guid>
+      <label>Order Id</label>
+      <propertyElement type="elref">
+        <label>Order Id</label>
+      </propertyElement>
+      <valueType>dtype_cwf_oe.OrderIdNonRef</valueType>
+    </variable>
+    <variable name="quoteNumber" type="leaf">
+      <guid>{07ebb148-3c96-ac2d-05b8-1396f01bb371}</guid>
+      <label>Quote Number</label>
+      <propertyElement type="elfld">
+        <label>Quote Number</label>
+      </propertyElement>
+      <valueType>dtype_stcw.quoteNumber</valueType>
+    </variable>
+    <variable name="orderRowItemId" type="leaf">
+      <guid>{09a5ad07-fb60-21f7-010d-c31cb2390295}</guid>
+      <label>OrderRowItemId</label>
+      <propertyElement type="elfld">
+        <label>OrderRowItemId</label>
+      </propertyElement>
+      <valueType>dtype_stcw.orderRowItemId</valueType>
+    </variable>
+    <variable name="genericProcessMsgDocId" type="leaf">
+      <guid>{0faace38-86c6-82e5-32a9-aa6426e34d01}</guid>
+      <label>Generic Process Msg DocId</label>
+      <propertyElement type="elfld">
+        <label>Generic Process Msg DocId</label>
+      </propertyElement>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="orderNumber" type="leaf">
+      <guid>{08b09422-70cb-36ac-f8d9-a974283c0375}</guid>
+      <label>OrderNumber</label>
+      <propertyElement type="elfld">
+        <label>OrderNumber</label>
+      </propertyElement>
+      <valueType>dtype_orb.OrderNumber</valueType>
+    </variable>
+    <variable name="restorationFlag" type="leaf">
+      <guid>{093dfec9-268d-10b1-1858-5f819f672e53}</guid>
+      <label>Restoration Flag</label>
+      <propertyElement type="elfld">
+        <label>Restoration Flag</label>
+      </propertyElement>
+      <valueType>dtype_stcw.restorationFlag</valueType>
+    </variable>
+    <variable name="cwMsgId" type="leaf">
+      <guid>{0244440b-848b-0512-a468-9ba0ec2a073d}</guid>
+      <label>CW Message Id</label>
+      <propertyElement type="elfld">
+        <label>CW Message Id</label>
+      </propertyElement>
+      <valueType>dtype_stcw.messageId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.checkProcessDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="migrationSTC.createLegacyOrderFromGIPathDocument">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{25902b54-c3cb-4687-9f98-2a3599dcd7eb}</guid>
+  <label>Create Legacy Order From Granite Path Document</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="pathName" type="leaf">
+      <propertyElement type="elfld">
+        <label>GI Path Name</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <valueType>dtype_ds_ws.string100</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_migrationSTC.createLegacyOrderFromGIPathDocument</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="createEBULegacyOrderFromGraniteDataGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="createLegacyOrderDocumentGrid" type="elgrd">
+                    <colWidths>100px,200px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>260px</width>
+                    <elementList>
+                      <element name="createLegacyOrderDocumentHeader" type="elhdr">
+                        <label>Create LegacyOrder From Granite Path Document</label>
+                      </element>
+                      <element name="pathName" type="elfld">
+                        <label>Path Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_migrationSTC.createLegacyOrderFromGIPathDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_migrationSTC.createLegacyOrderFromGIPathDocument/leaf_pathName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</base>
+            <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfSave" type="eldel"/>
+              <override name="hl1" type="elext">
+                <elementList>
+                  <element name="createOrder" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_migrationSTC.createLegacyOrderFromGIPathDocument/ui_UserInterface/usrActionMethod_loadOrder</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Create EBU Legacy Order</label>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="loadOrder" type="usrActionMethod">
+        <confirmation>doc_migrationSTC.createLegacyOrderFromGIPathDocument/ui_UserInterface/uimthd_loadOrder_confirm</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var document = this.model;
+
+          migrationSTC.createLegacyOrderFromGIPath(document.pathName);
+
+          Global.showUserMessage("Order '" + document.pathName + "' loaded");
+        ]]></script>
+      </method>
+      <method name="loadOrder_confirm" type="uimthd">
+        <script><![CDATA[return "AW0014";]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

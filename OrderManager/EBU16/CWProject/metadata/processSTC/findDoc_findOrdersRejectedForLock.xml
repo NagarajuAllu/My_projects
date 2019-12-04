@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="processSTC.findOrdersRejectedForLock">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_ds_ws.search_orderNumber</input>
+  <label>Find Orders Rejected For Lock</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_processSTC.STC_ORDER_REJECTED_FOR_LOCK</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_processSTC.STC_ORDER_REJECTED_FOR_LOCK/leaf_orderNumber</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <volatility>0</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderNumber</document>
+      <mappedDocument>doc_processSTC.STC_ORDER_REJECTED_FOR_LOCK</mappedDocument>
+      <mappedPath>doc_processSTC.STC_ORDER_REJECTED_FOR_LOCK/leaf_orderNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_orderNumber/leaf_orderNumber</path>
+    </search>
+  </searchList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_processSTC.STC_ORDER_REJECTED_FOR_LOCK</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_processSTC.STC_ORDER_REJECTED_FOR_LOCK/ui_UserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_ds_ws.search_orderNumber/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findOrdersRejectedForLockResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_processSTC.findOrdersRejectedForLock/ui_UserInterface/usrActionMethod_showOrder</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_processSTC.findOrdersRejectedForLock/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="orderNumber" type="elfld">
+                        <label>Order #</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_processSTC.findOrdersRejectedForLock/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_processSTC.STC_ORDER_REJECTED_FOR_LOCK/leaf_orderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_processSTC.findOrdersRejectedForLock/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_processSTC.findOrdersRejectedForLock/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="showOrder" type="usrActionMethod">
+        <script><![CDATA[
+          if(this.model.selected != null) {
+              var orderNumber = this.model.selected[0].orderNumber;
+
+              var orderHeader = ds_ws.getBundleOrderByOrderNumber(orderNumber);
+              if(orderHeader == null) {
+                  Global.throwException("Unable to find orderHeader for orderNumber '" + orderNumber + "'");
+              }
+
+              var orderUnderMgmt = Order.getOrderById(orderHeader.orderId);
+              // checking if provisioningFlag is different from PROVISIONING
+              if(orderUnderMgmt == null) {
+                  Global.throwException("Unable to order with id '" + orderHeader.orderId + "' linked to the selected orderNumber '" + orderNumber + "'");
+              }
+
+              return (orderUnderMgmt);
+          }
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="findOrdersRejectedForLockView" type="findVView">
+      <label>Find Orders Rejected Due to Lock Issue</label>
+      <outputOverlay>findDoc_processSTC.findOrdersRejectedForLock/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+    </view>
+  </viewList>
+</findDoc>

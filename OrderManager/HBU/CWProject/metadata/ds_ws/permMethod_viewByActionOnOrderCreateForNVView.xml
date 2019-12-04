@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<permMethod filenameHash="6638d43d984d7af10ddbb09a6e4363cc" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.viewByActionOnOrderCreateForNVView">
+  <metaVersion>3</metaVersion>
+  <privilegesType>NEVER</privilegesType>
+  <script><![CDATA[
+    var result = false;
+
+    if (this.model instanceof Document &&
+          this.model.metadataType == "ds_ws:details_nameValue") {
+          result = (this.model.order != null ? this.model.order.orderMessage.actionOnOrder == "Create" : false);
+    }
+
+    return result;
+  ]]></script>
+</permMethod>

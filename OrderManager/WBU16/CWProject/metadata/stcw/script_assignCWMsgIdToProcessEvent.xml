@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.assignCWMsgIdToProcessEvent">
+  <label>Assign CWMsgId To ProcessHistoryEvents</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="processActivity" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="cwMsgId" type="rifp">
+      <type>dtype_stcw.messageId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if (processActivity == null)
+          return (false);
+
+    var eventDocument = getEventDocument_ (processActivity);
+    if (eventDocument == null)
+          return (false);
+
+    eventDocument.messageId = cwMsgId;
+    eventDocument.save ();
+
+    debugPrintln("assignCWMsgIdToProcessEvent <" + processActivity.process.id + "," + cwMsgId + "> - Updated event " + eventDocument.cwDocId);
+
+          return true;
+
+          //
+          // getEventDocument_
+          //
+          function getEventDocument_ (processActivity) {
+
+                var eventFinder = new Finder ("rpts:historyEventFinder");
+                eventFinder.searchDocument.processId = processActivity.process.id;
+                eventFinder.searchDocument.activityIndex = processActivity.index;
+                eventFinder.search ();
+                eventFinder.sort ("-cwDocId");
+
+                if (eventFinder.list == null || eventFinder.list.size <= 0)
+                      return (null);
+
+                return (eventFinder.list.start);
+          }      // g e t E v e n t D o c u m e n t _
+  ]]></script>
+</script>

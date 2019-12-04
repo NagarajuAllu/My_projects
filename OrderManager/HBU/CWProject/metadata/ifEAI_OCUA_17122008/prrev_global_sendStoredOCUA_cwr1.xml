@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="5e2f85e52059d736a40bb0eb7651f563" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ifEAI_OCUA_17122008.global_sendStoredOCUA_cwr1">
+  <activity name="start" type="seqActivity">
+    <guid>{0c3a69c5-eef8-de34-6914-388a5b3e72af}</guid>
+    <label>Start</label>
+    <schedule type="sched">
+      <duration type="dur">
+        <length>P0Y0M0DT0H3M0S</length>
+      </duration>
+    </schedule>
+    <x>50.0</x>
+    <y>198.0</y>
+    <childList>
+      <child name="anotherRecordToBeSent" type="switchActivity">
+        <guid>{0674c85e-99fe-608b-50a5-fd283e5ca624}</guid>
+        <label>Exist Another Record Must Be Send?</label>
+        <x>233.0</x>
+        <y>175.0</y>
+        <childList>
+          <child name="no" type="caseActivity">
+            <guid>{0e6133be-400f-dd9f-71c4-6be639641085}</guid>
+            <label>No</label>
+            <x>239.0</x>
+            <y>40.0</y>
+          </child>
+          <child name="yes" type="caseActivity">
+            <guid>{0ef8ef00-8895-6a9f-4a62-3899c47e0b98}</guid>
+            <label>Yes</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="startManagingEvent" type="seqActivity">
+                <guid>{08c54260-2365-566c-cfcf-33bcc2884796}</guid>
+                <label>Start Managing Event</label>
+                <x>433.00003</x>
+                <y>194.0</y>
+                <childList>
+                  <child name="sendEventToEAI" type="scriptActivity">
+                    <guid>{0364a276-bf9e-4af3-094f-c615b79c8c48}</guid>
+                    <label>Send Event To EAI</label>
+                    <x>430.00003</x>
+                    <y>349.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{09bb57de-238d-868d-8eae-13def69a30db}</guid>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var debug      = " - OCUA Global Process [Send Event To EAI] - ";
+                          var resultType = "OK";
+
+                          var receivedEvent = ds_ws.readStoredEventData(this.process.processDocument.eventDocId, "ds_jms:orderAcknowledgement_el");
+                          if(receivedEvent != null) {
+                                var inputSOAP = new DataStructure("ifEAI_OCUA_17122008:processRequest_el");
+
+                                // - mapping the input JMS message vs. input SOAP message
+                                inputSOAP.OrderCreateUpdateAck.OrderNumber = receivedEvent.orderNumber;
+                                inputSOAP.OrderCreateUpdateAck.WorkOrder = receivedEvent.xngOrderNumber;
+                                inputSOAP.OrderCreateUpdateAck.BusinessUnit = receivedEvent.businessUnit;
+                                // removed according to Vlad email - 2011/06/19
+                                // inputSOAP.OrderCreateUpdateAck.CircuitId = receivedEvent.circuitId;
+
+                                if (receivedEvent.businessUnit == "Home") {
+                                      if(receivedEvent.parentOrderNumber == null){
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + " SEARCHING ParentOrderNumber USING " + receivedEvent.orderNumber);
+                                                  var orderMessage = ds_ws.searchOrderMessageHomeByOrderNumber(receivedEvent.orderNumber);
+                                                  if (orderMessage != null && orderMessage.parentOrderNumber != null) {
+                                                        // - replacing the Order Number
+                                                        inputSOAP.OrderCreateUpdateAck.OrderNumber = orderMessage.parentOrderNumber;
+                                                  }
+                                                  else {
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "WARNING: PARENT ORDER NOT FOUND FOR ORDER # " + receivedEvent.orderNumber + "...");
+                                                  }
+                                            }
+                                            else {
+                                                  inputSOAP.OrderCreateUpdateAck.OrderNumber = receivedEvent.parentOrderNumber;
+                                            }
+                                      }
+
+
+                                      try {
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "INVOKING INTERFACE...");
+                                            var outputSOAP = Global.invokeInterface("ifEAI_OCUA_17122008:OCUA", "OrderCreateUpdateAck", inputSOAP);
+
+                                            if(outputSOAP != null && outputSOAP.length == 1) {
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "]" + debug + "RESULT: " + outputSOAP[0].toXML() + "...");
+                                                  resultType = "OK";
+                                            }
+                                            else {
+                                                  if(outputSOAP == null) {
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "]" + debug + "outputSoap is null....");
+                                                        resultType = "NOT_SUCCESS_EAI";
+                                                  }
+                                                  else {
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "]" + debug + "Received " + outputSOAP.length + " items from EAI");
+                                                        for(var i=0; i<outputSOAP.length; i++) {
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "]" + debug + "Received[" + i + "]: " + outputSOAP[i].toXML());
+                                                        }
+                                                        resultType = "OK";
+
+                                                        // ignoring the result of the invocation ...
+                                                        // resultType = "NOT_SUCCESS_EAI";
+                                                  }
+                                            }
+                                      }
+                                      catch (exc){
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "]" + debug + "EXCEPTION: " + exc.message);
+
+                                            if(exc.message.indexOf("XE0023") >= 0) {
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "]" + debug + "I/F getDelay = " + Global.getInterfaceDelay(this.process.processDocument.interfaceName));
+                                                  resultType = "NOT_AVAILABLE_EXPD";
+                                            }
+                                            else {
+                                                  resultType = "NOT_AVAILABLE_EAI";
+                                            }
+                                      }
+                                }
+
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "]" + debug + "resultInvoke: " + resultType + "...");
+
+
+                                if(resultType == "OK") {
+                                      ds_ws.deleteStoredEvent(this.process.processDocument.eventDocId);
+                                }
+                                else {
+                                      ds_ws.updateLastSentDateInStoredEvent(this.process.processDocument.eventDocId);
+                                }
+
+                                this.process.processDocument.resultType = resultType;
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="wait" type="scriptActivity">
+                    <guid>{026d0edc-19c1-8b7b-2b05-1b70d71ac01d}</guid>
+                    <label>Wait</label>
+                    <schedule type="sched">
+                      <duration type="dur">
+                        <methodList>
+                          <method name="cwOnDuration" type="action">
+                            <guid>{06178ac3-91b8-d5e4-954a-dae94011610e}</guid>
+                            <system>true</system>
+                            <script>return ds_ws.computeDelayForEAIGlobalProcesses(this.processDocument, this.id);</script>
+                          </method>
+                        </methodList>
+                      </duration>
+                    </schedule>
+                    <x>333.00003</x>
+                    <y>361.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <guid>{0df589b3-261b-34a4-977c-1e76c4de2744}</guid>
+                        <system>true</system>
+                        <script>return;</script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="repeat" type="repeatActivity">
+                    <element>prrev_ifEAI_OCUA_17122008.global_sendStoredOCUA_cwr1/seqActivity_start/switchActivity_anotherRecordToBeSent</element>
+                    <guid>{0a6b578b-3a2f-55ca-89e2-f77f5bf22425}</guid>
+                    <label>Repeat</label>
+                    <x>236.00003</x>
+                    <y>361.0</y>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{0cf76870-7a39-a667-698e-82465ea8a9e1}</guid>
+                <system>true</system>
+                <script><![CDATA[
+                  var found = false;
+                  var result = ds_ws.searchFirstStoredGraniteEventByType(this.process.processDocument.eventType);
+                  if(result != null) {
+                        this.process.processDocument.eventDocId = result.cwDocId;
+                        found = true;
+
+                  debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - OCUA Global Process - Found new event with id " + this.process.processDocument.eventDocId);
+
+                        }
+
+                        return (found);
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <guid>{0b17d5a9-c8a4-5f13-52e6-e5455db8b1ee}</guid>
+        <label>End</label>
+        <x>443.0</x>
+        <y>40.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0a3afea2-98c2-da7a-376f-a2316a106b41}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] End Global for OCUA...");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0b56050e-4305-33c6-ae5c-0abf762650df}</guid>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] Start Global for OCUA...");
+
+
+                this.process.processDocument.eventType  = "OCUA";
+                this.process.processDocument.interfaceName = "ifEAI_OCUA_17122008:OCUA";
+                this.process.processDocument.eventDocId = null;
+                this.process.processDocument.resultType = null;
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_ds_ws.eaiGlobalProcessDocument</document>
+  <label>Global - Send Stored OCUA Events</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_ifEAI_OCUA_17122008.global_sendStoredOCUA</process>
+  <type>Global</type>
+</process__revision>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<userInterface filenameHash="b993d7e4f1f747bf21ef1ef20cac1889" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="wDashboards.wbuOrderChartDashboard">
+  <label>WBU Order Chart Dashboard</label>
+  <metaVersion>3</metaVersion>
+  <timerDuration>1</timerDuration>
+  <variableList>
+    <variable name="countOrderGroupByOrderType" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countOrderGroupByOrderType/ui_UserInterface</valueType>
+    </variable>
+    <variable name="countOrderGroupByOrderStatus" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface</valueType>
+    </variable>
+    <variable name="countOrderGroupByServiceType" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countOrderGroupByServiceType/ui_UserInterface</valueType>
+    </variable>
+    <variable name="averageOrderCompletionTime" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.averageOrderCompletionTime/ui_UserInterface</valueType>
+    </variable>
+    <variable name="countRejectedOrdersForMissingInfo" type="leaf">
+      <initialize>true</initialize>
+      <valueType>findSql_wDashboards.countRejectedOrdersForMissingInfo/ui_UserInterface</valueType>
+    </variable>
+  </variableList>
+  <vformList>
+    <vform name="Forms" type="frmui">
+      <extends>ui_com.conceptwave.system.UserInterface/frmui_Forms</extends>
+      <overlayList>
+        <overlay name="Default" type="exov">
+          <base>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Default</base>
+          <extends>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Default</extends>
+          <label>Default</label>
+          <overrideList>
+            <override name="dashItemLayout" type="elvlt">
+              <height>100%</height>
+              <width>100%</width>
+              <elementList>
+                <element name="hRow" type="elhlt">
+                  <height>50%</height>
+                  <width>100%</width>
+                  <elementList>
+                    <element name="countOrderGroupByOrderTypeFrame" type="elovf">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuOrderChartDashboard/leaf_countOrderGroupByOrderType</variablePath>
+                          <variablePath>findSql_wDashboards.countOrderGroupByOrderType/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findSql_wDashboards.countOrderGroupByOrderType/ui_UserInterface/frmui_Forms/exov_Chart</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuOrderChartDashboard/leaf_countOrderGroupByOrderType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="countOrderGroupByOrderStatusFrame" type="elovf">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuOrderChartDashboard/leaf_countOrderGroupByOrderStatus</variablePath>
+                          <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findSql_wDashboards.countOrderGroupByOrderStatus/ui_UserInterface/frmui_Forms/exov_Chart</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuOrderChartDashboard/leaf_countOrderGroupByOrderStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="countOrderGroupByServiceTypeFrame" type="elovf">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuOrderChartDashboard/leaf_countOrderGroupByServiceType</variablePath>
+                          <variablePath>findSql_wDashboards.countOrderGroupByServiceType/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findSql_wDashboards.countOrderGroupByServiceType/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuOrderChartDashboard/leaf_countOrderGroupByServiceType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="hRow1" type="elhlt">
+                  <height>50%</height>
+                  <width>100%</width>
+                  <elementList>
+                    <element name="averageOrderCompletionTimeFrame" type="elovf">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuOrderChartDashboard/leaf_averageOrderCompletionTime</variablePath>
+                          <variablePath>findSql_wDashboards.averageOrderCompletionTime/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findSql_wDashboards.averageOrderCompletionTime/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuOrderChartDashboard/leaf_averageOrderCompletionTime</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="countRejectedOrdersForMissingInfoFrame" type="elovf">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuOrderChartDashboard/leaf_countRejectedOrdersForMissingInfo</variablePath>
+                          <variablePath>findSql_wDashboards.countRejectedOrdersForMissingInfo/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findSql_wDashboards.countRejectedOrdersForMissingInfo/ui_UserInterface/frmui_Forms/exov_Default</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_wDashboards.wbuOrderChartDashboard/leaf_countRejectedOrdersForMissingInfo</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </override>
+          </overrideList>
+        </overlay>
+      </overlayList>
+    </vform>
+  </vformList>
+  <methodList>
+    <method name="dynamicTimerDuration" type="uimthd">
+      <script><![CDATA[
+        this.cw$super_dynamicTimerDuration();
+        return 1;
+      ]]></script>
+    </method>
+    <method name="onTimer" type="action">
+      <script><![CDATA[
+        this.cw$super_onTimer();
+
+        this.countOrderGroupByOrderType.model.performOperation('select', this.countOrderGroupByOrderType.model.searchDocument);
+        this.countOrderGroupByOrderType.model.updateUI();
+
+        this.countOrderGroupByOrderStatus.model.performOperation('select', this.countOrderGroupByOrderStatus.model.searchDocument);
+        this.countOrderGroupByOrderStatus.model.updateUI();
+
+        this.countOrderGroupByServiceType.model.performOperation('select', this.countOrderGroupByServiceType.model.searchDocument);
+        this.countOrderGroupByServiceType.model.updateUI();
+
+        this.countRejectedOrdersForMissingInfo.model.performOperation('select', this.countRejectedOrdersForMissingInfo.model.searchDocument);
+        this.countRejectedOrdersForMissingInfo.model.updateUI();
+
+        this.averageOrderCompletionTime.model.performOperation('select', this.averageOrderCompletionTime.model.searchDocument);
+        this.averageOrderCompletionTime.model.updateUI();
+      ]]></script>
+    </method>
+  </methodList>
+</userInterface>

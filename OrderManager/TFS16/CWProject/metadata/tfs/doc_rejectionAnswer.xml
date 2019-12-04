@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfs.rejectionAnswer">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{53d0de47-2eb4-4ca6-8a94-6ff56c93f6fe}</guid>
+  <label>Rejection Answer</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="answerId" type="leaf">
+      <column>ANSWER_ID</column>
+      <key>1</key>
+      <table>STC_REJECT_ANSWER</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="parentQuestionId" type="leaf">
+      <column>PARENT_QUESTION_ID</column>
+      <propertyElement type="elslct">
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_REJECT_ANSWER</table>
+      <valueType>dtype_tfs.rejectionQuestionReference</valueType>
+    </variable>
+    <variable name="textQuestion" type="leaf">
+      <dontMap>true</dontMap>
+      <propertyElement type="eltxtArea">
+        <label>Question</label>
+      </propertyElement>
+      <valueType>dtype_common.string1000</valueType>
+    </variable>
+    <variable name="textAnswer" type="leaf">
+      <column>TEXT_ANSWER</column>
+      <propertyElement type="eltxtArea">
+        <label>Answer</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_REJECT_ANSWER</table>
+      <valueType>dtype_common.string1000</valueType>
+    </variable>
+    <variable name="resultAnalysisToReturn" type="leaf">
+      <column>RESPONSE_TO_RETURN</column>
+      <propertyElement type="elslct">
+        <label>Result Analysis to Return</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <table>STC_REJECT_ANSWER</table>
+      <valueType>dtype_tfs.tfrRejectionCodePickListReference</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocVisualKey" type="action">
+      <system>true</system>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+      <script>return this.textAnswer;</script>
+    </method>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        var msg = this.isStored? Global.translateText("AI0002") : Global.translateText("AI0001");
+        var msg2 = this.resultAnalysisToReturn == null ? (msg + "<br/>" + Global.translateText("AI0005")) : msg;
+
+        Global.showUserMessage(msg2);
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfs.rejectionAnswer</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defaultGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="rejectionAnswerGrid" type="elgrd">
+                    <colWidths>90px,400px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>510px</width>
+                    <elementList>
+                      <element name="rejectionQuestionHeader" type="elhdr">
+                        <label>Rejection Question</label>
+                      </element>
+                      <element name="parentQuestionId" type="elslct">
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.rejectionAnswer/ui_UserInterface/permMethod_isQuestionEditable</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <label>Rejection Question Id</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.rejectionAnswer/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.rejectionAnswer/leaf_parentQuestionId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="textAnswer" type="eltxtArea">
+                        <label>Answer</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.rejectionAnswer/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.rejectionAnswer/leaf_textAnswer</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>400px</width>
+                      </element>
+                      <element name="rejectionReturnPoint" type="elslct">
+                        <label>Result Analysis to Return</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_tfs.rejectionAnswer/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_tfs.rejectionAnswer/leaf_resultAnalysisToReturn</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="isQuestionEditable" type="permMethod">
+        <script>return (!this.model.isStored);</script>
+      </method>
+      <method name="save" type="usrActionMethod">
+        <confirmation>doc_tfs.rejectionAnswer/ui_UserInterface/uimthd_confirmOnSave</confirmation>
+        <validate>true</validate>
+        <script>this.cw$super_save();</script>
+      </method>
+      <method name="confirmOnSave" type="uimthd">
+        <script><![CDATA[
+          if(this.model.resultAnalysisToReturn != null) {
+              return true;
+          }
+
+          return "You haven't selected any value for 'Result Analysis'. Are you really sure to save?";
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

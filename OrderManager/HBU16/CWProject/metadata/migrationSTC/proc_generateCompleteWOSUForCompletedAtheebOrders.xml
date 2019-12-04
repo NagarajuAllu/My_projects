@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="migrationSTC.generateCompleteWOSUForCompletedAtheebOrders">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <schedule type="sched">
+      <day>-1</day>
+      <instance>Daily</instance>
+      <time>23:55:00</time>
+    </schedule>
+    <x>138.0</x>
+    <y>66.0</y>
+    <childList>
+      <child name="checkConfig_ATHEEB_WO_SYNC_ENABLED" type="switchActivity">
+        <label>Check Config ATHEEB_WO_SYNC_ENABLED</label>
+        <x>338.0</x>
+        <y>14.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>521.0</x>
+            <y>121.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>344.0</x>
+                <y>286.0</y>
+                <childList>
+                  <child name="generateWOSUForOrdersCompletedInGraniteButNotInOM" type="scriptActivity">
+                    <label>Generate WOSU For Orders Completed In Granite But Not In OM</label>
+                    <x>521.0</x>
+                    <y>247.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders - Start migrationSTC.generateWOSUForOrdersCompletedInGranite('IWBU')");
+
+                          migrationSTC.generateWOSUForOrdersCompletedInGranite(this.process.id,'IWBU');
+
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders - Completed migrationSTC.generateWOSUForOrdersCompletedInGranite('IWBU')");
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  // STCSUP-21 && STCSUP-24 - Check if Global process for Atheeb order is enabled
+                  var globalAtheebWOSyncEnabled = Global.getConfigVariable("GLOBAL_ATHEEB_WO_SYNC_ENABLED", "Y");
+
+                  return(globalAtheebWOSyncEnabled == "Y");
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>709.0</x>
+            <y>57.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>709.0</x>
+        <y>279.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders - END");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders - START");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Generate Complete WOSU For Completed Atheeb Orders</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <type>Global</type>
+</process>

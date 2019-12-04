@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="209defde524c15846cd45b38d941580f" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="common.getLeftPadValueFromSequence">
+  <label>Get LeftPad Value From Sequence</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="sequenceName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="padChar" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="padLength" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var seqValue = "";
+    if(sequenceName != null) {
+        seqValue = Global.nextInSequence(sequenceName);
+        if(seqValue != null) {
+            seqValue = seqValue.leftPad(padLength, padChar);
+        }
+    }
+
+    return seqValue;
+  ]]></script>
+</script>

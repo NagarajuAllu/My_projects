@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="886752a3de9fcba643916a4ade5e1d49" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.updateBundleAndOrderHeaderStatus">
+  <label>Update Bundle And OrderHeader Status</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="bundleOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+    <parameter name="lineItem" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][updateBundleAndOrderHeaderStatus] invoking on order " + bundleOrder.id + ";" + lineItem.toXML());
+
+    var elementStatusInUpperCase = lineItem.lineItemStatus.toUpperCase();
+    var bundleLineItem = ds_ws.getBundleParentOfLineItem(lineItem);
+    var bundleCompletionDate = null;
+
+    var orderHeaderNewStatus = null;
+    var bundleNewStatus = null;
+
+    var existCompleted = (checkIfExistALineItemInBundleWithThisStatus_("COMPLETED", bundleLineItem) || checkIfExistALineItemInBundleWithThisStatus_("CANCELLED", bundleLineItem));
+    var existOnHold = checkIfExistALineItemInBundleWithThisStatus_("ON-HOLD", bundleLineItem);
+    var existProcessKO = processSTC.checkIfExistProcessKOInOrchestrationTable(bundleOrder.id);
+
+    if(elementStatusInUpperCase == "IN-PROCESS" || elementStatusInUpperCase == "READY") {
+        if(existCompleted) {
+            if(existOnHold) {
+                orderHeaderNewStatus = "ON-HOLD-PC";
+                if(lineItem.elementTypeInOrderTree != 'B') {
+                    bundleNewStatus = "ON-HOLD-PC";
+                }
+            }
+            else {
+                orderHeaderNewStatus = "IN-PROGRESS";
+                if(lineItem.elementTypeInOrderTree != 'B') {
+                    bundleNewStatus = "IN-PROGRESS";
+                }
+            }
+        }
+        else {
+            if(existOnHold) {
+                orderHeaderNewStatus = "ON-HOLD";
+                if(lineItem.elementTypeInOrderTree != 'B') {
+                    bundleNewStatus = "ON-HOLD";
+                }
+            }
+            else {
+                orderHeaderNewStatus = "ORDERED";
+                if(lineItem.elementTypeInOrderTree != 'B') {
+                    bundleNewStatus = "ORDERED";
+                }
+            }
+        }
+    }
+    else if(elementStatusInUpperCase == "FAILED" && (!lineItem.alreadySentToGranite)) {
+        orderHeaderNewStatus = "FAILED_SUBMIT";
+        if(lineItem.elementTypeInOrderTree != 'B') {
+            bundleNewStatus = "FAILED_SUBMIT";
+        }
+    }
+    else if(elementStatusInUpperCase == "ON-HOLD") {
+        if(lineItem.elementTypeInOrderTree != 'B') {
+            if(existCompleted) {
+                bundleNewStatus = "ON-HOLD-PC";
+            }
+            else {
+                bundleNewStatus = "ON-HOLD";
+            }
+        }
+    }
+    else if(elementStatusInUpperCase == "COMPLETED") {
+        if(lineItem.elementTypeInOrderTree != 'B') {
+            if(ds_ws.checkThatAllLineItemsInBundleHaveOneOfTheseStatus(["COMPLETED", "CANCELLED"], bundleLineItem, bundleOrder, true)) {
+                bundleNewStatus = "COMPLETED";
+                bundleCompletionDate = new Date();
+            }
+            else {
+                if(existOnHold) {
+                    bundleNewStatus = "ON-HOLD-PC";
+                }
+                else {
+                    bundleNewStatus = "IN-PROGRESS";
+                }
+            }
+        }
+        else {
+            bundleNewStatus = "COMPLETED";
+            bundleCompletionDate = new Date();
+        }
+    }
+    else if(elementStatusInUpperCase == "CANCELLED") {
+        if(lineItem.elementTypeInOrderTree != 'B') {
+            if(ds_ws.checkThatAllLineItemsInBundleHaveOneOfTheseStatus(["CANCELLED"], bundleLineItem, bundleOrder, false)) {
+                bundleNewStatus = "CANCELLED";
+                bundleCompletionDate = new Date();
+            }
+            else {
+                if(ds_ws.checkThatAllLineItemsInBundleHaveOneOfTheseStatus(["COMPLETED", "CANCELLED"], bundleLineItem, bundleOrder, true)) {
+                    bundleNewStatus = "COMPLETED";
+                    bundleCompletionDate = new Date();
+                }
+                else{
+                    bundleNewStatus = "IN-PROGRESS";
+                }
+            }
+        }
+        else {
+            bundleNewStatus = "CANCELLED";
+            bundleCompletionDate = new Date();
+        }
+    }
+
+    if(bundleNewStatus == null && lineItem.elementTypeInOrderTree != 'B') {
+        // checking if the previous status was "Hold"
+        if(bundleLineItem.lineItemStatus.toUpperCase() == "ON-HOLD" || bundleLineItem.lineItemStatus.toUpperCase() == "ON-HOLD-PC") {
+            if(existOnHold) {
+                if(existCompleted) {
+                    bundleNewStatus = "ON-HOLD-PC";
+                }
+                else {
+                    bundleNewStatus = "ON-HOLD";
+                }
+            }
+            else {
+                if(existCompleted) {
+                    bundleNewStatus = "IN-PROGRESS";
+                }
+                else {
+                    bundleNewStatus = "ORDERED";
+                }
+            }
+        }
+    }
+
+    // checking if there are components in KO
+    if(existProcessKO && bundleNewStatus != "FAILED" && bundleNewStatus != "FAILED_SUBMIT") {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][updateBundleAndOrderHeaderStatus] found process in KO for order " + bundleOrder.id + " and bundleNewStatus not FAILED (" + bundleNewStatus + ")");
+
+        if(lineItem.elementTypeInOrderTree == 'B' && elementStatusInUpperCase == "FAILED") {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][updateBundleAndOrderHeaderStatus] lineItemIsBundle and already 'FAILED'");
+            bundleNewStatus = "FAILED";
+        }
+        else {
+            bundleNewStatus = "FAILED_SUBMIT";
+        }
+        orderHeaderNewStatus = "FAILED_SUBMIT";
+    }
+
+    // finally update bundle status!
+    if(bundleNewStatus != null) {
+        bundleLineItem.lineItemStatus = bundleNewStatus;
+        if(bundleCompletionDate != null && bundleLineItem.completionDate == null) {
+            bundleLineItem.completionDate = bundleCompletionDate;
+        }
+
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][updateBundleAndOrderHeaderStatus] bundleLineItem.lineItemStatus = " + bundleNewStatus);
+        bundleLineItem.save();
+    }
+    else {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][updateBundleAndOrderHeaderStatus] bundleLineItem.lineItemStatus not changed!");
+    }
+
+    var orderCompletionDate = null;
+    if(elementStatusInUpperCase == "COMPLETED") {
+        if(ds_ws.checkThatAllLineItemsInOrderHaveOneOfTheseStatus(["COMPLETED", "CANCELLED"], bundleOrder, true)) {
+            orderHeaderNewStatus = "COMPLETED";
+            orderCompletionDate = new Date();
+        }
+        else{
+            var existBundleOnHold = checkIfExistABundleWithThisStatus_("ON-HOLD");
+            var existBundleOnHoldPC = checkIfExistABundleWithThisStatus_("ON-HOLD-PC");
+            if(existBundleOnHold || existBundleOnHoldPC) {
+                orderHeaderNewStatus = "ON-HOLD-PC";
+            }
+            else {
+                orderHeaderNewStatus = "IN-PROGRESS";
+            }
+        }
+    }
+    else if(elementStatusInUpperCase == "CANCELLED") {
+        if(ds_ws.checkThatAllLineItemsInOrderHaveOneOfTheseStatus(["CANCELLED"], bundleOrder, false)) {
+            orderHeaderNewStatus = "CANCELLED";
+            orderCompletionDate = new Date();
+        }
+        else{
+            if(ds_ws.checkThatAllLineItemsInOrderHaveOneOfTheseStatus(["COMPLETED", "CANCELLED"], bundleOrder, true)) {
+                orderHeaderNewStatus = "COMPLETED";
+                orderCompletionDate = new Date();
+            }
+            else {
+                orderHeaderNewStatus = "IN-PROGRESS";
+            }
+        }
+    }
+    else if(elementStatusInUpperCase == "ON-HOLD") {
+         if(existCompleted) {
+            orderHeaderNewStatus = "ON-HOLD-PC";
+        }
+        else {
+            orderHeaderNewStatus = "ON-HOLD";
+        }
+    }
+
+    if(orderHeaderNewStatus == null) {
+        if(bundleOrder.orderHeader.orderStatus.toUpperCase() == "ON-HOLD" || bundleOrder.orderHeader.orderStatus.toUpperCase() == "ON-HOLD-PC") {
+            var existBundleOnHold = checkIfExistABundleWithThisStatus_("ON-HOLD");
+            var existBundleOnHoldPC = checkIfExistABundleWithThisStatus_("ON-HOLD-PC");
+            var existCompleted = checkIfExistABundleWithThisStatus_("COMPLETED");
+            if(existBundleOnHold || existBundleOnHoldPC) {
+                if(existCompleted) {
+                    orderHeaderNewStatus = "ON-HOLD-PC";
+                }
+                else {
+                    orderHeaderNewStatus = "ON-HOLD";
+                }
+            }
+            else {
+                if(existCompleted) {
+                    orderHeaderNewStatus = "IN-PROGRESS";
+                }
+                else {
+                    orderHeaderNewStatus = "ORDERED";
+                }
+            }
+        }
+    }
+
+    // checking if there are components in KO
+    if(existProcessKO && orderHeaderNewStatus != "FAILED_SUBMIT") {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][updateBundleAndOrderHeaderStatus] found process in KO for order " + bundleOrder.id + " and orderHeaderNewStatus not FAILED_SUBMIT");
+        orderHeaderNewStatus = "FAILED_SUBMIT";
+    }
+
+
+    // finally update header status
+    if(orderHeaderNewStatus != null) {
+        bundleOrder.orderHeader.orderStatus = orderHeaderNewStatus;
+        if(orderCompletionDate != null) {
+            bundleOrder.orderHeader.completionDate = orderCompletionDate;
+        }
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][updateBundleAndOrderHeaderStatus] bundleOrder.orderHeader.orderStatus = " + orderHeaderNewStatus);
+
+        bundleOrder.save();
+    }
+    else {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "][updateBundleAndOrderHeaderStatus] bundleOrder.orderHeader.orderStatus not changed!");
+    }
+
+
+
+
+
+
+
+
+
+    function checkIfExistALineItemInBundleWithThisStatus_(lineItemExpectedStatus, lineItemParent) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] checkIfExistALineItemInBundleWithThisStatus_([" + lineItemExpectedStatus + "]," + lineItemParent + ")");
+        var found = false;
+        var orchestrationRecordForChildLineItems = processSTC.findRecordsInOrchTabByOrderId_ParentId(bundleOrder.id, lineItemParent.id);
+        if(orchestrationRecordForChildLineItems != null && orchestrationRecordForChildLineItems.length > 0) {
+            for(var i=0; i<orchestrationRecordForChildLineItems.length && !found; i++) {
+                var orchestrationRecord = orchestrationRecordForChildLineItems[i];
+                var lineItem = Document.readDoc("ds_ws:lineItemDocument", orchestrationRecordForChildLineItems[i].cwDocId);
+                if(orchestrationRecord.provisionable) {
+                    found = (lineItem.lineItemStatus.toUpperCase() == lineItemExpectedStatus.toUpperCase());
+                }
+
+                if(!found) {
+                    // loop for children of the record
+                    found = checkIfExistALineItemInBundleWithThisStatus_(lineItemExpectedStatus, lineItem);
+                }
+            }
+        }
+
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] checkIfExistALineItemInBundleWithThisStatus_([" + lineItemExpectedStatus + "]," + lineItemParent + "): " + found);
+        return found;
+    }
+
+    function checkIfExistABundleWithThisStatus_(lineItemExpectedStatus) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] checkIfExistABundleWithThisStatus_([" + lineItemExpectedStatus + "])");
+        var found = false;
+        for(var i=0; i<bundleOrder.bundles.length && !found; i++) {
+            found = checkIfExistALineItemInBundleWithThisStatus_(lineItemExpectedStatus, bundleOrder.bundles[i].bundle);
+        }
+
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] checkIfExistABundleWithThisStatus_([" + lineItemExpectedStatus + "]): " + found);
+        return found;
+    }
+  ]]></script>
+</script>

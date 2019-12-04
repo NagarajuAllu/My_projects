@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="migrationSTC.generateCompleteWOSUForCompletedAtheebOrders_4h">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <schedule type="sched">
+      <duration type="dur">
+        <methodList>
+          <method name="cwOnDuration" type="action">
+            <system>true</system>
+            <script><![CDATA[
+              var sleepTime = Global.getConfigVariable("GLOBAL_ATHEEB_ORDERS_SLEEP_TIME_MINUTES", 30);
+              var sleepTimeNumber = new Number(sleepTime);
+              if(sleepTimeNumber != Number.NAN) {
+                 sleepTimeNumber = sleepTimeNumber*60;
+              }
+              else {
+                 sleepTimeNumber = 30*60;
+              }
+
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.id + "] - generateCompleteWOSUForCompletedAtheebOrders_4h - SleepTime = " + sleepTimeNumber);
+              return sleepTimeNumber;
+            ]]></script>
+          </method>
+        </methodList>
+      </duration>
+    </schedule>
+    <x>143.0</x>
+    <y>40.0</y>
+    <childList>
+      <child name="checkConfig_ATHEEB_WO_SYNC_ENABLED" type="switchActivity">
+        <label>Check Config ATHEEB_WO_SYNC_ENABLED</label>
+        <x>352.0</x>
+        <y>24.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>368.0</x>
+            <y>291.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>358.0</x>
+                <y>291.0</y>
+                <childList>
+                  <child name="generateWOSUForOrdersCompletedInGraniteButNotInOM" type="scriptActivity">
+                    <label>Generate WOSU For Orders Completed In Granite But Not In OM</label>
+                    <x>521.0</x>
+                    <y>235.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders_4h - Start migrationSTC.generateWOSUForOrdersCompletedInGranite('IWBU')");
+
+                          migrationSTC.generateWOSUForOrdersCompletedInGranite(this.process.id,'IWBU');
+
+                          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders_4h - Completed migrationSTC.generateWOSUForOrdersCompletedInGranite('IWBU')");
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  // STCSUP-21 && STCSUP-24 - Check if Global process for Atheeb order is enabled
+                  var globalAtheebWOSyncEnabled = Global.getConfigVariable("GLOBAL_ATHEEB_WO_SYNC_ENABLED", "Y");
+
+                  return(globalAtheebWOSyncEnabled == "Y");
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>703.0</x>
+            <y>37.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="end" type="completeActivity">
+        <label>End</label>
+        <x>703.0</x>
+        <y>289.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders_4h - END");
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders_4h - START");
+
+          var sleepAWhile = false;
+          do {
+              var now = new Date();
+
+          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders_4h - NOW: " + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS());
+
+              if(now.getHours() == 23 && now.getMinutes() >= 50) {
+          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders_4h - SLEEPING FOR 1 MINUTE");
+                  processSTC.timeDelay(60);
+                  sleepAWhile = true;
+              }
+              else {
+                  sleepAWhile = false;
+              }
+          }
+          while(sleepAWhile);
+
+          debugPrintln("[" + ds_ws.common_currentDateAsStringDDMMYYYYHH24MISS() + "][" + this.process.id + "] - generateCompleteWOSUForCompletedAtheebOrders_4h - Finished Sleeping, so continuing");
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Generate Complete WOSU For Completed Atheeb Orders - Run every 4 hours</label>
+  <metaVersion>22</metaVersion>
+  <priority>8</priority>
+  <type>Global</type>
+</process>

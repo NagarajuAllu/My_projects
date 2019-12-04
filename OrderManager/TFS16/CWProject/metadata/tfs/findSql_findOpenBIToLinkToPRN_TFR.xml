@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="tfs.findOpenBIToLinkToPRN_TFR">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <getOutput>doc_tfs.STC_BI</getOutput>
+  <input>doc_tfs.biSearchDoc</input>
+  <label>Find Open BI To Link To PRN or TFR</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_tfs.STC_BI</output>
+  <type>SQL</type>
+  <vDetailForm>doc_tfs.STC_BI/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>0</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select {+*+}
+          from stc_bi bi
+         where 1=1
+          {[5] and bi.bi_status != ?}
+          {[6] and bi.customer_name = ?}
+          {[9] and bi.creation_date >= ?}
+          {[10] and bi.creation_date <= ?}
+          and bi_id not in (select '-1'
+                              from dual
+                            {[1]
+                              union
+                             select p.bi_id
+                               from stc_bi_relationship p
+                              where p.source_prn_id = ?}
+                            {[3]
+                              union
+                             select p.bi_id
+                               from stc_bi_relationship p
+                              where 1=1
+                                and p.source_tfr_id = ?})
+        order by bi_id, creation_date
+      ]]></script>
+    </method>
+    <method name="cwOnFinderSQLGet" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select {+*+}
+          from stc_bi bi
+         where bi_id = ?
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_tfs.STC_BI</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_tfs.biSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_tfs.STC_BI/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findBIResultTable" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="biId" type="elfld">
+                        <label>BI ID</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_biId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="biStatus" type="elfld">
+                        <label>BI Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_biStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ringName" type="elfld">
+                        <label>Ring Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_ringName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="siteName" type="elfld">
+                        <label>Site Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_siteName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="networkType" type="elfld">
+                        <label>Network Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_networkType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="networkStatus" type="elfld">
+                        <label>Network Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_networkStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="code" type="elfld">
+                        <label>Code</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_code</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="details" type="elfld">
+                        <label>Details</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_details</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="category" type="elfld">
+                        <label>Category</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_category</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="mop1Status" type="elfld">
+                        <label>MoP 1 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_mop1Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="mop2Status" type="elfld">
+                        <label>MoP 2 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_mop2Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="mop3Status" type="elfld">
+                        <label>MoP 3 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_mop3Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="mopNumber" type="elfld">
+                        <label>MoP Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_mopNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="mopIssueDate" type="eldatetime">
+                        <label>MoP Issue Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_mopIssueDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="mopEstimatedDate" type="eldatetime">
+                        <label>MoP Estimated Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_mopEstimatedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="mopImplStatus" type="elfld">
+                        <label>MoP Impl Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_mopImplStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="mopImplComplDate" type="eldatetime">
+                        <label>MoP Impl Compl Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_mopImplComplDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="mopImplEstimDate" type="eldatetime">
+                        <label>MoP Impl Estim Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_mopImplEstimDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="lastFwdDept" type="elfld">
+                        <label>Last Fwd Dept</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_lastFwdDept</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="lastFwdEng" type="elfld">
+                        <label>Last Fwd Eng</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_lastFwdEng</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="lastFwdDate" type="eldatetime">
+                        <label>Last Fwd Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_lastFwdDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="createdBy" type="elfld">
+                        <label>Created By</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_createdBy</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDate" type="eldatetime">
+                        <label>Creation Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_creationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="approvedSolution" type="elfld">
+                        <label>Approved Solution</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_approvedSolution</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sow1Status" type="elfld">
+                        <label>SoW 1 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_sow1Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sow2Status" type="elfld">
+                        <label>SoW 2 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_sow2Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sow3Status" type="elfld">
+                        <label>SoW 3 Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_sow3Status</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sowNumber" type="elfld">
+                        <label>SoW Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_sowNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sowIssueDate" type="eldatetime">
+                        <label>SoW Issue Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_sowIssueDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sowEstimateDate" type="eldatetime">
+                        <label>SoW Estimated Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_sowEstimateDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="contractor1" type="elfld">
+                        <label>Contractor 1</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_contractor1</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="contractor2" type="elfld">
+                        <label>Contractor 2</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_contractor2</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="contractor3" type="elfld">
+                        <label>Contractor 3</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_contractor3</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ddfANote" type="elfld">
+                        <label>DDF A Note</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_ddfANote</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="ddfZNote" type="elfld">
+                        <label>DDF Z Note</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_ddfZNote</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="completionDate" type="eldatetime">
+                        <label>Completion Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_completionDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="patForecastDate" type="eldatetime">
+                        <label>PAT Forecast Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_patForecastDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="patActualDate" type="eldatetime">
+                        <label>PAT Actual Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_patActualDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="customerName" type="elfld">
+                        <label>Customer Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_customerName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="mopDesignStatus" type="elfld">
+                        <label>MoP Design Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_mopDesignStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="areaRegion" type="elfld">
+                        <label>Area\Region</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_areaRegion</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sdhCategory" type="elfld">
+                        <label>SDH Category</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_sdhCategory</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sdhDescription" type="elfld">
+                        <label>SDH Description</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_sdhDescription</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="slot" type="elfld">
+                        <label>Slot</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_slot</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="sdhVendor" type="elfld">
+                        <label>SDH Vendor</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_sdhVendor</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="jobEstimatedDate" type="eldatetime">
+                        <label>Job Estimated Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_jobEstimatedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="biMaterialStatus" type="elfld">
+                        <label>BI Material Status</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_biMaterialStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="secondaryOwner" type="elfld">
+                        <label>Secondary Owner</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_secondaryOwner</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="buInitiator" type="elfld">
+                        <label>Business Unit Initiator</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_buInitiator</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="currentUserId" type="elfld">
+                        <label>Current User</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_currentUserId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="materials" type="elfld">
+                        <label>List Of Materials</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfs.STC_BI/leaf_materials</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="linkToBIMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/usrActionMethod_linkToSourceObject</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Link to Source Object</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/permMethod_biTeamPrivilege</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="cwfAdd" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/usrActionMethod_createNewBI</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/MenuIconAdd.gif</icon>
+                    <label>Create New BI</label>
+                    <tooltip>Add</tooltip>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/uivar_model</variablePath>
+                        <variablePath>mdl_com.conceptwave.system.Model/permMethod_addPerm</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="createNewBIMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/usrActionMethod_createNewBI</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/MenuIconAdd.gif</icon>
+                    <label>Create New BI</label>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/permMethod_biTeamPrivilege</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="biTeamPrivilege" type="permMethod">
+        <privilegesList>
+          <privileges type="ppriv">
+            <privilege>STC_BIPriv</privilege>
+            <task>true</task>
+          </privileges>
+        </privilegesList>
+        <privilegesType>SOME</privilegesType>
+        <script>return $psCondition;</script>
+      </method>
+      <method name="linkToSourceObject" type="usrActionMethod">
+        <confirmation>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/uimthd_linkToSourceObject_confirm</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          if(this.result.selected != null && this.result.selected.length > 0) {
+
+              for(var i=0; i<this.result.selected.length; i++) {
+                  var biRelationship = new Document("tfs.STC_BI_RELATIONSHIP");
+                  biRelationship.biId = this.result.selected[i].biId;
+                  biRelationship.prnId = (this.model.searchDocument.prnId != null ? this.model.searchDocument.prnId : "-1");
+                  biRelationship.tfrId = (this.model.searchDocument.tfrId != null ? this.model.searchDocument.tfrId : "-1");
+                  biRelationship.save();
+              }
+
+              this.model.search();
+
+              return Global.showUserMessage(Global.translateText("AI0009"));
+          }
+          else {
+              Global.throwException("UU0115");
+          }
+        ]]></script>
+      </method>
+      <method name="createNewBI" type="usrActionMethod">
+        <dialogHeight>768</dialogHeight>
+        <dialogObject>ui_tfs.dialogWithCloseControl</dialogObject>
+        <dialogWidth>1024</dialogWidth>
+        <showInPopup>true</showInPopup>
+        <validate>true</validate>
+        <script><![CDATA[
+          var biDocument = tfs.createNewBIOrder(this.model.searchDocument.prnId, this.model.searchDocument.tfrId, Global.getUserId());
+
+          return biDocument;
+        ]]></script>
+      </method>
+      <method name="linkToSourceObject_confirm" type="uimthd">
+        <script><![CDATA[return "AW0017";]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="findOpenBIToLinkToPRN_TFRView" type="findVView">
+      <inputOverlay>doc_tfs.biSearchDoc/ui_UserInterface/frmui_Forms/vform_searchForLink</inputOverlay>
+      <label>Find Open BI To Link</label>
+      <outputOverlay>findSql_tfs.findOpenBIToLinkToPRN_TFR/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findSql>

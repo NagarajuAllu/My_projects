@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="966ee606f2498a50336acb625da88136" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.receiveSiteInfoUpdate_cwr1">
+  <activity name="start" type="seqActivity">
+    <guid>{0dc553f4-a2b0-ba7c-b233-f2fd1bcef0ad}</guid>
+    <label>Start</label>
+    <x>323.0</x>
+    <y>60.70117</y>
+    <childList>
+      <child name="receiveSiteInfoUpdate" type="opActivity">
+        <element>iface_wgws.ifExpediter_GRANITE/oper_operation_SiteInformationUpdate</element>
+        <guid>{0dd5c161-b304-2eca-5fa3-c74b828874a9}</guid>
+        <label>Receive SiteInformationUpdate</label>
+        <participant>part_stcw.GraniteInputInterface</participant>
+        <x>285.65656</x>
+        <y>160.40234</y>
+        <methodList>
+          <method name="cwOnProcActAfter" type="action">
+            <category>script</category>
+            <guid>{03cea444-ad9b-1219-75cf-2111fee1ddf5}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.updateHistoryEvent (this, "graniteReceiveSiteInfoUpdate");
+
+              stcw.storeGenericProcessMessage (this.process.id, "GRANITE_REQUEST", this.activityData);
+
+              stcw.storeSiteInfoUpdateData(this.process.id, this.activityData.siteID, this.activityData.siteName);
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{06c5053d-75ae-2e7a-d4f6-0e6355f74d01}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="done" type="scriptActivity">
+        <guid>{03ea4aa6-e003-f866-7caf-77f7bd860339}</guid>
+        <label>Done</label>
+        <x>329.0</x>
+        <y>276.70117</y>
+      </child>
+      <child name="GraniteInputInterface" type="participantActivity">
+        <guid>{0c99c191-47b3-b42a-6b98-cc8ad4d2b322}</guid>
+        <participant>part_stcw.GraniteInputInterface</participant>
+        <x>8.0</x>
+        <y>166.0</y>
+      </child>
+    </childList>
+  </activity>
+  <curRevision>true</curRevision>
+  <label>Receive SiteInfoUpdate</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_stcw.receiveSiteInfoUpdate</process>
+  <type>Sub-flow</type>
+</process__revision>

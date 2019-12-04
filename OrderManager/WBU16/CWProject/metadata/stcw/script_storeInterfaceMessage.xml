@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.storeInterfaceMessage">
+  <label>Store Interface Message</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="interfaceFolder" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="interfaceMessage" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <valueType>nmeta_com.conceptwave.system.Object</valueType>
+  <script><![CDATA[
+    if (interfaceFolder == null) {
+          Global.logDebug ("storeInterfaceMessage (): interfaceFolder is required");
+          return (null);
+    }
+
+    var messageText = "";
+    if (interfaceMessage != null)
+          messageText = interfaceMessage.toXML ();
+
+    interfaceFolder.interfaceData.responseData = messageText;
+    return (interfaceFolder);
+  ]]></script>
+</script>

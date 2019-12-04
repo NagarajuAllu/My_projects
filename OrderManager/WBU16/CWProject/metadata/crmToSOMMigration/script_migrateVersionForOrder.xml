@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="crmToSOMMigration.migrateVersionForOrder">
+  <label>Migrate Version For Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="crmOrder" type="rifp">
+      <type>order_stcw.wholesaleOrder</type>
+    </parameter>
+    <parameter name="versionName" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="versionNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var migratedOrder = null;
+
+    var debug = " migrateVersion[" + crmOrder.header.orderNumber + "," + versionName + "] ";
+
+    var versionPositionInOrder = crmToSOMMigration.getVersionPositionInOrder(crmOrder, versionName);
+    var versionInOrder = crmOrder.versions[versionPositionInOrder];
+
+    // found "INITIAL" version
+    var inputRequestInterface = crmToSOMMigration.getInterfacePositionInVersion(crmOrder, versionPositionInOrder, "CRM_ORD_REQUEST");
+
+    if(inputRequestInterface == null) {
+    debugPrintln(stcc.getSysdateForLog() + debug + "Unable to find interface 'CRM_ORD_REQUEST' in version " + versionName);
+    }
+    else {
+        var isSubmit = (versionName == "INITIAL");
+        var receivedFlow = stcw.readStructure(versionInOrder.interfaces[inputRequestInterface].interfaceData.responseData, (isSubmit ? "crmToSOMMigration.submitOrder" : "crmToSOMMigration.updateOrder"));
+
+        if(receivedFlow != null) {
+    debugPrintln(stcc.getSysdateForLog() + debug + "ReceivedFlow " + receivedFlow.toXML());
+            migratedOrder = crmToSOMMigration.mapCRMOrderIntoBundleOrder(receivedFlow, crmOrder.orderInstance.creationDate, versionName, versionNumber);
+    debugPrintln(stcc.getSysdateForLog() + debug + "MigratedOrder " + migratedOrder.toXML());
+
+            var orderAckInterface = crmToSOMMigration.getInterfacePositionInVersion(crmOrder, versionPositionInOrder, (isSubmit ? "GR_SUB_ORDER" : "GR_UPD_ORDER"));
+            if(orderAckInterface != null) {
+                var receivedResponse = stcw.readStructure(versionInOrder.interfaces[orderAckInterface].interfaceData.responseData, (isSubmit ? "grws.submitOrderResponse" : "grws.updateOrderResponse"));
+                if(receivedResponse != null) {
+                    if(migratedOrder.parentLineItems[0].parentLineItem.serviceNumber != receivedResponse.result.AssetNumber) {
+                        migratedOrder.parentLineItems[0].parentLineItem.oldServiceNumber = migratedOrder.parentLineItems[0].parentLineItem.serviceNumber;
+                        migratedOrder.parentLineItems[0].parentLineItem.serviceNumber = receivedResponse.result.AssetNumber;
+                    }
+                }
+            }
+    debugPrintln(stcc.getSysdateForLog() + debug + "MigratedOrder after granite response: " + migratedOrder.toXML());
+        }
+        else {
+    debugPrintln(stcc.getSysdateForLog() + debug + "Not able to parse the ReceivedFlow");
+        }
+    }
+
+    return migratedOrder;
+  ]]></script>
+</script>

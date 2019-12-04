@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="b8d9f9c7219216d19641c2c125f789d8" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.archiveOrder">
+  <guid>{051e8f7b-db20-2d2b-5186-9e7f13665f8f}</guid>
+  <label>Archive Order</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="givenOrder" type="rifp">
+      <type>order_com.conceptwave.system.Order</type>
+    </parameter>
+    <parameter name="isError" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    givenOrder.header.orderNumber = givenOrder.header.orderNumber + "_" + stcc.getSysdateInYYYYMMDD();
+
+    if(isError) {
+          givenOrder.header.orderNumber = givenOrder.header.orderNumber + "_ErrGranite";
+          givenOrder.header.orderComments = (givenOrder.header.orderComments == null ? "" : givenOrder.header.orderComments + "\n") +
+                                                            stcc.getSysdateInYYYYMMDD() + " - Order AutoArchived Due Granite Error";
+          givenOrder.header.orderStatus = "REJECTED";
+    }
+    else {
+          givenOrder.header.orderComments = (givenOrder.header.orderComments == null ? "" : givenOrder.header.orderComments + "\n") +
+                                                            stcc.getSysdateInYYYYMMDD() + " - Order Archived by UserID: " + Global.getUserId();
+          givenOrder.header.orderStatus = "ARCHIVED";
+    }
+    givenOrder.save();
+  ]]></script>
+</script>

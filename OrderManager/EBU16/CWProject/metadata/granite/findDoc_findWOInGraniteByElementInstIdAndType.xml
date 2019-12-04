@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="granite.findWOInGraniteByElementInstIdAndType">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_granite.search_WOElementType_InstId</input>
+  <label>Find WO In Granite By ElementInstId And Type</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_granite.WORK_ORDER_INST</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_granite.WORK_ORDER_INST/leaf_WO_INST_ID</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <vDetailForm>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>1</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_granite.search_WOElementType_InstId</document>
+      <mappedDocument>doc_granite.WORK_ORDER_INST</mappedDocument>
+      <mappedPath>doc_granite.WORK_ORDER_INST/leaf_ELEMENT_INST_ID</mappedPath>
+      <operation>equal</operation>
+      <path>doc_granite.search_WOElementType_InstId/leaf_elementInstId</path>
+    </search>
+    <search type="sitem">
+      <document>doc_granite.search_WOElementType_InstId</document>
+      <mappedDocument>doc_granite.WORK_ORDER_INST</mappedDocument>
+      <mappedPath>doc_granite.WORK_ORDER_INST/leaf_ELEMENT_TYPE</mappedPath>
+      <operation>equal</operation>
+      <path>doc_granite.search_WOElementType_InstId/leaf_elementType</path>
+    </search>
+  </searchList>
+</findDoc>

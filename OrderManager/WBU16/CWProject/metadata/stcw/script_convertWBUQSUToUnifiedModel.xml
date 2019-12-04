@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.convertWBUQSUToUnifiedModel">
+  <label>Convert WBU QSU To Unified Model</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="inputWBUQSU" type="rifp">
+      <type>dstruct_wgws.updateQuoteStatus</type>
+    </parameter>
+    <parameter name="parentQuoteNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="lineItemIdentifier" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="isVAS" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var wosuUnifiedModel = new DataStructure("stcw.wosuUnifiedModel");
+    wosuUnifiedModel.comOrderNumber = parentQuoteNumber;
+    wosuUnifiedModel.orderStatus = inputWBUQSU.workOrderStatus;
+    wosuUnifiedModel.businessUnit = inputWBUQSU.businessUnit;
+    wosuUnifiedModel.reservationNumber = inputWBUQSU.reservationNumber;
+    wosuUnifiedModel.feasibilityStatus = inputWBUQSU.feasibilityStatus;
+    wosuUnifiedModel.reservationDays = inputWBUQSU.reservationDays;
+    wosuUnifiedModel.actualImplementationDays = inputWBUQSU.actualImplementationDays;
+    wosuUnifiedModel.plannedFeasibleDays = inputWBUQSU.plannedFeasibleDays;
+    wosuUnifiedModel.lineItemIdentifier = lineItemIdentifier;
+    wosuUnifiedModel.lineItemStatus = (inputWBUQSU.feasibilityStatus != null ? inputWBUQSU.feasibilityStatus : inputWBUQSU.workOrderStatus);
+    wosuUnifiedModel.assetNumber = inputWBUQSU.reservationNumber;
+    wosuUnifiedModel.niNumber = null;
+    wosuUnifiedModel.systemDesignation = null;
+    wosuUnifiedModel.workOrderName = inputWBUQSU.quoteNumber;
+    wosuUnifiedModel.workOrderStatus = inputWBUQSU.workOrderStatus;
+    wosuUnifiedModel.workOrderRemarks = inputWBUQSU.comments;
+    wosuUnifiedModel.workOrderProblemDescription = null;
+    wosuUnifiedModel.taskNumber = null;
+    wosuUnifiedModel.taskName = null;
+    wosuUnifiedModel.taskAllocatedTime = null;
+    wosuUnifiedModel.taskDescription = null;
+    wosuUnifiedModel.taskOperation = null;
+    wosuUnifiedModel.taskPriority = null;
+    wosuUnifiedModel.taskServiceStatus = null;
+    wosuUnifiedModel.taskStatusCode = null;
+    wosuUnifiedModel.taskRemarks = null;
+    wosuUnifiedModel.workOrderStage = null;
+
+
+    return wosuUnifiedModel;
+  ]]></script>
+</script>

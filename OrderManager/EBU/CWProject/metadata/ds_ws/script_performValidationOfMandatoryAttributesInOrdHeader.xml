@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="c76ff3e7f554f513304073c6a9d8ec5d" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.performValidationOfMandatoryAttributesInOrdHeader">
+  <label>Perform Validation Of Mandatory Attributes In OrderHeader</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="orderHeader" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var mandatoryAttributes = ds_ws.getOrderHeaderMandatoryAttribsByOrderType(orderHeader.orderType);
+
+    var validationErrors = null;
+
+    if(mandatoryAttributes != null) {
+        var foundWithValue = false;
+        for(var i=0; i<mandatoryAttributes.length; i++) {
+            foundWithValue = false;
+
+            var attributeValue = orderHeader[mandatoryAttributes[i]];
+
+            if(attributeValue == null) {
+                if(validationErrors == null) {
+                    validationErrors = new Array();
+                }
+
+                // AE0039: Missing Mandatory Attribute: {0}
+                validationErrors.push("AE0039");
+                validationErrors.push(Global.translateText("AE0039", null, [mandatoryAttributes[i]]));
+            }
+        }
+    }
+
+    if(validationErrors != null) {
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "] performValidationOfMandatoryAttributesInOrdHeader (" +orderHeader.orderNumber + "): Found errors [" + validationErrors + "]");
+        failureArray = ds_ws.addValidationErrorsToFailureArrayForSub_UpdInWD(validationErrors, orderHeader.orderNumber, failureArray, isSubmit);
+    }
+
+    return failureArray;
+  ]]></script>
+</script>

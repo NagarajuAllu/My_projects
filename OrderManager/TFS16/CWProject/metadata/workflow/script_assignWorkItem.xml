@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="workflow.assignWorkItem">
+  <label>Assign WorkItem</label>
+  <metaVersion>25</metaVersion>
+  <overrides>script_cwf_pm.assignWorkItem</overrides>
+  <parameterList>
+    <parameter name="wdoc" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="oldUser" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="operation" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="action" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if (wdoc.userId != null) {
+        Global.runRTRule("cwf_pm:assignItemTrigger",wdoc);
+
+        // assign userId to the object
+        var order = Order.getOrderById(wdoc.OrderId);
+
+        if(wdoc.objectType == "PRNR") {
+            order.prnrDocument.currentUserId = wdoc.userId;
+        }
+        else if(wdoc.objectType == "PRN") {
+            order.prnDocument.currentUserId = wdoc.userId;
+        }
+        else if(wdoc.objectType == "TFR") {
+            order.tfrDocument.currentUserId = wdoc.userId;
+        }
+        else if(wdoc.objectType == "BI") {
+            order.biDocument.currentUserId = wdoc.userId;
+        }
+        order.save();
+
+        // email notification
+        var finderAdditionalInfo = new Finder('workflow.processAdditionalInfoFinder');
+        finderAdditionalInfo.searchDocument.cwDocID = wdoc.SenderId;
+
+        var resultListAdditionalInfo = finderAdditionalInfo.search();
+        if(resultListAdditionalInfo != null && resultListAdditionalInfo.length > 0) {
+            if(resultListAdditionalInfo[0].emailNotification == true) {
+                common.sendEmailToUserForWLRecord(wdoc.userId, wdoc.Operation, wdoc.objectType, wdoc.objectName);
+            }
+        }
+
+        if(wdoc.objectType != "REJECTION ACTIVITY"){
+            workflow.createNewTrackingRecord(wdoc.id, wdoc.OrderId, wdoc.objectId, wdoc.objectType, wdoc.Operation, new Date(), wdoc.userId, wdoc.SenderId);
+        }
+
+        var userType = workflow.getUserTypeForOperation(wdoc.Operation);
+        workflow.setUserInUsersForOrder(wdoc.OrderId, wdoc.orderItemId, userType, wdoc.userId);
+    }
+  ]]></script>
+</script>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process__revision filenameHash="9ab63df05ead5fcf83eec58188782eb2" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.enterQuoteInGranite_cwr3">
+  <activity name="start" type="seqActivity">
+    <guid>{0af1d28e-229f-e211-96ff-5fb361e0eb9b}</guid>
+    <label>Start</label>
+    <x>172.3781</x>
+    <y>30.0</y>
+    <childList>
+      <child name="sendQuoteToGranite" type="scriptActivity">
+        <guid>{00f6e7b8-56f8-7b3b-fea5-a7b728898967}</guid>
+        <label>Send Quote To Granite</label>
+        <x>169.36443</x>
+        <y>122.0</y>
+        <childList>
+          <child name="compensate" type="compensateActivity">
+            <compensatesList>
+              <compensates>8</compensates>
+            </compensatesList>
+            <guid>{002858e7-bf0b-6748-2766-e7fcd162bdd1}</guid>
+            <label>Compensate</label>
+            <x>185.0</x>
+            <y>225.0</y>
+            <childList>
+              <child name="retry" type="scriptActivity">
+                <guid>{0d2232e3-1a9b-48aa-d5af-b2b9115e2faf}</guid>
+                <label>Retry</label>
+                <x>227.05827</x>
+                <y>255.4541</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <guid>{0bbe818f-056e-52b6-73ff-be0505c3ac20}</guid>
+                    <system>true</system>
+                    <script><![CDATA[
+                      debugPrintln(stcc.getSysdateForLog() + "["+ process.id + "] - Sending ValidateQuote To Granite: Retrying ...");
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <guid>{0e0222ba-c7fb-e87b-8a13-c987bba04ba3}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              var debugHeader = "[" + this.process.id + "] SendQuoteToGranite - ";
+
+              var order = this.process.processOrder;
+              var processDocument = this.process.processDocument;
+              processDocument.exceptionType = null;
+
+              try {
+                    // extracting data must be sent to Granite
+                    var crmInput = findCrmInput_ (order);
+                    var request = new DataStructure("grws:validateQuote");
+
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "crmInput = '" + crmInput.toXML() + "'");
+
+                          stcw.map_crmQuote_graniteQuote (request, crmInput, order.header.orderRowItemId, order.header.quoteNumber, order.header.reservationNumber);
+
+                          var activityName = "GR_VALIDATE_QUOTE";
+                          stcw.ensureInterfaceFolder (order, activityName);
+                          order.save ();
+
+                          // sending data to Granite
+                          var response = null;
+
+                          if(order.header.skipSendToGranite == null || order.header.skipSendToGranite == "N") {
+                                // check if the quote must be repushed or not
+                                if(stcw.checkIfSendQuoteToGraniteMustBeSkipped(order, this.process.id)) {
+                                      order.header.skipSendToGranite = "Y";
+                                }
+                          }
+
+                          if(order.header.skipSendToGranite == null || order.header.skipSendToGranite == "N") {
+                                // sending data to Granite
+                                response = stcw.sendValidateQuoteToGranite(request, this.process.id);
+
+                                // managing response
+                                rpts.updateHistoryEvent (this);
+                          }
+                          else {
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "skipping because order.header.skipSendToGranite = '" + order.header.skipSendToGranite + "'");
+
+                                // skipping send order to granite ... and generating fake response ...
+                                var response = new DataStructure("grws:validateQuoteResponse");
+                                response.result.BusinessUnit = "Wholesale";
+                                response.result.QuoteNumber = order.header.quoteNumber;
+                                response.result.Status.Status = "SUCCESS";
+                                response.result.WorkOrderStatus = "New";
+                          }
+
+                          var interfaceFolder = stcw.storeInterfaceMessage (stcw.findLastInterfaceFolder (order, activityName), response);
+                          if (interfaceFolder != null)
+                                this.process.processOrderItemId = interfaceFolder.interfaceData.id;
+
+                          if (response == null) {
+                                processDocument.exceptionType = "Interface";
+                          }
+                          else {
+                                processDocument.ackResult = response.result.Status.Status;
+                                processDocument.errorText = stcc.limitStringLengthToCRMValue(response.result.Status.ErrorDescription);
+                                 processDocument.activityName = activityName;
+                          }
+
+
+                          order.save ();
+                    }
+                    catch(exc) {
+              debugPrintln(stcc.getSysdateForLog() + debugHeader + "Catched Exception " + exc.message);
+                          processDocument.exceptionType = "Application";
+                    }
+
+                    //
+                    //  findCrmInput_
+                    //
+                    function findCrmInput_ (order) {
+
+                          var crmInterfaceFolder = stcw.findLastInterfaceFolder (order, "CRM_QUOTE_VALIDATION");
+                          if (crmInterfaceFolder == null) {
+                                Global.logDebug ("failed to get crmInterfaceFolder [CRM_QUOTE_VALIDATION]");
+                                return (null);
+                          }
+
+                          return (stcw.readStructure (crmInterfaceFolder.interfaceData.responseData , "wsws:quoteValidation"));
+
+                    }            // f i n d C r m I n p u t _
+            ]]></script>
+          </method>
+          <method name="cwOnProcActCond" type="action">
+            <category>cond</category>
+            <guid>{0ad48af5-63f3-6f72-74d7-3f6ba61ba8f3}</guid>
+            <system>true</system>
+            <script><![CDATA[
+              rpts.createHistoryEvent (this);
+              return (true);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="applicationErrored" type="switchActivity">
+        <guid>{04ab33a7-c928-f2c0-10f8-888e79a87aea}</guid>
+        <label>Application Errored?</label>
+        <x>116.33757</x>
+        <y>248.10352</y>
+        <childList>
+          <child name="interfaceError" type="caseActivity">
+            <guid>{042e2214-bf08-4802-b3e1-66b53da9c3b8}</guid>
+            <label>Interface Error</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="interfaceExcp" type="exceptActivity">
+                <element>excp_cwf_pm.interfaceExcp</element>
+                <guid>{0305a291-adce-faa1-0197-0ba3b69e7974}</guid>
+                <label>External interface error</label>
+                <x>224.72072</x>
+                <y>359.50586</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{09a69eaf-5c38-dafb-8689-993b3904410d}</guid>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.exceptionType == "Interface");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="ApplicationError" type="caseActivity">
+            <guid>{091960ad-a467-503e-c06f-d3240f9c5cca}</guid>
+            <label>Application Error</label>
+            <x>0.0</x>
+            <y>0.0</y>
+            <childList>
+              <child name="applExcp" type="exceptActivity">
+                <element>excp_stcw.applicationError</element>
+                <guid>{089b6935-3cbb-b57e-4aad-1aa768c74f52}</guid>
+                <label>Application error</label>
+                <x>116.33757</x>
+                <y>366.85645</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <guid>{09a69eaf-5c38-dafb-8689-993b3904410d}</guid>
+                <system>true</system>
+                <script><![CDATA[return (this.process.processDocument.exceptionType == "Application");]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <guid>{0294debb-8796-d613-a067-1a289014348a}</guid>
+            <label>No</label>
+            <x>138.0</x>
+            <y>357.0</y>
+            <childList>
+              <child name="done" type="scriptActivity">
+                <guid>{01476f09-9c86-815c-7804-294643e5bed2}</guid>
+                <label>Done</label>
+                <x>30.0</x>
+                <y>374.20703</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var processDocument = this.process.processDocument;
+                      processDocument.interfaceRetryCount = 0;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <guid>{0a729539-7f34-c0e3-6090-3ef447b49553}</guid>
+        <system>true</system>
+        <script><![CDATA[
+          var processDocument = this.process.processDocument;
+          // processDocument.interfaceRetryCount = 0;
+          processDocument.interOperationName = "grws:XngQuoteService/validateQuote";
+          this.process.processDocument.rollbackNumber = "8";
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <label>Enter Quote In Granite</label>
+  <metaVersion>3</metaVersion>
+  <priority>8</priority>
+  <process>proc_stcw.enterQuoteInGranite</process>
+  <revision>3</revision>
+  <type>Sub-flow</type>
+</process__revision>

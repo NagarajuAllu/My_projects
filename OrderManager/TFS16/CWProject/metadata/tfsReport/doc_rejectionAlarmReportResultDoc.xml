@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="tfsReport.rejectionAlarmReportResultDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{3a65c3fa-f8fb-4d17-9893-5fa73d24b4f0}</guid>
+  <label>Rejection Alarm Report Result Doc</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="activityTrackingId" type="leaf">
+      <key>1</key>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="tfrId" type="leaf">
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+    <variable name="tfrNumber" type="leaf">
+      <valueType>dtype_common.string30</valueType>
+    </variable>
+    <variable name="tfrStatus" type="leaf">
+      <valueType>dtype_common.string100</valueType>
+    </variable>
+    <variable name="niNumber" type="leaf">
+      <valueType>dtype_common.string9</valueType>
+    </variable>
+    <variable name="rejectionCode" type="leaf">
+      <valueType>dtype_tfs.tfrRejectionCodePickListReference</valueType>
+    </variable>
+    <variable name="whenRejected" type="leaf">
+      <valueType>dtype_common.tfsDateTime</valueType>
+    </variable>
+    <variable name="tfrRemarks" type="leaf">
+      <valueType>dtype_common.string4000</valueType>
+    </variable>
+    <variable name="xcUserId" type="leaf">
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="currentUserId" type="leaf">
+      <valueType>dtype_up_priv.userReference</valueType>
+    </variable>
+    <variable name="currentDepartment" type="leaf">
+      <valueType>dtype_up_priv.department</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_tfsReport.rejectionAlarmReportResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

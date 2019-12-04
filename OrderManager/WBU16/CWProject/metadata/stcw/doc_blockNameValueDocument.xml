@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcw.blockNameValueDocument">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{293f0944-bfe8-4ac9-92d3-d3f0494748c6}</guid>
+  <label>Block Name Value</label>
+  <metaVersion>25</metaVersion>
+  <variableList>
+    <variable name="name" type="leaf">
+      <column>NAME</column>
+      <table>stcw_block_name_value</table>
+      <valueType>dtype_stcw.string100</valueType>
+    </variable>
+    <variable name="cwDocStamp" type="leaf">
+      <column>CWDOCSTAMP</column>
+      <table>stcw_block_name_value</table>
+      <valueType>dtype_cwf.cwDocStamp</valueType>
+    </variable>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>stcw_block_name_value</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="lastUpdatedDate" type="leaf">
+      <column>LASTUPDATEDDATE</column>
+      <table>stcw_block_name_value</table>
+      <valueType>dtype_cwf.lastUpdatedDate</valueType>
+    </variable>
+    <variable name="cwOrderCreationDate" type="leaf">
+      <column>CWORDERCREATIONDATE</column>
+      <table>stcw_block_name_value</table>
+      <valueType>dtype_cwf.cwOrderCreationDate</valueType>
+    </variable>
+    <variable name="cwOrderId" type="leaf">
+      <column>CWORDERID</column>
+      <table>stcw_block_name_value</table>
+      <valueType>dtype_cwf.cwOrderId</valueType>
+    </variable>
+    <variable name="cwParentId" type="leaf">
+      <column>CWPARENTID</column>
+      <table>stcw_block_name_value</table>
+      <valueType>dtype_cwf.cwParentId</valueType>
+    </variable>
+    <variable name="updatedBy" type="leaf">
+      <column>UPDATEDBY</column>
+      <table>stcw_block_name_value</table>
+      <valueType>dtype_cwf.updatedBy</valueType>
+    </variable>
+    <variable name="parentElementId" type="leaf">
+      <column>PARENTELEMENTID</column>
+      <table>stcw_block_name_value</table>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocVisualKey" type="action">
+      <system>true</system>
+      <valueType>dtype_com.conceptwave.system.String</valueType>
+      <script><![CDATA[
+        var name = null;
+        name = (document.name != null ? document.name : "Not Defined");
+        return name;
+      ]]></script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <script><![CDATA[
+        this.cw$super_deletePerm($psCondition);
+        return false;
+      ]]></script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <script><![CDATA[
+        this.cw$super_editablePerm($psCondition);
+        return false;
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.blockNameValueDocument</valueType>
+      </variable>
+      <variable name="blockValueDocumentArray" type="leaf">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_stcw.blockValue</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="blockNameValueDocumentHeader" type="elhdr">
+                    <label>Block Name Value: Main Information</label>
+                  </element>
+                  <element name="blockNameValueDocumentGrid" type="elgrd">
+                    <colWidths>110px,200px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <elementList>
+                      <element name="name" type="elfld">
+                        <label>Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.blockNameValueDocument/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.blockNameValueDocument/leaf_name</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                  <element name="blockValueDocuments" type="eltabl">
+                    <canReOrder type="varPath">
+                      <variablePathList>
+                        <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                      </variablePathList>
+                    </canReOrder>
+                    <editable type="varPath">
+                      <variablePathList>
+                        <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                      </variablePathList>
+                    </editable>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>doc_stcw.blockNameValueDocument/ui_UserInterface/leaf_blockValueDocumentArray</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <width>390px</width>
+                    <elementList>
+                      <element name="blockValue" type="elfld">
+                        <canFilter>false</canFilter>
+                        <canSort>false</canSort>
+                        <disablePaste>true</disablePaste>
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <labeAlign>center</labeAlign>
+                        <label>Values</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.blockNameValueDocument/ui_UserInterface/leaf_blockValueDocumentArray</variablePath>
+                            <variablePath>doc_stcw.blockValue/leaf_blockValue</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>100%</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="onAutoSave" type="action">
+        <parameterList>
+          <parameter name="skipValidation" type="rifp">
+            <description>&lt;html&gt;&#xd;
+  &lt;head&gt;&#xd;
+&#xd;
+  &lt;/head&gt;&#xd;
+  &lt;body&gt;&#xd;
+    &lt;p style=&quot;margin-top: 0&quot;&gt;&#xd;
+      true if the onValidate() has been already invoked for the action&#xd;
+    &lt;/p&gt;&#xd;
+  &lt;/body&gt;&#xd;
+&lt;/html&gt;&#xd;
+</description>
+            <type>dtype_com.conceptwave.system.Boolean</type>
+          </parameter>
+        </parameterList>
+        <script><![CDATA[
+          if (!this.isValid && Global.isAutosaveEnabled() && !this.model.readonly && this.model.isSavable()) {
+            return "UU0256:YN";
+          }
+          return null;
+        ]]></script>
+      </method>
+      <method name="onInit" type="action">
+        <valueType>nmeta_com.conceptwave.system.Object</valueType>
+        <script><![CDATA[
+          var res = this.cw$super_onInit();
+          // loading values
+          this.blockValueDocumentArray = stcw.getBlockValuesAsArray(this.model.id);
+
+          return res;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

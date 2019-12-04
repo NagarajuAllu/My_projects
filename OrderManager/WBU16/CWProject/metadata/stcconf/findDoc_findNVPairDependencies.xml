@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="stcconf.findNVPairDependencies">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_stcconf.search_ValidationMap_ServiceType_OrderTypeDoc</input>
+  <label>Find NV Pair Dependencies</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_stcconf.STCW_NVPAIR_DEPENDENCIES</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_orderType</path>
+    </sort>
+    <sort type="stitem">
+      <path>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_serviceType</path>
+    </sort>
+    <sort type="stitem">
+      <path>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_sourceNVPair</path>
+    </sort>
+  </sortList>
+  <type>document</type>
+  <vDetailForm>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>10</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_stcconf.search_ValidationMap_ServiceType_OrderTypeDoc</document>
+      <mappedDocument>doc_stcconf.STCW_NVPAIR_DEPENDENCIES</mappedDocument>
+      <mappedPath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_orderType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcconf.search_ValidationMap_ServiceType_OrderTypeDoc/leaf_orderType</path>
+    </search>
+    <search type="sitem">
+      <document>doc_stcconf.search_ValidationMap_ServiceType_OrderTypeDoc</document>
+      <mappedDocument>doc_stcconf.STCW_NVPAIR_DEPENDENCIES</mappedDocument>
+      <mappedPath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_serviceType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcconf.search_ValidationMap_ServiceType_OrderTypeDoc/leaf_serviceType</path>
+    </search>
+  </searchList>
+  <methodList>
+    <method name="addPerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesList>
+        <privileges type="ppriv">
+          <privilege>stcwConfigMgmt</privilege>
+        </privileges>
+        <privileges type="ppriv">
+          <privilege>UPAdmin</privilege>
+        </privileges>
+      </privilegesList>
+      <privilegesType>SOME</privilegesType>
+      <script>return $psCondition;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_stcconf.STCW_NVPAIR_DEPENDENCIES</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_stcconf.search_ValidationMap_ServiceType_OrderTypeDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="findNVPairDependenciesResultTable1" type="eltabl">
+                    <doubleClickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                      </variablePathList>
+                    </doubleClickMethod>
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findDoc_stcconf.findNVPairDependencies/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="orderType" type="elslct">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_stcconf.findNVPairDependencies/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <label>Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_stcconf.findNVPairDependencies/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="sourceNVPair" type="elfld">
+                        <label>Source NVPair</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_stcconf.findNVPairDependencies/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_sourceNVPair</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="sourceNVPairValue" type="elfld">
+                        <label>Source NVPair Value</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_stcconf.findNVPairDependencies/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_sourceNVPairValue</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>300px</width>
+                      </element>
+                      <element name="dependNVPair" type="elfld">
+                        <label>Dependent NVPair</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findDoc_stcconf.findNVPairDependencies/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_stcconf.STCW_NVPAIR_DEPENDENCIES/leaf_dependNVPair</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_stcconf.findNVPairDependencies/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findDoc_stcconf.findNVPairDependencies/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfCopy" type="eldel"/>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="findMNVPairDependenciesView" type="findVView">
+      <inputOverlay>doc_stcconf.search_ValidationMap_ServiceType_OrderTypeDoc/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Find NV Pair Dependencies</label>
+      <outputOverlay>findDoc_stcconf.findNVPairDependencies/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findDoc>

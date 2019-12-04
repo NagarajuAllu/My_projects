@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.generateCancelFeasibilityChangeOrderFromExisting">
+  <label>Generate Cancel Feasibility For Change Order From Existing One</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="inputDS" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="existingOrder" type="rifp">
+      <type>order_ds_ws.bundleOrderSTC</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var clonedBundleOrder = null;
+
+    var receivedLineItemIdentifier = null;
+
+    // extracting the lineItemIdentifier of the service lineITem
+    if(inputDS.message.ParentLineItems != null && inputDS.message.ParentLineItems.length > 0) {
+        receivedLineItemIdentifier = inputDS.message.ParentLineItems[0].ParentLineItemIdentifer;
+    }
+
+    if(receivedLineItemIdentifier != null && existingOrder != null) {
+        // cloning it to generate internally the new order
+        clonedBundleOrder = existingOrder.copyOrder(false);
+
+        // mapping the received header data into the cloned order
+        inputDS.message.mapTo(clonedBundleOrder.orderHeader);
+        // setting the other info
+        clonedBundleOrder.orderHeader.receivedDate = new Date();
+        clonedBundleOrder.orderHeader.orderStatus = "Cancel";
+        clonedBundleOrder.orderHeader.completionDate = null;
+
+        // changing the main info in all the lineItems
+        for(var i=0; i<clonedBundleOrder.bundles.length; i++) {
+            var bundleContainer = clonedBundleOrder.bundles[i];
+            resetBasicInfoForLineItem_(bundleContainer.bundle);
+
+            // resetting the main info of the PLI
+            bundleContainer.bundle.provisioningFlag = "PROVISIONING";
+            bundleContainer.bundle.lineItemStatus = "Hold";
+            bundleContainer.bundle.completionDate = null;
+
+
+            if(bundleContainer.circuits != null) {
+                for(var j=0; j<bundleContainer.circuits.length; j++) {
+                    var circuitContainer = bundleContainer.circuits[j];
+                    resetBasicInfoForLineItem_(circuitContainer.circuit);
+
+                    // checking if the lineItem referred in the received DS
+                    if(circuitContainer.circuit.lineItemIdentifier == receivedLineItemIdentifier) {
+                        // updating the info
+                        updateLineItemWithReceivedData_(circuitContainer.circuit, inputDS.message.ParentLineItems[0]);
+                        // updating the NV pairs removing the existing and adding the new ones
+                        updateLineItemNVPairs_(circuitContainer, circuitContainer.circuit.elementTypeInOrderTree, circuitContainer.circuit.id, inputDS.message.ParentLineItems[0].ParentLineItemNameValueParameters)
+                    }
+
+                    if(circuitContainer.services != null) {
+                        for(var k=0; k<circuitContainer.services.length; k++) {
+                            var serviceContainer = circuitContainer.services[k];
+                            resetBasicInfoForLineItem_(serviceContainer.service);
+
+                            if(serviceContainer.subServices != null) {
+                                for(var l=0; l<serviceContainer.subServices.length; l++) {
+                                    var subServiceContainer = serviceContainer.subServices[l];
+                                    resetBasicInfoForLineItem_(subServiceContainer.subService);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return clonedBundleOrder;
+
+
+
+
+
+    function resetBasicInfoForLineItem_(lineItemDoc) {
+        lineItemDoc.action = 'C';
+        lineItemDoc.isSubmit = false;
+        lineItemDoc.isCancel = true;
+        lineItemDoc.feasibilityType = "ENQUIRY";
+    }
+
+    function updateLineItemWithReceivedData_(lineItemDoc, lineItemInDS) {
+        lineItemInDS.mapTo(lineItemDoc);
+
+        // resetting to default values
+        lineItemDoc.lineItemStatus = "Hold";
+        lineItemDoc.workOrderNumber = null;
+        lineItemDoc.alreadySentToGranite = false;
+        lineItemDoc.alreadyReceivedCancel = false;
+        lineItemDoc.sentAnytimeToGranite = false;
+        lineItemDoc.requestedActionIsA = false;
+        lineItemDoc.onHeld = false;
+        lineItemDoc.parkProvisioning = false;
+        lineItemDoc.resumeProvisioning = false;
+        lineItemDoc.completionDate = null;
+        lineItemDoc.isSubmit = false;
+        lineItemDoc.isCancel = true;
+    }
+
+    function updateLineItemNVPairs_(lineItemContainer, elementTypeInOrderTree, parentLineItemId, nvPairsInDS) {
+        var containerNVPName = null;
+        var nvpName = null;
+
+        if(elementTypeInOrderTree == "C") {
+            containerNVPName = "circuitParameters";
+            nvpName = "circuitParameter";
+
+            if(lineItemContainer.circuitParameters != null) {
+                var countCircuitParameters = lineItemContainer.circuitParameters.length - 1;
+                for(var i=countCircuitParameters; i>=0; i--) {
+                    lineItemContainer.circuitParameters[i].circuitParameter.deleteItem();
+                }
+            }
+        }
+        else if(elementTypeInOrderTree == "S") {
+            containerNVPName = "serviceParameters";
+            nvpName = "serviceParameter";
+
+            if(lineItemContainer.serviceParameters != null) {
+                var countServiceParameters = lineItemContainer.serviceParameters.length - 1;
+                for(var i=countServiceParameters; i>=0; i--) {
+                    lineItemContainer.serviceParameters[i].serviceParameter.deleteItem();
+                }
+            }
+        }
+        else if(elementTypeInOrderTree == "T") {
+            containerNVPName = "subServiceParameters";
+            nvpName = "subServiceParameter";
+
+            if(lineItemContainer.subServiceParameters != null) {
+                var countSubServiceParameters = lineItemContainer.subServiceParameters.length - 1;
+                for(var i=countSubServiceParameters; i>= 0; i--) {
+                    lineItemContainer.subServiceParameters[i].subServiceParameter.deleteItem();
+                }
+            }
+        }
+
+        if(nvPairsInDS != null && containerNVPName != null) {
+            if(nvPairsInDS.NameValue != null) {
+                for(var i=0; i<nvPairsInDS.NameValue.length; i++) {
+                    var nvDoc = clonedBundleOrder.createOrderItemByPath(lineItemContainer.orderDataPath + "." + containerNVPName + "." + (i+1) + "." + nvpName);
+                    nvPairsInDS.NameValue[i].mapTo(nvDoc);
+                    nvDoc.parentElementId = parentLineItemId;
+                }
+            }
+        }
+    }
+  ]]></script>
+</script>

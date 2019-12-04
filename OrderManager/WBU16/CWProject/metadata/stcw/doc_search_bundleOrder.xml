@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcw.search_bundleOrder">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{4eac4738-c5f2-4e83-9d2b-39b5babfd663}</guid>
+  <label>Search Element: BundleOrder</label>
+  <metaVersion>25</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="orderNumber" type="leaf">
+      <propertyElement type="elfld">
+        <label>CRM Order #</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="orderType" type="leaf">
+      <propertyElement type="elslct">
+        <label>Order Type</label>
+        <sorted>false</sorted>
+      </propertyElement>
+      <valueType>dtype_wsws.orderType</valueType>
+    </variable>
+    <variable name="orderStatus" type="leaf">
+      <propertyElement type="elfld">
+        <label>Order Status</label>
+      </propertyElement>
+      <valueType>dtype_stcw.OrderStatus</valueType>
+    </variable>
+    <variable name="accountNumber" type="leaf">
+      <propertyElement type="elfld">
+        <label>Account #</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="reservationNumber" type="leaf">
+      <propertyElement type="elfld">
+        <label>Reservation Number [%]</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string50</valueType>
+    </variable>
+    <variable name="receivedDateMin" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>dd/MM/yyyy HH:mm</displayFormat>
+        <label>Received Date &gt;=</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.DateTime</valueType>
+    </variable>
+    <variable name="receivedDateMax" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>dd/MM/yyyy HH:mm</displayFormat>
+        <label>Received Date &lt;=</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.DateTime</valueType>
+    </variable>
+    <variable name="creationDateMin" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>dd/MM/yyyy HH:mm</displayFormat>
+        <label>Creation Date &gt;=</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.DateTime</valueType>
+    </variable>
+    <variable name="creationDateMax" type="leaf">
+      <propertyElement type="eldatetime">
+        <displayFormat>dd/MM/yyyy HH:mm</displayFormat>
+        <label>Creation Date &lt;=</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.DateTime</valueType>
+    </variable>
+    <variable name="isMigrated" type="leaf">
+      <propertyElement type="elchk">
+        <label>Is Migrated</label>
+      </propertyElement>
+      <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+    </variable>
+    <variable name="serviceType" type="leaf">
+      <valueType>dtype_stcw.string25</valueType>
+    </variable>
+    <variable name="serviceNumber" type="leaf">
+      <propertyElement type="elfld">
+        <label>Service Number</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string255</valueType>
+    </variable>
+    <variable name="workOrderNumber" type="leaf">
+      <propertyElement type="elfld">
+        <label>WorkOrder Number</label>
+      </propertyElement>
+      <valueType>dtype_stcw.string20</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwLeafInitAction$isMigrated" type="laction">
+      <path>doc_stcw.search_bundleOrder/leaf_isMigrated</path>
+      <type>initializer</type>
+      <valueType>doc_stcw.search_bundleOrder/leaf_isMigrated</valueType>
+      <script>return false;</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.search_bundleOrder</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="VerticalLayout" type="elvlt">
+                <elementList>
+                  <element name="search_orderMessageHeader" type="elhdr">
+                    <label>Input Form</label>
+                    <style>CwFOT</style>
+                  </element>
+                  <element name="search_orderMessageHeader1" type="elhdr">
+                    <label>Order Information</label>
+                  </element>
+                  <element name="GridLayout" type="elgrd">
+                    <colWidths>195px,195px,195px,195px,195px</colWidths>
+                    <labeAlign>center</labeAlign>
+                    <numOfCols>5</numOfCols>
+                    <style>fittedSimpleBorder</style>
+                    <width>1000px</width>
+                    <elementList>
+                      <element name="orderNumber" type="elfld">
+                        <label>COM Order # [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_orderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderType" type="elslct">
+                        <label>Order Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderStatus" type="elfld">
+                        <label>Order Status [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_orderStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="accountNumber" type="elfld">
+                        <label>Account # [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_accountNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="reservationNumber" type="elfld">
+                        <label>Reservation Number [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_reservationNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="receivedDateMin" type="eldatetime">
+                        <label>Received Date &gt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_receivedDateMin</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="receivedDateMax" type="eldatetime">
+                        <label>Received Date &lt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_receivedDateMax</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDateMin" type="eldatetime">
+                        <label>Creation Date &gt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_creationDateMin</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="creationDateMax" type="eldatetime">
+                        <label>Creation Date &lt;=</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_creationDateMax</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <label>Service Type [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="serviceNumber" type="elfld">
+                        <label>Service Number [%]</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_serviceNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="workOrderNumber" type="elfld">
+                        <label>WorkOrder Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_workOrderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="isMigrated" type="elchk">
+                        <label>Is Migrated</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.search_bundleOrder/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.search_bundleOrder/leaf_isMigrated</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

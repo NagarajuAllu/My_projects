@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="6c294e8179b24662d3341554ee8fad54" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.map_graniteSiteInfoUpdate_CRMSiteInfoUpdate">
+  <guid>{059744cc-2766-24f8-2521-49d8a98174c0}</guid>
+  <label>(map) map_graniteSiteInfoUpdate_CRMSiteInfoUpdate</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="output" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="input" type="rifp">
+      <mandatory>true</mandatory>
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Boolean</valueType>
+  <script><![CDATA[
+    if (output == undefined || output == null || output.metadataType != "siSIUpdate:processRequest_el") {
+          Global.logDebug ("map_graniteSiteInfoUpdate_CRMSiteInfoUpdate - nonexistant/wrong output: " + output);
+          return (false);
+    }
+
+    if (input == undefined || input == null || input.metadataType != "wgws:siteInformationUpdate") {
+          Global.logDebug ("map_graniteSiteInfoUpdate_CRMSiteInfoUpdate - nonexistant/wrong input: " + input);
+          return (false);
+    }
+
+    var outputRequest = output.Request;
+
+    outputRequest.BusinessUnit = input.businessUnit;
+    outputRequest.CcliCode     = input.ccliCode;
+    outputRequest.City         = input.city;
+    outputRequest.CityCode     = input.cityCode;
+    outputRequest.Country      = input.country;
+    outputRequest.District     = input.district;
+    outputRequest.DistrictCode = input.districtCode;
+    outputRequest.Region       = input.region;
+    outputRequest.SiteID       = input.siteID;
+    outputRequest.SiteName     = input.siteName;
+    outputRequest.SiteType     = input.siteType;
+    outputRequest.status       = input.status;
+
+    //      Added during STC Training; to be eanbled only when EAI will add the same info
+          outputRequest.CommercialSiteName = input.commercialSiteName;
+          outputRequest.Latitude           = input.latitude;
+          outputRequest.Longitude          = input.longitude;
+
+          return (true);
+  ]]></script>
+</script>

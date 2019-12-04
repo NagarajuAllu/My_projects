@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.setStatusOfLineItemsWithActionDForFChangeOrder">
+  <label>Set Status Of LineItems With Action D For F for Change Order</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="bundleContainer" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var finalStatus = "FEASIBLE";
+    var finalCompletionDate = new Date();
+
+    if(bundleContainer != null) {
+        if(bundleContainer.services != null) {
+            for(var i=0; i<bundleContainer.services.length; i++) {
+                var serviceContainer = bundleContainer.services[i];
+                if(serviceContainer.serviceLineItem.action == 'D' && serviceContainer.serviceLineItem.provisioningBU == "W") {
+    debugPrintln("Update Service " + serviceContainer.serviceLineItem.id);
+                    serviceContainer.serviceLineItem.lineItemStatus = finalStatus;
+                    serviceContainer.serviceLineItem.completionDate = finalCompletionDate;
+                }
+
+                if(serviceContainer.subServices != null) {
+                    for(var j=0; j<serviceContainer.subServices.length; j++) {
+                        var subServiceContainer = serviceContainer.subServices[j];
+                        if(subServiceContainer.subServiceLineItem.action == 'D' && subServiceContainer.subServiceLineItem.provisioningBU == "W") {
+    debugPrintln("Update SubService " + subServiceContainer.subServiceLineItem.id);
+
+                            subServiceContainer.subServiceLineItem.lineItemStatus = finalStatus;
+                            subServiceContainer.subServiceLineItem.completionDate = finalCompletionDate;
+                        }
+
+                        if(subServiceContainer.subSubServices != null) {
+                            for(var k=0; k<subServiceContainer.subSubServices.length; k++) {
+                                var subSubServiceContainer = subServiceContainer.subSubServices[k];
+                                if(subSubServiceContainer.subSubServiceLineItem.action == 'D' && subSubServiceContainer.subSubServiceLineItem.provisioningBU == "W") {
+    debugPrintln("Update SubSubService " + subSubServiceContainer.subSubServiceLineItem.id);
+                                    subSubServiceContainer.subSubServiceLineItem.lineItemStatus = finalStatus;
+                                    subSubServiceContainer.subSubServiceLineItem.completionDate = finalCompletionDate;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+  ]]></script>
+</script>

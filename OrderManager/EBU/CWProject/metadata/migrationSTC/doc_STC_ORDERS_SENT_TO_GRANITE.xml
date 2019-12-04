@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="fc177861e9b641cda10c5d6962ba0a69" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="migrationSTC.STC_ORDERS_SENT_TO_GRANITE">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{6f2083a7-5c72-42ed-b496-415149a388e0}</guid>
+  <label>STC_ORDERS_SENT_TO_GRANITE</label>
+  <metaVersion>4</metaVersion>
+  <variableList>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <table>STC_ORDERS_SENT_TO_GRANITE</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+    <variable name="orderNumber" type="leaf">
+      <column>ORDER_NUMBER</column>
+      <table>STC_ORDERS_SENT_TO_GRANITE</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="operation" type="leaf">
+      <column>OPERATION</column>
+      <table>STC_ORDERS_SENT_TO_GRANITE</table>
+      <valueType>dtype_ds_ws.string256</valueType>
+    </variable>
+    <variable name="sentOrderStatus" type="leaf">
+      <column>SENT_ORDER_STATUS</column>
+      <table>STC_ORDERS_SENT_TO_GRANITE</table>
+      <valueType>dtype_ds_ws.string50</valueType>
+    </variable>
+    <variable name="creationTime" type="leaf">
+      <column>CREATION_TIME</column>
+      <table>STC_ORDERS_SENT_TO_GRANITE</table>
+      <valueType>dtype_com.conceptwave.system.DateTime</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_migrationSTC.STC_ORDERS_SENT_TO_GRANITE</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

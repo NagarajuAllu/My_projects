@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcc.genericSearchDocWithId">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{00759281-2576-7060-ea3b-97cbfaecd858}</guid>
+  <label>Generic Search Doc With Id</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="docId" type="leaf">
+      <label>Document ID</label>
+      <propertyElement type="elfld">
+        <label>Document ID</label>
+      </propertyElement>
+      <valueType>dtype_cwf.docId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcc.genericSearchDocWithId</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Generated" type="vform">
+            <label>Generated</label>
+            <root name="genericSearchDocWithIdGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="genericSearchDocWithIdGrid" type="elgrd">
+                  <colWidths>160,160,160,160</colWidths>
+                  <numOfCols>4</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>640px</width>
+                  <elementList>
+                    <element name="genericSearchDocWithIdHeader" type="elhdr">
+                      <label>Generic Search Doc With Id</label>
+                    </element>
+                    <element name="docId" type="elfld">
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcc.genericSearchDocWithId/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcc.genericSearchDocWithId/leaf_docId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.getRecordInOrchTabByItemIdentifier_OrdNum_CwOrdId">
+  <label>Get Record In Orchestration Table By LineItemIdentifier &amp; OrderNumber &amp; CwOrderId</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="orderNumber" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="cwOrderId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="lineItemIdentifier" type="rifp">
+      <type>dtype_stcw.string255</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("stcw.STCW_ORDER_ORCHESTRATION");
+    inputDoc.orderNumber = orderNumber;
+    inputDoc.cwOrderId = cwOrderId;
+    inputDoc.lineItemIdentifier = lineItemIdentifier;
+
+    var orchestrationRecord = null;
+
+    var resultList = Finder.runFinder("stcw.findSTCW_ORDER_ORCHESTRATION", "select", inputDoc);
+
+    if(resultList != null && resultList.length > 0) {
+        orchestrationRecord = resultList[0];
+    }
+
+    return orchestrationRecord;
+  ]]></script>
+</script>

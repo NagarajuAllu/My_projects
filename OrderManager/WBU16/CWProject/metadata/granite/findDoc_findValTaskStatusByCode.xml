@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc name="granite.findValTaskStatusByCode">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_granite.valTaskStatusSearchDoc</input>
+  <label>Find ValTaskStatus By Code</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_granite.VAL_TASK_STATUS</output>
+  <type>document</type>
+  <volatility>5</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_granite.valTaskStatusSearchDoc</document>
+      <mappedDocument>doc_granite.VAL_TASK_STATUS</mappedDocument>
+      <mappedPath>doc_granite.VAL_TASK_STATUS/leaf_STAT_CODE</mappedPath>
+      <operation>equal</operation>
+      <path>doc_granite.valTaskStatusSearchDoc/leaf_STAT_CODE</path>
+    </search>
+  </searchList>
+</findDoc>

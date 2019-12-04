@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.findRecordsInOrchTabByOrder_Type_Parent_Seq">
+  <label>Find Records in Orchestration Table By OrderId &amp; ElementType &amp; ParentId &amp; Sequence</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="cwOrderId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="elementType" type="rifp">
+      <type>dtype_stcw.elementTypeInOrderTree</type>
+    </parameter>
+    <parameter name="cwParentObjectId" type="rifp">
+      <type>dtype_cwf.docId</type>
+    </parameter>
+    <parameter name="sequence" type="rifp">
+      <type>dtype_com.conceptwave.system.Integer</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("stcw.STCW_ORDER_ORCHESTRATION");
+    inputDoc.cwOrderId = cwOrderId;
+    inputDoc.elementTypeInOrchestration = elementType;
+    inputDoc.cwParentObjectId = cwParentObjectId;
+    inputDoc.sequence = sequence;
+
+    var orchestrationRecordList = Finder.runFinder("stcw.findSTCW_ORDER_ORCHESTRATION", "select", inputDoc);
+
+    return orchestrationRecordList;
+  ]]></script>
+</script>

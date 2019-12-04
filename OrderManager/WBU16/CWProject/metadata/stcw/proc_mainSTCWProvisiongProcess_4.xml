@@ -1,0 +1,1271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process name="stcw.mainSTCWProvisiongProcess_4">
+  <activity name="start" type="seqActivity">
+    <label>Start</label>
+    <x>152.0</x>
+    <y>64.0</y>
+    <childList>
+      <child name="hasToWaitForParentService" type="switchActivity">
+        <label>Has To Wait For ParentService Signal?</label>
+        <x>383.0</x>
+        <y>43.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>438.0</x>
+            <y>158.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>398.0</x>
+                <y>182.0</y>
+                <childList>
+                  <child name="signalFromParentService" type="syncActivity">
+                    <element>signal_stcw.notifyParentServiceSubmitted</element>
+                    <label>Signal From ParentService</label>
+                    <x>383.0</x>
+                    <y>278.0</y>
+                    <methodList>
+                      <method name="cwOnProcActAfter" type="action">
+                        <category>script</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Received Notification For ParentService Submitted");
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="checkIfParentServiceIsAccepted" type="scriptActivity">
+                    <label>Check If Parent Service Is Accepted</label>
+                    <x>527.0</x>
+                    <y>277.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          // this.process.processDocument.parentServiceAccepted  = (! stcw.checkIfExistProcessKOInOrchestrationTblForLineItem(this.process.processOrder.id, this.process.processDocument.parentServiceDocId));
+
+                          this.process.processDocument.parentServiceAccepted  = (! stcw.checkIfExistProcessKOInOrchestrationTable(this.process.processOrder.id));
+
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - parentServiceAccepted = " + this.process.processDocument.parentServiceAccepted);
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var parentService = Document.readDoc("stcw.lineItemDocument", this.process.processDocument.parentServiceDocId);
+                      this.process.processDocument.parentServiceType = parentService.receivedServiceType;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  // checking if parentService is set and it's provisionable, otherwise skipped
+                  var hasToWaitForParentService = false;
+                  if(this.process.processDocument.parentServiceDocId != null) {
+                      var orchestrationRecord = stcw.getRecordInOrchestrationTableByLineItemId(this.process.processDocument.parentServiceDocId);
+                      if(orchestrationRecord != null && orchestrationRecord.provisionable) {
+                          if(orchestrationRecord.provisioningProcessResult != null && orchestrationRecord.provisioningProcessResult == "OK") {
+                              // parentService already processed
+                              hasToWaitForParentService = false;
+                              this.process.processDocument.parentServiceAccepted  = (! stcw.checkIfExistProcessKOInOrchestrationTable(this.process.processOrder.id));
+                          }
+                          else {
+                              hasToWaitForParentService = true;
+                          }
+                      }
+                      else {
+                          this.process.processDocument.parentServiceAccepted  = (! stcw.checkIfExistProcessKOInOrchestrationTable(this.process.processOrder.id));
+                      }
+                  }
+
+                  return hasToWaitForParentService;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>508.0</x>
+            <y>66.0</y>
+          </child>
+        </childList>
+      </child>
+      <child name="continueWithNormalExecution" type="switchActivity">
+        <label>Continue With Normal Execution?</label>
+        <x>614.0</x>
+        <y>47.0</y>
+        <childList>
+          <child name="yes" type="caseActivity">
+            <label>Yes</label>
+            <x>543.0</x>
+            <y>354.0</y>
+            <childList>
+              <child name="startNormalExecution" type="seqActivity">
+                <label>Start Normal Execution</label>
+                <x>721.0</x>
+                <y>67.0</y>
+                <childList>
+                  <child name="isBackupService" type="switchActivity">
+                    <label>Is Backup Service?</label>
+                    <x>833.0</x>
+                    <y>60.0</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>831.0</x>
+                        <y>152.0</y>
+                        <childList>
+                          <child name="startPrimaryPathCheckMgmt" type="seqActivity">
+                            <label>Start Primary Path Check Mgmt</label>
+                            <x>824.0</x>
+                            <y>177.0</y>
+                            <childList>
+                              <child name="getPrimaryPathName" type="scriptActivity">
+                                <label>Get Primary Path Name</label>
+                                <x>827.0</x>
+                                <y>287.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[
+                                      var nvPairNames = stcw.getNVPairsForBackupForServiceType(this.process.processOrderItem.receivedServiceType);
+                                      var nvPairsForBackup = stcw.getAllNameValuesByParentElementIdAndNameAndVASFlag(this.process.processOrderItem.id, false, nvPairNames[0]);
+
+                                      this.process.processDocument.primaryPathName = nvPairsForBackup[0].value;
+
+                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - primaryPathName = " + this.process.processDocument.primaryPathName);
+                                    ]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                              <child name="isPrimaryPathInGranite" type="switchActivity">
+                                <label>Is Primary Path Already In Granite?</label>
+                                <x>904.0</x>
+                                <y>425.0</y>
+                                <childList>
+                                  <child name="yes" type="caseActivity">
+                                    <label>Yes</label>
+                                    <x>995.0</x>
+                                    <y>189.0</y>
+                                    <methodList>
+                                      <method name="cwOnProcActCond" type="action">
+                                        <category>cond</category>
+                                        <system>true</system>
+                                        <script><![CDATA[
+                                          this.process.processDocument.primaryPathInGranite = (granite.getPathByName(this.process.processDocument.primaryPathName) != null);
+
+                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - primaryPathInGranite(" + this.process.processDocument.primaryPathName + ") = " + this.process.processDocument.primaryPathInGranite);
+
+                                          if(! this.process.processDocument.primaryPathInGranite) {
+                                              var checkPathInGraniteDoc = new Document("stcw.STCW_CHECK_PATH_IN_GRANITE");
+                                              checkPathInGraniteDoc.processId = this.process.id;
+                                              checkPathInGraniteDoc.serviceNumber = this.process.processOrderItem.serviceNumber;
+                                              checkPathInGraniteDoc.primaryCircuit = this.process.processDocument.primaryPathName;
+                                              checkPathInGraniteDoc.creationDate = new Date();
+                                              checkPathInGraniteDoc.save();
+                                          }
+
+                                          return this.process.processDocument.primaryPathInGranite;
+                                        ]]></script>
+                                      </method>
+                                    </methodList>
+                                  </child>
+                                  <child name="no" type="caseActivity">
+                                    <label>No</label>
+                                    <x>922.0</x>
+                                    <y>505.0</y>
+                                    <childList>
+                                      <child name="startWaiting" type="seqActivity">
+                                        <label>Start Waiting</label>
+                                        <x>908.0</x>
+                                        <y>571.0</y>
+                                        <childList>
+                                          <child name="signalForPrimaryPathExistence" type="syncActivity">
+                                            <element>signal_stcw.notifyPrimaryPathExistence</element>
+                                            <label>Signal For Primary Path Existence</label>
+                                            <x>1074.0</x>
+                                            <y>543.0</y>
+                                            <methodList>
+                                              <method name="cwOnProcActAfter" type="action">
+                                                <category>script</category>
+                                                <system>true</system>
+                                                <script><![CDATA[
+                                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Received 'Signal for Primary Path Existence'!!!");
+                                                ]]></script>
+                                              </method>
+                                            </methodList>
+                                          </child>
+                                          <child name="setIfPrimaryPathIsInGranite" type="scriptActivity">
+                                            <label>Set If Primary Path Is In Granite</label>
+                                            <x>1076.0</x>
+                                            <y>342.0</y>
+                                            <methodList>
+                                              <method name="cwOnProcActBefore" type="action">
+                                                <category>before</category>
+                                                <system>true</system>
+                                                <script><![CDATA[
+                                                  var checkPrimaryPathDoc = stcw.getCheckPrimaryPathInGraniteByProcessId(this.process.id);
+
+                                                  if(checkPrimaryPathDoc == null || checkPrimaryPathDoc.result == null) {
+                                                      this.process.processDocument.primaryPathInGranite = (granite.getPathByName(this.process.processDocument.primaryPathName) != null);
+                                                  }
+                                                  else {
+                                                      this.process.processDocument.primaryPathInGranite = (checkPrimaryPathDoc.result == "OK");
+                                                  }
+                                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - primaryPathInGranite(" + this.process.processDocument.primaryPathName + ") = " + this.process.processDocument.primaryPathInGranite);
+                                                ]]></script>
+                                              </method>
+                                            </methodList>
+                                          </child>
+                                        </childList>
+                                        <methodList>
+                                          <method name="cwOnProcActBefore" type="action">
+                                            <category>before</category>
+                                            <system>true</system>
+                                            <script><![CDATA[
+                                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Start Waiting for 'Signal for Primary Path Existence'....");
+                                            ]]></script>
+                                          </method>
+                                        </methodList>
+                                      </child>
+                                    </childList>
+                                  </child>
+                                </childList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var isBackup = false;
+
+                              if((this.process.processOrderItem.action == "A" || this.process.processOrderItem.action == "M") &&
+                                  (this.process.processOrder.orderHeader.orderType == "I" || this.process.processOrder.orderHeader.orderType == "C")) {
+                                  var nvPairNames = stcw.getNVPairsForBackupForServiceType(this.process.processOrderItem.receivedServiceType);
+                                  isBackup = (nvPairNames != null && nvPairNames.length > 0);
+                              }
+
+                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - isBackup(" + this.process.processOrderItem.receivedServiceType + ") = " + isBackup);
+
+                              return isBackup;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>957.0</x>
+                        <y>73.0</y>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="hasToSkipSendLineItemToGranite" type="switchActivity">
+                    <label>Has To Skip Send LineItem To Granite?</label>
+                    <x>1115.0</x>
+                    <y>45.0</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>470.0</x>
+                        <y>156.0</y>
+                        <childList>
+                          <child name="doNothing" type="scriptActivity">
+                            <label>Do Nothing</label>
+                            <x>1161.0</x>
+                            <y>727.0</y>
+                            <methodList>
+                              <method name="cwOnProcActBefore" type="action">
+                                <category>before</category>
+                                <system>true</system>
+                                <script>this.process.processDocument.acceptedByGranite = true;</script>
+                              </method>
+                            </methodList>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script>return this.process.processOrderItem.alreadySentToGranite;</script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>459.0</x>
+                        <y>102.0</y>
+                        <childList>
+                          <child name="start" type="seqActivity">
+                            <label>Start</label>
+                            <x>1270.0</x>
+                            <y>64.0</y>
+                            <childList>
+                              <child name="startGranite" type="seqActivity">
+                                <label>Start Granite</label>
+                                <x>1410.0</x>
+                                <y>64.0</y>
+                                <childList>
+                                  <child name="operationTypeInGranite" type="switchActivity">
+                                    <label>Operation Type In Granite</label>
+                                    <x>1557.0</x>
+                                    <y>51.0</y>
+                                    <childList>
+                                      <child name="submitOrder" type="caseActivity">
+                                        <label>Submit Order</label>
+                                        <x>898.0</x>
+                                        <y>105.0</y>
+                                        <childList>
+                                          <child name="startSubmit" type="seqActivity">
+                                            <label>Start Submit</label>
+                                            <x>1748.0</x>
+                                            <y>181.0</y>
+                                            <childList>
+                                              <child name="startSubmitForCompensate" type="seqActivity">
+                                                <label>Start Submit For Compensate</label>
+                                                <x>1740.0</x>
+                                                <y>281.0</y>
+                                                <childList>
+                                                  <child name="sendSubmitOrderToGranite" type="scriptActivity">
+                                                    <label>Send Submit Order  To Granite</label>
+                                                    <schedule type="sched">
+                                                      <duration type="dur">
+                                                        <methodList>
+                                                          <method name="cwOnDuration" type="action">
+                                                            <system>true</system>
+                                                            <script><![CDATA[
+                                                              /***
+
+                                                              var sleepTime = 0;
+
+                                                              if(this.processDocument.parentServiceDocId != null) {
+                                                              debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - Dependent service ... computing the sleep time");
+                                                                  sleepTime = stcw.getSleepTimeForDependentService(this.processOrderItem.orderDataPath);
+                                                              debugPrintln(stcc.getSysdateForLog() + "[" + this.id + "] - Dependent service ... computed the sleep time = " + sleepTime);
+                                                              }
+
+                                                              if(sleepTime > 0) {
+                                                                  return sleepTime;
+                                                              }
+
+                                                              return null;
+
+                                                              ***/
+                                                            ]]></script>
+                                                          </method>
+                                                        </methodList>
+                                                      </duration>
+                                                    </schedule>
+                                                    <x>1746.0</x>
+                                                    <y>383.0</y>
+                                                    <childList>
+                                                      <child name="compensateSubmitOrder" type="compensateActivity">
+                                                        <compensatesList>
+                                                          <compensates>1</compensates>
+                                                        </compensatesList>
+                                                        <label>Compensate SubmitOrder</label>
+                                                        <x>1087.0</x>
+                                                        <y>437.0</y>
+                                                        <childList>
+                                                          <child name="submit_UpdateOrderCompensate" type="subflowActivity">
+                                                            <element>proc_stcw.submit_UpdateOrderCompensate</element>
+                                                            <label>SubmitOrder Compensate</label>
+                                                            <x>1871.0</x>
+                                                            <y>394.0</y>
+                                                          </child>
+                                                        </childList>
+                                                      </child>
+                                                    </childList>
+                                                    <methodList>
+                                                      <method name="cwOnProcActBefore" type="action">
+                                                        <category>before</category>
+                                                        <system>true</system>
+                                                        <script><![CDATA[
+                                                          // reset error flag
+                                                          this.process.processDocument.errorType = null;
+
+                                                          // loading order and orderItem
+                                                          var bundleOrder = this.process.processOrder;
+                                                          var orderItem = this.process.processOrderItem;
+
+                                                          var interfaceName = null;
+                                                          var operationName = null;
+
+                                                          try {
+                                                              var inputData = null;
+                                                              var result = null;
+
+                                                              if(this.process.processDocument.primaryPathName == null || this.process.processDocument.primaryPathInGranite == true) {
+                                                                  if(this.process.processDocument.isWholesale) {
+                                                                      inputData = stcw.mapOrderItemToWBUInputData_ForOrder(bundleOrder, orderItem.parentOrderItem, orderItem.elementTypeInOrderTree, true, this.process.processDocument.parentServiceDocId);
+                                                                      interfaceName = "grws.XngOrderService";
+                                                                      operationName = "submitOrder";
+                                                                  }
+                                                                  else {
+                                                                      inputData = stcw.mapOrderItemToEBUInputData(bundleOrder, orderItem.parentOrderItem, orderItem.elementTypeInOrderTree, true);
+                                                                      interfaceName = "cimeWS.XngOrderService";
+                                                                      operationName = "submitOrder";
+                                                                  }
+
+                                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - inputData = " + inputData.toXML());
+
+                                                                  // stcc.sendDataToInterfaceWithLogging(inputData, interfaceName, operationName, existResult, processId, operationDescription, logUserData1, logUserData2)
+                                                                  result = stcc.sendDataToInterfaceWithLogging(inputData,
+                                                                                                               interfaceName,
+                                                                                                               operationName,
+                                                                                                               true,
+                                                                                                               this.process.id,
+                                                                                                               "SendSubmitOrderToGranite",
+                                                                                                               bundleOrder.orderHeader.orderNumber,
+                                                                                                               orderItem.workOrderNumber);
+                                                              }
+                                                              else {
+                                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - it's a backup service (" + orderItem.receivedServiceType + ") with primary path not in Granite, so geenrate FAKE REJECTION");
+                                                                  result = stcw.generateFakeRejectionFromGranite(this.process.processDocument.isWholesale, true, bundleOrder.orderHeader.orderNumber, orderItem.workOrderNumber, "AE0172", [this.process.processDocument.primaryPathInGranite]);
+                                                              }
+
+                                                              stcw.writeGraniteResponseIntoDB(this.process.id, result);
+                                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - sentDataToGranite; result " + (result == null ? "NULL" : result.toXML()));
+                                                          }
+                                                          catch(exc) {
+                                                              if(exc.message.indexOf("XE0023") >= 0 || exc.message.indexOf("XE0002")) {
+                                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - I/F " + interfaceName + "/" + operationName + " error: " + exc.message);
+                                                                  this.process.processDocument.errorType = "Interface";
+                                                              }
+                                                              else {
+                                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Application Error while invoking " + interfaceName + "/" + operationName + "; error: " + exc.message);
+                                                                  this.process.processDocument.errorType = "Application";
+                                                              }
+                                                          }
+                                                        ]]></script>
+                                                      </method>
+                                                    </methodList>
+                                                  </child>
+                                                  <child name="anyError" type="switchActivity">
+                                                    <label>Any Error?</label>
+                                                    <x>1742.0</x>
+                                                    <y>536.0</y>
+                                                    <childList>
+                                                      <child name="interfaceError" type="caseActivity">
+                                                        <label>Interface Error</label>
+                                                        <x>1037.0</x>
+                                                        <y>593.0</y>
+                                                        <childList>
+                                                          <child name="interfaceExcp" type="exceptActivity">
+                                                            <element>excp_cwf.interfaceExcp</element>
+                                                            <label>External interface error</label>
+                                                            <x>1905.0</x>
+                                                            <y>682.0</y>
+                                                          </child>
+                                                        </childList>
+                                                        <methodList>
+                                                          <method name="cwOnProcActCond" type="action">
+                                                            <category>cond</category>
+                                                            <system>true</system>
+                                                            <script><![CDATA[
+                                                              var isInterfaceError = (this.process.processDocument.errorType == "Interface");
+                                                              if(isInterfaceError) {
+                                                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Interface error while sending submitOrder to Granite");
+                                                              }
+
+                                                              return isInterfaceError;
+                                                            ]]></script>
+                                                          </method>
+                                                        </methodList>
+                                                      </child>
+                                                      <child name="applicationError" type="caseActivity">
+                                                        <label>Application Error</label>
+                                                        <x>1037.0</x>
+                                                        <y>593.0</y>
+                                                        <childList>
+                                                          <child name="genericApplicationError" type="exceptActivity">
+                                                            <element>excp_stcw.applicationError</element>
+                                                            <label>Generic Application Error</label>
+                                                            <x>1813.0</x>
+                                                            <y>684.0</y>
+                                                          </child>
+                                                        </childList>
+                                                        <methodList>
+                                                          <method name="cwOnProcActCond" type="action">
+                                                            <category>cond</category>
+                                                            <system>true</system>
+                                                            <script><![CDATA[
+                                                              var isApplicationError = (this.process.processDocument.errorType == "Application");
+                                                              if(isApplicationError) {
+                                                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Application error while sending submitOrder to Granite");
+                                                              }
+
+                                                              return isApplicationError;
+                                                            ]]></script>
+                                                          </method>
+                                                        </methodList>
+                                                      </child>
+                                                      <child name="noError" type="caseActivity">
+                                                        <label>No Error</label>
+                                                        <x>1037.0</x>
+                                                        <y>593.0</y>
+                                                        <childList>
+                                                          <child name="processGraniteResponse" type="scriptActivity">
+                                                            <label>Process Granite Response</label>
+                                                            <x>1696.0</x>
+                                                            <y>688.0</y>
+                                                            <methodList>
+                                                              <method name="cwOnProcActBefore" type="action">
+                                                                <category>before</category>
+                                                                <system>true</system>
+                                                                <script><![CDATA[
+                                                                  var isWholesale = this.process.processDocument.isWholesale;
+
+                                                                  // read orderAck in DB
+                                                                  var responseMDType = isWholesale ? "grws.submitOrderResponse" : "cimeWS.submitOrderResponse_el";
+                                                                  var graniteResult = stcw.readGraniteResponseFromDB(this.process.id, responseMDType);
+                                                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - receivedSubmitResponse = " + graniteResult.toXML());
+
+                                                                  var orderAcceptedByGranite = (isWholesale ? (graniteResult.result.Status.Status == "SUCCESS") :
+                                                                                                              (graniteResult.return.status == "Accepted"));
+                                                                  //                                            (graniteResult.return.failure == null || graniteResult.return.failure.length == 0));
+
+                                                                  // updates info in lineItem
+                                                                  if(isWholesale) {
+                                                                      this.process.processOrderItem.serviceNumber = graniteResult.result.AssetNumber;
+                                                                  }
+                                                                  this.process.processOrderItem.lineItemStatus = ((orderAcceptedByGranite) ? "READY" : "FAILED");
+                                                                  this.process.processOrderItem.alreadySentToGranite = orderAcceptedByGranite;
+                                                                  this.process.processOrderItem.sentAnytimeToGranite = (orderAcceptedByGranite || this.process.processOrderItem.sentAnytimeToGranite);
+                                                                  this.process.processOrderItem.save();
+
+                                                                  // updates bundle and orderHeader status
+                                                                  stcw.updateBundleAndOrderHeaderStatus(this.process.processOrder, this.process.processOrderItem);
+
+                                                                  // update orchestrationRecord to know if Granite accepted the WorkOrder
+                                                                  var recordInOrchestrationTable = stcw.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+                                                                  if(orderAcceptedByGranite) {
+                                                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - submitOrderForElement = " + this.process.processOrderItem.id + " processed SUCCESSFULLY");
+                                                                      this.process.processDocument.acceptedByGranite = true;
+                                                                      // saving result of provisioning process
+                                                                      recordInOrchestrationTable.provisioningProcessResult = "OK";
+                                                                  }
+                                                                  else {
+                                                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - submitOrderForElement = " + this.process.processOrderItem.id + " REJECTED BY GRANITE!!!!");
+                                                                      this.process.processDocument.acceptedByGranite = false;
+                                                                      // saving result of provisioning process; KO ==> block all provisioning processes for such order
+                                                                      recordInOrchestrationTable.provisioningProcessResult = "KO";
+                                                                  }
+                                                                  recordInOrchestrationTable.save();
+
+                                                                  if(!orderAcceptedByGranite) {
+                                                                      // 2015-09-07: dummy WOSU management for failed order
+                                                                      var supportDummyWOSU = Global.getConfigVariable("DUMMY_WOSU_FOR_FAILED_ORDER", "FALSE");
+                                                                      if(supportDummyWOSU == "TRUE") {
+                                                                          stcw.generateDummyWOSUForFailedOrderToGranite(this.process.processOrder.orderHeader.orderNumber, this.process.processOrderItem, "Wholesale", this.process.id);
+                                                                      }
+                                                                  }
+                                                                ]]></script>
+                                                              </method>
+                                                            </methodList>
+                                                          </child>
+                                                        </childList>
+                                                      </child>
+                                                    </childList>
+                                                  </child>
+                                                </childList>
+                                                <methodList>
+                                                  <method name="cwOnProcActBefore" type="action">
+                                                    <category>before</category>
+                                                    <system>true</system>
+                                                    <script><![CDATA[
+                                                      var orderItem = this.process.processOrderItem;
+                                                      var workOrderType = null;
+
+                                                      if(orderItem.workOrderNumber == null) {
+                                                          workOrderType = stcw.getWorkOrderType(this.process.processOrder.orderHeader.orderType, orderItem.action);
+                                                          if(workOrderType == null) {
+                                                              Global.throwException("Error in generating workOrderType");
+                                                          }
+                                                          orderItem.workOrderType = workOrderType;
+
+                                                          var workOrderNumber = stcw.generateWONumber(orderItem, workOrderType, this.process.processOrder);
+                                                          if(workOrderNumber == null) {
+                                                              Global.throwException("Error in generating workOrderNumber");
+                                                          }
+                                                          orderItem.workOrderNumber = workOrderNumber;
+                                                          orderItem.save();
+                                                      }
+                                                    ]]></script>
+                                                  </method>
+                                                </methodList>
+                                              </child>
+                                            </childList>
+                                            <methodList>
+                                              <method name="cwOnProcActBefore" type="action">
+                                                <category>before</category>
+                                                <system>true</system>
+                                                <script><![CDATA[this.process.processDocument.rollbackNumber = "1";]]></script>
+                                              </method>
+                                            </methodList>
+                                          </child>
+                                        </childList>
+                                        <methodList>
+                                          <method name="cwOnProcActCond" type="action">
+                                            <category>cond</category>
+                                            <system>true</system>
+                                            <script><![CDATA[
+                                              var isSubmit = (this.process.processDocument.isSubmit);
+                                              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - isSubmit = " + isSubmit);
+
+                                              return isSubmit;
+                                            ]]></script>
+                                          </method>
+                                        </methodList>
+                                      </child>
+                                      <child name="updateOrder" type="caseActivity">
+                                        <label>Update Order</label>
+                                        <x>898.0</x>
+                                        <y>105.0</y>
+                                        <childList>
+                                          <child name="startUpdate" type="seqActivity">
+                                            <label>Start Update</label>
+                                            <x>1421.0</x>
+                                            <y>184.0</y>
+                                            <childList>
+                                              <child name="startUpdateForCompensate" type="seqActivity">
+                                                <label>Start Update For Compensate</label>
+                                                <x>1412.0</x>
+                                                <y>285.0</y>
+                                                <childList>
+                                                  <child name="sendUpdateOrderToGranite" type="scriptActivity">
+                                                    <label>Send Update Order  To Granite</label>
+                                                    <x>1419.0</x>
+                                                    <y>379.0</y>
+                                                    <childList>
+                                                      <child name="compensateUpdateOrder" type="compensateActivity">
+                                                        <compensatesList>
+                                                          <compensates>3</compensates>
+                                                        </compensatesList>
+                                                        <label>Compensate UpdateOrder</label>
+                                                        <x>760.0</x>
+                                                        <y>434.0</y>
+                                                        <childList>
+                                                          <child name="updateOrderCompensate" type="subflowActivity">
+                                                            <element>proc_stcw.submit_UpdateOrderCompensate</element>
+                                                            <label>Update Order Compensate</label>
+                                                            <x>1252.0</x>
+                                                            <y>394.0</y>
+                                                          </child>
+                                                        </childList>
+                                                      </child>
+                                                    </childList>
+                                                    <methodList>
+                                                      <method name="cwOnProcActBefore" type="action">
+                                                        <category>before</category>
+                                                        <system>true</system>
+                                                        <script><![CDATA[
+                                                          // reset error flag
+                                                          this.process.processDocument.errorType = null;
+
+                                                          // loading order and orderItem
+                                                          var bundleOrder = this.process.processOrder;
+                                                          var orderItem = this.process.processOrderItem;
+
+                                                          var interfaceName = null;
+                                                          var operationName = null;
+
+                                                          try {
+                                                              var inputData = null;
+                                                              var result = null;
+
+                                                              if(this.process.processDocument.primaryPathName == null || this.process.processDocument.primaryPathInGranite == true) {
+                                                                  if(this.process.processDocument.isWholesale) {
+                                                                      inputData = stcw.mapOrderItemToWBUInputData_ForOrder(bundleOrder, orderItem.parentOrderItem, orderItem.elementTypeInOrderTree, false, this.process.processDocument.parentServiceDocId);
+                                                                      interfaceName = "grws.XngOrderService";
+                                                                      operationName = "updateOrder";
+                                                                  }
+                                                                  else {
+                                                                      inputData = stcw.mapOrderItemToEBUInputData(bundleOrder, orderItem.parentOrderItem, orderItem.elementTypeInOrderTree, false);
+                                                                      interfaceName = "cimeWS.XngOrderService";
+                                                                      operationName = "updateOrder";
+                                                                  }
+                                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - inputData = " + inputData.toXML());
+
+                                                                  // stcc.sendDataToInterfaceWithLogging(inputData, interfaceName, operationName, existResult, processId, operationDescription, logUserData1, logUserData2)
+                                                                  result = stcc.sendDataToInterfaceWithLogging(inputData,
+                                                                                                               interfaceName,
+                                                                                                               operationName,
+                                                                                                               true,
+                                                                                                               this.process.id,
+                                                                                                               "sendUpdateOrderToGranite",
+                                                                                                               bundleOrder.orderHeader.orderNumber,
+                                                                                                               orderItem.workOrderNumber);
+                                                              }
+                                                              else {
+                                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - it's a backup service (" + orderItem.receivedServiceType + ") with primary path not in Granite, so geenrate FAKE REJECTION");
+                                                                  result = stcw.generateFakeRejectionFromGranite(this.process.processDocument.isWholesale, false, bundleOrder.orderHeader.orderNumber, orderItem.workOrderNumber, "AE0172", [this.process.processDocument.primaryPathInGranite]);
+                                                              }
+
+                                                              stcw.writeGraniteResponseIntoDB(this.process.id, result);
+                                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - sentDataToGranite; result " + (result == null ? "NULL" : result.toXML()));
+
+                                                          }
+                                                          catch(exc) {
+                                                              if(exc.message.indexOf("XE0023") >= 0 || exc.message.indexOf("XE0002")) {
+                                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - I/F " + interfaceName + "/" + operationName + " error: " + exc.message);
+                                                                  this.process.processDocument.errorType = "Interface";
+                                                              }
+                                                              else {
+                                                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Application Error while invoking " + interfaceName + "/" + operationName + "; error: " + exc.message);
+                                                                  this.process.processDocument.errorType = "Application";
+                                                              }
+                                                          }
+                                                        ]]></script>
+                                                      </method>
+                                                    </methodList>
+                                                  </child>
+                                                  <child name="anyError" type="switchActivity">
+                                                    <label>Any Error?</label>
+                                                    <x>1415.0</x>
+                                                    <y>533.0</y>
+                                                    <childList>
+                                                      <child name="interfaceError" type="caseActivity">
+                                                        <label>Interface Error</label>
+                                                        <x>758.0</x>
+                                                        <y>577.0</y>
+                                                        <childList>
+                                                          <child name="interfaceExcp" type="exceptActivity">
+                                                            <element>excp_cwf.interfaceExcp</element>
+                                                            <label>External interface error</label>
+                                                            <x>1259.0</x>
+                                                            <y>681.0</y>
+                                                          </child>
+                                                        </childList>
+                                                        <methodList>
+                                                          <method name="cwOnProcActCond" type="action">
+                                                            <category>cond</category>
+                                                            <system>true</system>
+                                                            <script><![CDATA[
+                                                              var isInterfaceError = (this.process.processDocument.errorType == "Interface");
+                                                              if(isInterfaceError) {
+                                                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Interface error while sending updateOrder to Granite");
+                                                              }
+
+                                                              return isInterfaceError;
+                                                            ]]></script>
+                                                          </method>
+                                                        </methodList>
+                                                      </child>
+                                                      <child name="applicationError" type="caseActivity">
+                                                        <label>Application Error</label>
+                                                        <x>651.0</x>
+                                                        <y>574.0</y>
+                                                        <childList>
+                                                          <child name="genericApplicationError" type="exceptActivity">
+                                                            <element>excp_stcw.applicationError</element>
+                                                            <label>Generic Application Error</label>
+                                                            <x>1347.0</x>
+                                                            <y>681.0</y>
+                                                          </child>
+                                                        </childList>
+                                                        <methodList>
+                                                          <method name="cwOnProcActCond" type="action">
+                                                            <category>cond</category>
+                                                            <system>true</system>
+                                                            <script><![CDATA[
+                                                              var isApplicationError = (this.process.processDocument.errorType == "Application");
+                                                              if(isApplicationError) {
+                                                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Application error while sending updateOrder to Granite");
+                                                              }
+
+                                                              return isApplicationError;
+                                                            ]]></script>
+                                                          </method>
+                                                        </methodList>
+                                                      </child>
+                                                      <child name="noError" type="caseActivity">
+                                                        <label>No Error</label>
+                                                        <x>758.0</x>
+                                                        <y>577.0</y>
+                                                        <childList>
+                                                          <child name="processGraniteResponse" type="scriptActivity">
+                                                            <label>Process Granite Response</label>
+                                                            <x>1477.0</x>
+                                                            <y>686.0</y>
+                                                            <methodList>
+                                                              <method name="cwOnProcActBefore" type="action">
+                                                                <category>before</category>
+                                                                <system>true</system>
+                                                                <script><![CDATA[
+                                                                  var isWholesale = this.process.processDocument.isWholesale;
+
+                                                                  // read orderAck in DB
+                                                                  var responseMDType = isWholesale ? "grws.updateOrderResponse" : "cimeWS.updateOrderResponse_el";
+                                                                  var graniteResult = stcw.readGraniteResponseFromDB(this.process.id, responseMDType);
+                                                                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - receivedUpdateResponse = " + graniteResult.toXML());
+
+                                                                  var orderAcceptedByGranite = (isWholesale ? (graniteResult.result.Status.Status == "SUCCESS") :
+                                                                                                              (graniteResult.return.status == "Accepted"));
+                                                                  //                                            (graniteResult.return.failure == null || graniteResult.return.failure.length == 0));
+
+                                                                  // updates info in lineItem
+                                                                  if(isWholesale) {
+                                                                      if(this.process.processOrderItem.serviceNumber != graniteResult.result.AssetNumber) {
+                                                                          this.process.processOrderItem.oldServiceNumber = this.process.processOrderItem.serviceNumber;
+                                                                          this.process.processOrderItem.serviceNumber = graniteResult.result.AssetNumber;
+                                                                      }
+                                                                  }
+                                                                  this.process.processOrderItem.lineItemStatus = ((orderAcceptedByGranite) ? "READY" : "FAILED");
+                                                                  this.process.processOrderItem.alreadySentToGranite = orderAcceptedByGranite;
+                                                                  this.process.processOrderItem.sentAnytimeToGranite = (orderAcceptedByGranite || this.process.processOrderItem.sentAnytimeToGranite);
+                                                                  this.process.processOrderItem.save();
+
+                                                                  // updates bundle and orderHeader status
+                                                                  stcw.updateBundleAndOrderHeaderStatus(this.process.processOrder, this.process.processOrderItem);
+
+                                                                  // update orchestrationRecord to know if Granite accepted the WorkOrder
+                                                                  var recordInOrchestrationTable = stcw.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+                                                                  if(orderAcceptedByGranite) {
+                                                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - updateOrderForElement = " + this.process.processOrderItem.id + " processed SUCCESSFULLY");
+                                                                      this.process.processDocument.acceptedByGranite = true;
+                                                                      // saving result of provisioning process
+                                                                      recordInOrchestrationTable.provisioningProcessResult = "OK";
+                                                                  }
+                                                                  else {
+                                                                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - updateOrderForElement = " + this.process.processOrderItem.id + " REJECTED BY GRANITE!!!!");
+                                                                      this.process.processDocument.acceptedByGranite = false;
+                                                                      // saving result of provisioning process; KO ==> block all provisioning processes for such order
+                                                                      recordInOrchestrationTable.provisioningProcessResult = "KO";
+                                                                  }
+                                                                  recordInOrchestrationTable.save();
+
+                                                                  if(!orderAcceptedByGranite) {
+                                                                      // 2015-09-07: dummy WOSU management for failed order
+                                                                      var supportDummyWOSU = Global.getConfigVariable("DUMMY_WOSU_FOR_FAILED_ORDER", "FALSE");
+                                                                      if(supportDummyWOSU == "TRUE") {
+                                                                          stcw.generateDummyWOSUForFailedOrderToGranite(this.process.processOrder.orderHeader.orderNumber, this.process.processOrderItem, "Wholesale", this.process.id);
+                                                                      }
+                                                                  }
+                                                                ]]></script>
+                                                              </method>
+                                                            </methodList>
+                                                          </child>
+                                                        </childList>
+                                                      </child>
+                                                    </childList>
+                                                  </child>
+                                                </childList>
+                                              </child>
+                                            </childList>
+                                            <methodList>
+                                              <method name="cwOnProcActBefore" type="action">
+                                                <category>before</category>
+                                                <system>true</system>
+                                                <script><![CDATA[this.process.processDocument.rollbackNumber = "3";]]></script>
+                                              </method>
+                                            </methodList>
+                                          </child>
+                                        </childList>
+                                      </child>
+                                    </childList>
+                                  </child>
+                                </childList>
+                              </child>
+                              <child name="sendOrderAckToCRM" type="subflowActivity">
+                                <element>proc_stcw.sendOrderAckToCOM</element>
+                                <label>Send OrderAck To CRM</label>
+                                <x>1596.0</x>
+                                <y>836.0</y>
+                                <methodList>
+                                  <method name="cwOnProcActBefore" type="action">
+                                    <category>before</category>
+                                    <system>true</system>
+                                    <script><![CDATA[this.process.processDocument.firstPassOrderAck = "Y";]]></script>
+                                  </method>
+                                </methodList>
+                              </child>
+                            </childList>
+                          </child>
+                        </childList>
+                      </child>
+                    </childList>
+                  </child>
+                  <child name="sendParentServiceSignalIfNeeded" type="scriptActivity">
+                    <label>Send ParentService Signal If Needed</label>
+                    <x>802.0</x>
+                    <y>827.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          // loading order and orderItem
+                          var bundleOrder = this.process.processOrder;
+                          var orderItem = this.process.processOrderItem;
+
+                          var parentServiceType = (this.process.processDocument.parentServiceDocId == null ? orderItem.receivedServiceType : this.process.processDocument.parentServiceType);
+                          var childServiceId = stcw.getNextDependentSiblingChildService(parentServiceType, bundleOrder, orderItem.elementTypeInOrderTree, orderItem.priority, false, null);
+
+                          if(childServiceId != null) {
+                              var orchestrationRecord = stcw.getRecordInOrchestrationTableByLineItemId(childServiceId);
+                              if(orchestrationRecord != null && orchestrationRecord.provisionable) {
+                                  if(orchestrationRecord.provisioningProcessId != null) {
+                                      Process.sendSignal("stcw.notifyParentServiceSubmitted", orchestrationRecord.provisioningProcessId);
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Sending signal 'notifyParentServiceSubmitted' to process '" + orchestrationRecord.provisioningProcessId + "' for service '" + childServiceId + "'");
+                                  }
+                                  else {
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Not able to send signal 'notifyParentServiceSubmitted' for service '" + childServiceId + "' because provisioningProcessId is null!");
+                                  }
+                              }
+                          }
+                          else {
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Not Sending signal 'notifyParentServiceSubmitted' because no child services found");
+                          }
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="childOrderAcceptedByGranite" type="switchActivity">
+                    <label>Child Order Accepted By Granite?</label>
+                    <x>683.0</x>
+                    <y>829.0</y>
+                    <childList>
+                      <child name="yes" type="caseActivity">
+                        <label>Yes</label>
+                        <x>295.0</x>
+                        <y>800.0</y>
+                        <childList>
+                          <child name="handleGraniteWOSUEvents" type="subflowActivity">
+                            <element>proc_stcw.handleGraniteWorkOrderStatusUpdates</element>
+                            <label>Handle Granite WOSU Events</label>
+                            <x>548.0</x>
+                            <y>820.0</y>
+                          </child>
+                        </childList>
+                        <methodList>
+                          <method name="cwOnProcActCond" type="action">
+                            <category>cond</category>
+                            <system>true</system>
+                            <script><![CDATA[
+                              var result = this.process.processDocument.acceptedByGranite;
+
+                              var supportDummyWOSU = Global.getConfigVariable("DUMMY_WOSU_FOR_FAILED_ORDER", "FALSE");
+                              if(supportDummyWOSU == "TRUE") {
+                                  // if support dummy WOSU for Failed Orders, it has to continue
+                                  result = true;
+                              }
+
+                              return result;
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                      <child name="no" type="caseActivity">
+                        <label>No</label>
+                        <x>557.0</x>
+                        <y>996.0</y>
+                      </child>
+                    </childList>
+                  </child>
+                </childList>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Continue with Normal workflow for: " + this.process.processOrderItem.id);
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActCond" type="action">
+                <category>cond</category>
+                <system>true</system>
+                <script><![CDATA[
+                  var normalExecution = (this.process.processDocument.parentServiceDocId == null || this.process.processDocument.parentServiceAccepted);
+
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - continue with normal Execution = " + normalExecution);
+
+                  return normalExecution;
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+          <child name="no" type="caseActivity">
+            <label>No</label>
+            <x>675.0</x>
+            <y>440.0</y>
+            <childList>
+              <child name="start" type="seqActivity">
+                <label>Start</label>
+                <x>632.0</x>
+                <y>300.0</y>
+                <childList>
+                  <child name="updateOrchestration" type="scriptActivity">
+                    <label>Update Orchestration</label>
+                    <x>618.0</x>
+                    <y>554.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          var recordInOrchestrationTable = stcw.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Element = " + this.process.processOrderItem.id + " marked as Failed in Orchestration because parent has been rejected");
+                          // saving result of provisioning process; KO ==> block all provisioning processes for such order
+                          recordInOrchestrationTable.provisioningProcessResult = "KO";
+                          recordInOrchestrationTable.save();
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                  <child name="sendParentServiceSignalIfNeeded" type="scriptActivity">
+                    <label>Send ParentService Signal If Needed</label>
+                    <x>427.0</x>
+                    <y>536.0</y>
+                    <methodList>
+                      <method name="cwOnProcActBefore" type="action">
+                        <category>before</category>
+                        <system>true</system>
+                        <script><![CDATA[
+                          // loading order and orderItem
+                          var bundleOrder = this.process.processOrder;
+                          var orderItem = this.process.processOrderItem;
+
+                          var parentServiceType = (this.process.processDocument.parentServiceDocId == null ? orderItem.receivedServiceType : this.process.processDocument.parentServiceType);
+                          var childServiceId = stcw.getNextDependentSiblingChildService(parentServiceType, bundleOrder, orderItem.elementTypeInOrderTree, orderItem.priority, false, null);
+
+                          if(childServiceId != null) {
+                              var orchestrationRecord = stcw.getRecordInOrchestrationTableByLineItemId(childServiceId);
+                              if(orchestrationRecord != null && orchestrationRecord.provisionable) {
+                                  if(orchestrationRecord.provisioningProcessId != null) {
+                                      Process.sendSignal("stcw.notifyParentServiceSubmitted", orchestrationRecord.provisioningProcessId);
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Sending signal 'notifyParentServiceSubmitted' to process '" + orchestrationRecord.provisioningProcessId + "' for service '" + childServiceId + "'");
+                                  }
+                                  else {
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Not able to send signal 'notifyParentServiceSubmitted' for service '" + childServiceId + "' because provisioningProcessId is null!");
+                                  }
+                              }
+                          }
+                          else {
+                          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Not Sending signal 'notifyParentServiceSubmitted' because no child services found");
+                          }
+                        ]]></script>
+                      </method>
+                    </methodList>
+                  </child>
+                </childList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="interfaceExcp" type="onExceptionActivity">
+        <element>excp_cwf.interfaceExcp</element>
+        <label>External interface error</label>
+        <x>358.0</x>
+        <y>116.0</y>
+        <childList>
+          <child name="startIntrErr" type="seqActivity">
+            <label>Start Interface Error</label>
+            <x>252.99998</x>
+            <y>208.0</y>
+            <childList>
+              <child name="rollbackGrSubmit_Update" type="rollbackActivity">
+                <element>proc_stcw.mainSTCWProvisiongProcess_4/seqActivity_start</element>
+                <label>Rollback Granite Submit/Update</label>
+                <x>240.0</x>
+                <y>307.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeGraniteSubmit_Update" type="resumeActivity">
+                <label>Resume Granite Submit/Update</label>
+                <x>240.0</x>
+                <y>455.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - External Interface Error ...");]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="genericApplError" type="onExceptionActivity">
+        <element>excp_stcw.applicationError</element>
+        <label>Generic Application Error</label>
+        <x>271.0</x>
+        <y>136.0</y>
+        <childList>
+          <child name="startSrvFaultErr" type="seqActivity">
+            <label>Start Service Fault Error</label>
+            <x>128.0</x>
+            <y>210.0</y>
+            <childList>
+              <child name="rollbackGrSubmit_Update" type="rollbackActivity">
+                <element>proc_stcw.mainSTCWProvisiongProcess_4/seqActivity_start</element>
+                <label>Rollback Granite Submit/Update</label>
+                <x>124.0</x>
+                <y>304.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      var rb = this.process.processDocument.rollbackNumber;
+                      return rb;
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="resumeGraniteSubmit_Update" type="resumeActivity">
+                <label>Resume Granite Submit/Update</label>
+                <x>124.0</x>
+                <y>456.0</y>
+              </child>
+            </childList>
+            <methodList>
+              <method name="cwOnProcActBefore" type="action">
+                <category>before</category>
+                <system>true</system>
+                <script><![CDATA[
+                  debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - External Service fault Error ...");
+                ]]></script>
+              </method>
+            </methodList>
+          </child>
+        </childList>
+      </child>
+      <child name="stopProcess" type="onExceptionActivity">
+        <element>excp_cwf.stop</element>
+        <label>Stop Process</label>
+        <x>358.0</x>
+        <y>116.0</y>
+        <childList>
+          <child name="start" type="seqActivity">
+            <label>Start</label>
+            <x>32.0</x>
+            <y>200.0</y>
+            <childList>
+              <child name="stopProvisioningProcess" type="completeActivity">
+                <label>Stop Provisioning Process</label>
+                <x>22.0</x>
+                <y>305.0</y>
+                <methodList>
+                  <method name="cwOnProcActBefore" type="action">
+                    <category>before</category>
+                    <system>true</system>
+                    <script><![CDATA[
+                      debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Received Stop for this Provisioning process");
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+            </childList>
+          </child>
+        </childList>
+      </child>
+      <child name="sendSignalToWakeUpParent" type="scriptActivity">
+        <label>WakeUp &quot;STC Element Orchestration Process&quot;</label>
+        <x>369.0</x>
+        <y>820.0</y>
+        <methodList>
+          <method name="cwOnProcActBefore" type="action">
+            <category>before</category>
+            <system>true</system>
+            <script><![CDATA[
+              var orchestrationRecord = stcw.getRecordInOrchestrationTableByLineItemId(this.process.processOrderItem.id);
+
+              debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - sending signal 'notifyProvisioningIsCompleted' to orchestration process " + orchestrationRecord.orchestrationProcessId);
+
+
+              Process.sendSignal("stcw.notifyProvisioningIsCompleted", orchestrationRecord.orchestrationProcessId);
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+    </childList>
+    <methodList>
+      <method name="cwOnProcActBefore" type="action">
+        <category>before</category>
+        <system>true</system>
+        <script><![CDATA[
+          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - Start for element: " + this.process.processOrderItem.id);
+
+          this.process.processDocument.firstPassToGranite = "Y";
+
+          // reset error flag
+          this.process.processDocument.errorType = null;
+
+          this.process.processDocument.isSubmit = this.process.processOrderItem.isSubmit;
+          this.process.processDocument.isQuote = false;
+          this.process.processDocument.isWholesale = (this.process.processOrderItem.provisioningBU == "W");
+          this.process.processDocument.isHome = false;
+          this.process.processDocument.primaryPathName = null;
+          this.process.processDocument.primaryPathInGranite = false;
+          this.process.processDocument.parentServiceAccepted = false;
+          this.process.processDocument.parentServiceDocId = null;
+          this.process.processDocument.parentServiceType = null;
+
+          // loading info for parentService
+          this.process.processDocument.parentServiceDocId = stcw.dependsOnSiblingParentService(this.process.processOrderItem.receivedServiceType,
+                                                                                               this.process.processOrder,
+                                                                                               this.process.processOrderItem.elementTypeInOrderTree,
+                                                                                               this.process.processOrderItem.priority);
+
+          debugPrintln(stcc.getSysdateForLog() + "[" + this.process.id + "] - parentServiceDocId = " + this.process.processDocument.parentServiceDocId);
+
+          if(this.process.processDocument.parentServiceDocId != null) {
+              var parentService = Document.readDoc("stcw.lineItemDocument", this.process.processDocument.parentServiceDocId);
+              this.process.processDocument.parentServiceType = parentService.receivedServiceType;
+          }
+        ]]></script>
+      </method>
+    </methodList>
+  </activity>
+  <curRevision>true</curRevision>
+  <document>doc_stcw.STCW_PROCESS_DOCUMENT</document>
+  <label>Main STCW Provisioning Process - 4</label>
+  <metaVersion>25</metaVersion>
+  <priority>8</priority>
+  <subflowReferenceList>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_stcw.submit_UpdateOrderCompensate</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_stcw.sendOrderAckToCOM</subflow>
+    </subflowReference>
+    <subflowReference type="sref">
+      <revision>1</revision>
+      <subflow>proc_stcw.handleGraniteWorkOrderStatusUpdates</subflow>
+    </subflowReference>
+  </subflowReferenceList>
+  <type>User</type>
+</process>

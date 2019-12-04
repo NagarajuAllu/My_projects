@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.addValidationErrorsToFailureArrayForSub_UpdInWD">
+  <label>Add Validation Errors To Failure Array For Submit Or Update In WD</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="validationErrors" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="objectId" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+    <parameter name="failureArray" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+    <parameter name="isSubmit" type="rifp">
+      <type>dtype_com.conceptwave.system.Boolean</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    return stcw.addValidationErrorsToFailureArray(validationErrors, objectId, failureArray, "Validation Error", (isSubmit ? "SUBMIT ORDER" : "UPDATE ORDER"), "EOC");
+  ]]></script>
+</script>

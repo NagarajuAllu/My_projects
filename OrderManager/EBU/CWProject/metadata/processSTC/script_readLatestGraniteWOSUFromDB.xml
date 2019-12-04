@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="893a2c29fd1b36024eb3c6b7e06e36c" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="processSTC.readLatestGraniteWOSUFromDB">
+  <label>Read Latest Granite WOSU From DB</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="processId" type="rifp">
+      <type>dtype_cwf.processId</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var inputDoc = new Document("processSTC.STC_GRANITE_EVENT_STORAGE");
+    inputDoc.processId = processId;
+    inputDoc.msgType = "WOSU";
+    inputDoc.cwDocId = null;
+
+    var graniteWOSUDataStructure = null;
+    var graniteWOSUFound = Finder.runFinder("processSTC.findLatestGraniteEventByProcessAndType", "select", inputDoc);
+    if(graniteWOSUFound != null && graniteWOSUFound.length > 0) {
+        var xmlMessage = graniteWOSUFound[0].graniteMsg;
+        var convertedList = Global.getItemsFromXML(xmlMessage, "ds_jms.workOrderStatusUpdate_el");
+        if (convertedList != null && convertedList.length > 0) {
+            graniteWOSUDataStructure = convertedList[0];
+        }
+
+    }
+    return graniteWOSUDataStructure;
+  ]]></script>
+</script>

@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="f16544627815a7ac268039f010553e2a" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.quoteHeader">
+  <extends>doc_orb.orderHeader</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{037ee272-1a88-a485-ed10-c7e15758ec0f}</guid>
+  <label>Quote Header</label>
+  <metaVersion>3</metaVersion>
+  <variableList>
+    <variable name="quoteStatus" type="leaf">
+      <column>QUOTE_STATUS</column>
+      <guid>{08df9a49-354c-b8ec-4904-239e5a827701}</guid>
+      <label>Quote Status</label>
+      <propertyElement type="elfld">
+        <label>Quote Status</label>
+      </propertyElement>
+      <table>STCW_QUOTE_HEADER</table>
+      <valueType>dtype_stcw.OrderStatus</valueType>
+    </variable>
+    <variable name="quoteNumber" type="leaf">
+      <column>QUOTENUMBER</column>
+      <guid>{00b2fdad-3c19-3192-9660-a094afdf8fb2}</guid>
+      <label>Child Quote Number</label>
+      <propertyElement type="elfld">
+        <label>Child Quote Number</label>
+      </propertyElement>
+      <table>STCW_QUOTE_HEADER</table>
+      <valueType>dtype_stcw.quoteNumber</valueType>
+    </variable>
+    <variable name="orderRowItemId" type="leaf">
+      <column>ITEMROWID</column>
+      <guid>{0f99127d-f7c2-cb2c-ef34-4236b9d017ca}</guid>
+      <label>orderRowItemId</label>
+      <propertyElement type="elfld">
+        <label>orderRowItemId</label>
+      </propertyElement>
+      <table>STCW_QUOTE_HEADER</table>
+      <valueType>dtype_stcw.orderRowItemId</valueType>
+    </variable>
+    <variable name="quoteType" type="leaf">
+      <column>QUOTETYPE</column>
+      <guid>{0b3d0a20-7d31-a931-fffa-382f371c517f}</guid>
+      <label>Quote Type</label>
+      <propertyElement type="elslct">
+        <label>Quote Type</label>
+      </propertyElement>
+      <table>STCW_QUOTE_HEADER</table>
+      <valueType>dtype_stcw.quoteType</valueType>
+    </variable>
+    <variable name="completedDate" type="leaf">
+      <column>COMPLETEDDATE</column>
+      <guid>{09680d03-3348-5b0e-24b0-6a6ebc11750e}</guid>
+      <label>Complete Date</label>
+      <propertyElement type="eldatetime">
+        <label>Complete Date</label>
+      </propertyElement>
+      <table>STCW_QUOTE_HEADER</table>
+      <valueType>dtype_com.conceptwave.system.DateTime</valueType>
+    </variable>
+    <variable name="productCode" type="leaf">
+      <column>PRODUCTCODE</column>
+      <guid>{04d9af2e-83bf-8fe5-3c52-9f17f827763d}</guid>
+      <label>Product Code</label>
+      <propertyElement type="elfld">
+        <label>Product Code</label>
+      </propertyElement>
+      <table>STCW_QUOTE_HEADER</table>
+      <valueType>dtype_stcw.productCode</valueType>
+    </variable>
+    <variable name="reservationNumber" type="leaf">
+      <column>RESERVATIONNUMBER</column>
+      <guid>{0c49a9ad-387f-57e7-1792-938f19cb8705}</guid>
+      <label>Reservation Number</label>
+      <propertyElement type="elfld">
+        <label>Reservation Number</label>
+      </propertyElement>
+      <table>STCW_QUOTE_HEADER</table>
+      <valueType>dtype_stcw.reservationNumber</valueType>
+    </variable>
+    <variable name="quantity" type="leaf">
+      <column>QUANTITY</column>
+      <guid>{059d847b-4dbb-c681-14aa-5dd5ff542118}</guid>
+      <label>Quantity</label>
+      <propertyElement type="elfld">
+        <label>Quantity</label>
+      </propertyElement>
+      <table>STCW_QUOTE_HEADER</table>
+      <valueType>dtype_stcw.quantity</valueType>
+    </variable>
+    <variable name="orderComments" type="leaf">
+      <column>ORDER_COMMENTS</column>
+      <guid>{01a3ab0e-24f5-e6d7-cbea-9d59cae49207}</guid>
+      <label>Order Comments</label>
+      <propertyElement type="elfld">
+        <label>Order Comments</label>
+      </propertyElement>
+      <table>STCW_QUOTE_HEADER</table>
+      <valueType>dtype_stcw.orderComments</valueType>
+    </variable>
+    <variable name="skipSendToGranite" type="leaf">
+      <column>SKIPSENDTOGRANITE</column>
+      <guid>{00ce2a74-394b-1532-9154-2856cf7e45f9}</guid>
+      <label>Skip Send To Granite</label>
+      <propertyElement type="elfld">
+        <label>Skip Send To Granite</label>
+      </propertyElement>
+      <table>STCW_QUOTE_HEADER</table>
+      <valueType>dtype_stcw.skipSendToGranite</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocInit" type="action">
+      <guid>{06a63064-578c-f0fd-adcf-c6d5134841a2}</guid>
+      <system>true</system>
+      <script>this.cw$super();</script>
+    </method>
+    <method name="cwOnDocLoad" type="action">
+      <guid>{0e69dfff-d0b6-05ad-b75c-467c609d0646}</guid>
+      <system>true</system>
+      <script>this.cw$super();</script>
+    </method>
+    <method name="cwOnDocStore" type="action">
+      <guid>{0abe9a41-028f-50ec-0efe-4ec53d28f091}</guid>
+      <system>true</system>
+      <script>this.cw$super();</script>
+    </method>
+    <method name="cwOnDocVisualKey" type="action">
+      <guid>{07bf0416-f3d1-9959-1842-8b6062f861a2}</guid>
+      <system>true</system>
+      <script>return this.cw$super();</script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_orb.orderHeader/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.quoteHeader</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_orb.orderHeader/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>doc_orb.orderHeader/ui_UserInterface/frmui_Forms/exov_Default</base>
+            <extends>doc_orb.orderHeader/ui_UserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="searchResultsGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="quoteHeaderHeader" type="elhdr">
+                    <label>Search Results</label>
+                    <showValidation>true</showValidation>
+                    <style>CwFOT</style>
+                  </element>
+                  <element name="searchResultsGrid" type="elgrd">
+                    <colWidths>195,195</colWidths>
+                    <numOfCols>2</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>390px</width>
+                    <elementList>
+                      <element name="Creation_Date1" type="eldatetime">
+                        <columnSpan>1</columnSpan>
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <label>Creation Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_orb.orderHeader/leaf_cwCreated</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="Parent_Quote_Number1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <label>Parent Quote Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_orb.orderHeader/leaf_orderNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="quoteNumber1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.quoteHeader/leaf_quoteNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="Service_ItemRowId1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <label>Service ItemRowId</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.quoteHeader/leaf_orderRowItemId</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="reservationNumber1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.quoteHeader/leaf_reservationNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="quantity1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.quoteHeader/leaf_quantity</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="Quote_Action1" type="elslct">
+                        <columnSpan>1</columnSpan>
+                        <label>Quote Action</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_orb.orderHeader/leaf_orderAction</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="quoteStatus1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.quoteHeader/leaf_quoteStatus</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="productCode1" type="elfld">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.quoteHeader/leaf_productCode</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="quoteType1" type="elslct">
+                        <columnSpan>1</columnSpan>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.quoteHeader/leaf_quoteType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="completedDate1" type="eldatetime">
+                        <columnSpan>1</columnSpan>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.quoteHeader/leaf_completedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderComments1" type="elfld">
+                        <columnSpan>2</columnSpan>
+                        <removeLabelLine>true</removeLabelLine>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_stcw.quoteHeader/leaf_orderComments</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="quoteDisplay" type="vform">
+            <label>quoteDisplay</label>
+            <root name="searchResultsGrid_vCentering" type="elvltstck">
+              <height>100%</height>
+              <membersMargin>5</membersMargin>
+              <width>100%</width>
+              <elementList>
+                <element name="quoteHeaderHeader" type="elhdr">
+                  <label>Quote Display</label>
+                  <showValidation>true</showValidation>
+                  <style>CwFOT</style>
+                </element>
+                <element name="quoteDisplayGrid" type="elgrd">
+                  <colWidths>195,195,195,195</colWidths>
+                  <numOfCols>4</numOfCols>
+                  <useDefaultHeight>true</useDefaultHeight>
+                  <width>780px</width>
+                  <elementList>
+                    <element name="Parent_Quote_Number3" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Parent Quote Number</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_orb.orderHeader/leaf_orderNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="quoteNumber3" type="elfld">
+                      <columnSpan>4</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <removeLabelLine>true</removeLabelLine>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.quoteHeader/leaf_quoteNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Service_ItemRowId3" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Service ItemRowId</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.quoteHeader/leaf_orderRowItemId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="reservationNumber3" type="elfld">
+                      <columnSpan>4</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <removeLabelLine>true</removeLabelLine>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.quoteHeader/leaf_reservationNumber</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="quoteType3" type="elslct">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <sorted>false</sorted>
+                      <startRow>true</startRow>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.quoteHeader/leaf_quoteType</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Quote_Action3" type="elslct">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Quote Action</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_orb.orderHeader/leaf_orderAction</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="quoteStatus3" type="elfld">
+                      <columnSpan>4</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <removeLabelLine>true</removeLabelLine>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.quoteHeader/leaf_quoteStatus</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="productCode3" type="elfld">
+                      <columnSpan>4</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <removeLabelLine>true</removeLabelLine>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.quoteHeader/leaf_productCode</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="orderComments3" type="eltxtArea">
+                      <columnSpan>4</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <height>30px</height>
+                      <removeLabelLine>true</removeLabelLine>
+                      <startRow>true</startRow>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.quoteHeader/leaf_orderComments</variablePath>
+                        </variablePathList>
+                      </variable>
+                      <width>100%</width>
+                    </element>
+                    <element name="quantity3" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.quoteHeader/leaf_quantity</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="cwOrderId1" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <startRow>true</startRow>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_orb.orderHeader/leaf_cwOrderId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="cwDocId1" type="elfld">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_orb.orderHeader/leaf_cwDocId</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="Creation_Date3" type="eldatetime">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <label>Creation Date</label>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_orb.orderHeader/leaf_cwCreated</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                    <element name="completedDate3" type="eldatetime">
+                      <columnSpan>1</columnSpan>
+                      <editable type="varPath">
+                        <variablePathList>
+                          <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                        </variablePathList>
+                      </editable>
+                      <variable type="varPath">
+                        <variablePathList>
+                          <variablePath>doc_stcw.quoteHeader/ui_UserInterface/uivar_model</variablePath>
+                          <variablePath>doc_stcw.quoteHeader/leaf_completedDate</variablePath>
+                        </variablePathList>
+                      </variable>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

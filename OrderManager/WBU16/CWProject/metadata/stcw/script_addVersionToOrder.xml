@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="stcw.addVersionToOrder">
+  <label>Add Version To Order</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="order" type="rifp">
+      <mandatory>true</mandatory>
+      <type>order_com.conceptwave.system.Order</type>
+    </parameter>
+    <parameter name="versionName" type="rifp">
+      <mandatory>true</mandatory>
+      <type>dtype_orb.VersionIName</type>
+    </parameter>
+  </parameterList>
+  <valueType>dtype_com.conceptwave.system.Integer</valueType>
+  <script><![CDATA[
+    if (order == null)
+          return (-1);
+
+    if (versionName == null)
+          return (-1);
+
+    if (order.versions == null)
+          order.addItem ("versions");
+
+    var orderVersion = order.versions.newInstance ();
+    orderVersion.header.versionName = versionName;
+
+    return (order.versions.count - 1);
+  ]]></script>
+</script>

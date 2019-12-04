@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="3f943f612d367674e97deb824c8d951a" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.startProcessingGeneratedFeasibilityOrder">
+  <label>Start Processing Generated Feasibility Order</label>
+  <metaVersion>4</metaVersion>
+  <parameterList>
+    <parameter name="generatedOrder" type="rifp">
+      <type>order_com.conceptwave.system.Order</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var debug = " startProcessingGeneratedFeasibilityOrder ";
+
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Starting Orchestration Analysis for Order");
+    var orchestrationError = processSTC.writeSequenceForOrder(generatedOrder);
+    if(orchestrationError != null) {
+        debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Error in Orchestration Analysis - Output: " + output.toXML() + "...");
+        Global.throwException(orchestrationError.ErrorDescription);
+    }
+
+    // making order persistent
+    try {
+        generatedOrder.save();
+    }
+    catch(exc) {
+        Global.throwException(exc.message);
+    }
+
+    // starting orchestration process
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Starting OrchestrationProcess For Order " + generatedOrder.id);
+    var processId = Process.startProcess ("processSTC.mainSTCOrchestrationProcess", generatedOrder.id, generatedOrder.id);
+
+    debugPrintln("[" + common.common_currentDateAsStringDDMMYYYYHH24MISS() + "]" + debug + "- Started OrchestrationProcess For Order " + generatedOrder.id + "; processId = " + processId);
+
+    return processId;
+  ]]></script>
+</script>

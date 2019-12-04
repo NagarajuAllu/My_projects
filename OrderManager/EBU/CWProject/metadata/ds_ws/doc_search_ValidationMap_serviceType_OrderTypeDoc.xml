@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document filenameHash="d3eaef9c38817d5f683839bca8b68717" versionHash="a87ff679a2f3e71d9181a67b7542122c" name="ds_ws.search_ValidationMap_serviceType_OrderTypeDoc">
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{c3e43514-b980-4579-b9a0-103f4f628bb3}</guid>
+  <label>Search Element: LineItem ValidationMap By ServiceType &amp; OrderType</label>
+  <metaVersion>4</metaVersion>
+  <skipSchemaGeneration>true</skipSchemaGeneration>
+  <variableList>
+    <variable name="orderType" type="leaf">
+      <valueType>dtype_ds_ws.orderType</valueType>
+    </variable>
+    <variable name="serviceType" type="leaf">
+      <valueType>dtype_ds_ws.serviceType</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="aGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="validationMap_OrderType_ServiceTypeSearchDocGrid" type="elgrd">
+                    <colWidths>160,160,160,160</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>640px</width>
+                    <elementList>
+                      <element name="validationMap_OrderType_ServiceTypeSearchDocHeader" type="elhdr">
+                        <label>Search Element: ValidationMap By ServiceType &amp; OrderType</label>
+                      </element>
+                      <element name="serviceType" type="elfld">
+                        <label>Service Type</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc/leaf_serviceType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="orderType" type="elslct">
+                        <label>Order Type</label>
+                        <sorted>false</sorted>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.search_ValidationMap_serviceType_OrderTypeDoc/leaf_orderType</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="RowSpacer" type="elrsp"/>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+</document>

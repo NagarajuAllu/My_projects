@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="ab707ed5039976fc4f61e392837c0dae" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcc.limitStringLengthToCRMValue">
+  <guid>{0e4e5d61-afd0-3a70-aa6b-1845d122d11c}</guid>
+  <label>Limit String Length To CRM Value</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="inputValue" type="rifp">
+      <type>dtype_com.conceptwave.system.String</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    var resultString = null;
+    if(stcc.stringHasValue(inputValue)) {
+          resultString = inputValue.substring(0, Global.getConfigVariable("MAX_LENGTH_STRING_IN_CRM", "500"));
+    }
+
+    return resultString;
+  ]]></script>
+</script>

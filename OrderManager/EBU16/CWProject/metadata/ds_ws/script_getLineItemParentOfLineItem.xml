@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script name="ds_ws.getLineItemParentOfLineItem">
+  <label>Get LineItem Parent Of LineItem</label>
+  <metaVersion>25</metaVersion>
+  <parameterList>
+    <parameter name="lineItem" type="rifp">
+      <type>nmeta_com.conceptwave.system.Object</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if(lineItem.elementTypeInOrderTree == 'B') {
+        return lineItem;
+    }
+
+    var parentLineItem = null;
+    var orchestrationRecord = processSTC.getRecordInOrchestrationTableByLineItemId(lineItem.id);
+    if(orchestrationRecord != null && orchestrationRecord.cwParentObjectId != null) {
+        parentLineItem = Document.readDoc("ds_ws:lineItemDocument", orchestrationRecord.cwParentObjectId);
+    }
+
+    return parentLineItem;
+  ]]></script>
+</script>

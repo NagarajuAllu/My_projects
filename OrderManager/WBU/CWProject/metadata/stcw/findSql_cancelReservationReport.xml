@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql filenameHash="5fd96e5afa33e5a077e82e33bc23d978" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.cancelReservationReport">
+  <dbSchema>ORDER</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <guid>{0b357bc3-53ca-64c6-b539-5d289a86fb2a}</guid>
+  <input>doc_stcw.cancelReservationSearchDoc</input>
+  <label>Cancel Reservation Report</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>3</metaVersion>
+  <output>doc_stcw.quoteHeader</output>
+  <type>SQL</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <volatility>1</volatility>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <guid>{06a17da7-72a6-387a-3619-2e223af22557}</guid>
+      <system>true</system>
+      <script><![CDATA[
+        SELECT {+*+}
+          FROM stcw_quote_header c, orb_order_header p
+         WHERE c.cwdocid = p.cwdocid
+        {[0] AND p.order_number = ?} -- parentQuoteNumber
+        {[1] AND c.quotenumber like '%'||?||'%'} -- childQuoteNumber
+        {[2] AND c.reservationnumber like '%'||?||'%'} -- reservationNumber
+        {[3] AND p.cwordercreationdate >= ?} -- creationDate >=
+        {[4] AND p.cwordercreationdate <= ?} -- creationDate >=
+          AND c.reservationnumber IS NOT NULL
+          AND c.quote_status = 'COMPLETED'  -- Reservation must be Completed
+          AND p.order_action <> 'Cancel'    -- There isn't a Cancel already on this reservation
+          AND INSTR(c.quotenumber, 'ErrGranite') = 0   -- It isn't rejected
+          AND p.cworderid NOT IN (SELECT DISTINCT v.cworderid          -- No Quote Update for this Reservation with Cancel Version
+                                    FROM orb_version_header v
+                                   WHERE v.version_name = 'CANCEL'
+                                     AND v.cworderid = p.cworderid)
+          AND c.reservationnumber NOT IN (SELECT DISTINCT o.reservationnumber     -- No Order (Not Cancelled) on this reservation
+                                            FROM stcw_order_header o
+                                           WHERE o.order_status = 'CANCELLED'
+                                             AND o.reservationnumber IS NOT NULL)
+        ORDER BY p.order_number, c.quotenumber
+      ]]></script>
+    </method>
+    <method name="addPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="deletePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+    <method name="editablePerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+      <script><![CDATA[
+        if(!this.enabled)
+        return false;
+        return $psCondition;
+      ]]></script>
+    </method>
+    <method name="attachPerm" type="permMethod">
+      <privilegesType>NEVER</privilegesType>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findSql_stcw.cancelReservationReport</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_stcw.cancelReservationSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_stcw.quoteHeader</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_stcw.quoteHeader/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext">
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="searchResults" type="vform">
+            <label>searchResults</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Creation_Date" type="eldatetime">
+                  <label>Creation Date</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwCreated</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Parent_Quote_Number" type="elfld">
+                  <label>Parent Quote Number</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Child_Quote_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Service_ItemRowId" type="elfld">
+                  <label>Service ItemRowId</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_orderRowItemId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>138px</width>
+                </element>
+                <element name="Reservation_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_reservationNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Quantity" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quantity</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>72px</width>
+                </element>
+                <element name="Quote_Action" type="elslct">
+                  <label>Quote Action</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderAction</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>126px</width>
+                </element>
+                <element name="Quote_Status" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Product_Code" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_productCode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Quote_Type" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Complete_Date" type="eldatetime">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_completedDate</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Order_Comments" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_orderComments</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>216px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_addAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <icon>/cwf/MenuIconAdd.gif</icon>
+                <tooltip>Add</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfAddView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfCopy" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_copyAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <enable type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfCopyEnabled</variablePath>
+                  </variablePathList>
+                </enable>
+                <icon>/cwf/MenuIconCopy.gif</icon>
+                <tooltip>Copy</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfCopyView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfDelete" type="elmnu">
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_deleteAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <enable type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfDeleteEnabled</variablePath>
+                  </variablePathList>
+                </enable>
+                <icon>/cwf/MenuIconDelete.gif</icon>
+                <tooltip>Delete</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfDeleteView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="cwfUpdate" type="elmnu">
+                <menuAccel type="mAccelP"/>
+                <clickMethod type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_updateAction</variablePath>
+                  </variablePathList>
+                </clickMethod>
+                <icon>/cwf/MenuIconEdit.gif</icon>
+                <tooltip>Edit</tooltip>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_cwfUpdateView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="detailMenu" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="cancelSelectedReservations" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/usrActionMethod_cancelSelectedReservations_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Cancel Selected Reservations</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                  </element>
+                  <element name="showQuoteOrder" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/usrActionMethod_showQuoteOrder_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show Quote Order</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                  </element>
+                  <element name="detailMenuEx" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Menu</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <overflow>visible</overflow>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <width>1px</width>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="quoteDisplay" type="vform">
+            <label>quoteDisplay</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Parent_Quote_Number" type="elfld">
+                  <label>Parent Quote Number</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>216px</width>
+                </element>
+                <element name="Child_Quote_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>720px</width>
+                </element>
+                <element name="Service_ItemRowId" type="elfld">
+                  <label>Service ItemRowId</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_orderRowItemId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>138px</width>
+                </element>
+                <element name="Reservation_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_reservationNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>720px</width>
+                </element>
+                <element name="Quote_Type" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Quote_Action" type="elslct">
+                  <label>Quote Action</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderAction</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>126px</width>
+                </element>
+                <element name="Quote_Status" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>720px</width>
+                </element>
+                <element name="Product_Code" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_productCode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>720px</width>
+                </element>
+                <element name="Order_Comments" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_orderComments</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>1836px</width>
+                </element>
+                <element name="Quantity" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quantity</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>66px</width>
+                </element>
+                <element name="System_order_ID" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwOrderId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>120px</width>
+                </element>
+                <element name="System_document_ID" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwDocId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>138px</width>
+                </element>
+                <element name="Creation_Date" type="eldatetime">
+                  <label>Creation Date</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwCreated</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Complete_Date" type="eldatetime">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findSql_stcw.cancelReservationReport/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_completedDate</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="cancelSelectedReservations" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <confirmation>findSql_stcw.cancelReservationReport/ui_UserInterface/action_cancelSelectedReservations_confirm</confirmation>
+        <script><![CDATA[
+          var selectList = this.result.selected;
+                if(selectList == null || selectList.length == 0) {
+                      Global.throwException("AE0001");
+                }
+
+                for(var i=0; i<selectList.length; i++) {
+                      stcw.startProcessToCancelReservation(selectList[i]);
+                }
+        ]]></script>
+      </method>
+      <method name="cancelSelectedReservations_confirm" type="action">
+        <script><![CDATA[
+          var selectList = this.result.selected;
+                if(selectList == null || selectList.length == 0) {
+                      Global.throwException("AE0001");
+                }
+
+                return "AW0001";
+        ]]></script>
+      </method>
+      <method name="cancelSelectedReservations_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>findSql_stcw.cancelReservationReport/ui_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.cancelSelectedReservations();
+          if(result instanceof Finder) {
+            Global.runContentDisplayScript(result.searchDocument, "displayScript");
+          } else {
+            Global.runContentDisplayScript(this, "displayScript");
+          }
+
+          return result;
+        ]]></script>
+      </method>
+      <method name="cwAutosaveConfirmation" type="action">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if (!this.isValid && Global.isAutosaveEnabled()) {
+            return "UU0256:YN";
+          }
+          return null;
+        ]]></script>
+      </method>
+      <method name="showQuoteOrder" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>800</dialogWidth>
+        <parameterList>
+          <parameter name="cwDialogParam" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          cwDialogParam.title = "Show Quote Order";
+
+          var selectList = this.result.selected;
+                if(selectList == null || selectList.length == 0) {
+                      Global.throwException("AE0001");
+                }
+
+                if(selectList.length > 1) {
+                      Global.throwException("AE0002");
+                }
+
+                return Order.getOrderById(selectList[0].cwOrderId);
+        ]]></script>
+      </method>
+      <method name="showQuoteOrder_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>findSql_stcw.cancelReservationReport/ui_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.showQuoteOrder();
+          Global.runContentDisplayScript(this, "displayScript");
+          return result;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="default" type="findVView">
+      <inputOverlay>doc_stcw.cancelReservationSearchDoc/ui_UserInterface/frmui_Forms/vform_default</inputOverlay>
+      <label>Cancel Reservation Report</label>
+      <outputOverlay>findSql_stcw.cancelReservationReport/ui_UserInterface/frmui_Forms/vform_searchResults</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findSql>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<userInterface name="refTables.ReferenceTables">
+  <blockUIOnAction>true</blockUIOnAction>
+  <extends>ui_com.conceptwave.system.Application</extends>
+  <label>Reference Tables</label>
+  <metaVersion>21</metaVersion>
+  <url>/ReferenceTables</url>
+  <vformList>
+    <vform name="Forms" type="frmui">
+      <extends>ui_com.conceptwave.system.Application/frmui_Forms</extends>
+      <overlayList>
+        <overlay name="Menu" type="exov">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/exov_Menu</extends>
+          <label>Menu</label>
+          <overrideList>
+            <override name="HorizontalLayoutForMenuItems" type="elext">
+              <elementList>
+                <element name="updRefTables" type="elmnu">
+                  <label>Update Reference Tables</label>
+                  <menuType>2</menuType>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <elementList>
+                    <element name="MOPS_OPN_CONFIG_TABLE" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_refTables.ReferenceTables/usrActionMethod_MOPS_OPN_CONFIG_TABLE_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>MOPS_OPN_CONFIG_TABLE</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="configurationMenu" type="elmnu">
+                  <label>Configuration</label>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <elementList>
+                    <element name="nvValidationMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_refTables.ReferenceTables/usrActionMethod_showValidValuesForNVPair_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Valid Values for NV Pair</label>
+                    </element>
+                    <element name="nvReplaceValueMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_refTables.ReferenceTables/usrActionMethod_showReplaceValuesForNVPair_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>Replace Value for NV Pair</label>
+                    </element>
+                    <element name="nvPairsForDuplicateOrderMenuItem" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_refTables.ReferenceTables/usrActionMethod_showNVPairsToSkipInDuplicateOrder_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <label>NV Pairs To Skip in Duplicated Order</label>
+                    </element>
+                  </elementList>
+                </element>
+                <element name="tools" type="elmnu">
+                  <icon>/cwf/tools.gif</icon>
+                  <label>Tools</label>
+                  <menuType>2</menuType>
+                  <showDown>true</showDown>
+                  <showMenuDropDown>true</showMenuDropDown>
+                  <showRollOver>true</showRollOver>
+                  <elementList>
+                    <element name="EventLog" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_refTables.ReferenceTables/usrActionMethod_EventLog_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/eventr.gif</icon>
+                      <label>Event Log</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                    <element name="FrameworkInformation" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_refTables.ReferenceTables/usrActionMethod_FrameworkInformation_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/ValidationInfo.gif</icon>
+                      <label>Information</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                    <element name="divider" type="elsep"/>
+                    <element name="SelectApplication" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_refTables.ReferenceTables/usrActionMethod_SelectApplication_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/choice.gif</icon>
+                      <label>Select Application</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                    <element name="Logout" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_refTables.ReferenceTables/usrActionMethod_Logout_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/MenuIconLogout.gif</icon>
+                      <label>Logout</label>
+                      <menuType>5</menuType>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                    <element name="ChangePassword" type="elmnu">
+                      <clickMethod type="varPath">
+                        <variablePathList>
+                          <variablePath>ui_refTables.ReferenceTables/usrActionMethod_ChangePassword_menu</variablePath>
+                        </variablePathList>
+                      </clickMethod>
+                      <icon>/cwf/key.gif</icon>
+                      <label>Change Password</label>
+                      <showDown>true</showDown>
+                      <showRollOver>true</showRollOver>
+                      <style>CwMEIDefItem</style>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </override>
+          </overrideList>
+        </overlay>
+        <overlay name="Page" type="expg">
+          <base>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</base>
+          <extends>ui_com.conceptwave.system.Application/frmui_Forms/pg_Page</extends>
+          <label>Page</label>
+          <stylesheet>/cwf/css/cwf.css</stylesheet>
+          <title>Reference Tables</title>
+        </overlay>
+      </overlayList>
+    </vform>
+  </vformList>
+  <methodList>
+    <method name="MOPS_OPN_CONFIG_TABLE" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>findDoc_refTables.MOPS_OPN_CONFIG_TABLE_Finder/ui_UserInterface/frmui_Forms/exov_Default</form>
+      <userInterface>findDoc_refTables.MOPS_OPN_CONFIG_TABLE_Finder</userInterface>
+      <validate>true</validate>
+    </method>
+    <method name="MOPS_OPN_CONFIG_TABLE_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.MOPS_OPN_CONFIG_TABLE();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="EventLog" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script><![CDATA[return new Finder("cwf_oe:EventLogFinder");]]></script>
+    </method>
+    <method name="EventLog_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.EventLog();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="FrameworkInformation" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script><![CDATA[return new Document("cwf_oe:info");]]></script>
+    </method>
+    <method name="FrameworkInformation_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.FrameworkInformation();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="SelectApplication" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script><![CDATA[return new Document("cwf_oe:SelectApp");]]></script>
+    </method>
+    <method name="SelectApplication_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.SelectApplication();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="Logout" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <validate>true</validate>
+      <script>UserProfile.logout();</script>
+    </method>
+    <method name="Logout_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.Logout();
+        Global.runContentDisplayScript(this, "displayScript");
+        return result;
+      ]]></script>
+    </method>
+    <method name="ChangePassword" type="usrActionMethod">
+      <allowInvalidObject>true</allowInvalidObject>
+      <autosave>true</autosave>
+      <form>doc_cwf_up.chgPwdDoc/ui_UserInterface/frmui_Forms/vform_Default</form>
+      <parameterList>
+        <parameter name="menuObject" type="rifp">
+          <type>doc_cwf_up.chgPwdDoc</type>
+        </parameter>
+        <parameter name="cwDialogParam" type="rifp">
+          <type>ui_com.conceptwave.system.Dialog</type>
+        </parameter>
+      </parameterList>
+      <showInPopup>true</showInPopup>
+      <userInterface>doc_cwf_up.chgPwdDoc</userInterface>
+      <validate>true</validate>
+      <valueType>doc_cwf_up.chgPwdDoc</valueType>
+      <script><![CDATA[cwDialogParam.title = "Change Password";]]></script>
+    </method>
+    <method name="ChangePassword_menu" type="usrActionMethod">
+      <script><![CDATA[
+        var result = this.ChangePassword();
+        Global.runContentDisplayScript(this, "displayScript");
+      ]]></script>
+    </method>
+    <method name="showValidValuesForNVPair_menu" type="usrActionMethod">
+      <userInterface>findDoc_refTables.validValuesForNVPairNameFinder</userInterface>
+      <valueType>findDoc_refTables.validValuesForNVPairNameFinder</valueType>
+    </method>
+    <method name="showReplaceValuesForNVPair_menu" type="usrActionMethod">
+      <userInterface>findDoc_refTables.replacementValueForNVPairNameFinder</userInterface>
+      <valueType>findDoc_refTables.replacementValueForNVPairNameFinder</valueType>
+    </method>
+    <method name="showNVPairsToSkipInDuplicateOrder_menu" type="usrActionMethod">
+      <userInterface>findDoc_refTables.nvPairToSkipInDuplicateOrderFinder</userInterface>
+      <valueType>findDoc_refTables.nvPairToSkipInDuplicateOrderFinder</valueType>
+    </method>
+  </methodList>
+</userInterface>

@@ -1,0 +1,14 @@
+insert into STCW_PRODUCTCODE (PRODUCTCODE, SEND_DISCONNECT_FOR_CANCEL, FEAS_APPROACH, REQUIRE_VALIDATION_BOS, IS_VPN, IS_PROVISIONABLE, SUPPORT_FEASIBILITY)
+                      values ('BC057',     0,                          'DEFAULT',     0,                      1,      1,                1);
+
+insert into STCW_PRODUCTCODE (PRODUCTCODE, SEND_DISCONNECT_FOR_CANCEL, FEAS_APPROACH, REQUIRE_VALIDATION_BOS, IS_VPN, IS_PROVISIONABLE, SUPPORT_FEASIBILITY)
+                      values ('BC058',     0,                          'DEFAULT',     0,                      1,      1,                1);
+
+insert into STCW_BU_PROVISIONING (SERVICETYPE, PRODUCTCODE, CIM) values ('BC057', 'BC057', 'E');
+insert into STCW_BU_PROVISIONING (SERVICETYPE, PRODUCTCODE, CIM) values ('BC058', 'BC058', 'E');
+
+insert into STCW_SERVICETYPE_NAME_MAP(COM_SERVICETYPE, GI_SERVICETYPE, SOM_INTERNALNAME) values('BC057', 'BC057', null);
+insert into STCW_SERVICETYPE_NAME_MAP(COM_SERVICETYPE, GI_SERVICETYPE, SOM_INTERNALNAME) values('BC058', 'BC058', null);
+
+commit;
+

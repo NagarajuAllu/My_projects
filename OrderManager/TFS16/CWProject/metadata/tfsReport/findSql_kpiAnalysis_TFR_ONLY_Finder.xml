@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findSql name="tfsReport.kpiAnalysis_TFR_ONLY_Finder">
+  <dbSchema>INTERFACE</dbSchema>
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <input>doc_tfsReport.kpiAnalysisReportSearchDoc</input>
+  <label>KPI Analysis TFR_ONLY Finder</label>
+  <maxRowsLimit>9999</maxRowsLimit>
+  <metaVersion>25</metaVersion>
+  <output>doc_tfsReport.kpiAnalysisReportDetailResultDoc</output>
+  <rtConfigurable>true</rtConfigurable>
+  <type>SQL</type>
+  <methodList>
+    <method name="cwOnFinderSQLSel" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        select v.customer_name,
+               v.prnr_id,
+               v.prnr_name,
+               v.prnr_creation_date,
+               v.prnr_released_date,
+               v.prnr_cancelled_date,
+               v.prnr_duration_hours,
+               v.prnr_duration_days,
+               v.prn_id,
+               v.prn_name,
+               v.prn_released_date,
+               v.prn_cancelled_date,
+               v.prn_duration_hours,
+               v.prn_duration_days,
+               v.tfr_id,
+               v.tfr_number,
+               v.fa_completion_date,
+               v.tfr_cancelled_date,
+               v.tfr_duration_hours,
+               v.tfr_duration_days,
+               v.orderInitiator_duration_days,
+               v.networkDesign_duration_days,
+               v.faTeams_duration_days,
+               v.cust_acceptance_duration_days,
+               v.end2end_duration_days
+          from stc_kpi_tfr_bi_report_v v
+         where 1 = 1
+           {[0] and v.tfr_creation_date >= ?}
+           {[1] and v.tfr_creation_date <= ?}
+           {[2] and v.fa_completion_date >= ?}
+           {[3] and v.fa_completion_date <= ?}
+           {[5] and (nvl(v.fa_completion_date, v.tfr_cancelled_date) - v.tfr_creation_date) <= ?}
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_tfsReport.kpiAnalysisReportSearchDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_tfsReport.kpiAnalysisReportDetailResultDoc/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_tfsReport.kpiAnalysisReportDetailResultDoc</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="detailSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detailForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_detail</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+              <override name="searchFormSection" type="elsect">
+                <formReference type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                  </variablePathList>
+                </formReference>
+                <variable type="varPath">
+                  <variablePathList>
+                    <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_search</variablePath>
+                  </variablePathList>
+                </variable>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Result" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_Result</extends>
+            <label>Result</label>
+            <overrideList>
+              <override name="table" type="elvlt">
+                <height>100%</height>
+                <width>100%</width>
+                <elementList>
+                  <element name="kpiAnalysis_TFR_ONLY_FinderResultTable" type="eltabl">
+                    <onSelectChange type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_OnSelChanged</variablePath>
+                      </variablePathList>
+                    </onSelectChange>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <elementList>
+                      <element name="customerName" type="elfld">
+                        <label>PRNR Customer Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_customerName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="prnrName" type="elfld">
+                        <label>PRNR Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_prnrName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnrCreationDate" type="eldate">
+                        <label>PRNR Creation Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_prnrCreationDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnrReleasedDate" type="eldate">
+                        <label>PRNR Released Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_prnrReleasedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnrCancelledDate" type="eldatetime">
+                        <label>PRNR Cancelled Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_prnrCancelledDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnrDurationInHours" type="elfld">
+                        <label>PRNR Duration in hours</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_prnrDurationInHours</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnrDurationInDays" type="elfld">
+                        <label>PRNR Duration in days</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_prnrDurationInDays</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnName" type="elfld">
+                        <label>PRN Name</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_prnName</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnReleasedDate" type="eldate">
+                        <label>PRN Released Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_prnReleasedDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnCancelledDate" type="eldatetime">
+                        <label>PRN Cancelled Date</label>
+                        <tooltip>150</tooltip>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_prnCancelledDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="prnDurationInHours" type="elfld">
+                        <label>PRN Duration in hours</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_prnDurationInHours</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="prnDurationInDays" type="elfld">
+                        <label>PRN Duration in days</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_prnDurationInDays</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="tfrNumber" type="elfld">
+                        <label>TFR Number</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_tfrNumber</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="tfrFACompletionDate" type="eldate">
+                        <label>TFR FA Completion Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_tfrFACompletionDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="tfrCancelledDate" type="eldatetime">
+                        <label>TFR Cancelled Date</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_tfrCancelledDate</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="tfrDurationInHours" type="elfld">
+                        <label>TFR Duration in hours</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_tfrDurationInHours</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="tfrDurationInDays" type="elfld">
+                        <label>TFR Duration in days</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_tfrDurationInDays</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="requesterDurationInDays" type="elfld">
+                        <label>Requester Duration in days</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_requesterDurationInDays</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="networkDesignDurationInDays" type="elfld">
+                        <label>Network Design Duration in days</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_networkDesignDurationInDays</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                      <element name="faDurationInDays" type="elfld">
+                        <label>FA Team Duration in days</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_faDurationInDays</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>150px</width>
+                      </element>
+                      <element name="customerAcceptanceProcessDurationInDays" type="elfld">
+                        <label>Customer Acceptance Process Duration in days</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_customerAcceptanceProcessDurationInDays</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>250px</width>
+                      </element>
+                      <element name="end2EndProcessDurationInDays" type="elfld">
+                        <label>End2End Process Duration in days</label>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/uivar_result</variablePath>
+                            <variablePath>doc_tfsReport.kpiAnalysisReportDetailResultDoc/leaf_end2EndProcessDurationInDays</variablePath>
+                          </variablePathList>
+                        </variable>
+                        <width>200px</width>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="cwfAdd" type="eldel"/>
+              <override name="cwfCopy" type="eldel"/>
+              <override name="cwfDelete" type="eldel"/>
+              <override name="cwfDetail" type="eldel"/>
+              <override name="cwfUpdate" type="eldel"/>
+              <override name="finderMenuLayout" type="elext">
+                <elementList>
+                  <element name="showAllBIsMenuItem" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/usrActionMethod_showAllBI</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <label>Show All BIs</label>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="showAllBI" type="usrActionMethod">
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>850</dialogWidth>
+        <parameterList>
+          <parameter name="dialog" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          if(this.model.selected == null || this.model.selected.length == 0) {
+              Global.throwException("UU0115");
+          }
+
+          if(this.model.selected.length > 1) {
+              Global.throwException("UU0116");
+          }
+
+          var biFinder = new Finder("tfsReport.biReportFinder");
+          biFinder.searchDocument.tfrNumber = this.model.selected[0].tfrNumber;
+          biFinder.searchDocument.prnName = this.model.selected[0].prnName;
+          biFinder.search();
+
+          return biFinder;
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="kpiAnalysis_TFR_ONLY_FinderView" type="findVView">
+      <label>KPI Analysis &quot;TFR Only&quot; Finder</label>
+      <outputOverlay>findSql_tfsReport.kpiAnalysis_TFR_ONLY_Finder/ui_UserInterface/frmui_Forms/exov_Result</outputOverlay>
+    </view>
+  </viewList>
+</findSql>

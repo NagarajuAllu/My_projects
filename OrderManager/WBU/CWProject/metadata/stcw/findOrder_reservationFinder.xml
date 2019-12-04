@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findOrder filenameHash="c35a9c7d6d23d06488148e979430a1cc" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.reservationFinder">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <guid>{0e07ec7e-13ad-8b08-f060-a4f2bbe9b7a2}</guid>
+  <input>doc_stcw.orderByReservationSearch</input>
+  <itemTypeList>
+    <itemType>order_stcw.wholesaleQuote</itemType>
+  </itemTypeList>
+  <label>Reservation Finder</label>
+  <maxRowsLimit>5000</maxRowsLimit>
+  <metaVersion>3</metaVersion>
+  <output>doc_stcw.quoteHeader</output>
+  <sortList>
+    <sort type="stitem">
+      <path>doc_stcw.quoteHeader/leaf_quoteNumber</path>
+    </sort>
+    <sort type="stitem">
+      <path>doc_orb.orderHeader/leaf_orderNumber</path>
+    </sort>
+    <sort type="stitem">
+      <path>doc_stcw.quoteHeader/leaf_orderRowItemId</path>
+    </sort>
+  </sortList>
+  <type>order</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <vDetailForm>doc_stcw.quoteHeader/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>1</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_stcw.orderByReservationSearch</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_stcw.quoteHeader/leaf_reservationNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.orderByReservationSearch/leaf_reservationNumber</path>
+    </search>
+  </searchList>
+  <selectResultList>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwDocId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwDocId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwCreatedBy</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwCreatedBy</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwCreated</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwCreated</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwDocStamp</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwDocStamp</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwTypeNo</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwTypeNo</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_lastUpdatedDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_lastUpdatedDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_sysMDVersionNo</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_sysMDVersionNo</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwOrderCreationDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwOrderCreationDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwOrderId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwOrderId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_cwParentId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_cwParentId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_updatedBy</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_updatedBy</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_orderNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_orderNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_orb.orderHeader/leaf_orderAction</mappedPath>
+      <operation>equal</operation>
+      <path>doc_orb.orderHeader/leaf_orderAction</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_stcw.quoteHeader/leaf_quoteStatus</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.quoteHeader/leaf_quoteStatus</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_stcw.quoteHeader/leaf_quoteNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.quoteHeader/leaf_quoteNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_stcw.quoteHeader/leaf_orderRowItemId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.quoteHeader/leaf_orderRowItemId</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_stcw.quoteHeader/leaf_quoteType</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.quoteHeader/leaf_quoteType</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_stcw.quoteHeader/leaf_completedDate</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.quoteHeader/leaf_completedDate</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_stcw.quoteHeader/leaf_productCode</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.quoteHeader/leaf_productCode</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_stcw.quoteHeader/leaf_reservationNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.quoteHeader/leaf_reservationNumber</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <mappedDocument>doc_stcw.quoteHeader</mappedDocument>
+      <mappedPath>doc_stcw.quoteHeader/leaf_quantity</mappedPath>
+      <operation>equal</operation>
+      <path>doc_stcw.quoteHeader/leaf_quantity</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <operation>equal</operation>
+      <path>doc_stcw.quoteHeader/leaf_orderComments</path>
+    </selectResult>
+    <selectResult type="sitem">
+      <document>doc_stcw.quoteHeader</document>
+      <operation>equal</operation>
+      <path>doc_stcw.quoteHeader/leaf_skipSendToGranite</path>
+    </selectResult>
+  </selectResultList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.OrderFinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findOrder_stcw.reservationFinder</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_stcw.orderByReservationSearch/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_stcw.quoteHeader</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_stcw.quoteHeader/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.OrderFinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.OrderFinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.OrderFinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext">
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="searchResults" type="vform">
+            <label>searchResults</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.OrderFinderUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Creation_Date" type="eldatetime">
+                  <label>Creation Date</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwCreated</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Parent_Quote_Number" type="elfld">
+                  <label>Parent Quote Number</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Child_Quote_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Service_ItemRowId" type="elfld">
+                  <label>Service ItemRowId</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_orderRowItemId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>138px</width>
+                </element>
+                <element name="Reservation_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_reservationNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Quantity" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quantity</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>72px</width>
+                </element>
+                <element name="Quote_Action" type="elslct">
+                  <label>Quote Action</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderAction</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>126px</width>
+                </element>
+                <element name="Quote_Status" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Product_Code" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_productCode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Quote_Type" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Complete_Date" type="eldatetime">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_completedDate</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Order_Comments" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_orderComments</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>216px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="quoteDisplay" type="vform">
+            <label>quoteDisplay</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.OrderFinderUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Parent_Quote_Number" type="elfld">
+                  <label>Parent Quote Number</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>216px</width>
+                </element>
+                <element name="Child_Quote_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>720px</width>
+                </element>
+                <element name="Service_ItemRowId" type="elfld">
+                  <label>Service ItemRowId</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_orderRowItemId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>138px</width>
+                </element>
+                <element name="Reservation_Number" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_reservationNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>720px</width>
+                </element>
+                <element name="Quote_Type" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>108px</width>
+                </element>
+                <element name="Quote_Action" type="elslct">
+                  <label>Quote Action</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_orderAction</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>126px</width>
+                </element>
+                <element name="Quote_Status" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quoteStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>720px</width>
+                </element>
+                <element name="Product_Code" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_productCode</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>720px</width>
+                </element>
+                <element name="Order_Comments" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_orderComments</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>1836px</width>
+                </element>
+                <element name="Quantity" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_quantity</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>66px</width>
+                </element>
+                <element name="System_order_ID" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwOrderId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>120px</width>
+                </element>
+                <element name="System_document_ID" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwDocId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>138px</width>
+                </element>
+                <element name="Creation_Date" type="eldatetime">
+                  <label>Creation Date</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_orb.orderHeader/leaf_cwCreated</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+                <element name="Complete_Date" type="eldatetime">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findOrder_stcw.reservationFinder/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_stcw.quoteHeader/leaf_completedDate</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>144px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="ReferenceForm" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_ReferenceForm</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_ReferenceForm</extends>
+            <label>ReferenceForm</label>
+            <overrideList>
+              <override name="topStack" type="elsectnstck">
+                <height>100%</height>
+                <visibilityMode>multiple</visibilityMode>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.UserInterface/uivar_model</variablePath>
+                    <variablePath>mdl_com.conceptwave.system.Model/permMethod_visiblePerm</variablePath>
+                  </variablePathList>
+                </visible>
+                <width>100%</width>
+                <elementList>
+                  <element name="topSection" type="elsect">
+                    <header type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_header</variablePath>
+                      </variablePathList>
+                    </header>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                      </variablePathList>
+                    </visible>
+                    <elementList>
+                      <element name="finderHeader" type="elsecth">
+                        <label>Finder</label>
+                        <elementList>
+                          <element name="back" type="elmnu">
+                            <clickMethod type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_hideDetailAction</variablePath>
+                              </variablePathList>
+                            </clickMethod>
+                            <icon>/cwfv/nav_left_blue.png</icon>
+                            <tooltip>Back to results</tooltip>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                          <element name="pref" type="elmnu">
+                            <icon>/cwt/images/16/preferences.png</icon>
+                            <showMenuDropDown>true</showMenuDropDown>
+                            <elementList>
+                              <element name="toggleMenu" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_toggleSearchAction</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwfv/funnel.png</icon>
+                                <label>Show/hide search</label>
+                                <tooltip>Show/hide search</tooltip>
+                                <visible type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_toggleVisible</variablePath>
+                                  </variablePathList>
+                                </visible>
+                              </element>
+                              <element name="openView" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_findCustomView</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwf/user_view.gif</icon>
+                                <label>Open Custom View</label>
+                              </element>
+                              <element name="addView" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_addCustomView</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwf/table_add.gif</icon>
+                                <label>Add Custom View</label>
+                              </element>
+                              <element name="Separator" type="elsep"/>
+                              <element name="Iterator" type="eliter">
+                                <variable type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_views</variablePath>
+                                  </variablePathList>
+                                </variable>
+                                <elementList>
+                                  <element name="viewItem" type="elmnu">
+                                    <clickMethod type="varPath">
+                                      <variablePathList>
+                                        <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_views</variablePath>
+                                        <variablePath>ui_com.conceptwave.system.FinderViewIteratedItem/uimthd_changeView</variablePath>
+                                      </variablePathList>
+                                    </clickMethod>
+                                    <label>a</label>
+                                    <variable type="varPath">
+                                      <variablePathList>
+                                        <variablePath>ui_com.conceptwave.system.FinderViewIteratedItem/leaf_view</variablePath>
+                                      </variablePathList>
+                                    </variable>
+                                  </element>
+                                </elementList>
+                              </element>
+                            </elementList>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="sStack" type="elsectnstck">
+                        <visible type="varPath">
+                          <variablePathList>
+                            <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_topSectionVisible</variablePath>
+                          </variablePathList>
+                        </visible>
+                        <width>100%</width>
+                        <elementList>
+                          <element name="detailSection" type="elsect">
+                            <formReference type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                                <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms</variablePath>
+                                <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Default</variablePath>
+                              </variablePathList>
+                            </formReference>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                              </variablePathList>
+                            </variable>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                          <element name="searchFormSection" type="elsect">
+                            <formReference type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                              </variablePathList>
+                            </formReference>
+                            <onEnter type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_searchAction</variablePath>
+                              </variablePathList>
+                            </onEnter>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_search</variablePath>
+                              </variablePathList>
+                            </variable>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="resStack" type="elsectnstck">
+                        <height>100%</height>
+                        <visible type="varPath">
+                          <variablePathList>
+                            <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_resultVisible</variablePath>
+                          </variablePathList>
+                        </visible>
+                        <elementList>
+                          <element name="resSection" type="elsect">
+                            <onEnter type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_searchAction</variablePath>
+                              </variablePathList>
+                            </onEnter>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_resultVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                            <elementList>
+                              <element name="resultFrame" type="elovf">
+                                <formReference type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_resultForm</variablePath>
+                                  </variablePathList>
+                                </formReference>
+                              </element>
+                            </elementList>
+                          </element>
+                        </elementList>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+  </UserInterface>
+  <viewList>
+    <view name="degault" type="findVView">
+      <inputOverlay>doc_stcw.orderByReservationSearch/ui_UserInterface/frmui_Forms/exov_Default</inputOverlay>
+      <label>Reservation Finder</label>
+      <outputOverlay>findOrder_stcw.reservationFinder/ui_UserInterface/frmui_Forms/vform_searchResults</outputOverlay>
+      <showSearchForm>true</showSearchForm>
+    </view>
+  </viewList>
+</findOrder>

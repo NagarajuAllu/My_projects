@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="ds_ws.STC_INSERTORDER_MAPBULK_CFG">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <guid>{2eff4907-5827-4185-806c-d422ed884ce4}</guid>
+  <label>Map for Bulk Insert Feasibility Order</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="position" type="leaf">
+      <column>POSITION</column>
+      <key>1</key>
+      <propertyElement type="elfld">
+        <label>Position</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_INSERTORDER_MAPBULK_CFG</table>
+      <valueType>dtype_ds_ws.integer3</valueType>
+    </variable>
+    <variable name="columnName" type="leaf">
+      <column>COLUMNNAME</column>
+      <propertyElement type="elfld">
+        <label>Column Name</label>
+        <optional type="varPath">
+          <variablePathList>
+            <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+          </variablePathList>
+        </optional>
+      </propertyElement>
+      <table>STC_INSERTORDER_MAPBULK_CFG</table>
+      <valueType>dtype_ds_ws.string250</valueType>
+    </variable>
+  </variableList>
+  <methodList>
+    <method name="cwOnDocStore" type="action">
+      <system>true</system>
+      <script><![CDATA[
+        this.cw$super_cwOnDocStore();
+
+        if(this.isStored) {
+            Global.showUserMessage(Global.translateText("AI0002"));
+        }
+        else {
+            Global.showUserMessage(Global.translateText("AI0001"));
+        }
+      ]]></script>
+    </method>
+  </methodList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_ds_ws.STC_INSERTORDER_MAPBULK_CFG</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.DocumentUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="defGrid_vCentering" type="elvltstck">
+                <height>100%</height>
+                <membersMargin>5</membersMargin>
+                <width>100%</width>
+                <elementList>
+                  <element name="STC_INSERTORDER_MAPBULKGrid" type="elgrd">
+                    <colWidths>90px,160px,90px,160px</colWidths>
+                    <labelOrientation>left</labelOrientation>
+                    <numOfCols>4</numOfCols>
+                    <useDefaultHeight>true</useDefaultHeight>
+                    <width>540px</width>
+                    <elementList>
+                      <element name="STC_INSERTORDER_MAPBULKHeader" type="elhdr">
+                        <label>Map for Bulk Insert Feasibility Order</label>
+                      </element>
+                      <element name="position" type="elfld">
+                        <editable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_MAPBULK_CFG/ui_UserInterface/permMethod_isPositionEditable</variablePath>
+                          </variablePathList>
+                        </editable>
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_MAPBULK_CFG/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_MAPBULK_CFG/leaf_position</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                      <element name="columnName" type="elfld">
+                        <variable type="varPath">
+                          <variablePathList>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_MAPBULK_CFG/ui_UserInterface/uivar_model</variablePath>
+                            <variablePath>doc_ds_ws.STC_INSERTORDER_MAPBULK_CFG/leaf_columnName</variablePath>
+                          </variablePathList>
+                        </variable>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="isPositionEditable" type="permMethod">
+        <script>return (!this.model.isStored);</script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

@@ -1,0 +1,1488 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<findDoc filenameHash="c000816f92239139794254723bb79e5e" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber">
+  <extends>find_com.conceptwave.system.Finder</extends>
+  <guid>{0507d4b7-b8e0-a10c-efd1-a34e2d485863}</guid>
+  <highlight>36</highlight>
+  <input>doc_ds_ws.search_orderMessage</input>
+  <label>Find Order Message Home By Parent Order # And Plate Id. And Service #</label>
+  <maxRowsLimit>100</maxRowsLimit>
+  <metaVersion>3</metaVersion>
+  <output>doc_ds_ws.details_orderMessage_HOME</output>
+  <type>document</type>
+  <uiQueryTimeout>0</uiQueryTimeout>
+  <vDetailForm>doc_ds_ws.details_orderMessage_HOME/ui_UserInterface/frmui_Forms/exov_Default</vDetailForm>
+  <volatility>0</volatility>
+  <searchList>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage_HOME</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage_HOME/leaf_parentOrderNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_parentOrderNumber</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage_HOME</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage_HOME/leaf_commonPlateId</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_commonPlateId</path>
+    </search>
+    <search type="sitem">
+      <document>doc_ds_ws.search_orderMessage</document>
+      <mappedDocument>doc_ds_ws.details_orderMessage_HOME</mappedDocument>
+      <mappedPath>doc_ds_ws.details_orderMessage_HOME/leaf_commonServiceNumber</mappedPath>
+      <operation>equal</operation>
+      <path>doc_ds_ws.search_orderMessage/leaf_commonServiceNumber</path>
+    </search>
+  </searchList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>ui_com.conceptwave.system.FinderUserInterface</extends>
+    <variableList>
+      <variable name="finder" type="uivar">
+        <valueType>ui_com.conceptwave.system.FinderUserInterface</valueType>
+      </variable>
+      <variable name="model" type="uivar">
+        <valueType>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber</valueType>
+      </variable>
+      <variable name="search" type="uivar">
+        <valueType>doc_ds_ws.search_orderMessage/ui_UserInterface</valueType>
+      </variable>
+      <variable name="result" type="uivar">
+        <flags enum-type="metadataFlag">ARRAY</flags>
+        <valueType>doc_ds_ws.details_orderMessage_HOME</valueType>
+      </variable>
+      <variable name="detail" type="uivar">
+        <flags enum-type="metadataFlag">VALIDATE</flags>
+        <valueType>doc_ds_ws.details_orderMessage_HOME/ui_UserInterface</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Default" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/exov_Default</extends>
+            <label>Default</label>
+            <overrideList>
+              <override name="finderHeader" type="elext">
+                <style>CwFIT</style>
+              </override>
+              <override name="Iterator" type="elext">
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showView</variablePath>
+                  </variablePathList>
+                </visible>
+              </override>
+            </overrideList>
+          </overlay>
+          <overlay name="default" type="vform">
+            <label>default</label>
+            <root name="defaultLayoutStack" type="elvltstck">
+              <height>100%</height>
+              <width>100%</width>
+              <elementList>
+                <element name="defaultStack" type="elsectnstck">
+                  <height>100%</height>
+                  <width>100%</width>
+                  <elementList>
+                    <element name="create_mainInformationSection" type="elsect">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/frmui_Forms/vform_create_mainInformation</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/permMethod_create_mainInformationView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="update_mainInformationSection" type="elsect">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/frmui_Forms/vform_update_mainInformation</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/permMethod_update_mainInformationView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="default_mainInformationSection" type="elsect">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/frmui_Forms/vform_default_mainInformation</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/permMethod_default_mainInformationView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="update_circuitInformation_HomeSection" type="elsect">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/frmui_Forms/vform_update_circuitInformation_Home</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/permMethod_update_circuitInformation_HomeView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                    <element name="default_circuitInformation_HomeSection" type="elsect">
+                      <formReference type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/frmui_Forms</variablePath>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/frmui_Forms/vform_default_circuitInformation_Home</variablePath>
+                        </variablePathList>
+                      </formReference>
+                      <visible type="varPath">
+                        <variablePathList>
+                          <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/permMethod_default_circuitInformation_HomeView</variablePath>
+                        </variablePathList>
+                      </visible>
+                    </element>
+                  </elementList>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="create_mainInformation" type="vform">
+            <label>create_mainInformation</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Order__" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Type" type="elfld">
+                  <label>Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Status" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <label>Status</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Internal_Order_Status" type="elslct">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_internalOrderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>204px</width>
+                </element>
+                <element name="Business_Unit" type="elslct">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_businessUnit</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>204px</width>
+                </element>
+                <element name="Reservation__" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_reservationNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Reservation_Expiry" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_reservationExpiry</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Priority" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_priority</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Account__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_accountNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Service_Date" type="eldate">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_serviceDate</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>102px</width>
+                </element>
+                <element name="Service_Description" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_serviceDescription</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Order_Domain" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderDomain</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Fict__Billing__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_fictBillingNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="ICMS_S_O__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_icmsSONumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Customer__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Id___" type="elfld">
+                  <label>Id. #</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerIDNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Id__Type" type="elfld">
+                  <label>Id. Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerIDType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Name" type="elfld">
+                  <label>Name</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerName</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Type1" type="elfld">
+                  <label>Type1</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Contact" type="elfld">
+                  <label>Contact</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerContact</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CCT_Type" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_cctType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Plate_Id_" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_commonPlateId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="update_mainInformation" type="vform">
+            <label>update_mainInformation</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Order__" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Type" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <label>Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Status" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <label>Status</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Internal_Order_Status" type="elslct">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_internalOrderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>204px</width>
+                </element>
+                <element name="Business_Unit" type="elslct">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_businessUnit</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>204px</width>
+                </element>
+                <element name="Reservation__" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_reservationNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Reservation_Expiry" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_reservationExpiry</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Priority" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_priority</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Account__" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_accountNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Service_Date" type="eldate">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_serviceDate</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>102px</width>
+                </element>
+                <element name="Service_Description" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_serviceDescription</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Service_Type" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_serviceType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Order_Domain" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderDomain</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Fict__Billing__" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_fictBillingNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="ICMS_S_O__" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_icmsSONumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Customer__" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Id___" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <label>Id. #</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerIDNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Id__Type" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <label>Id. Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerIDType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Name" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <label>Name</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerName</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Type1" type="elfld">
+                  <editable type="varPath">
+                    <variablePathList>
+                      <variablePath>dtype_com.conceptwave.system.Boolean/leaf_FALSE</variablePath>
+                    </variablePathList>
+                  </editable>
+                  <label>Type1</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Contact" type="elfld">
+                  <label>Contact</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerContact</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="default_mainInformation" type="vform">
+            <label>default_mainInformation</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Order__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Type" type="elfld">
+                  <label>Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Status" type="elfld">
+                  <label>Status</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Internal_Order_Status" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_internalOrderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>204px</width>
+                </element>
+                <element name="Business_Unit" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_businessUnit</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>204px</width>
+                </element>
+                <element name="Reservation__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_reservationNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Reservation_Expiry" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_reservationExpiry</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Priority" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_priority</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="In_Hold" type="elchk">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_inHold</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>66px</width>
+                </element>
+                <element name="Account__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_accountNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Service_Date" type="eldate">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_serviceDate</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>102px</width>
+                </element>
+                <element name="Service_Description" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_serviceDescription</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Service_Type" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_serviceType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Order_Domain" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderDomain</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Fict__Billing__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_fictBillingNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="ICMS_S_O__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_icmsSONumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Customer__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Id___" type="elfld">
+                  <label>Id. #</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerIDNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Id__Type" type="elfld">
+                  <label>Id. Type</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerIDType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Name" type="elfld">
+                  <label>Name</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerName</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Type1" type="elfld">
+                  <label>Type1</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Contact" type="elfld">
+                  <label>Contact</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerContact</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="update_circuitInformation_Home" type="vform">
+            <label>update_circuitInformation_Home</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Circuit__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_circuitNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Old_Circuit__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_oldCircuitNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Status" type="elfld">
+                  <label>Status</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_circuitStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Bandwidth" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_bandwidth</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Project_Id_" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_projectId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Plate_Id_" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_commonPlateId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CCT_Type" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_cctType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Wires" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_wires</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Tb_Port__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_tbPortNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="default_circuitInformation_Home" type="vform">
+            <label>default_circuitInformation_Home</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Circuit__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_circuitNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Old_Circuit__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_oldCircuitNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Status" type="elfld">
+                  <label>Status</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_circuitStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Bandwidth" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_bandwidth</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Project_Id_" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_projectId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Plate_Id_" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_commonPlateId</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CCT_Type" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_cctType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Wires" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_wires</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Tb_Port__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_tbPortNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="Menu" type="exov">
+            <base>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>ui_com.conceptwave.system.BaseFinderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+          </overlay>
+          <overlay name="output_mainInformation" type="vform">
+            <label>output_mainInformation</label>
+            <root name="result" type="eltabl">
+              <doubleClickMethod type="varPath">
+                <variablePathList>
+                  <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/action_showDetailAction</variablePath>
+                </variablePathList>
+              </doubleClickMethod>
+              <headerHeight>30</headerHeight>
+              <showDetailColumn>false</showDetailColumn>
+              <variable type="varPath">
+                <variablePathList>
+                  <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                </variablePathList>
+              </variable>
+              <wrapCell>true</wrapCell>
+              <wrapHeaderLabel>true</wrapHeaderLabel>
+              <elementList>
+                <element name="Order__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>360px</width>
+                </element>
+                <element name="Order_Status" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>72px</width>
+                </element>
+                <element name="Internal_Order_Status" type="elslct">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_internalOrderStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>204px</width>
+                </element>
+                <element name="Order_Type" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_orderType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Priority" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_priority</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="CCT_Type" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_cctType</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Circuit__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_circuitNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>288px</width>
+                </element>
+                <element name="Status" type="elfld">
+                  <label>Status</label>
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_circuitStatus</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Account__" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_accountNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+                <element name="Customer_Id___" type="elfld">
+                  <variable type="varPath">
+                    <variablePathList>
+                      <variablePath>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/uivar_result</variablePath>
+                      <variablePath>doc_ds_ws.details_orderMessage_HOME/leaf_customerIDNumber</variablePath>
+                    </variablePathList>
+                  </variable>
+                  <width>180px</width>
+                </element>
+              </elementList>
+            </root>
+          </overlay>
+          <overlay name="ReferenceForm" type="exov">
+            <base>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_ReferenceForm</base>
+            <extends>ui_com.conceptwave.system.FinderUserInterface/frmui_Forms/vform_ReferenceForm</extends>
+            <label>ReferenceForm</label>
+            <overrideList>
+              <override name="topStack" type="elsectnstck">
+                <height>100%</height>
+                <visibilityMode>multiple</visibilityMode>
+                <visible type="varPath">
+                  <variablePathList>
+                    <variablePath>ui_com.conceptwave.system.UserInterface/uivar_model</variablePath>
+                    <variablePath>mdl_com.conceptwave.system.Model/permMethod_visiblePerm</variablePath>
+                  </variablePathList>
+                </visible>
+                <width>100%</width>
+                <elementList>
+                  <element name="topSection" type="elsect">
+                    <header type="varPath">
+                      <variablePathList>
+                        <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_header</variablePath>
+                      </variablePathList>
+                    </header>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>dtype_com.conceptwave.system.Boolean/leaf_TRUE</variablePath>
+                      </variablePathList>
+                    </visible>
+                    <elementList>
+                      <element name="finderHeader" type="elsecth">
+                        <label>Finder</label>
+                        <elementList>
+                          <element name="back" type="elmnu">
+                            <clickMethod type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_hideDetailAction</variablePath>
+                              </variablePathList>
+                            </clickMethod>
+                            <icon>/cwfv/nav_left_blue.png</icon>
+                            <tooltip>Back to results</tooltip>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                          <element name="pref" type="elmnu">
+                            <icon>/cwt/images/16/preferences.png</icon>
+                            <showMenuDropDown>true</showMenuDropDown>
+                            <elementList>
+                              <element name="toggleMenu" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_toggleSearchAction</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwfv/funnel.png</icon>
+                                <label>Show/hide search</label>
+                                <tooltip>Show/hide search</tooltip>
+                                <visible type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/permMethod_toggleVisible</variablePath>
+                                  </variablePathList>
+                                </visible>
+                              </element>
+                              <element name="openView" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_findCustomView</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwf/user_view.gif</icon>
+                                <label>Open Custom View</label>
+                              </element>
+                              <element name="addView" type="elmnu">
+                                <clickMethod type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/usrActionMethod_addCustomView</variablePath>
+                                  </variablePathList>
+                                </clickMethod>
+                                <icon>/cwf/table_add.gif</icon>
+                                <label>Add Custom View</label>
+                              </element>
+                              <element name="Separator" type="elsep"/>
+                              <element name="Iterator" type="eliter">
+                                <variable type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_views</variablePath>
+                                  </variablePathList>
+                                </variable>
+                                <elementList>
+                                  <element name="viewItem" type="elmnu">
+                                    <clickMethod type="varPath">
+                                      <variablePathList>
+                                        <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/leaf_views</variablePath>
+                                        <variablePath>ui_com.conceptwave.system.FinderViewIteratedItem/uimthd_changeView</variablePath>
+                                      </variablePathList>
+                                    </clickMethod>
+                                    <label>a</label>
+                                    <variable type="varPath">
+                                      <variablePathList>
+                                        <variablePath>ui_com.conceptwave.system.FinderViewIteratedItem/leaf_view</variablePath>
+                                      </variablePathList>
+                                    </variable>
+                                  </element>
+                                </elementList>
+                              </element>
+                            </elementList>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="sStack" type="elsectnstck">
+                        <visible type="varPath">
+                          <variablePathList>
+                            <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_topSectionVisible</variablePath>
+                          </variablePathList>
+                        </visible>
+                        <width>100%</width>
+                        <elementList>
+                          <element name="detailSection" type="elsect">
+                            <formReference type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                                <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms</variablePath>
+                                <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Default</variablePath>
+                              </variablePathList>
+                            </formReference>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_detail</variablePath>
+                              </variablePathList>
+                            </variable>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/permMethod_detailVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                          <element name="searchFormSection" type="elsect">
+                            <formReference type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_searchForm</variablePath>
+                              </variablePathList>
+                            </formReference>
+                            <onEnter type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_searchAction</variablePath>
+                              </variablePathList>
+                            </onEnter>
+                            <variable type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/uivar_search</variablePath>
+                              </variablePathList>
+                            </variable>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_showSearchForm</variablePath>
+                              </variablePathList>
+                            </visible>
+                          </element>
+                        </elementList>
+                      </element>
+                      <element name="resStack" type="elsectnstck">
+                        <height>100%</height>
+                        <visible type="varPath">
+                          <variablePathList>
+                            <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_resultVisible</variablePath>
+                          </variablePathList>
+                        </visible>
+                        <elementList>
+                          <element name="resSection" type="elsect">
+                            <onEnter type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.BaseFinderUserInterface/action_searchAction</variablePath>
+                              </variablePathList>
+                            </onEnter>
+                            <visible type="varPath">
+                              <variablePathList>
+                                <variablePath>ui_com.conceptwave.system.FinderUserInterface/permMethod_resultVisible</variablePath>
+                              </variablePathList>
+                            </visible>
+                            <elementList>
+                              <element name="resultFrame" type="elovf">
+                                <formReference type="varPath">
+                                  <variablePathList>
+                                    <variablePath>ui_com.conceptwave.system.MasterDetailUserInterface/uivar_resultForm</variablePath>
+                                  </variablePathList>
+                                </formReference>
+                              </element>
+                            </elementList>
+                          </element>
+                        </elementList>
+                      </element>
+                    </elementList>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="create_mainInformationView" type="permMethod"/>
+      <method name="update_mainInformationView" type="permMethod"/>
+      <method name="default_mainInformationView" type="permMethod"/>
+      <method name="update_circuitInformation_HomeView" type="permMethod"/>
+      <method name="default_circuitInformation_HomeView" type="permMethod"/>
+    </methodList>
+  </UserInterface>
+  <viewList>
+    <view name="default" type="findVView">
+      <label>Find Order Message Home By Parent Order # And Plate Id. And Service #</label>
+      <outputOverlay>findDoc_ds_ws.findOrderMessageHomeByParentOrderNumberAndPlateIdAndServiceNumber/ui_UserInterface/frmui_Forms/vform_default</outputOverlay>
+      <searchImmediately>true</searchImmediately>
+    </view>
+  </viewList>
+</findDoc>

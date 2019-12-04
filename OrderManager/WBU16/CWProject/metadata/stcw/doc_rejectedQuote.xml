@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document name="stcw.rejectedQuote">
+  <dbSchema>ORDER</dbSchema>
+  <extends>doc_com.conceptwave.system.Document</extends>
+  <generatedKey>true</generatedKey>
+  <guid>{0cd4e451-2bb8-1d2d-3e32-76070c4ada43}</guid>
+  <label>Rejected Quote</label>
+  <metaVersion>21</metaVersion>
+  <variableList>
+    <variable name="parentQuoteNumber" type="leaf">
+      <column>PARENTQUOTENUMBER</column>
+      <label>Parent Quote Number</label>
+      <propertyElement type="elfld">
+        <label>Parent Quote Number</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_orb.OrderNumber</valueType>
+    </variable>
+    <variable name="orderRowItemId" type="leaf">
+      <column>ORDERROWITEMID</column>
+      <label>Order Row Item Id</label>
+      <propertyElement type="elfld">
+        <label>Order Row Item Id</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_wsws.orderRowItemId</valueType>
+    </variable>
+    <variable name="childQuoteNumber" type="leaf">
+      <column>CHILDQUOTENUMBER</column>
+      <label>Child Quote Number</label>
+      <propertyElement type="elfld">
+        <label>Child Quote Number</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_stcw.quoteNumber</valueType>
+    </variable>
+    <variable name="rejectedDateTime" type="leaf">
+      <column>REJECTEDDATETIME</column>
+      <label>Rejected Date Time</label>
+      <propertyElement type="eldatetime">
+        <label>Rejected Date Time</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_stcc.formattedDateTime</valueType>
+    </variable>
+    <variable name="errorDescription" type="leaf">
+      <column>ERRORDESCRIPTION</column>
+      <label>Error Description</label>
+      <propertyElement type="elfld">
+        <label>Error Description</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_stcw.errorText</valueType>
+    </variable>
+    <variable name="rejectedSystem" type="leaf">
+      <column>REJECTEDSYSTEM</column>
+      <label>Rejected System</label>
+      <propertyElement type="elfld">
+        <label>Rejected System</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_stcw.string40</valueType>
+    </variable>
+    <variable name="cwDocId" type="leaf">
+      <column>CWDOCID</column>
+      <key>1</key>
+      <label>System document ID</label>
+      <propertyElement type="elfld">
+        <label>System document ID</label>
+      </propertyElement>
+      <table>STCW_REJECTED_QUOTE</table>
+      <valueType>dtype_cwf.cwDocId</valueType>
+    </variable>
+  </variableList>
+  <UserInterface name="UserInterface" type="ui">
+    <extends>doc_com.conceptwave.system.Document/ui_UserInterface</extends>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>doc_stcw.rejectedQuote</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>doc_com.conceptwave.system.Document/ui_UserInterface/frmui_Forms</extends>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="runTrigger" type="usrActionMethod">
+        <script><![CDATA[
+          this.cw$super_runTrigger();
+          Global.runContentDisplayScript(this, "displayScript");
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</document>

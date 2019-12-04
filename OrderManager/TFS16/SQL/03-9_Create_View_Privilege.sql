@@ -1,0 +1,9 @@
+prompt Creating PRIVILEGE view ...
+
+@define_variables.sql
+
+CREATE OR REPLACE VIEW STC_PRIVILEGE_V(PRIVILEGE_NAME) AS 
+  SELECT PRIVILEGE 
+    FROM CWPRIVILEGE 
+   WHERE PRIVILEGE LIKE 'STC_%'
+     AND PRIVILEGE NOT IN ('STC_ConfigPriv', 'STC_GroupMgrPriv');

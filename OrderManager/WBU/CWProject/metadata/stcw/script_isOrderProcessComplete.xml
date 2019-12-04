@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script filenameHash="79d1179a2bf37551be366364515ff98b" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.isOrderProcessComplete">
+  <guid>{033c6536-e939-8429-6666-0c98d02733fd}</guid>
+  <label>Is Order Process Complete</label>
+  <metaVersion>3</metaVersion>
+  <parameterList>
+    <parameter name="order" type="rifp">
+      <mandatory>true</mandatory>
+      <type>order_com.conceptwave.system.Order</type>
+    </parameter>
+  </parameterList>
+  <script><![CDATA[
+    if (order == undefined || order == null)
+          return (true);
+
+    return (order.header.orderStatus == "COMPLETED");
+  ]]></script>
+</script>

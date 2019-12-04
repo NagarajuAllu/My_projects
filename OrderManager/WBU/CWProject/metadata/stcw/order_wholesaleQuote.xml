@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<order filenameHash="ea8f762df8db84878a0468e9ed1d99dd" versionHash="eccbc87e4b5ce2fe28308fd9f2a7baf3" name="stcw.wholesaleQuote">
+  <extends>mdl_com.conceptwave.system.Model</extends>
+  <guid>{00ef0658-a7bb-a943-1688-a5f6e2d7c8d8}</guid>
+  <label>Wholesale Quote</label>
+  <metaVersion>3</metaVersion>
+  <childList>
+    <child name="header" type="order">
+      <displayInParent>true</displayInParent>
+      <extends>mdl_com.conceptwave.system.Model</extends>
+      <guid>{023cc864-8127-5290-3e7e-75f2dc35a395}</guid>
+      <label>Header</label>
+      <mandatory>true</mandatory>
+      <orderItem>doc_stcw.quoteHeader</orderItem>
+      <orderType>document</orderType>
+      <xmlMap type="xmap">
+        <path>order_stcw.wholesaleQuote/order_header</path>
+        <xmlName>quoteHeader</xmlName>
+      </xmlMap>
+    </child>
+    <child name="versions" type="order">
+      <extends>mdl_com.conceptwave.system.Model</extends>
+      <guid>{0c30c1c2-d9d3-665e-9d28-27d3d21bcea0}</guid>
+      <label>Versions</label>
+      <maxInstances>100</maxInstances>
+      <orderType>collection</orderType>
+      <childList>
+        <child name="header" type="order">
+          <displayInParent>true</displayInParent>
+          <extends>mdl_com.conceptwave.system.Model</extends>
+          <guid>{0672bc38-3e04-cb6b-b77b-9046c1764b0d}</guid>
+          <label>Header</label>
+          <mandatory>true</mandatory>
+          <orderItem>doc_stcw.versionHeader</orderItem>
+          <orderType>document</orderType>
+          <xmlMap type="xmap">
+            <path>order_stcw.wholesaleQuote/order_versions/order_header</path>
+            <xmlName>versionHeader</xmlName>
+          </xmlMap>
+        </child>
+        <child name="interfaces" type="order">
+          <extends>mdl_com.conceptwave.system.Model</extends>
+          <guid>{046d2259-68a9-c49c-99df-2f725a94c08b}</guid>
+          <label>Interfaces</label>
+          <maxInstances>9999</maxInstances>
+          <orderType>collection</orderType>
+          <childList>
+            <child name="interfaceData" type="order">
+              <displayInParent>true</displayInParent>
+              <extends>mdl_com.conceptwave.system.Model</extends>
+              <guid>{01fab28f-eb00-9df9-ef72-a890d316326e}</guid>
+              <label>Interface Data</label>
+              <mandatory>true</mandatory>
+              <orderItem>doc_stcw.interfaceHeader</orderItem>
+              <orderType>document</orderType>
+              <xmlMap type="xmap">
+                <path>order_stcw.wholesaleQuote/order_versions/order_interfaces/order_interfaceData</path>
+                <xmlName>interfaceHeader</xmlName>
+              </xmlMap>
+            </child>
+          </childList>
+        </child>
+      </childList>
+    </child>
+  </childList>
+  <UserInterface name="UserInterface" type="tree">
+    <autoExpand>true</autoExpand>
+    <autoSaveInt>2</autoSaveInt>
+    <defaultFolderImage>undefined</defaultFolderImage>
+    <defaultLeafImage>undefined</defaultLeafImage>
+    <element>order_stcw.wholesaleQuote</element>
+    <extends>tree_com.conceptwave.system.MOrderUserInterface</extends>
+    <label>Wholesale Quote</label>
+    <tableDoc>doc_com.conceptwave.system.TreeDocument</tableDoc>
+    <childList>
+      <child name="header" type="tnOi">
+        <autoExpand>true</autoExpand>
+        <autoSave>true</autoSave>
+        <detailForm>doc_stcw.quoteHeader/ui_UserInterface/frmui_Forms/vform_quoteDisplay</detailForm>
+        <detailUI>doc_stcw.quoteHeader/ui_UserInterface</detailUI>
+        <displayInParent>true</displayInParent>
+        <element>doc_stcw.quoteHeader</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <label>Header</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_stcw.wholesaleQuote/order_header</orderItem>
+        <variableList>
+          <variable name="model" type="uivar">
+            <valueType>doc_stcw.quoteHeader</valueType>
+          </variable>
+        </variableList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+        <methodList>
+          <method name="setValidationErrors" type="action">
+            <parameterList>
+              <parameter name="validationErrorList" type="rifp">
+                <mandatory>true</mandatory>
+                <type>nmeta_com.conceptwave.system.Object</type>
+              </parameter>
+            </parameterList>
+            <script><![CDATA[
+              if (validationErrorList instanceof ValidationErrorList) {
+                this.errorList = validationErrorList.getSubList(this.model, false, true);
+                this.setModelErrors(validationErrorList);
+              }
+              else if (validationErrorList == null) {
+                this.errorList = null;
+              }
+            ]]></script>
+          </method>
+        </methodList>
+      </child>
+      <child name="versions" type="tnOi">
+        <autoExpand>true</autoExpand>
+        <autoSave>true</autoSave>
+        <element>order_stcw.wholesaleQuote/order_versions</element>
+        <extends>tn_com.conceptwave.system.TreeNode</extends>
+        <label>Versions</label>
+        <nodeType>4</nodeType>
+        <orderItem>order_stcw.wholesaleQuote/order_versions</orderItem>
+        <showChildrenCount>true</showChildrenCount>
+        <childList>
+          <child name="versionsInstance" type="tnOi">
+            <autoExpand>true</autoExpand>
+            <autoSave>true</autoSave>
+            <collectionInstance>true</collectionInstance>
+            <element>order_stcw.wholesaleQuote/order_versions</element>
+            <extends>tn_com.conceptwave.system.TreeNode</extends>
+            <label>Versions</label>
+            <nodeType>4</nodeType>
+            <orderItem>order_stcw.wholesaleQuote/order_versions</orderItem>
+            <childList>
+              <child name="header" type="tnOi">
+                <autoExpand>true</autoExpand>
+                <autoSave>true</autoSave>
+                <detailForm>doc_stcw.versionHeader/ui_UserInterface/frmui_Forms/vform_orderDisplay</detailForm>
+                <detailUI>doc_stcw.versionHeader/ui_UserInterface</detailUI>
+                <displayInParent>true</displayInParent>
+                <element>doc_stcw.versionHeader</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <label>Header</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_stcw.wholesaleQuote/order_versions/order_header</orderItem>
+                <variableList>
+                  <variable name="model" type="uivar">
+                    <valueType>doc_stcw.versionHeader</valueType>
+                  </variable>
+                </variableList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+                <methodList>
+                  <method name="setValidationErrors" type="action">
+                    <parameterList>
+                      <parameter name="validationErrorList" type="rifp">
+                        <mandatory>true</mandatory>
+                        <type>nmeta_com.conceptwave.system.Object</type>
+                      </parameter>
+                    </parameterList>
+                    <script><![CDATA[
+                      if (validationErrorList instanceof ValidationErrorList) {
+                        this.errorList = validationErrorList.getSubList(this.model, false, true);
+                        this.setModelErrors(validationErrorList);
+                      }
+                      else if (validationErrorList == null) {
+                        this.errorList = null;
+                      }
+                    ]]></script>
+                  </method>
+                </methodList>
+              </child>
+              <child name="interfaces" type="tnOi">
+                <autoExpand>true</autoExpand>
+                <autoSave>true</autoSave>
+                <element>order_stcw.wholesaleQuote/order_versions/order_interfaces</element>
+                <extends>tn_com.conceptwave.system.TreeNode</extends>
+                <label>Interfaces</label>
+                <nodeType>4</nodeType>
+                <orderItem>order_stcw.wholesaleQuote/order_versions/order_interfaces</orderItem>
+                <showChildrenCount>true</showChildrenCount>
+                <childList>
+                  <child name="interfacesInstance" type="tnOi">
+                    <autoExpand>true</autoExpand>
+                    <autoSave>true</autoSave>
+                    <collectionInstance>true</collectionInstance>
+                    <element>order_stcw.wholesaleQuote/order_versions/order_interfaces</element>
+                    <extends>tn_com.conceptwave.system.TreeNode</extends>
+                    <label>Interfaces</label>
+                    <nodeType>4</nodeType>
+                    <orderItem>order_stcw.wholesaleQuote/order_versions/order_interfaces</orderItem>
+                    <childList>
+                      <child name="interfaceData" type="tnOi">
+                        <autoExpand>true</autoExpand>
+                        <autoSave>true</autoSave>
+                        <detailForm>doc_stcw.interfaceHeader/ui_UserInterface/frmui_Forms/vform_orderDisplay</detailForm>
+                        <detailUI>doc_stcw.interfaceHeader/ui_UserInterface</detailUI>
+                        <element>doc_stcw.interfaceHeader</element>
+                        <extends>tn_com.conceptwave.system.TreeNode</extends>
+                        <label>Interface Data</label>
+                        <nodeType>4</nodeType>
+                        <orderItem>order_stcw.wholesaleQuote/order_versions/order_interfaces/order_interfaceData</orderItem>
+                        <variableList>
+                          <variable name="model" type="uivar">
+                            <valueType>doc_stcw.interfaceHeader</valueType>
+                          </variable>
+                        </variableList>
+                        <vformList>
+                          <vform name="Forms" type="frmui">
+                            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                          </vform>
+                        </vformList>
+                        <methodList>
+                          <method name="setValidationErrors" type="action">
+                            <parameterList>
+                              <parameter name="validationErrorList" type="rifp">
+                                <mandatory>true</mandatory>
+                                <type>nmeta_com.conceptwave.system.Object</type>
+                              </parameter>
+                            </parameterList>
+                            <script><![CDATA[
+                              if (validationErrorList instanceof ValidationErrorList) {
+                                this.errorList = validationErrorList.getSubList(this.model, false, true);
+                                this.setModelErrors(validationErrorList);
+                              }
+                              else if (validationErrorList == null) {
+                                this.errorList = null;
+                              }
+                            ]]></script>
+                          </method>
+                        </methodList>
+                      </child>
+                    </childList>
+                    <variableList>
+                      <variable name="model" type="uivar">
+                        <valueType>order_stcw.wholesaleQuote/order_versions/order_interfaces</valueType>
+                      </variable>
+                    </variableList>
+                    <vformList>
+                      <vform name="Forms" type="frmui">
+                        <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                      </vform>
+                    </vformList>
+                  </child>
+                </childList>
+                <variableList>
+                  <variable name="model" type="uivar">
+                    <valueType>order_stcw.wholesaleQuote/order_versions/order_interfaces</valueType>
+                  </variable>
+                </variableList>
+                <vformList>
+                  <vform name="Forms" type="frmui">
+                    <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+                  </vform>
+                </vformList>
+              </child>
+            </childList>
+            <variableList>
+              <variable name="model" type="uivar">
+                <valueType>order_stcw.wholesaleQuote/order_versions</valueType>
+              </variable>
+            </variableList>
+            <vformList>
+              <vform name="Forms" type="frmui">
+                <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+              </vform>
+            </vformList>
+          </child>
+        </childList>
+        <variableList>
+          <variable name="model" type="uivar">
+            <valueType>order_stcw.wholesaleQuote/order_versions</valueType>
+          </variable>
+        </variableList>
+        <vformList>
+          <vform name="Forms" type="frmui">
+            <extends>tn_com.conceptwave.system.TreeNode/frmui_Forms</extends>
+          </vform>
+        </vformList>
+      </child>
+    </childList>
+    <variableList>
+      <variable name="model" type="uivar">
+        <label>model</label>
+        <valueType>order_stcw.wholesaleQuote</valueType>
+      </variable>
+    </variableList>
+    <vformList>
+      <vform name="Forms" type="frmui">
+        <extends>tree_com.conceptwave.system.MOrderUserInterface/frmui_Forms</extends>
+        <overlayList>
+          <overlay name="Menu" type="exov">
+            <base>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms/exov_Menu</base>
+            <extends>tree_com.conceptwave.system.OrderUserInterface/frmui_Forms/exov_Menu</extends>
+            <label>Menu</label>
+            <overrideList>
+              <override name="FormFrame" type="eldel"/>
+              <override name="HorizontalLayout" type="elext">
+                <elementList>
+                  <element name="FormFrameEx" type="elovf">
+                    <formReference type="varPath">
+                      <variablePathList>
+                        <variablePath>tree_com.conceptwave.system.NavigationTree/leaf_detailMenu</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms</variablePath>
+                        <variablePath>ui_com.conceptwave.system.UserInterface/frmui_Forms/vform_Menu</variablePath>
+                      </variablePathList>
+                    </formReference>
+                    <overflow>visible</overflow>
+                    <variable type="varPath">
+                      <variablePathList>
+                        <variablePath>tree_com.conceptwave.system.NavigationTree/leaf_detailMenu</variablePath>
+                      </variablePathList>
+                    </variable>
+                    <width>1px</width>
+                  </element>
+                </elementList>
+              </override>
+              <override name="Order" type="elmnu">
+                <menuAccel type="mAccelP">
+                  <keyName>O</keyName>
+                  <keys enum-type="menuAccelFlag">ALT_KEY</keys>
+                </menuAccel>
+                <icon>/cwf/TreeFolderUnknown.gif</icon>
+                <label>Order</label>
+                <menuType>2</menuType>
+                <showDown>true</showDown>
+                <showMenuDropDown>true</showMenuDropDown>
+                <showRollOver>true</showRollOver>
+                <elementList>
+                  <element name="cwfPdf" type="elmnu">
+                    <menuAccel type="mAccelP">
+                      <keyName>P</keyName>
+                      <keys enum-type="menuAccelFlag">ALT_KEY</keys>
+                    </menuAccel>
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>order_stcw.wholesaleQuote/tree_UserInterface/usrActionMethod_cwfPdf_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/acrobat.gif</icon>
+                    <label>Pdf</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                    <style>CwMEIDefItem</style>
+                    <tooltip>Pdf</tooltip>
+                    <visible type="varPath">
+                      <variablePathList>
+                        <variablePath>tree_com.conceptwave.system.OrderUserInterface/permMethod_pdfVisible</variablePath>
+                      </variablePathList>
+                    </visible>
+                  </element>
+                  <element name="Tasks" type="elmnu">
+                    <menuAccel type="mAccelP">
+                      <keyName>T</keyName>
+                      <keys enum-type="menuAccelFlag">ALT_KEY</keys>
+                    </menuAccel>
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>order_stcw.wholesaleQuote/tree_UserInterface/usrActionMethod_Tasks_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/Task208Default.gif</icon>
+                    <label>Tasks</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                    <style>CwMEIDefItem</style>
+                  </element>
+                  <element name="TaskHistory" type="elmnu">
+                    <clickMethod type="varPath">
+                      <variablePathList>
+                        <variablePath>order_stcw.wholesaleQuote/tree_UserInterface/usrActionMethod_TaskHistory_menu</variablePath>
+                      </variablePathList>
+                    </clickMethod>
+                    <icon>/cwf/Task208Default.gif</icon>
+                    <label>Task History</label>
+                    <menuType>5</menuType>
+                    <showDown>true</showDown>
+                    <showRollOver>true</showRollOver>
+                    <style>CwMEIDefItem</style>
+                  </element>
+                </elementList>
+              </override>
+            </overrideList>
+          </overlay>
+        </overlayList>
+      </vform>
+    </vformList>
+    <methodList>
+      <method name="cwfPdf" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <autosave>true</autosave>
+        <script><![CDATA[
+          var download = new com.conceptwave.system.DownloadPdf(null, this);
+          download.fileName = Global.getWebappPrefix() + "/order.pdf";
+          download.xml = this.model.toXML();
+          download.xsl = this.model.getXslFileName();
+          download.mimeType = "application/pdf";
+          Global.doDownload(download);
+                return;
+        ]]></script>
+      </method>
+      <method name="cwfPdf_menu" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <confirmation>order_stcw.wholesaleQuote/tree_UserInterface/action_cwAutosaveConfirmation</confirmation>
+        <validate>true</validate>
+        <script><![CDATA[
+          var result = this.cwfPdf();
+          Global.runContentDisplayScript(this, "displayScript");
+          {
+          this.pdfAction();
+          return result;
+          }
+        ]]></script>
+      </method>
+      <method name="cwAutosaveConfirmation" type="action">
+        <valueType>dtype_com.conceptwave.system.String</valueType>
+        <script><![CDATA[
+          if (Global.isAutosaveEnabled() && this.detailNode != null && this.detailNode.model instanceof Document &&
+              !this.detailNode.model.readonly && this.detailNode.model.dirty &&
+              this.detailNode.modelUI != null && !this.detailNode.modelUI.isValid) {
+            return "UU0256:YN";
+          }
+          return null;
+        ]]></script>
+      </method>
+      <method name="Tasks" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>800</dialogWidth>
+        <parameterList>
+          <parameter name="cwDialogParam" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          cwDialogParam.title = "Tasks";
+
+          var menuOwner = this.model;
+          var f = new Finder("cwf_pm:OrderItemWorklist");
+          if (menuOwner.selected != null && menuOwner.selected[0].isTop) {
+                f.searchDocument.OrderId = menuOwner.id;
+          }
+          else {
+                var ids = cwf_oe.getSelectedOrderIDs(menuOwner);
+                if (!ids) {
+                      Global.throwException("UU0115");
+                }
+                f.searchDocument.orderIDs = ids;
+          }
+          f.search();
+          return f;
+        ]]></script>
+      </method>
+      <method name="Tasks_menu" type="usrActionMethod">
+        <script><![CDATA[
+          var result = this.Tasks();
+          Global.runContentDisplayScript(this, "displayScript");
+          this.tasksAction();
+        ]]></script>
+      </method>
+      <method name="TaskHistory" type="usrActionMethod">
+        <allowInvalidObject>true</allowInvalidObject>
+        <dialogHeight>600</dialogHeight>
+        <dialogWidth>800</dialogWidth>
+        <parameterList>
+          <parameter name="cwDialogParam" type="rifp">
+            <type>ui_com.conceptwave.system.Dialog</type>
+          </parameter>
+        </parameterList>
+        <showInPopup>true</showInPopup>
+        <script><![CDATA[
+          cwDialogParam.title = "Task History";
+
+          var menuOwner = this.model;
+          var f = new Finder("cwf_pm:WorklistArchiveFinder");
+          if (menuOwner.selected != null && menuOwner.selected[0].isTop) {
+                f.searchDocument.OrderId = menuOwner.id;
+          }
+          else {
+                var ids = cwf_oe.getSelectedOrderIDs(menuOwner);
+                if (!ids) {
+                      Global.throwException("UU0115");
+                }
+                f.searchDocument.orderIDs = ids;
+          }
+          f.search();
+          return f;
+        ]]></script>
+      </method>
+      <method name="TaskHistory_menu" type="usrActionMethod">
+        <script><![CDATA[
+          var result = this.TaskHistory();
+          Global.runContentDisplayScript(this, "displayScript");
+          this.tasksHistoryAction();
+        ]]></script>
+      </method>
+    </methodList>
+  </UserInterface>
+</order>
