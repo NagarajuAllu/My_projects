@@ -1,1 +1,0 @@
-alter table STCW_PRODUCTCODE add IS_PROVISIONABLE number(1) default 1;

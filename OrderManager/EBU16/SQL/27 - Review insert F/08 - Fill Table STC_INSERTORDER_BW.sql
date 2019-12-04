@@ -1,1 +1,0 @@
-insert into STC_INSERTORDER_BW(bw_name) select BW_NAME from CIRC_BW@RMS_PROD_DB_LINK where BW_NAME like '%_E2E%';

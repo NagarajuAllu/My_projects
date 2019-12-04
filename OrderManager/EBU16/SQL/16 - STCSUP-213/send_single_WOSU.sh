@@ -1,1 +1,0 @@
-wget --http-user=URY_GRANITE --http-password=URY_GRANITE00 http://172.20.191.195:24004/ws/GraniteGW_Data.order.workOrderStatusUpdate.ws.provider:receiveWorkOrderStatusUpdate --post-file=sendCompletionWOSU.xml --header="Content-Type: text/xml" --output-document=responseCompletionWOSU.xml

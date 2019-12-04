@@ -1,1 +1,0 @@
-update circ_path_inst set owner = 'Migrated data from ICMS' where circ_path_hum_id in (select path_name from stc_service_dslsky@cwe_eoc16_link where migration_result = 3);

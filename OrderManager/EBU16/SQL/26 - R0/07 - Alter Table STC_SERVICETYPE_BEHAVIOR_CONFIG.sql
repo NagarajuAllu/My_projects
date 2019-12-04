@@ -1,1 +1,0 @@
-alter table STC_SERVICETYPE_BEHAVIORCONFIG add REQUIRE_AUTODESIGN number(1) default 0;

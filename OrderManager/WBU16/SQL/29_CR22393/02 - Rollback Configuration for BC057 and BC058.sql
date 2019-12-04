@@ -1,8 +1,0 @@
-delete from STCW_PRODUCTCODE where PRODUCTCODE in ('BC057', 'BC058');
-
-delete from STCW_BU_PROVISIONING where SERVICETYPE in ('BC057', 'BC058');
-
-delete from STCW_SERVICETYPE_NAME_MAP where COM_SERVICETYPE in ('BC057', 'BC058');
-
-commit;
-

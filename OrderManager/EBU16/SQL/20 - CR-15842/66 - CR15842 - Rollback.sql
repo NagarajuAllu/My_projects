@@ -1,5 +1,0 @@
-﻿alter table STC_LINEITEM drop column PARKPROVISIONING;
-alter table STC_LINEITEM drop column RESUMEPROVISIONING;
-
-alter table STC_DEL_LINEITEM drop column PARKPROVISIONING;
-alter table STC_DEL_LINEITEM drop column RESUMEPROVISIONING;

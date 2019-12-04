@@ -1,1 +1,0 @@
-update stc_insertorder_bulkheader_cfg set header = replace(header, ',', ';') ;
