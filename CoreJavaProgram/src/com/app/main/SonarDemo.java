@@ -14,8 +14,6 @@ public class SonarDemo {
 		//String s = "";
 		List<Integer> list = new ArrayList<Integer>();
 		list.add(1);
-		list = null;
-		list.add(2);
 		Object obj = getData();
 		System.out.println(obj.toString());
 	}
